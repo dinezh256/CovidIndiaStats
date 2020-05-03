@@ -1,0 +1,24 @@
+body {
+  background-color: rgb(250, 250, 250);
+  font-family: myFont;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+@media (max-width: 770px) {
+  .container {
+    margin: 0 15%;
+  }
+}
+
+@font-face {
+  font-family: "myFont";
+  src: url(../fonts/NotoSans-Bold.ttf);
+  font-style: normal;
+  font-weight: 500;
+}

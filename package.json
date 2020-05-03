@@ -1,0 +1,86 @@
+{
+  "name": "covid19",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@material-ui/core": "^4.9.10",
+    "@material-ui/icons": "^4.9.1",
+    "@nivo/bar": "^0.61.1",
+    "@nivo/geo": "^0.61.1",
+    "@nivo/pie": "^0.61.1",
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.5.0",
+    "@testing-library/user-event": "^7.2.1",
+    "apexcharts": "^3.18.1",
+    "axios": "^0.19.2",
+    "bootstrap": "^4.4.1",
+    "bootstrap-toggle": "^2.2.2",
+    "canvasjs": "^1.8.3",
+    "chart-race-react": "^1.0.2",
+    "chart.js": "^2.9.3",
+    "classnames": "^2.2.6",
+    "create-react-class": "^15.6.3",
+    "d3": "^5.15.1",
+    "d3-scale": "^3.2.1",
+    "d3-svg-legend": "^2.25.6",
+    "date-fns": "^2.11.1",
+    "firebase": "^7.14.2",
+    "firebase-tools": "^8.2.0",
+    "font-awesome": "^4.7.0",
+    "install": "^0.13.0",
+    "json2csv": "^5.0.0",
+    "materialize-css": "^1.0.0-rc.2",
+    "moment": "^2.24.0",
+    "nivo": "^0.31.0",
+    "node-sass": "^4.13.1",
+    "npm": "^6.14.4",
+    "react": "^16.13.1",
+    "react-apexcharts": "^1.3.7",
+    "react-bell-icon": "^1.0.1",
+    "react-bootstrap": "^1.0.0",
+    "react-bootstrap-toggle": "^2.3.2",
+    "react-chartjs-2": "^2.9.0",
+    "react-cool-onclickoutside": "^1.4.4",
+    "react-countup": "^4.3.3",
+    "react-dom": "^16.13.1",
+    "react-feather": "^2.0.3",
+    "react-ga": "^2.7.0",
+    "react-moment": "^0.9.7",
+    "react-router-dom": "^5.1.2",
+    "react-scripts": "3.4.1",
+    "react-simple-maps": "^2.0.0",
+    "react-sparkline": "^2.0.0",
+    "react-sparklines": "^1.7.0",
+    "react-switch": "^5.0.1",
+    "react-tooltip": "^4.2.3",
+    "react-transition-group": "^4.3.0",
+    "recharts": "^1.8.5",
+    "sass-lint": "^1.13.1",
+    "serve": "^11.3.0",
+    "topojson": "^3.0.2"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "eslint-plugin-react-hooks": "^3.0.0"
+  }
+}
