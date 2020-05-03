@@ -2,6 +2,8 @@
 A dashboard to visualise the spread of covid19 in India(state and districtwise) and around the world(countrywise).
 Dashboard live on https://ncovind.web.app
 
+Created using Create-React-App
+
 After cloning, you can run:
 # npm start
 
