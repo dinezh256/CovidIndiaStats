@@ -5,7 +5,8 @@ Dashboard live on https://ncovind.web.app
 Created using <a href="https://reactjs.org/" >Create-React-App</a>
 
 After cloning, you can run:
-# <span class="text-gray-dark on .bg-gray">npm start</span>
+
+# <div class="bg-gray">npm start</div>
 
 
 
