@@ -46,6 +46,15 @@ class StateTable extends Component {
       );
     }
 
+    function commaSeperated(x) {
+      x = x.toString();
+      let lastThree = x.substring(x.length - 3);
+      let otherNumbers = x.substring(0, x.length - 3);
+      if (otherNumbers !== "") lastThree = "," + lastThree;
+      let res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
+      return res;
+    }
+
     function districtZone(district) {
       const redZone = [
         "South Andaman",
@@ -168,14 +177,10 @@ class StateTable extends Component {
         "Sant Kabir Nagar",
         "Varanasi",
         "Haridwar",
-        "Darjeeling",
         "Howrah",
-        "Jalpaiguri",
-        "Kalimpong",
         "Kolkata",
         "North 24 Parganas",
         "Purba Medinipur",
-        "South 24 Parganas",
       ];
       const orangeZone = [
         "Anantapur",
@@ -335,7 +340,6 @@ class StateTable extends Component {
         "Ratnagiri",
         "Sangli",
         "East Khasi Hills",
-        "",
         "Dhenkanal",
         "Kalahandi",
         "Kendrapara",
@@ -462,8 +466,15 @@ class StateTable extends Component {
         "Hooghly",
         "Murshidabad",
         "Nadia",
+        "Paschim Medinipur",
         "Paschim Bardhaman",
         "Purba Bardhaman",
+        "Malda",
+        "Darjeeling",
+        "Jalpaiguri",
+        "Kalimpong",
+        "South 24 Parganas",
+        "Birbhum",
         "Ferozepur",
       ];
       const greenZone = [
@@ -577,16 +588,22 @@ class StateTable extends Component {
         "Sheohar",
         "Sitamarhi",
         "Samastipur",
+        "Niwari",
+        "Panna",
+        "Mahoba",
+        "Kabeerdham",
+        "Devbhumi Dwarka",
+        "Haveri",
       ];
       if (redZone.includes(district)) {
-        return "red";
+        return "#ff446a";
       }
       if (orangeZone.includes(district)) {
-        return "orange";
+        return "rgb(255, 153, 0)";
       }
       if (greenZone.includes(district)) {
         return "rgb(40, 167, 69)";
-      } else return "#494545";
+      } else return "rgb(150, 150, 150)";
     }
 
     return (
@@ -610,6 +627,7 @@ class StateTable extends Component {
               Zone{" "}
               <a
                 target="_blank"
+                rel="noopener noreferrer"
                 href="https://www.indiatoday.in/india/story/red-orange-green-zones-full-current-update-list-districts-states-india-coronavirus-1673358-2020-05-01"
               >
                 <Icon.Link size={12} color="#3e4da3" strokeWidth={3} />
@@ -641,7 +659,7 @@ class StateTable extends Component {
                   <th
                     className="th sticky-top"
                     id="line2"
-                    style={{ width: "180px" }}
+                    style={{ width: "175px" }}
                   >
                     DISTRICT
                   </th>
@@ -673,7 +691,7 @@ class StateTable extends Component {
                   <th
                     className="th sticky-top text-secondary"
                     id="line2"
-                    style={{ textAlign: "center" }}
+                    style={{ textAlign: "center", width: "70px" }}
                   >
                     DECEASED
                   </th>
@@ -685,14 +703,18 @@ class StateTable extends Component {
                     <tr className="tr">
                       <td
                         className="tdleft"
-                        style={{ color: `${districtZone(district.district)}` }}
+                        style={{
+                          color: `${districtZone(district.district)}`,
+                          borderLeftWidth: "5px",
+                          borderStyle: "solid",
+                        }}
                       >
                         {district.district}
                         {district.notes ? (
                           <BootstrapTooltip title={district.notes}>
                             <span style={{ verticalAlign: "0.05rem" }}>
                               <InfoTwoToneIcon
-                                color="disabled"
+                                color="inherit"
                                 fontSize="inherit"
                               />
                             </span>
@@ -716,17 +738,19 @@ class StateTable extends Component {
                           <b className="deltainc-md text-info">
                             {Number(district.delta.confirmed) === 0
                               ? ""
-                              : Number(district.delta.confirmed)}
+                              : commaSeperated(district.delta.confirmed)}
                           </b>
                         </span>
                         &nbsp;&nbsp;
-                        {district.confirmed}
+                        {commaSeperated(district.confirmed)}
                       </td>
                       <td
                         className="delta td text-secondary narrowRow"
                         style={{ textAlign: "right" }}
                       >
-                        {district.active}
+                        {Number(district.active)
+                          ? commaSeperated(district.active)
+                          : "-"}
                       </td>
                       <td
                         className="delta td text-secondary"
@@ -743,11 +767,13 @@ class StateTable extends Component {
                           <b className="deltainc-md text-success">
                             {Number(district.delta.recovered) === 0
                               ? ""
-                              : Number(district.delta.recovered)}
+                              : commaSeperated(district.delta.recovered)}
                           </b>
                         </span>
                         &nbsp;&nbsp;
-                        {Number(district.recovered) ? district.recovered : "-"}
+                        {Number(district.recovered)
+                          ? commaSeperated(district.recovered)
+                          : "-"}
                       </td>
                       <td
                         className="delta td text-secondary narrowRow"
@@ -764,11 +790,13 @@ class StateTable extends Component {
                           <b className="deltainc-md text-secondary">
                             {Number(district.delta.deceased) === 0
                               ? ""
-                              : Number(district.delta.deceased)}
+                              : commaSeperated(district.delta.deceased)}
                           </b>
                         </span>
                         &nbsp;&nbsp;
-                        {Number(district.deceased) ? district.deceased : "-"}
+                        {Number(district.deceased)
+                          ? commaSeperated(district.deceased)
+                          : "-"}
                       </td>
                     </tr>
                   ))

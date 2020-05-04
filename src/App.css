@@ -30,7 +30,7 @@ body {
 }
 
 .delta {
-  font-weight: 500;
+  font-weight: 600;
   font-size: 1rem;
   text-transform: uppercase;
   text-align: center;
@@ -300,7 +300,6 @@ span.MuiBadge-colorSecondary {
 .coverage:hover {
   text-decoration: none;
   color: navy;
-  font-size: 22px;
 }
 
 .graph-head {
@@ -543,6 +542,24 @@ span.MuiBadge-colorSecondary {
   }
 }
 
+.float {
+  animation-name: floatArrow;
+  animation: floatArrow 1.1s linear infinite;
+}
+
+@keyframes floatArrow {
+  0%,
+  100% {
+    opacity: 1;
+    transform: translateX(0px);
+  }
+
+  50% {
+    opacity: 1;
+    transform: translateX(8px);
+  }
+}
+
 .test {
   color: rgb(40, 167, 69);
   color: rgb(228, 116, 138);
@@ -550,9 +567,10 @@ span.MuiBadge-colorSecondary {
   color: rgb(23, 162, 184);
   color: rgb(255, 68, 106);
   color: rgb(108, 117, 125);
-  color: hsl(120, 43%, 54%);
+  color: rgb(150, 150, 150);
   color: rgb(255, 68, 106);
-  color: orange;
+  color: rgb(255, 153, 0);
+  word-break: keep-all;
 }
 
 @media only screen and (min-width: 576px) {

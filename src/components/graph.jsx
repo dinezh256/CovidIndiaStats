@@ -236,6 +236,7 @@ class Graph extends Component {
                     borderTopLeftRadius: "6px",
                     borderTopRightRadius: "6px",
                     borderSpacing: "1px",
+                    textAlign: "center",
                   }}
                 >
                   <LanguageIcon
@@ -250,6 +251,7 @@ class Graph extends Component {
                     size="small"
                     color="primary"
                     style={{ verticalAlign: "-0.25rem" }}
+                    className="float"
                   />
                 </div>
                 <div className="w-100"></div>
@@ -257,13 +259,13 @@ class Graph extends Component {
                   <thead>
                     <tr>
                       <th
-                        className="text-info span delta sticky-top"
+                        className="text-info span delta"
                         style={{ width: "25%" }}
                       >
                         CONFIRMED
                       </th>
                       <th
-                        className="delta span sticky-top"
+                        className="delta span"
                         style={{
                           width: "25%",
 
@@ -273,13 +275,13 @@ class Graph extends Component {
                         ACTIVE
                       </th>
                       <th
-                        className="text-success delta span sticky-top"
+                        className="text-success delta span"
                         style={{ width: "25%" }}
                       >
                         Recovered
                       </th>
                       <th
-                        className="text-secondary delta span sticky-top"
+                        className="text-secondary delta span"
                         style={{
                           fontWeight: 600,
                           width: "25%",
@@ -397,7 +399,7 @@ class Graph extends Component {
                 style={{
                   justifyContent: "left",
                   animationDelay: "1s",
-                  marginTop: "5px",
+                  marginTop: "10px",
                 }}
               >
                 <Choropleth
@@ -412,15 +414,26 @@ class Graph extends Component {
               <br />
               <div
                 className="col fadeInUp"
-                style={{ textAlign: "left", animationDelay: "1s" }}
+                style={{
+                  textAlign: "left",
+                  animationDelay: "1s",
+                  marginBottom: "-8px",
+                }}
               >
-                <h3 className="home-title" style={{ color: "#ff446a" }}>
+                <h6
+                  className="home-title"
+                  style={{
+                    color: "#ff446a",
+                    wordBreak: "keep-all",
+                    wordWrap: "normal",
+                  }}
+                >
                   SPREAD TRENDS{" "}
                   <h6>
                     <span
                       className="text-secondary"
                       style={{
-                        fontSize: 8,
+                        fontSize: 10,
                         background: "#ece7e7",
                         borderRadius: "3px",
                       }}
@@ -428,12 +441,18 @@ class Graph extends Component {
                       {!toggleActive ? `CUMULATIVE` : `EVERYDAY`}
                     </span>
                   </h6>
-                </h3>
+                </h6>
               </div>
-              <div className="col fadeInUp" style={{ animationDelay: "1s" }}>
+              <div
+                className="col fadeInUp"
+                style={{ animationDelay: "1s", alignItems: "right" }}
+              >
                 <div
                   className="home-toggle"
-                  style={{ alignContent: "right", marginLeft: "12rem" }}
+                  style={{
+                    marginLeft: "13.5rem",
+                    marginTop: "10px",
+                  }}
                 >
                   <Switch
                     className="react-switch"
@@ -451,7 +470,7 @@ class Graph extends Component {
                     boxShadow="0 0 5px rgba(0,0,0,0.2)"
                     activeBoxShadow="0 0 2px rgba(0,0,0,0.25)"
                     height={16}
-                    width={30}
+                    width={35}
                   ></Switch>
                 </div>
               </div>
@@ -502,12 +521,12 @@ class Graph extends Component {
                       <ResponsiveContainer
                         width="100%"
                         height="100%"
-                        aspect={2.7}
+                        aspect={2.8}
                       >
                         <LineChart
                           data={data.slice(10, data.length)}
                           margin={{
-                            top: 8,
+                            top: 10,
                             right: -32,
                             left: 10,
                             bottom: -12,
@@ -518,7 +537,7 @@ class Graph extends Component {
                             dataKey="date"
                             tick={{ stroke: "#0992c0", strokeWidth: 0.2 }}
                             style={{ fontSize: 8 }}
-                            tickSize={4}
+                            tickSize={5}
                             tickCount={8}
                           />
                           <YAxis
@@ -530,8 +549,9 @@ class Graph extends Component {
                             orientation="right"
                             tick={{ stroke: "#0992c0", strokeWidth: 0.2 }}
                             tickFormatter={format("~s")}
-                            tickSize={4}
+                            tickSize={5}
                             style={{ fontSize: 8 }}
+                            tickCount={8}
                           />
                           <Tooltip
                             contentStyle={{
@@ -553,8 +573,8 @@ class Graph extends Component {
                             stroke="#35aad1"
                             strokeWidth="3"
                             strokeLinecap="round"
-                            animationEasing="ease-in"
                             name="Confirmed"
+                            isAnimationActive={false}
                             dot={{
                               stroke: "#0992c0",
                               strokeWidth: 0.1,
@@ -611,12 +631,12 @@ class Graph extends Component {
                       <ResponsiveContainer
                         width="100%"
                         height="100%"
-                        aspect={2.7}
+                        aspect={2.8}
                       >
                         <LineChart
                           data={totalActiveJson.slice(10, data.length)}
                           margin={{
-                            top: 8,
+                            top: 10,
                             right: -32,
                             left: 10,
                             bottom: -12,
@@ -627,7 +647,7 @@ class Graph extends Component {
                             dataKey="date"
                             tick={{ stroke: "#f16783", strokeWidth: 0.2 }}
                             style={{ fontSize: 8 }}
-                            tickSize={4}
+                            tickSize={5}
                             tickCount={8}
                           />
                           <YAxis
@@ -638,8 +658,9 @@ class Graph extends Component {
                             orientation="right"
                             tick={{ stroke: "#f16783", strokeWidth: 0.2 }}
                             tickFormatter={format("~s")}
-                            tickSize={4}
+                            tickSize={5}
                             style={{ fontSize: 8 }}
+                            tickCount={8}
                           />
                           <Tooltip
                             contentStyle={{
@@ -660,8 +681,8 @@ class Graph extends Component {
                             dataKey="totalactive"
                             stroke="#ec7d93"
                             strokeWidth="3"
-                            animationEasing="ease-in"
                             strokeLinecap="round"
+                            isAnimationActive={false}
                             name="Active"
                             dot={{
                               stroke: "#ff446a",
@@ -720,12 +741,12 @@ class Graph extends Component {
                       <ResponsiveContainer
                         width="100%"
                         height="100%"
-                        aspect={2.7}
+                        aspect={2.8}
                       >
                         <LineChart
                           data={data.slice(10, data.length)}
                           margin={{
-                            top: 8,
+                            top: 10,
                             right: -32,
                             left: 10,
                             bottom: -12,
@@ -736,7 +757,7 @@ class Graph extends Component {
                             dataKey="date"
                             tick={{ stroke: "#58bd58", strokeWidth: 0.2 }}
                             style={{ fontSize: 8 }}
-                            tickSize={4}
+                            tickSize={5}
                             tickCount={8}
                           />
                           <YAxis
@@ -748,8 +769,9 @@ class Graph extends Component {
                             orientation="right"
                             tick={{ stroke: "#58bd58", strokeWidth: 0.2 }}
                             tickFormatter={format("~s")}
-                            tickSize={4}
+                            tickSize={5}
                             style={{ fontSize: 8 }}
+                            tickCount={8}
                           />
                           <Tooltip
                             contentStyle={{
@@ -771,7 +793,7 @@ class Graph extends Component {
                             stroke="#78b978"
                             strokeWidth="3"
                             name="Recovered"
-                            animationEasing="ease-in"
+                            isAnimationActive={false}
                             dot={{
                               stroke: "#469246",
                               strokeWidth: 0.1,
@@ -829,12 +851,12 @@ class Graph extends Component {
                       <ResponsiveContainer
                         width="100%"
                         height="100%"
-                        aspect={2.7}
+                        aspect={2.8}
                       >
                         <LineChart
                           data={data.slice(10, data.length)}
                           margin={{
-                            top: 8,
+                            top: 10,
                             right: -32,
                             left: 10,
                             bottom: -12,
@@ -846,7 +868,7 @@ class Graph extends Component {
                             tick={{ stroke: "#474646", strokeWidth: 0.2 }}
                             axisLine={{ color: "#474646" }}
                             style={{ fontSize: 8 }}
-                            tickSize={4}
+                            tickSize={5}
                             tickCount={8}
                           />
                           <YAxis
@@ -857,8 +879,9 @@ class Graph extends Component {
                             orientation="right"
                             tick={{ stroke: "#474646", strokeWidth: 0.2 }}
                             tickFormatter={format("~s")}
-                            tickSize={4}
+                            tickSize={5}
                             style={{ fontSize: 8 }}
+                            tickCount={8}
                           />
                           <Tooltip
                             contentStyle={{
@@ -879,8 +902,8 @@ class Graph extends Component {
                             dataKey="totaldeceased"
                             stroke="#666565"
                             strokeWidth="3"
-                            animationEasing="ease-in"
                             name="Deceased"
+                            isAnimationActive={false}
                             dot={{
                               stroke: "#2e2d2d",
                               strokeWidth: 0.1,
@@ -907,7 +930,7 @@ class Graph extends Component {
                     >
                       <h5
                         style={{
-                          paddingTop: "5px",
+                          paddingTop: "3px",
                           marginBottom: "-75px",
                           textAlign: "left",
                           marginLeft: 10,
@@ -957,12 +980,12 @@ class Graph extends Component {
                       <ResponsiveContainer
                         width="100%"
                         height="100%"
-                        aspect={2.7}
+                        aspect={2.8}
                       >
                         <LineChart
                           data={formattedTests}
                           margin={{
-                            top: 8,
+                            top: 10,
                             right: -30,
                             left: 10,
                             bottom: -12,
@@ -972,7 +995,8 @@ class Graph extends Component {
                             dataKey="updatedtime"
                             tick={{ stroke: "#6471b3", strokeWidth: 0.2 }}
                             style={{ fontSize: 8 }}
-                            tickSize={4}
+                            tickSize={5}
+                            tickCount={8}
                           />
                           <YAxis
                             domain={[
@@ -984,8 +1008,9 @@ class Graph extends Component {
                             orientation="right"
                             tick={{ stroke: "#6471b3", strokeWidth: 0.2 }}
                             tickFormatter={format("~s")}
-                            tickSize={4}
+                            tickSize={5}
                             style={{ fontSize: 8 }}
+                            tickCount={8}
                           />
                           <Tooltip
                             contentStyle={{
@@ -1007,8 +1032,8 @@ class Graph extends Component {
                             stroke="#6471b3"
                             strokeWidth="3"
                             strokeLinecap="round"
-                            animationEasing="ease-in"
                             name="Total samples tested"
+                            isAnimationActive={false}
                             connectNulls={true}
                             dot={{
                               stroke: "#3e4da3",
@@ -1079,14 +1104,14 @@ class Graph extends Component {
                       <ResponsiveContainer
                         width="100%"
                         height="100%"
-                        aspect={2.7}
+                        aspect={2.8}
                       >
                         <BarChart
                           width={310}
                           height={120}
                           data={data.slice(10, data.length)}
                           margin={{
-                            top: 8,
+                            top: 10,
                             right: -32,
                             left: 10,
                             bottom: -12,
@@ -1097,7 +1122,7 @@ class Graph extends Component {
                             dataKey="date"
                             tick={{ stroke: "#0992c0", strokeWidth: 0.2 }}
                             style={{ fontSize: 8 }}
-                            tickSize={4}
+                            tickSize={5}
                             tickCount={8}
                           />
                           <YAxis
@@ -1109,7 +1134,7 @@ class Graph extends Component {
                             orientation="right"
                             tick={{ stroke: "#0992c0", strokeWidth: 0.2 }}
                             tickFormatter={format("~s")}
-                            tickSize={4}
+                            tickSize={5}
                             style={{ fontSize: 8 }}
                             tickCount={6}
                           />
@@ -1132,7 +1157,6 @@ class Graph extends Component {
                             dataKey="dailyconfirmed"
                             name="Confirmed"
                             fill="#0992c0"
-                            animationEasing="ease-in"
                             onMouseEnter={() => {
                               ReactGa.event({
                                 category: "Graph Confirmedbar",
@@ -1201,7 +1225,7 @@ class Graph extends Component {
                       <ResponsiveContainer
                         width="100%"
                         height="100%"
-                        aspect={2.7}
+                        aspect={2.8}
                       >
                         <BarChart
                           width={310}
@@ -1211,7 +1235,7 @@ class Graph extends Component {
                             dailyActiveJson.length
                           )}
                           margin={{
-                            top: 8,
+                            top: 10,
                             right: -32,
                             left: 10,
                             bottom: -12,
@@ -1222,7 +1246,7 @@ class Graph extends Component {
                             dataKey="date"
                             tick={{ stroke: "#f16783", strokeWidth: 0.2 }}
                             style={{ fontSize: 8 }}
-                            tickSize={4}
+                            tickSize={5}
                             tickCount={6}
                           />
                           <YAxis
@@ -1233,7 +1257,7 @@ class Graph extends Component {
                             orientation="right"
                             tick={{ stroke: "#f16783", strokeWidth: 0.2 }}
                             tickFormatter={format("~s")}
-                            tickSize={4}
+                            tickSize={5}
                             style={{ fontSize: 8 }}
                             tickCount={8}
                           />
@@ -1256,7 +1280,6 @@ class Graph extends Component {
                             dataKey="dailyactive"
                             name="Active"
                             fill="#f16783"
-                            animationEasing="ease-in"
                             onMouseEnter={() => {
                               ReactGa.event({
                                 category: "Graph Activebar",
@@ -1323,12 +1346,12 @@ class Graph extends Component {
                       <ResponsiveContainer
                         width="100%"
                         height="100%"
-                        aspect={2.7}
+                        aspect={2.8}
                       >
                         <BarChart
                           data={data.slice(10, data.length)}
                           margin={{
-                            top: 8,
+                            top: 10,
                             right: -32,
                             left: 10,
                             bottom: -12,
@@ -1339,7 +1362,7 @@ class Graph extends Component {
                             dataKey="date"
                             tick={{ stroke: "#58bd58", strokeWidth: 0.2 }}
                             style={{ fontSize: 8 }}
-                            tickSize={4}
+                            tickSize={5}
                             tickCount={6}
                           />
                           <YAxis
@@ -1351,7 +1374,7 @@ class Graph extends Component {
                             orientation="right"
                             tick={{ stroke: "#58bd58", strokeWidth: 0.2 }}
                             tickFormatter={format("~s")}
-                            tickSize={4}
+                            tickSize={5}
                             style={{ fontSize: 8 }}
                             tickCount={8}
                           />
@@ -1373,7 +1396,6 @@ class Graph extends Component {
                             dataKey="dailyrecovered"
                             name="Recovered"
                             fill="#58bd58"
-                            animationEasing="ease-in"
                             onMouseEnter={() => {
                               ReactGa.event({
                                 category: "Graph Recoveredbar",
@@ -1440,12 +1462,12 @@ class Graph extends Component {
                       <ResponsiveContainer
                         width="100%"
                         height="100%"
-                        aspect={2.7}
+                        aspect={2.8}
                       >
                         <BarChart
                           data={data.slice(10, data.length)}
                           margin={{
-                            top: 8,
+                            top: 10,
                             right: -32,
                             left: 10,
                             bottom: -12,
@@ -1457,7 +1479,7 @@ class Graph extends Component {
                             tick={{ stroke: "#474646", strokeWidth: 0.2 }}
                             axisLine={{ color: "#474646" }}
                             style={{ fontSize: 8 }}
-                            tickSize={4}
+                            tickSize={5}
                             tickCount={6}
                           />
                           <YAxis
@@ -1468,7 +1490,7 @@ class Graph extends Component {
                             orientation="right"
                             tick={{ stroke: "#474646", strokeWidth: 0.2 }}
                             tickFormatter={format("~s")}
-                            tickSize={4}
+                            tickSize={5}
                             style={{ fontSize: 8 }}
                             tickCount={8}
                           />
@@ -1490,7 +1512,6 @@ class Graph extends Component {
                             dataKey="dailydeceased"
                             name="Deceased"
                             fill="#474646"
-                            animationEasing="ease-in"
                             onMouseEnter={() => {
                               ReactGa.event({
                                 category: "Graph Deceasedbar",

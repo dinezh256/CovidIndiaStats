@@ -19,9 +19,10 @@ const Footer = () => {
       <div className="row">
         <div align="center" className="col">
           <a
-            href="https://github.com/covid19india"
+            href="https://github.com/dinezh256/Covid19Dashboard"
             className="button"
             target="_blank"
+            rel="noopener noreferrer"
           >
             <button
               className="btn"
@@ -46,6 +47,7 @@ const Footer = () => {
             href="https://api.covid19india.org/"
             className="button"
             target="_blank"
+            rel="noopener noreferrer"
           >
             <button
               className="btn"
@@ -70,6 +72,7 @@ const Footer = () => {
             href="https://twitter.com/ncovind"
             className="button"
             target="_blank"
+            rel="noopener noreferrer"
           >
             <button
               className="btn"

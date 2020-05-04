@@ -1095,6 +1095,7 @@ class StateGraph extends Component {
                       href="https://timesofindia.indiatimes.com/india/3336-indians-infected-abroad-785-in-kuwait-634-in-singapore/articleshow/75184154.cms"
                       style={{ verticalAlign: "0.1rem" }}
                       target="_blank"
+                      rel="noopener noreferrer"
                     >
                       <LinkTwoToneIcon color="disabled" fontSize="inherit" />
                     </a>
@@ -1128,6 +1129,7 @@ class StateGraph extends Component {
                       href="https://timesofindia.indiatimes.com/india/3336-indians-infected-abroad-785-in-kuwait-634-in-singapore/articleshow/75184154.cms"
                       style={{ verticalAlign: "0.1rem" }}
                       target="_blank"
+                      rel="noopener noreferrer"
                     >
                       <LinkTwoToneIcon color="disabled" fontSize="inherit" />
                     </a>

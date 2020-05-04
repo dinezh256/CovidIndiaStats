@@ -118,7 +118,7 @@ class Table extends Component {
     const sparklinerecovered = [];
     const sparklinedeceased = [];
 
-    data.slice(data.length - 21, data.length).map((item) =>
+    data.slice(data.length - 20, data.length).map((item) =>
       sparklinedata.push({
         confirmed: Number(item.dailyconfirmed),
         active:
@@ -132,10 +132,10 @@ class Table extends Component {
     );
 
     data
-      .slice(data.length - 21, data.length)
+      .slice(data.length - 20, data.length)
       .map((item) => sparklineconfirmed.push(Number(item.dailyconfirmed)));
     data
-      .slice(data.length - 21, data.length)
+      .slice(data.length - 20, data.length)
       .map((item) =>
         sparklineactive.push(
           Number(item.dailyconfirmed) -
@@ -144,10 +144,10 @@ class Table extends Component {
         )
       );
     data
-      .slice(data.length - 21, data.length)
+      .slice(data.length - 20, data.length)
       .map((item) => sparklinerecovered.push(Number(item.dailyrecovered)));
     data
-      .slice(data.length - 21, data.length)
+      .slice(data.length - 20, data.length)
       .map((item) => sparklinedeceased.push(Number(item.dailydeceased)));
 
     function commaSeperated(x) {
@@ -223,11 +223,12 @@ class Table extends Component {
                         separator=","
                       />
                     </h4>
-                    <section
-                      className="delta"
-                      style={{ justifyContent: "center" }}
-                    >
-                      <ResponsiveContainer width={75} height="100%" aspect={2}>
+                    <section tyle={{ justifyContent: "center" }}>
+                      <ResponsiveContainer
+                        width={75}
+                        height="100%"
+                        aspect={2.35}
+                      >
                         <LineChart data={sparklinedata} syncId="line1">
                           <YAxis
                             domain={[0, Math.max(...sparklineconfirmed)]}
@@ -249,7 +250,7 @@ class Table extends Component {
                             type="monotone"
                             dataKey="confirmed"
                             stroke="#42b3f4"
-                            strokeWidth={2}
+                            strokeWidth={2.3}
                             dot={false}
                             animationDuration={2000}
                           />
@@ -276,19 +277,20 @@ class Table extends Component {
                       )}
                       %
                     </h6>
-                    <h5 className="delta" style={{ color: "#ff446a" }}>
+                    <h4 className="delta" style={{ color: "#ff446a" }}>
                       <CountUp
                         start={0}
                         end={Number(total[0].active)}
                         duration={2.5}
                         separator=","
                       />
-                    </h5>
-                    <section
-                      className="delta"
-                      style={{ justifyContent: "center" }}
-                    >
-                      <ResponsiveContainer width={75} height="100%" aspect={2}>
+                    </h4>
+                    <section style={{ justifyContent: "center" }}>
+                      <ResponsiveContainer
+                        width={75}
+                        height="100%"
+                        aspect={2.35}
+                      >
                         <LineChart data={sparklinedata} syncId="line1">
                           <YAxis
                             domain={[0, Math.max(...sparklineconfirmed)]}
@@ -310,7 +312,7 @@ class Table extends Component {
                             type="monotone"
                             dataKey="active"
                             stroke="#ff446a"
-                            strokeWidth={2}
+                            strokeWidth={2.3}
                             dot={false}
                             animationDuration={2000}
                           />
@@ -338,11 +340,12 @@ class Table extends Component {
                         separator=","
                       />
                     </h5>
-                    <section
-                      className="delta"
-                      style={{ justifyContent: "center" }}
-                    >
-                      <ResponsiveContainer width={75} height="100%" aspect={2}>
+                    <section tyle={{ justifyContent: "center" }}>
+                      <ResponsiveContainer
+                        width={75}
+                        height="100%"
+                        aspect={2.35}
+                      >
                         <LineChart data={sparklinedata} syncId="line1">
                           <YAxis
                             domain={[0, Math.max(...sparklineconfirmed)]}
@@ -364,7 +367,7 @@ class Table extends Component {
                             type="monotone"
                             dataKey="recovered"
                             stroke="#58bd58"
-                            strokeWidth={2}
+                            strokeWidth={2.3}
                             dot={false}
                             animationDuration={2000}
                           />
@@ -396,10 +399,14 @@ class Table extends Component {
                       />
                     </h5>
                     <section
-                      className="text-secondary delta"
+                      className="text-secondary"
                       style={{ justifyContent: "center" }}
                     >
-                      <ResponsiveContainer width={75} height="100%" aspect={2}>
+                      <ResponsiveContainer
+                        width={75}
+                        height="100%"
+                        aspect={2.35}
+                      >
                         <LineChart data={sparklinedata} syncId="line1">
                           <YAxis
                             domain={[0, Math.max(...sparklineconfirmed)]}
@@ -421,7 +428,7 @@ class Table extends Component {
                             type="monotone"
                             dataKey="deceased"
                             stroke="#5c5756"
-                            strokeWidth={2}
+                            strokeWidth={2.3}
                             dot={false}
                             animationDuration={2000}
                           />
@@ -504,11 +511,12 @@ class Table extends Component {
                         separator=","
                       />
                     </h4>
-                    <section
-                      className="delta"
-                      style={{ alignContent: "center" }}
-                    >
-                      <ResponsiveContainer width="95%" height="100%" aspect={2}>
+                    <section style={{ alignContent: "center" }}>
+                      <ResponsiveContainer
+                        width="95%"
+                        height="100%"
+                        aspect={2.35}
+                      >
                         <LineChart data={sparklinedata} syncId="line2">
                           <YAxis
                             domain={[0, Math.max(...sparklineconfirmed)]}
@@ -531,7 +539,7 @@ class Table extends Component {
                             type="monotone"
                             dataKey="confirmed"
                             stroke="#42b3f4"
-                            strokeWidth={2}
+                            strokeWidth={2.3}
                             dot={false}
                             animationDuration={2000}
                           />
@@ -566,11 +574,12 @@ class Table extends Component {
                         separator=","
                       />
                     </h5>
-                    <section
-                      className="delta"
-                      style={{ alignContent: "center" }}
-                    >
-                      <ResponsiveContainer width="95%" height="100%" aspect={2}>
+                    <section style={{ alignContent: "center" }}>
+                      <ResponsiveContainer
+                        width="95%"
+                        height="100%"
+                        aspect={2.35}
+                      >
                         <LineChart data={sparklinedata} syncId="line2">
                           <YAxis
                             domain={[0, Math.max(...sparklineconfirmed)]}
@@ -592,7 +601,7 @@ class Table extends Component {
                             type="monotone"
                             dataKey="active"
                             stroke="#ff446a"
-                            strokeWidth={2}
+                            strokeWidth={2.3}
                             dot={false}
                             animationDuration={2000}
                           />
@@ -620,11 +629,12 @@ class Table extends Component {
                         separator=","
                       />
                     </h5>
-                    <section
-                      className="delta"
-                      style={{ alignContent: "center" }}
-                    >
-                      <ResponsiveContainer width="95%" height="100%" aspect={2}>
+                    <section style={{ alignContent: "center" }}>
+                      <ResponsiveContainer
+                        width="95%"
+                        height="100%"
+                        aspect={2.35}
+                      >
                         <LineChart data={sparklinedata} syncId="line2">
                           <YAxis
                             domain={[0, Math.max(...sparklineconfirmed)]}
@@ -646,7 +656,7 @@ class Table extends Component {
                             type="monotone"
                             dataKey="recovered"
                             stroke="#58bd58"
-                            strokeWidth={2}
+                            strokeWidth={2.3}
                             dot={false}
                             animationDuration={2000}
                           />
@@ -677,11 +687,12 @@ class Table extends Component {
                         separator=","
                       />
                     </h5>
-                    <section
-                      className="delta"
-                      style={{ alignContent: "center" }}
-                    >
-                      <ResponsiveContainer width="95%" height="100%" aspect={2}>
+                    <section style={{ alignContent: "center" }}>
+                      <ResponsiveContainer
+                        width="95%"
+                        height="100%"
+                        aspect={2.35}
+                      >
                         <LineChart data={sparklinedata} syncId="line2">
                           <YAxis
                             domain={[0, Math.max(...sparklineconfirmed)]}
@@ -703,7 +714,7 @@ class Table extends Component {
                             type="monotone"
                             dataKey="deceased"
                             stroke="#5c5756"
-                            strokeWidth={2}
+                            strokeWidth={2.3}
                             dot={false}
                             animationDuration={2000}
                           />
@@ -801,7 +812,7 @@ class Table extends Component {
                           <b className="deltainc text-info">
                             {item.deltaconfirmed === "0"
                               ? ""
-                              : item.deltaconfirmed}
+                              : commaSeperated(item.deltaconfirmed)}
                           </b>
                         </span>
                         &nbsp;&nbsp;
@@ -830,7 +841,7 @@ class Table extends Component {
                           <b className="deltainc" style={{ color: "#28a745" }}>
                             {item.deltarecovered === "0"
                               ? ""
-                              : item.deltarecovered}
+                              : commaSeperated(item.deltarecovered)}
                           </b>
                         </span>
                         &nbsp;&nbsp;
@@ -851,7 +862,9 @@ class Table extends Component {
                             />
                           )}
                           <b className="deltainc" style={{ color: "#6c757d" }}>
-                            {item.deltadeaths === "0" ? "" : item.deltadeaths}
+                            {item.deltadeaths === "0"
+                              ? ""
+                              : commaSeperated(item.deltadeaths)}
                           </b>
                         </span>
                         &nbsp;&nbsp;
@@ -868,7 +881,7 @@ class Table extends Component {
                         <BootstrapTooltip title={total[0].statenotes}>
                           <span style={{ verticalAlign: "0.05rem" }}>
                             <InfoTwoToneIcon
-                              color="disabled"
+                              color="inherit"
                               fontSize="inherit"
                             />
                           </span>
@@ -892,7 +905,7 @@ class Table extends Component {
                         <b className="deltainc text-info">
                           {total[0].deltaconfirmed === "0"
                             ? ""
-                            : total[0].deltaconfirmed}
+                            : commaSeperated(total[0].deltaconfirmed)}
                         </b>
                       </span>
                       &nbsp;&nbsp;{commaSeperated(total[0].confirmed)}
@@ -920,7 +933,7 @@ class Table extends Component {
                         <b className="deltainc" style={{ color: "#28a745" }}>
                           {total[0].deltarecovered === "0"
                             ? ""
-                            : total[0].deltarecovered}
+                            : commaSeperated(total[0].deltarecovered)}
                         </b>
                       </span>
                       &nbsp;&nbsp;
@@ -950,7 +963,7 @@ class Table extends Component {
                           )}
                           {total[0].deltadeaths === "0"
                             ? ""
-                            : total[0].deltadeaths}
+                            : commaSeperated(total[0].deltadeaths)}
                         </span>
                       </b>
                       &nbsp;&nbsp;
@@ -997,7 +1010,7 @@ class Table extends Component {
                           <BootstrapTooltip title={item.statenotes}>
                             <span style={{ verticalAlign: "0.05rem" }}>
                               <InfoTwoToneIcon
-                                color="disabled"
+                                color="inherit"
                                 fontSize="inherit"
                               />
                             </span>
@@ -1021,7 +1034,7 @@ class Table extends Component {
                           <b className="deltainc-md text-info">
                             {item.deltaconfirmed === "0"
                               ? ""
-                              : item.deltaconfirmed}
+                              : commaSeperated(item.deltaconfirmed)}
                           </b>
                         </span>
                         &nbsp;&nbsp;{commaSeperated(item.confirmed)}
@@ -1052,7 +1065,7 @@ class Table extends Component {
                           >
                             {item.deltarecovered === "0"
                               ? ""
-                              : item.deltarecovered}
+                              : commaSeperated(item.deltarecovered)}
                           </b>
                         </span>
                         &nbsp;&nbsp;
@@ -1076,7 +1089,9 @@ class Table extends Component {
                             className="deltainc-md"
                             style={{ color: "#6c757d" }}
                           >
-                            {item.deltadeaths === "0" ? "" : item.deltadeaths}
+                            {item.deltadeaths === "0"
+                              ? ""
+                              : commaSeperated(item.deltadeaths)}
                           </b>
                         </span>
                         &nbsp;&nbsp;
@@ -1117,7 +1132,7 @@ class Table extends Component {
                         <b className="deltainc text-info">
                           {total[0].deltaconfirmed === "0"
                             ? ""
-                            : total[0].deltaconfirmed}
+                            : commaSeperated(total[0].deltaconfirmed)}
                         </b>
                       </span>
                       &nbsp;&nbsp;{commaSeperated(total[0].confirmed)}
@@ -1145,7 +1160,7 @@ class Table extends Component {
                         <b className="deltainc" style={{ color: "#28a745" }}>
                           {total[0].deltarecovered === "0"
                             ? ""
-                            : total[0].deltarecovered}
+                            : commaSeperated(total[0].deltarecovered)}
                         </b>
                       </span>
                       &nbsp;&nbsp;
@@ -1168,7 +1183,7 @@ class Table extends Component {
                         <b className="deltainc" style={{ color: "#6c757d" }}>
                           {total[0].deltadeaths === "0"
                             ? ""
-                            : total[0].deltadeaths}
+                            : commaSeperated(total[0].deltadeaths)}
                         </b>
                       </span>
                       &nbsp;&nbsp;
@@ -1189,7 +1204,7 @@ class Table extends Component {
                 marginBottom: "0px",
               }}
             >
-              <h5 style={{ color: "#3e4da3" }}>DISTRICTWISE</h5>
+              <h5 style={{ color: "#3e4da3" }}>INDIA - DISTRICTWISE</h5>
             </div>
             <div className="w-100"></div>
             <div id="line1" style={{ alignContent: "center" }}>
