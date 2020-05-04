@@ -594,6 +594,8 @@ class StateTable extends Component {
         "Kabeerdham",
         "Devbhumi Dwarka",
         "Haveri",
+        "Mandi",
+        "Satna",
       ];
       if (redZone.includes(district)) {
         return "#ff446a";
