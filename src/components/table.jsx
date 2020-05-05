@@ -796,7 +796,7 @@ class Table extends Component {
                     <tr className="tr" key={item.statecode}>
                       <td
                         className="text-secondary tdleft"
-                        style={{ borderStyle: "solid", borderLeftWidth: "3px" }}
+                        style={{ borderStyle: "solid", borderLeftWidth: "5px" }}
                       >
                         {item.state}
                         {item.statenotes ? (
@@ -892,7 +892,7 @@ class Table extends Component {
                   <tr className="tr" key={total[0].statecode}>
                     <td
                       className="text-secondary tdleft"
-                      style={{ borderStyle: "solid", borderLeftWidth: "3px" }}
+                      style={{ borderStyle: "solid", borderLeftWidth: "5px" }}
                     >
                       {total[0].state}
                       {total[0].statenotes ? (
@@ -1022,7 +1022,7 @@ class Table extends Component {
                     <tr className="tr" key={item.statecode}>
                       <td
                         className="text-secondary td-md-left"
-                        style={{ borderStyle: "solid", borderLeftWidth: "3px" }}
+                        style={{ borderStyle: "solid", borderLeftWidth: "5px" }}
                       >
                         {item.state}
                         {item.statenotes ? (
@@ -1117,7 +1117,7 @@ class Table extends Component {
                   <tr className="tr" key={total[0].statecode}>
                     <td
                       className="text-secondary tdleft"
-                      style={{ borderStyle: "solid", borderLeftWidth: "3px" }}
+                      style={{ borderStyle: "solid", borderLeftWidth: "5px" }}
                     >
                       {total[0].state}
                       {total[0].statenotes ? (
