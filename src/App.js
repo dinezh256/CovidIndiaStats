@@ -33,7 +33,7 @@ function App() {
   const history = require("history").createBrowserHistory;
 
   useEffect(() => {
-    ReactGa.initialize("UA-163288419-1");
+    ReactGa.initialize("xyz");
     ReactGa.pageview(window.location.pathname + window.location.search);
   }, []);
   return (
