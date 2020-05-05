@@ -51,25 +51,11 @@ body {
 }
 
 .arrowup {
-  font-size: 0.75rem;
-  font-weight: 600;
-  vertical-align: 0rem;
-}
-
-.deltainc {
   font-size: 0.7rem;
-  vertical-align: middle;
-  font-weight: 600;
-}
-
-.deltainc-md {
-  font-size: 0.7rem;
-  vertical-align: bottom;
   font-weight: 500;
-}
-
-.container {
-  display: flexbox;
+  -ms-word-break: keep-all;
+  word-break: keep-all;
+  display: inline-block;
 }
 
 .total {
@@ -151,10 +137,11 @@ th.narrowRow {
   font-size: 0.8rem;
   font-weight: 600;
   border-radius: 4px;
-  word-wrap: break-word;
+  word-break: keep-all;
   color: #494545;
   vertical-align: middle;
   font-family: notosans;
+  word-wrap: none;
 }
 
 .td-md {

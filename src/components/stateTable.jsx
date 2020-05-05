@@ -5,6 +5,7 @@ import * as Icon from "react-feather";
 import Tooltip, { TooltipProps } from "@material-ui/core/Tooltip";
 import { Theme, makeStyles } from "@material-ui/core/styles";
 import InfoTwoToneIcon from "@material-ui/icons/InfoTwoTone";
+import parse from "html-react-parser";
 
 class StateTable extends Component {
   state = { stateData: [], requiredData: [] };
@@ -713,7 +714,7 @@ class StateTable extends Component {
                       >
                         {district.district}
                         {district.notes ? (
-                          <BootstrapTooltip title={district.notes}>
+                          <BootstrapTooltip title={parse(district.notes)}>
                             <span style={{ verticalAlign: "0.05rem" }}>
                               <InfoTwoToneIcon
                                 color="inherit"

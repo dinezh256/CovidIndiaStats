@@ -4,7 +4,7 @@ import CountUp from "react-countup";
 import Updates from "./updates";
 import InfoTwoToneIcon from "@material-ui/icons/InfoTwoTone";
 import Tooltip, { TooltipProps } from "@material-ui/core/Tooltip";
-import { Theme, makeStyles } from "@material-ui/core/styles";
+import { withStyles, Theme, makeStyles } from "@material-ui/core/styles";
 import {
   LineChart,
   Line,
@@ -14,6 +14,7 @@ import {
   ReferenceDot,
 } from "recharts";
 import PropTypes from "prop-types";
+import parse from "html-react-parser";
 import StateTable from "./stateTable";
 
 let CreateReactClass = require("create-react-class");
@@ -91,6 +92,10 @@ class Table extends Component {
     const dailyDeceased = [];
     data.map((item) => dailyDeceased.push(Number(item.dailydeceased)));
 
+    items.sort(function (x, y) {
+      return Number(y.confirmed) - Number(x.confirmed);
+    });
+
     const useStylesBootstrap = makeStyles((theme: Theme) => ({
       arrow: {
         color: theme.palette.common.black,
@@ -100,10 +105,6 @@ class Table extends Component {
       },
     }));
 
-    items.sort(function (x, y) {
-      return Number(y.confirmed) - Number(x.confirmed);
-    });
-
     function BootstrapTooltip(props: TooltipProps) {
       const classes = useStylesBootstrap();
 
@@ -111,6 +112,16 @@ class Table extends Component {
         <Tooltip disableTouchListener arrow classes={classes} {...props} />
       );
     }
+
+    const HtmlTooltip = withStyles((theme: Theme) => ({
+      tooltip: {
+        backgroundColor: "#f5f5f9",
+        color: "rgba(0, 0, 0, 0.87)",
+        maxWidth: 220,
+        fontSize: theme.typography.pxToRem(12),
+        border: "1px solid #dadde9",
+      },
+    }))(Tooltip);
 
     const sparklinedata = [];
     const sparklineconfirmed = [];
@@ -158,6 +169,7 @@ class Table extends Component {
       let res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
       return res;
     }
+
     if (isLoaded) {
       return (
         <React.Fragment>
@@ -782,10 +794,16 @@ class Table extends Component {
                 <tbody className="tbody">
                   {items.map((item) => (
                     <tr className="tr" key={item.statecode}>
-                      <td className="text-secondary tdleft">
+                      <td
+                        className="text-secondary tdleft"
+                        style={{ borderStyle: "solid", borderLeftWidth: "3px" }}
+                      >
                         {item.state}
                         {item.statenotes ? (
-                          <BootstrapTooltip title={item.statenotes}>
+                          <BootstrapTooltip
+                            placement="right"
+                            title={parse(item.statenotes)}
+                          >
                             <span style={{ verticalAlign: "0.05rem" }}>
                               <InfoTwoToneIcon
                                 color="disabled"
@@ -809,11 +827,10 @@ class Table extends Component {
                               strokeWidth={3.5}
                             />
                           )}
-                          <b className="deltainc text-info">
-                            {item.deltaconfirmed === "0"
-                              ? ""
-                              : commaSeperated(item.deltaconfirmed)}
-                          </b>
+
+                          {item.deltaconfirmed === "0"
+                            ? ""
+                            : commaSeperated(item.deltaconfirmed)}
                         </span>
                         &nbsp;&nbsp;
                         {commaSeperated(item.confirmed)}
@@ -838,11 +855,10 @@ class Table extends Component {
                               strokeWidth={3.5}
                             />
                           )}
-                          <b className="deltainc" style={{ color: "#28a745" }}>
-                            {item.deltarecovered === "0"
-                              ? ""
-                              : commaSeperated(item.deltarecovered)}
-                          </b>
+
+                          {item.deltarecovered === "0"
+                            ? ""
+                            : commaSeperated(item.deltarecovered)}
                         </span>
                         &nbsp;&nbsp;
                         {item.recovered === "0"
@@ -861,11 +877,10 @@ class Table extends Component {
                               strokeWidth={3.5}
                             />
                           )}
-                          <b className="deltainc" style={{ color: "#6c757d" }}>
-                            {item.deltadeaths === "0"
-                              ? ""
-                              : commaSeperated(item.deltadeaths)}
-                          </b>
+
+                          {item.deltadeaths === "0"
+                            ? ""
+                            : commaSeperated(item.deltadeaths)}
                         </span>
                         &nbsp;&nbsp;
                         {item.deaths === "0"
@@ -875,10 +890,13 @@ class Table extends Component {
                     </tr>
                   ))}
                   <tr className="tr" key={total[0].statecode}>
-                    <td className="text-secondary tdleft">
+                    <td
+                      className="text-secondary tdleft"
+                      style={{ borderStyle: "solid", borderLeftWidth: "3px" }}
+                    >
                       {total[0].state}
                       {total[0].statenotes ? (
-                        <BootstrapTooltip title={total[0].statenotes}>
+                        <BootstrapTooltip title={parse(total[0].statenotes)}>
                           <span style={{ verticalAlign: "0.05rem" }}>
                             <InfoTwoToneIcon
                               color="inherit"
@@ -902,11 +920,10 @@ class Table extends Component {
                             strokeWidth={3.5}
                           />
                         )}
-                        <b className="deltainc text-info">
-                          {total[0].deltaconfirmed === "0"
-                            ? ""
-                            : commaSeperated(total[0].deltaconfirmed)}
-                        </b>
+
+                        {total[0].deltaconfirmed === "0"
+                          ? ""
+                          : commaSeperated(total[0].deltaconfirmed)}
                       </span>
                       &nbsp;&nbsp;{commaSeperated(total[0].confirmed)}
                     </td>
@@ -922,7 +939,10 @@ class Table extends Component {
                       className="delta td text-secondary"
                       style={{ textAlign: "right" }}
                     >
-                      <span className="arrowup" style={{ color: "#28a745" }}>
+                      <span
+                        className="arrowup"
+                        style={{ color: "#28a745", wordBreak: "keep-all" }}
+                      >
                         {total[0].deltarecovered !== "0" && (
                           <Icon.ArrowUp
                             color="#28a745"
@@ -930,11 +950,9 @@ class Table extends Component {
                             strokeWidth={3.5}
                           />
                         )}
-                        <b className="deltainc" style={{ color: "#28a745" }}>
-                          {total[0].deltarecovered === "0"
-                            ? ""
-                            : commaSeperated(total[0].deltarecovered)}
-                        </b>
+                        {total[0].deltarecovered === "0"
+                          ? ""
+                          : commaSeperated(total[0].deltarecovered)}
                       </span>
                       &nbsp;&nbsp;
                       {total[0].recovered === "0"
@@ -945,31 +963,29 @@ class Table extends Component {
                       className="delta td text-secondary"
                       style={{ textAlign: "right" }}
                     >
-                      <b
-                        className="deltainc"
+                      <span
+                        className="arrowup"
                         style={{
                           color: "#6c757d",
-                          wordBreak: "keep-all",
-                          wordWrap: "inherit",
                         }}
                       >
-                        <span className="arrowup" style={{ color: "#6c757d" }}>
-                          {total[0].deltadeaths !== "0" && (
-                            <Icon.ArrowUp
-                              color="#6c757d"
-                              size={9}
-                              strokeWidth={3.5}
-                            />
-                          )}
-                          {total[0].deltadeaths === "0"
-                            ? ""
-                            : commaSeperated(total[0].deltadeaths)}
-                        </span>
-                      </b>
+                        {total[0].deltadeaths !== "0" && (
+                          <Icon.ArrowUp
+                            color="#6c757d"
+                            size={9}
+                            strokeWidth={3.5}
+                          />
+                        )}
+                        {total[0].deltadeaths === "0"
+                          ? ""
+                          : commaSeperated(total[0].deltadeaths)}
+                      </span>
                       &nbsp;&nbsp;
-                      {total[0].deaths === "0"
-                        ? "-"
-                        : commaSeperated(total[0].deaths)}
+                      <span>
+                        {total[0].deaths === "0"
+                          ? "-"
+                          : commaSeperated(total[0].deaths)}
+                      </span>
                     </td>
                   </tr>
                 </tbody>
@@ -1004,10 +1020,16 @@ class Table extends Component {
                 <tbody className="tbody">
                   {items.map((item) => (
                     <tr className="tr" key={item.statecode}>
-                      <td className="text-secondary td-md-left">
+                      <td
+                        className="text-secondary td-md-left"
+                        style={{ borderStyle: "solid", borderLeftWidth: "3px" }}
+                      >
                         {item.state}
                         {item.statenotes ? (
-                          <BootstrapTooltip title={item.statenotes}>
+                          <BootstrapTooltip
+                            placement="right"
+                            title={parse(item.statenotes)}
+                          >
                             <span style={{ verticalAlign: "0.05rem" }}>
                               <InfoTwoToneIcon
                                 color="inherit"
@@ -1031,11 +1053,10 @@ class Table extends Component {
                               strokeWidth={3.5}
                             />
                           )}
-                          <b className="deltainc-md text-info">
-                            {item.deltaconfirmed === "0"
-                              ? ""
-                              : commaSeperated(item.deltaconfirmed)}
-                          </b>
+
+                          {item.deltaconfirmed === "0"
+                            ? ""
+                            : commaSeperated(item.deltaconfirmed)}
                         </span>
                         &nbsp;&nbsp;{commaSeperated(item.confirmed)}
                       </td>
@@ -1059,14 +1080,10 @@ class Table extends Component {
                               strokeWidth={3.5}
                             />
                           )}
-                          <b
-                            className="deltainc-md"
-                            style={{ color: "#28a745" }}
-                          >
-                            {item.deltarecovered === "0"
-                              ? ""
-                              : commaSeperated(item.deltarecovered)}
-                          </b>
+
+                          {item.deltarecovered === "0"
+                            ? ""
+                            : commaSeperated(item.deltarecovered)}
                         </span>
                         &nbsp;&nbsp;
                         {item.recovered === "0"
@@ -1085,14 +1102,10 @@ class Table extends Component {
                               strokeWidth={3.5}
                             />
                           )}
-                          <b
-                            className="deltainc-md"
-                            style={{ color: "#6c757d" }}
-                          >
-                            {item.deltadeaths === "0"
-                              ? ""
-                              : commaSeperated(item.deltadeaths)}
-                          </b>
+
+                          {item.deltadeaths === "0"
+                            ? ""
+                            : commaSeperated(item.deltadeaths)}
                         </span>
                         &nbsp;&nbsp;
                         {item.deaths === "0"
@@ -1102,17 +1115,20 @@ class Table extends Component {
                     </tr>
                   ))}
                   <tr className="tr" key={total[0].statecode}>
-                    <td className="text-secondary tdleft">
+                    <td
+                      className="text-secondary tdleft"
+                      style={{ borderStyle: "solid", borderLeftWidth: "3px" }}
+                    >
                       {total[0].state}
                       {total[0].statenotes ? (
-                        <BootstrapTooltip title={total[0].statenotes}>
+                        <HtmlTooltip title={parse(total[0].statenotes)}>
                           <span style={{ verticalAlign: "0.05rem" }}>
                             <InfoTwoToneIcon
                               color="disabled"
                               fontSize="inherit"
                             />
                           </span>
-                        </BootstrapTooltip>
+                        </HtmlTooltip>
                       ) : (
                         ""
                       )}
@@ -1128,12 +1144,8 @@ class Table extends Component {
                             size={9}
                             strokeWidth={3.5}
                           />
-                        )}
-                        <b className="deltainc text-info">
-                          {total[0].deltaconfirmed === "0"
-                            ? ""
-                            : commaSeperated(total[0].deltaconfirmed)}
-                        </b>
+                        )}{" "}
+                        {commaSeperated(total[0].deltaconfirmed)}
                       </span>
                       &nbsp;&nbsp;{commaSeperated(total[0].confirmed)}
                     </td>
@@ -1156,12 +1168,10 @@ class Table extends Component {
                             size={9}
                             strokeWidth={3.5}
                           />
-                        )}
-                        <b className="deltainc" style={{ color: "#28a745" }}>
-                          {total[0].deltarecovered === "0"
-                            ? ""
-                            : commaSeperated(total[0].deltarecovered)}
-                        </b>
+                        )}{" "}
+                        {total[0].deltarecovered === "0"
+                          ? ""
+                          : commaSeperated(total[0].deltarecovered)}
                       </span>
                       &nbsp;&nbsp;
                       {total[0].recovered === "0"
@@ -1180,11 +1190,10 @@ class Table extends Component {
                             strokeWidth={3.5}
                           />
                         )}
-                        <b className="deltainc" style={{ color: "#6c757d" }}>
-                          {total[0].deltadeaths === "0"
-                            ? ""
-                            : commaSeperated(total[0].deltadeaths)}
-                        </b>
+
+                        {total[0].deltadeaths === "0"
+                          ? ""
+                          : commaSeperated(total[0].deltadeaths)}
                       </span>
                       &nbsp;&nbsp;
                       {total[0].deaths === "0"
