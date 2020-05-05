@@ -5,6 +5,7 @@ import Updates from "./updates";
 import InfoTwoToneIcon from "@material-ui/icons/InfoTwoTone";
 import Tooltip, { TooltipProps } from "@material-ui/core/Tooltip";
 import { withStyles, Theme, makeStyles } from "@material-ui/core/styles";
+import Zoom from "@material-ui/core/Zoom";
 import {
   LineChart,
   Line,
@@ -109,19 +110,14 @@ class Table extends Component {
       const classes = useStylesBootstrap();
 
       return (
-        <Tooltip disableTouchListener arrow classes={classes} {...props} />
+        <Tooltip
+          disableTouchListener
+          classes={classes}
+          {...props}
+          TransitionComponent={Zoom}
+        />
       );
     }
-
-    const HtmlTooltip = withStyles((theme: Theme) => ({
-      tooltip: {
-        backgroundColor: "#f5f5f9",
-        color: "rgba(0, 0, 0, 0.87)",
-        maxWidth: 220,
-        fontSize: theme.typography.pxToRem(12),
-        border: "1px solid #dadde9",
-      },
-    }))(Tooltip);
 
     const sparklinedata = [];
     const sparklineconfirmed = [];
@@ -1121,14 +1117,14 @@ class Table extends Component {
                     >
                       {total[0].state}
                       {total[0].statenotes ? (
-                        <HtmlTooltip title={parse(total[0].statenotes)}>
+                        <BootstrapTooltip title={parse(total[0].statenotes)}>
                           <span style={{ verticalAlign: "0.05rem" }}>
                             <InfoTwoToneIcon
                               color="disabled"
                               fontSize="inherit"
                             />
                           </span>
-                        </HtmlTooltip>
+                        </BootstrapTooltip>
                       ) : (
                         ""
                       )}
