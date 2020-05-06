@@ -3,18 +3,19 @@ import * as Icon from "react-feather";
 import { Container } from "react-bootstrap";
 import Footer from "./footer";
 import { NavLink } from "react-router-dom";
+import Typist from "react-typist";
 
 class FAQ extends Component {
   render() {
     return (
       <React.Fragment>
         <div style={{ marginBottom: "20px" }}>
-          <h2 className="faq-heading fadeOutDown" align="center">
-            WE ARE NOT OFFICIAL
+          <h2 className="faq-heading" align="center">
+            <Typist cursor={{ element: "" }}>WE ARE NOT OFFICIAL</Typist>
           </h2>
           <br />
           <Container>
-            <div className="FAQ">
+            <div className="FAQ" style={{ animationDelay: "1s" }}>
               <h4 className="question fadeOutDown">
                 <span className="faqicon">
                   <Icon.Feather size={20} />{" "}
@@ -26,7 +27,7 @@ class FAQ extends Component {
                   <Icon.Clipboard size={20} />{" "}
                 </span>{" "}
                 Our sources are World Health Organisation, Centers for Disease
-                Control and Prevention, Minstry of Health and Family Welfare
+                Control and Prevention, Ministry of Health and Family Welfare
                 India, Indian and State Government media briefs.
               </h5>
 
@@ -76,6 +77,33 @@ class FAQ extends Component {
             </div>
             <br id="line2" />
             <br id="line2" />
+            <br id="line1" />
+            <div align="center" className="col">
+              <a
+                href="https://forms.gle/N6V7VTgcmBtxkU4Q9"
+                className="button"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <button
+                  className="btn"
+                  style={{
+                    textAlign: "center",
+                    color: "#3e4da3",
+                    backgroundColor: "#e6e8f1",
+                    marginTop: 7.5,
+                    width: 250,
+                    fontWeight: 650,
+                    fontSize: 15,
+                    alignContent: "center",
+                  }}
+                >
+                  <Icon.FileText />
+                  &ensp; VALUABLE Feedback
+                </button>
+              </a>
+            </div>
+
             <br id="line2" />
             <br id="line2" />
             <Footer />
