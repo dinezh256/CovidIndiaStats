@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { indianstates } from "./API/index";
+import Typist from "react-typist";
 
 const StatePicker = ({ handleStateChange }) => {
   const [fetchedStates, setStates] = useState([]);
