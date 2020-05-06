@@ -987,7 +987,7 @@ class Table extends Component {
                 </tbody>
               </table>
             </div>
-            <div className="row" id="line2">
+            <div className="row container" id="line2">
               <table
                 className="table table-sm table-striped fadeInUp table-borderless"
                 style={{
@@ -1215,7 +1215,7 @@ class Table extends Component {
             <div id="line1" style={{ alignContent: "center" }}>
               <StateTable />
             </div>
-            <div className="container" style={{ width: "90%" }} id="line2">
+            <div className="container" style={{ width: "93.7%" }} id="line2">
               <StateTable />
             </div>
           </div>
