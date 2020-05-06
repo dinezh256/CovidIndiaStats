@@ -6,7 +6,9 @@ Created using <a href="https://reactjs.org/" >Create-React-App</a>
 
 After cloning, you can run:
 
-# <div class="bg-gray">npm start</div>
+# npm install
+
+# npm start
 
 
 
