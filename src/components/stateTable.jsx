@@ -749,7 +749,7 @@ class StateTable extends Component {
                   item.map((district) => (
                     <tr className="tr">
                       <td
-                        className="tdleft"
+                        className="tdleft align-middle"
                         style={{
                           color: `${districtZone(district.district)}`,
                           borderLeftWidth: "5px",
@@ -771,7 +771,7 @@ class StateTable extends Component {
                         )}
                       </td>
                       <td
-                        className="delta td text-secondary"
+                        className="delta td text-secondary align-middle"
                         style={{ textAlign: "right" }}
                       >
                         <span className="arrowup text-info">
@@ -792,7 +792,7 @@ class StateTable extends Component {
                         {commaSeperated(district.confirmed)}
                       </td>
                       <td
-                        className="delta td text-secondary narrowRow"
+                        className="delta td text-secondary narrowRow align-middle"
                         style={{ textAlign: "right" }}
                       >
                         {Number(district.active)
@@ -800,7 +800,7 @@ class StateTable extends Component {
                           : "-"}
                       </td>
                       <td
-                        className="delta td text-secondary"
+                        className="delta td text-secondary align-middle"
                         style={{ textAlign: "right" }}
                       >
                         <span className="arrowup text-success">
@@ -811,7 +811,7 @@ class StateTable extends Component {
                               strokeWidth={3.5}
                             />
                           )}
-                          <b className="deltainc-md text-success">
+                          <b className="deltainc-md text-success align-middle">
                             {Number(district.delta.recovered) === 0
                               ? ""
                               : commaSeperated(district.delta.recovered)}
@@ -823,7 +823,7 @@ class StateTable extends Component {
                           : "-"}
                       </td>
                       <td
-                        className="delta td text-secondary narrowRow"
+                        className="delta td text-secondary narrowRow align-middle"
                         style={{ textAlign: "right" }}
                       >
                         <span className="arrowup text-secondary">
@@ -834,7 +834,7 @@ class StateTable extends Component {
                               strokeWidth={3.5}
                             />
                           )}
-                          <b className="deltainc-md text-secondary">
+                          <b className="deltainc-md text-secondary align-middle">
                             {Number(district.delta.deceased) === 0
                               ? ""
                               : commaSeperated(district.delta.deceased)}
