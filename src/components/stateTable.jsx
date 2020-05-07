@@ -8,7 +8,15 @@ import InfoTwoToneIcon from "@material-ui/icons/InfoTwoTone";
 import parse from "html-react-parser";
 
 class StateTable extends Component {
-  state = { stateData: [], requiredData: [] };
+  constructor(props) {
+    super(props);
+    this.state = {
+      cross: true,
+      stateData: [],
+      requiredData: [],
+    };
+  }
+
   async componentDidMount() {
     const fetchedStates = await indianstates();
     this.setState({ stateData: fetchedStates });
@@ -182,6 +190,7 @@ class StateTable extends Component {
         "Kolkata",
         "North 24 Parganas",
         "Purba Medinipur",
+        "Dhalai",
       ];
       const orangeZone = [
         "Anantapur",
@@ -580,7 +589,7 @@ class StateTable extends Component {
         "Nagarkurnool",
         "Peddapalli",
         "Siddipet",
-        "Dhalai",
+
         "South Tripura",
         "West Tripura",
         "Khowai",
@@ -641,6 +650,9 @@ class StateTable extends Component {
         "Jagatsinghpur",
         "Neemuch",
         "Mayurbhanj",
+        "Vizianagaram",
+        "Sirohi",
+        "Mahendragarh",
       ];
       if (redZone.includes(district)) {
         return "#ff446a";
@@ -668,7 +680,7 @@ class StateTable extends Component {
         </div>
         <div className="w-100"></div>
         {requiredData.length ? (
-          <div className="row" style={{ textAlign: "center" }}>
+          <div className="row">
             <h6 style={{ fontSize: 9, color: "grey" }}>
               Disclaimer: If district not mentioned, it is probably in the Green
               Zone{" "}
