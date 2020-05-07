@@ -33,11 +33,32 @@ class Graph extends Component {
       todayDeaths: "",
       recovered: "",
       active: "",
+      clickConfirmedMap: true,
+      clickActiveMap: false,
+      clickRecoveredMap: false,
+      clickDeceasedMap: false,
     };
     this.onToggle = this.onToggle.bind(this);
+    this.onClickConfirmed = this.onClickConfirmed.bind(this);
+    this.onClickActive = this.onClickActive.bind(this);
+    this.onClickRecovered = this.onClickRecovered.bind(this);
+    this.onClickDeceased = this.onClickDeceased.bind(this);
   }
   onToggle(toggleActive) {
     this.setState({ toggleActive });
+  }
+
+  onClickConfirmed(clickConfirmedMap) {
+    this.setState({ clickConfirmedMap });
+  }
+  onClickActive(clickActiveMap) {
+    this.setState({ clickActiveMap });
+  }
+  onClickRecovered(clickRecoveredMap) {
+    this.setState({ clickRecoveredMap });
+  }
+  onClickDeceased(clickDeceasedMap) {
+    this.setState({ clickDeceasedMap });
   }
 
   componentDidMount() {
@@ -78,6 +99,10 @@ class Graph extends Component {
       todayDeaths,
       recovered,
       active,
+      clickConfirmedMap,
+      clickActiveMap,
+      clickRecoveredMap,
+      clickDeceasedMap,
     } = this.state;
     const graphClass = window.innerWidth < 767 ? "" : "container";
 
@@ -137,12 +162,37 @@ class Graph extends Component {
     const date = [];
     data.map((item) => date.push(item.date));
 
-    const statesdata = [];
+    const confirmedStatesData = [];
     data2.map((item) =>
-      statesdata.push({
+      confirmedStatesData.push({
         id: item.statecode,
         state: item.state,
         value: Number(item.confirmed),
+      })
+    );
+    const activeStatesData = [];
+    data2.map((item) =>
+      activeStatesData.push({
+        id: item.statecode,
+        state: item.state,
+        value:
+          Number(item.confirmed) - Number(item.recovered) - Number(item.deaths),
+      })
+    );
+    const recoveredStatesData = [];
+    data2.map((item) =>
+      recoveredStatesData.push({
+        id: item.statecode,
+        state: item.state,
+        value: Number(item.recovered),
+      })
+    );
+    const deceasedStatesData = [];
+    data2.map((item) =>
+      deceasedStatesData.push({
+        id: item.statecode,
+        state: item.state,
+        value: Number(item.deaths),
       })
     );
     const months2 = [
@@ -218,7 +268,7 @@ class Graph extends Component {
               className="row"
               style={{
                 justifyContent: "center",
-                marginBottom: "30px",
+                marginBottom: "25px",
               }}
             >
               <div
@@ -387,29 +437,187 @@ class Graph extends Component {
                   style={{
                     justifyContent: "center",
                     animationDelay: "1s",
+                    marginBottom: "10px",
                   }}
                 >
                   INDIA MAP
-                  <h6 style={{ fontSize: 8 }}>HOVER OVER A STATE/UT</h6>
+                  <h6 id="line1" style={{ fontSize: 8, color: "grey" }}>
+                    TAP OVER A STATE/UT
+                  </h6>
+                  <h6 id="line2" style={{ fontSize: 8, color: "grey" }}>
+                    HOVER OVER A STATE/UT
+                  </h6>
                 </h4>
               </div>
+              <div className="w-100"></div>
+              <div
+                className="container fadeInUp toggle-map"
+                style={{ animationDelay: "1.1s" }}
+              >
+                <div className="row row-cols-4">
+                  <div
+                    className="col"
+                    onClick={() => {
+                      this.setState({
+                        clickConfirmedMap: true,
+                        clickActiveMap: false,
+                        clickRecoveredMap: false,
+                        clickDeceasedMap: false,
+                      });
+                    }}
+                  >
+                    <h6
+                      className="text-info pad"
+                      style={{ cursor: "pointer", background: "#d9ecf5" }}
+                    >
+                      CONFIRMED
+                    </h6>
+                  </div>
+                  <div
+                    className="col"
+                    onClick={() => {
+                      this.setState({
+                        clickConfirmedMap: false,
+                        clickActiveMap: true,
+                        clickRecoveredMap: false,
+                        clickDeceasedMap: false,
+                      });
+                    }}
+                  >
+                    <h6
+                      className="pad"
+                      style={{
+                        color: "rgb(255, 68, 106)",
+                        cursor: "pointer",
+                        background: "#f5d2d2",
+                      }}
+                    >
+                      ACTIVE
+                    </h6>
+                  </div>
+                  <div
+                    className="col"
+                    onClick={() => {
+                      this.setState({
+                        clickActiveMap: false,
+                        clickConfirmedMap: false,
+                        clickRecoveredMap: true,
+                        clickDeceasedMap: false,
+                      });
+                    }}
+                  >
+                    <h6
+                      className="text-success pad"
+                      style={{ cursor: "pointer", background: "#d5e9d5" }}
+                    >
+                      RECOVERED
+                    </h6>
+                  </div>
+                  <div
+                    className="col"
+                    onClick={() => {
+                      this.setState({
+                        clickActiveMap: false,
+                        clickRecoveredMap: false,
+                        clickConfirmedMap: false,
+                        clickDeceasedMap: true,
+                      });
+                    }}
+                  >
+                    <h6
+                      className="text-secondary pad"
+                      style={{ background: "#ece7e7", cursor: "pointer" }}
+                    >
+                      DECEASED
+                    </h6>
+                  </div>
+                </div>
+              </div>
+
               <div className="w-100"></div>
               <div
                 className="col fadeInUp"
                 style={{
                   justifyContent: "left",
-                  animationDelay: "1s",
-                  marginTop: "10px",
+                  animationDelay: "1.2s",
                 }}
               >
-                <Choropleth
-                  data={statesdata.slice(1, statesdata.length - 1)}
-                  onMouseEnter={ReactGa.event({
-                    category: "India map",
-                    action: "India map clicked",
-                  })}
-                />
+                {clickConfirmedMap && (
+                  <Choropleth
+                    data={confirmedStatesData.slice(
+                      1,
+                      confirmedStatesData.length - 1
+                    )}
+                    colorLow="rgba(29, 141, 158, 0.9)"
+                    colorHigh="rgba(29, 141, 158, 1)"
+                    fill="rgb(18, 167, 190)"
+                    type="infected"
+                    onMouseEnter={ReactGa.event({
+                      category: "India map",
+                      action: "India map clicked",
+                    })}
+                  />
+                )}
+                {clickActiveMap && (
+                  <Choropleth
+                    data={activeStatesData.slice(
+                      1,
+                      activeStatesData.length - 1
+                    )}
+                    colorLow="rgba(173, 28, 57, 0.9)"
+                    colorHigh="rgba(173, 28, 57, 1)"
+                    fill="rgb(228, 116, 138)"
+                    type="active"
+                    onMouseEnter={ReactGa.event({
+                      category: "India map",
+                      action: "India map clicked",
+                    })}
+                  />
+                )}
+                {clickRecoveredMap && (
+                  <Choropleth
+                    data={recoveredStatesData.slice(
+                      1,
+                      recoveredStatesData.length - 1
+                    )}
+                    colorLow="rgba(40, 167, 69, 0.9)"
+                    colorHigh="rgba(40, 167, 69, 1)"
+                    fill="rgb(30, 209, 72)"
+                    type="recovered"
+                    onMouseEnter={ReactGa.event({
+                      category: "India map",
+                      action: "India map clicked",
+                    })}
+                  />
+                )}
+                {clickDeceasedMap && (
+                  <Choropleth
+                    data={deceasedStatesData.slice(
+                      1,
+                      deceasedStatesData.length - 1
+                    )}
+                    colorLow="rgba(74, 79, 83, 0.9)"
+                    colorHigh="rgba(74, 79, 83, 1)"
+                    fill="rgb(108, 117, 125)"
+                    type="deaths"
+                    onMouseEnter={ReactGa.event({
+                      category: "India map",
+                      action: "India map clicked",
+                    })}
+                  />
+                )}
               </div>
+              <div className="w-100"></div>
+
+              <div className="col fadeInUp" style={{ animationDelay: "1.1s" }}>
+                <h6
+                  style={{ fontSize: 10, color: "grey", fontWeight: "lighter" }}
+                >
+                  <span style={{ color: "#3e4da3" }}> Pro tip:</span> Tap on the
+                  buttons above to toggle view
+                </h6>
+              </div>
+
               <div className="w-100"></div>
               <br />
               <div
@@ -445,12 +653,11 @@ class Graph extends Component {
               </div>
               <div
                 className="col fadeInUp"
-                style={{ animationDelay: "1s", alignItems: "right" }}
+                style={{ animationDelay: "1.3s", alignItems: "right" }}
               >
                 <div
-                  className="home-toggle"
+                  className="home-toggle float-right"
                   style={{
-                    marginLeft: "13.5rem",
                     marginTop: "10px",
                   }}
                 >
@@ -478,10 +685,11 @@ class Graph extends Component {
 
             <div
               className="row fadeInUp"
-              style={{ animationDelay: "1s", marginTop: "-8px" }}
+              style={{ animationDelay: "1.3s", marginTop: "-8px" }}
             >
               {!toggleActive && (
                 <React.Fragment>
+                  <div className="w-100"></div>
                   <div className="col">
                     <section
                       className="graphsection"
