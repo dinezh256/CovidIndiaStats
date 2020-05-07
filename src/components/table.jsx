@@ -812,7 +812,7 @@ class Table extends Component {
                         )}
                       </td>
                       <td
-                        className="delta td text-secondary"
+                        className="delta td text-secondary align-middle"
                         style={{ textAlign: "right" }}
                       >
                         <span className="arrowup text-info">
@@ -828,11 +828,11 @@ class Table extends Component {
                             ? ""
                             : commaSeperated(item.deltaconfirmed)}
                         </span>
-                        &nbsp;&nbsp;
+                        &nbsp;
                         {commaSeperated(item.confirmed)}
                       </td>
                       <td
-                        className="delta td text-secondary"
+                        className="delta td text-secondary align-middle"
                         style={{ textAlign: "right" }}
                       >
                         {item.active === "0"
@@ -840,7 +840,7 @@ class Table extends Component {
                           : commaSeperated(item.active)}
                       </td>
                       <td
-                        className="delta td text-secondary"
+                        className="delta td text-secondary align-middle"
                         style={{ textAlign: "right" }}
                       >
                         <span className="arrowup" style={{ color: "#28a745" }}>
@@ -856,13 +856,13 @@ class Table extends Component {
                             ? ""
                             : commaSeperated(item.deltarecovered)}
                         </span>
-                        &nbsp;&nbsp;
+                        &nbsp;
                         {item.recovered === "0"
                           ? "-"
                           : commaSeperated(item.recovered)}
                       </td>
                       <td
-                        className="delta td text-secondary"
+                        className="delta td text-secondary align-middle"
                         style={{ textAlign: "right" }}
                       >
                         <span className="arrowup" style={{ color: "#6c757d" }}>
@@ -878,7 +878,7 @@ class Table extends Component {
                             ? ""
                             : commaSeperated(item.deltadeaths)}
                         </span>
-                        &nbsp;&nbsp;
+                        &nbsp;
                         {item.deaths === "0"
                           ? "-"
                           : commaSeperated(item.deaths)}
@@ -887,7 +887,7 @@ class Table extends Component {
                   ))}
                   <tr className="tr" key={total[0].statecode}>
                     <td
-                      className="text-secondary tdleft"
+                      className="text-secondary tdleft align-middle"
                       style={{ borderStyle: "solid", borderLeftWidth: "5px" }}
                     >
                       {total[0].state}
@@ -905,7 +905,7 @@ class Table extends Component {
                       )}
                     </td>
                     <td
-                      className="delta td text-secondary"
+                      className="delta td text-secondary align-middle"
                       style={{ textAlign: "right" }}
                     >
                       <span className="arrowup text-info">
@@ -921,10 +921,10 @@ class Table extends Component {
                           ? ""
                           : commaSeperated(total[0].deltaconfirmed)}
                       </span>
-                      &nbsp;&nbsp;{commaSeperated(total[0].confirmed)}
+                      &nbsp;{commaSeperated(total[0].confirmed)}
                     </td>
                     <td
-                      className="delta td text-secondary"
+                      className="delta td text-secondary align-middle"
                       style={{ textAlign: "right" }}
                     >
                       {total[0].active === "0"
@@ -932,7 +932,7 @@ class Table extends Component {
                         : commaSeperated(total[0].active)}
                     </td>
                     <td
-                      className="delta td text-secondary"
+                      className="delta td text-secondary align-middle"
                       style={{ textAlign: "right" }}
                     >
                       <span
@@ -950,13 +950,13 @@ class Table extends Component {
                           ? ""
                           : commaSeperated(total[0].deltarecovered)}
                       </span>
-                      &nbsp;&nbsp;
+                      &nbsp;
                       {total[0].recovered === "0"
                         ? "-"
                         : commaSeperated(total[0].recovered)}
                     </td>
                     <td
-                      className="delta td text-secondary"
+                      className="delta td text-secondary align-middle"
                       style={{ textAlign: "right" }}
                     >
                       <span
@@ -976,7 +976,7 @@ class Table extends Component {
                           ? ""
                           : commaSeperated(total[0].deltadeaths)}
                       </span>
-                      &nbsp;&nbsp;
+                      &nbsp;
                       <span>
                         {total[0].deaths === "0"
                           ? "-"
@@ -998,16 +998,31 @@ class Table extends Component {
               >
                 <thead className="thead-dark">
                   <tr>
-                    <th className="th-md sticky-top">State/UT</th>
-                    <th className="th-md text-info sticky-top">Confirmed</th>
+                    <th className="th-md sticky-top" style={{ width: "195px" }}>
+                      State/UT
+                    </th>
+                    <th
+                      className="th-md text-info sticky-top"
+                      style={{ textAlign: "center" }}
+                    >
+                      Confirmed
+                    </th>
                     <th
                       className="th-md sticky-top"
-                      style={{ color: "#ff446a" }}
+                      style={{ color: "#ff446a", textAlign: "center" }}
                     >
                       Active
                     </th>
-                    <th className="th-md text-success sticky-top">RECOVERED</th>
-                    <th className="th-md text-secondary sticky-top">
+                    <th
+                      className="th-md text-success sticky-top"
+                      style={{ textAlign: "center" }}
+                    >
+                      RECOVERED
+                    </th>
+                    <th
+                      className="th-md text-secondary sticky-top"
+                      style={{ textAlign: "center" }}
+                    >
                       Deceased
                     </th>
                   </tr>
@@ -1017,7 +1032,7 @@ class Table extends Component {
                   {items.map((item) => (
                     <tr className="tr" key={item.statecode}>
                       <td
-                        className="text-secondary td-md-left"
+                        className="text-secondary td-md-left align-middle"
                         style={{ borderStyle: "solid", borderLeftWidth: "5px" }}
                       >
                         {item.state}
@@ -1038,7 +1053,7 @@ class Table extends Component {
                         )}
                       </td>
                       <td
-                        className="delta td-md text-secondary"
+                        className="delta td-md text-secondary align-middle"
                         style={{ textAlign: "right" }}
                       >
                         <span className="arrowup text-info">
@@ -1054,10 +1069,10 @@ class Table extends Component {
                             ? ""
                             : commaSeperated(item.deltaconfirmed)}
                         </span>
-                        &nbsp;&nbsp;{commaSeperated(item.confirmed)}
+                        &nbsp;{commaSeperated(item.confirmed)}
                       </td>
                       <td
-                        className="delta td-md text-secondary"
+                        className="delta td-md text-secondary align-middle"
                         style={{ textAlign: "right" }}
                       >
                         {item.active === "0"
@@ -1065,7 +1080,7 @@ class Table extends Component {
                           : commaSeperated(item.active)}
                       </td>
                       <td
-                        className="delta td-md text-secondary"
+                        className="delta td-md text-secondary align-middle"
                         style={{ textAlign: "right" }}
                       >
                         <span className="arrowup" style={{ color: "#28a745" }}>
@@ -1081,13 +1096,13 @@ class Table extends Component {
                             ? ""
                             : commaSeperated(item.deltarecovered)}
                         </span>
-                        &nbsp;&nbsp;
+                        &nbsp;
                         {item.recovered === "0"
                           ? "-"
                           : commaSeperated(item.recovered)}
                       </td>
                       <td
-                        className="delta td-md text-secondary"
+                        className="delta td-md text-secondary align-middle"
                         style={{ textAlign: "right" }}
                       >
                         <span className="arrowup" style={{ color: "#6c757d" }}>
@@ -1103,7 +1118,7 @@ class Table extends Component {
                             ? ""
                             : commaSeperated(item.deltadeaths)}
                         </span>
-                        &nbsp;&nbsp;
+                        &nbsp;
                         {item.deaths === "0"
                           ? "-"
                           : commaSeperated(item.deaths)}
@@ -1112,7 +1127,7 @@ class Table extends Component {
                   ))}
                   <tr className="tr" key={total[0].statecode}>
                     <td
-                      className="text-secondary tdleft"
+                      className="text-secondary tdleft align-middle"
                       style={{ borderStyle: "solid", borderLeftWidth: "5px" }}
                     >
                       {total[0].state}
@@ -1130,7 +1145,7 @@ class Table extends Component {
                       )}
                     </td>
                     <td
-                      className="delta td text-secondary"
+                      className="delta td text-secondary align-middle"
                       style={{ textAlign: "right" }}
                     >
                       <span className="arrowup text-info">
@@ -1140,13 +1155,15 @@ class Table extends Component {
                             size={9}
                             strokeWidth={3.5}
                           />
-                        )}{" "}
-                        {commaSeperated(total[0].deltaconfirmed)}
+                        )}
+                        {total[0].deltaconfirmed === "0"
+                          ? ""
+                          : commaSeperated(total[0].deltaconfirmed)}
                       </span>
-                      &nbsp;&nbsp;{commaSeperated(total[0].confirmed)}
+                      &nbsp;{commaSeperated(total[0].confirmed)}
                     </td>
                     <td
-                      className="delta td text-secondary"
+                      className="delta td text-secondary align-middle"
                       style={{ textAlign: "right" }}
                     >
                       {total[0].active === "0"
@@ -1154,7 +1171,7 @@ class Table extends Component {
                         : commaSeperated(total[0].active)}
                     </td>
                     <td
-                      className="delta td text-secondary"
+                      className="delta td text-secondary align-middle"
                       style={{ textAlign: "right" }}
                     >
                       <span className="arrowup" style={{ color: "#28a745" }}>
@@ -1169,13 +1186,13 @@ class Table extends Component {
                           ? ""
                           : commaSeperated(total[0].deltarecovered)}
                       </span>
-                      &nbsp;&nbsp;
+                      &nbsp;
                       {total[0].recovered === "0"
                         ? "-"
                         : commaSeperated(total[0].recovered)}
                     </td>
                     <td
-                      className="delta td text-secondary"
+                      className="delta td text-secondary align-middle"
                       style={{ textAlign: "right" }}
                     >
                       <span className="arrowup" style={{ color: "#6c757d" }}>
@@ -1191,10 +1208,8 @@ class Table extends Component {
                           ? ""
                           : commaSeperated(total[0].deltadeaths)}
                       </span>
-                      &nbsp;&nbsp;
-                      {total[0].deaths === "0"
-                        ? "-"
-                        : commaSeperated(total[0].deaths)}
+                      &nbsp;
+                      {commaSeperated(total[0].deaths)}
                     </td>
                   </tr>
                 </tbody>
