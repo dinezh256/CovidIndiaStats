@@ -4,7 +4,7 @@
 }
 
 body {
-  background-color: rgb(250, 250, 252);
+  background-color: rgb(248, 248, 250);
 }
 
 .containerHome {
@@ -51,7 +51,7 @@ body {
 }
 
 .arrowup {
-  font-size: 0.7rem;
+  font-size: 0.71rem;
   font-weight: 500;
   -ms-word-break: keep-all;
   word-break: keep-all;
@@ -80,7 +80,7 @@ th.narrowRow {
   width: 30rem;
   align-self: center;
   text-transform: uppercase;
-  border-spacing: 1px 1px;
+  border-spacing: 2px 2px;
   border-collapse: separate;
   width: 100%;
 }
@@ -128,9 +128,14 @@ th.narrowRow {
   font-family: notosans;
 }
 
+.table tbody tr {
+  transition: linear 0.5s;
+}
+
 .table tbody tr:hover {
   background: rgb(233, 233, 233);
   cursor: pointer;
+  transition: linear 0.5s;
 }
 
 .td {
@@ -384,6 +389,63 @@ span.MuiBadge-colorSecondary {
   font-weight: 500;
 }
 
+.toggle-map {
+  text-align: center;
+  justify-content: center;
+  font-size: 1rem !important;
+  font-family: notosans;
+  margin-left: 2.8% !important;
+}
+
+@media only screen and (max-width: 576px) {
+  .toggle-map {
+    margin-left: -2.5% !important;
+  }
+}
+
+.pad {
+  padding-top: 5%;
+  padding-bottom: 5%;
+  border-radius: 5px;
+  border: solid 0.5px;
+  width: 6.5rem;
+  position: sticky;
+  transition: background-color 0.3s linear; /* vendorless fallback */
+  -o-transition: background-color 0.3s linear; /* opera */
+  -ms-transition: background-color 0.3s linear; /* IE 10 */
+  -moz-transition: background-color 0.3s linear; /* Firefox */
+  -webkit-transition: background-color 0.3s linear; /*safari and chrome */
+}
+
+.pad:hover {
+  background-color: rgb(248, 248, 248) !important;
+  transition: all 0.3s linear;
+}
+
+@media only screen and (max-width: 360px) {
+  .pad {
+    width: 5.7rem;
+    font-size: 0.9rem;
+  }
+}
+
+.choropleth {
+  opacity: 0;
+  animation-name: fadeIn;
+  animation-duration: 2s;
+  animation-iteration-count: 1;
+  animation-fill-mode: both;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0.8;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
 .worldchoropleth {
   height: 100%;
   width: 100%;
@@ -391,6 +453,12 @@ span.MuiBadge-colorSecondary {
   margin-top: -2rem;
   align-self: center;
   align-items: center;
+}
+
+.hoveralert {
+  width: 100%;
+  justify-content: center;
+  height: max-content;
 }
 
 .hoveralert:hover {
@@ -443,6 +511,58 @@ span.MuiBadge-colorSecondary {
 
 .recharts-symbols {
   vertical-align: 0.1rem;
+}
+
+.recharts-label-list text {
+  font-size: 0.45rem !important;
+  font-weight: 500;
+  font-family: notosans;
+  color: inherit;
+}
+
+.stateTable h6 {
+  border-radius: 5px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  cursor: pointer;
+}
+
+.liDistrict li {
+  font-weight: 600;
+  text-transform: "uppercase";
+  font-family: "notosans";
+}
+
+.viewState {
+  color: rgba(255, 153, 0, 1);
+  text-decoration: none;
+}
+
+.viewState:hover {
+  text-decoration: none !important;
+  text-underline-position: unset;
+}
+
+.backButton {
+  text-align: center;
+  margin-right: -10px !important;
+  background-color: lightslategrey;
+  border-radius: 4px;
+  padding-top: 10.5px;
+  padding-bottom: 10.5px;
+  cursor: pointer;
+  font-size: 12px;
+  margin-bottom: -15px;
+  margin-top: 12px !important;
+}
+
+.btnMainPage {
+  margin-top: 10px !important;
+  margin-left: -10px !important;
+}
+
+.btnMainPage:hover {
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.25) !important;
 }
 
 .fadeInUp {
@@ -548,16 +668,17 @@ span.MuiBadge-colorSecondary {
 }
 
 .test {
-  color: rgb(40, 167, 69);
+  color: rgb(64, 145, 64);
   color: rgb(228, 116, 138);
-  color: rgb(165, 32, 8);
-  color: rgb(23, 162, 184);
-  color: rgb(255, 68, 106);
+  color: rgb(62, 77, 163);
+  color: rgb(18, 167, 190);
+  color: rgb(201, 25, 60);
   color: rgb(108, 117, 125);
-  color: rgb(150, 150, 150);
+  color: rgb(74, 79, 83);
   color: rgb(255, 68, 106);
   color: rgb(255, 153, 0);
-  word-break: keep-all;
+  color: rgb(66, 179, 244);
+  color: rgb(10, 111, 145);
 }
 
 @media only screen and (min-width: 576px) {
