@@ -194,11 +194,44 @@ class Updates extends Component {
           </div>
           <div className="w-100"></div>
           <div style={{ marginTop: "20px", marginBottom: "20px" }}>
+            {toggleActive && (
+              <div
+                className="alert"
+                role="alert"
+                style={{
+                  marginBottom: "5px",
+                  border: "none",
+                  background: "rgba(108,117,125,.0627451)",
+                  boxShadow: "0 0 2px rgba(0,0,0,0.1)",
+                  marginTop: "10px",
+                  cursor: "pointer",
+                }}
+              >
+                <h6
+                  className="align-middle"
+                  style={{ fontSize: 12, color: "#3a3838" }}
+                >
+                  <h6 style={{ fontSize: 12, color: "#3a3838" }}>
+                    NEW! Added separate page for every State/UT. Select any
+                    State/UT below.
+                  </h6>
+                  <span style={{ color: "#11789b" }}>ATTENTION</span>: We are
+                  now{" "}
+                  <a
+                    style={{ color: "navy" }}
+                    href="https://www.covidindiastats.com"
+                  >
+                    {" "}
+                    covidindiastats.com{" "}
+                  </a>
+                </h6>
+              </div>
+            )}
             {toggleActive &&
               (totalDeltaConfirmed ||
               totalDeltaRecovered ||
               totalDeltaDeaths ? (
-                data.slice(0, 8).map(
+                data.slice(0, 9).map(
                   (item) =>
                     Number(item.deltaconfirmed) !== 0 && (
                       <div
@@ -210,8 +243,6 @@ class Updates extends Component {
                           background: "rgba(108,117,125,.0627451)",
                           boxShadow: "0 0 2px rgba(0,0,0,0.1)",
                           marginTop: "10px",
-                          animation: "ease-in",
-                          animationDuration: "1s",
                           cursor: "pointer",
                         }}
                       >
@@ -267,6 +298,11 @@ class Updates extends Component {
                     marginBottom: "5px",
                     border: "none",
                     background: "rgba(108,117,125,.0627451)",
+                    boxShadow: "0 0 2px rgba(0,0,0,0.1)",
+                    marginTop: "10px",
+                    animation: "ease-in",
+                    animationDuration: "1s",
+                    cursor: "pointer",
                   }}
                 >
                   <h6 style={{ fontSize: 12, color: "#3a3838" }}>
