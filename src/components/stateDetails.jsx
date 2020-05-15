@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import { indianstates } from "./API/index";
 import * as Icon from "react-feather";
+import FacebookIcon from "@material-ui/icons/Facebook";
+import WhatsAppIcon from "@material-ui/icons/WhatsApp";
+import TwitterIcon from "@material-ui/icons/Twitter";
 import Tooltip, { TooltipProps } from "@material-ui/core/Tooltip";
 import { Theme, makeStyles } from "@material-ui/core/styles";
 import InfoTwoToneIcon from "@material-ui/icons/InfoTwoTone";
@@ -8,6 +11,7 @@ import Switch from "react-switch";
 import { formatDate, formatDateAbsolute } from "../utils/common-functions";
 import QueryBuilderTwoToneIcon from "@material-ui/icons/QueryBuilderTwoTone";
 import { format } from "d3";
+import parse from "html-react-parser";
 import {
   LineChart,
   Line,
@@ -20,6 +24,7 @@ import {
   XAxis,
   LabelList,
 } from "recharts";
+import ReactGa from "react-ga";
 import PropTypes from "prop-types";
 import Footer from "./footer";
 let CreateReactClass = require("create-react-class");
@@ -41,12 +46,16 @@ class StateDetails extends Component {
       toggleActive: false,
       toggleRecovered: false,
       toggleDeceased: false,
+      viewTable: false,
+      back: true,
     };
     this.onSwitch = this.onSwitch.bind(this);
     this.onClickConfirmed = this.onClickConfirmed.bind(this);
     this.onClickActive = this.onClickActive.bind(this);
     this.onClickRecovered = this.onClickRecovered.bind(this);
     this.onClickDeceased = this.onClickDeceased.bind(this);
+    this.onViewTable = this.onViewTable.bind(this);
+    this.onBack = this.onBack.bind(this);
   }
 
   onSwitch(toggleSwitch) {
@@ -66,6 +75,14 @@ class StateDetails extends Component {
     this.setState({ toggleDeceased });
   }
 
+  onViewTable(viewTable) {
+    this.setState({ viewTable });
+  }
+
+  onBack({ back }) {
+    this.setState({ back });
+  }
+
   async componentDidMount() {
     fetch("https://api.covid19india.org/zones.json").then((res) =>
       res.json().then((json) => {
@@ -74,6 +91,12 @@ class StateDetails extends Component {
     );
     const fetchedStates = await indianstates();
     this.setState({ stateData: fetchedStates, isLoaded: true });
+    const requiredData = [];
+    fetchedStates.map((item) => {
+      if (this.props.match.params.stateid === item.statecode)
+        requiredData.push(item.districtData);
+    });
+    this.setState({ requiredData });
 
     fetch("https://api.covid19india.org/data.json").then((res) =>
       res.json().then((json) => {
@@ -101,6 +124,7 @@ class StateDetails extends Component {
       zonesLoaded,
       totalStateData,
       totalStateDataLoaded,
+      requiredData,
       statesDailyData,
       statesDailyDataLoaded,
       toggleConfirmed,
@@ -108,6 +132,8 @@ class StateDetails extends Component {
       toggleRecovered,
       toggleDeceased,
       toggleSwitch,
+      viewTable,
+      back,
     } = this.state;
 
     const CustomTooltip = CreateReactClass({
@@ -712,6 +738,11 @@ class StateDetails extends Component {
                       style={{
                         textAlign: "center",
                         width: "25%",
+                        borderBottom: `${
+                          toggleConfirmed
+                            ? "solid rgba(10, 111, 145, 0.8) 7px"
+                            : ""
+                        }`,
                       }}
                       onClick={() => {
                         this.setState({
@@ -799,6 +830,9 @@ class StateDetails extends Component {
                       style={{
                         textAlign: "center",
                         width: "25%",
+                        borderBottom: `${
+                          toggleActive ? "solid rgba(201, 25, 60, 0.8) 7px" : ""
+                        }`,
                       }}
                       onClick={() => {
                         this.setState({
@@ -889,6 +923,11 @@ class StateDetails extends Component {
                       style={{
                         textAlign: "center",
                         width: "25%",
+                        borderBottom: `${
+                          toggleRecovered
+                            ? "solid rgba(64, 145, 64, 0.8) 7px"
+                            : ""
+                        }`,
                       }}
                       onClick={() => {
                         this.setState({
@@ -974,6 +1013,9 @@ class StateDetails extends Component {
                       style={{
                         textAlign: "center",
                         width: "25%",
+                        borderBottom: `${
+                          toggleDeceased ? "solid rgb(74, 79, 83) 7px" : ""
+                        }`,
                       }}
                       onClick={() => {
                         this.setState({
@@ -1113,7 +1155,7 @@ class StateDetails extends Component {
                     {isLoaded && toggleActive ? (
                       <div>
                         <h6 style={{ color: "rgba(62, 77, 163, 0.7)" }}>
-                          TOP 5 DISTRICTS
+                          TOP DISTRICTS
                         </h6>
                         <ul>
                           {activeTopDistricts.map((item) =>
@@ -1406,6 +1448,333 @@ class StateDetails extends Component {
                       </ResponsiveContainer>
                     )}
                   </div>
+                </div>
+                <div className="w-100"></div>
+                <div className="row">
+                  <div className="col">
+                    {back && (
+                      <h6
+                        className="btnViewAll"
+                        onClick={() => {
+                          this.setState({ viewTable: true, back: false });
+                          ReactGa.event({
+                            category: "View Button",
+                            action: "View Button Clicked",
+                          });
+                        }}
+                      >
+                        VIEW ALL DISTRICTS{" "}
+                        <Icon.ArrowDownCircle
+                          size={12}
+                          style={{ verticalAlign: "-0.1rem" }}
+                        />
+                      </h6>
+                    )}
+                  </div>
+                  <div className="col">
+                    <div className="row">
+                      <h6 className="likeShare">Like it? Share</h6>
+                      <h6
+                        className="shareBtn"
+                        onClick={() => {
+                          ReactGa.event({
+                            category: "FB Share",
+                            action: "fb clicked",
+                          });
+                        }}
+                      >
+                        <a
+                          href={`https://www.facebook.com/sharer/sharer.php?u=covidindiastats.com/${this.props.match.params.stateid}`}
+                          onClick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600');return false;"
+                          target="_blank"
+                          title="Share COVIDINDIASTATS on Facebook"
+                          style={{ color: "rgb(59, 89, 152)" }}
+                        >
+                          <FacebookIcon size="inherit" />
+                        </a>
+                      </h6>
+
+                      <h6
+                        className="shareBtn"
+                        onClick={() => {
+                          ReactGa.event({
+                            category: "WA Share",
+                            action: "wa clicked",
+                          });
+                        }}
+                      >
+                        <a
+                          href={`whatsapp://send?text=covidindiastats.com/${this.props.match.params.stateid}`}
+                          onClick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600');return false;"
+                          target="_blank"
+                          title="Share COVIDINDIASTATS on Whatsapp"
+                          style={{ color: "#25D366" }}
+                        >
+                          <WhatsAppIcon size="inherit" />
+                        </a>
+                      </h6>
+
+                      <h6
+                        className="shareBtn"
+                        onClick={() => {
+                          ReactGa.event({
+                            category: "Twitter Share",
+                            action: "T clicked",
+                          });
+                        }}
+                      >
+                        <a
+                          href={`https://twitter.com/share?url=covidindiastats.com/${this.props.match.params.stateid}`}
+                          onClick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600');return false;"
+                          target="_blank"
+                          title="Share COVIDINDIASTATS on Twitter"
+                          style={{ color: "#00ACEE" }}
+                        >
+                          <TwitterIcon size="inherit" />
+                        </a>
+                      </h6>
+                    </div>
+                  </div>
+                </div>
+                <div className="w-100"></div>
+                <div className="col">
+                  {requiredData.length && viewTable ? (
+                    <React.Fragment>
+                      <div className="col">
+                        <h6
+                          className="btnBackAll"
+                          onClick={() => {
+                            this.setState({ viewTable: false, back: true });
+                          }}
+                        >
+                          BACK{" "}
+                          <Icon.ArrowUpCircle
+                            size={12}
+                            style={{ verticalAlign: "-0.1rem" }}
+                          />
+                        </h6>
+                      </div>
+                      <div className="w-100"></div>
+                      <div
+                        className="row fadeInUp"
+                        style={{ transitionDelay: "0.1s" }}
+                      >
+                        <table
+                          className="table table-sm table-striped table-borderless"
+                          style={{
+                            minWidth: "290px",
+                            tableLayout: "fixed",
+                            width: "100%",
+                            marginBottom: "-5px",
+                          }}
+                          align="center"
+                        >
+                          <thead className="thead-dark">
+                            <tr>
+                              <th
+                                className="th wideRow sticky-top"
+                                id="line1"
+                                style={{ width: "57px" }}
+                              >
+                                DISTRICT
+                              </th>
+                              <th
+                                className="th sticky-top"
+                                id="line2"
+                                style={{ width: "175px" }}
+                              >
+                                DISTRICT
+                              </th>
+                              <th
+                                className="th sticky-top text-info smallRow"
+                                style={{ textAlign: "center" }}
+                                id="line1"
+                              >
+                                CNFRMD
+                              </th>
+                              <th
+                                className="th sticky-top text-info"
+                                style={{ textAlign: "center" }}
+                                id="line2"
+                              >
+                                CONFIRMED
+                              </th>
+                              <th
+                                className="th sticky-top smallRow"
+                                style={{
+                                  color: "rgb(255, 68, 106)",
+                                  textAlign: "center",
+                                }}
+                                id="line1"
+                              >
+                                ACTIVE
+                              </th>
+                              <th
+                                className="th sticky-top narrowRow"
+                                style={{
+                                  color: "rgb(255, 68, 106)",
+                                  textAlign: "center",
+                                }}
+                                id="line2"
+                              >
+                                ACTIVE
+                              </th>
+                              <th
+                                className="th sticky-top text-success smallRow"
+                                style={{ textAlign: "center" }}
+                                id="line1"
+                              >
+                                RCVRD
+                              </th>
+                              <th
+                                className="th sticky-top text-success"
+                                style={{ textAlign: "center" }}
+                                id="line2"
+                              >
+                                RECOVERED
+                              </th>
+                              <th
+                                className="th sticky-top text-secondary smallRow"
+                                id="line1"
+                                style={{ textAlign: "center" }}
+                              >
+                                DEATHS
+                              </th>
+                              <th
+                                className="th sticky-top text-secondary"
+                                id="line2"
+                                style={{ textAlign: "center", width: "70px" }}
+                              >
+                                DECEASED
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody className="tbody">
+                            {requiredData.map((item) =>
+                              item.map((district) => (
+                                <tr className="tr">
+                                  <td
+                                    className="tdleft align-middle"
+                                    style={{
+                                      color: `${districtZone(
+                                        district.district
+                                      )}`,
+                                      borderLeftWidth: "5px",
+                                      borderStyle: "solid",
+                                    }}
+                                  >
+                                    {district.district}
+                                    {district.notes ? (
+                                      <BootstrapTooltip
+                                        title={parse(district.notes)}
+                                      >
+                                        <span
+                                          style={{ verticalAlign: "0.05rem" }}
+                                        >
+                                          <InfoTwoToneIcon
+                                            color="inherit"
+                                            fontSize="inherit"
+                                          />
+                                        </span>
+                                      </BootstrapTooltip>
+                                    ) : (
+                                      ""
+                                    )}
+                                  </td>
+                                  <td
+                                    className="delta td text-secondary align-middle"
+                                    style={{ textAlign: "right" }}
+                                  >
+                                    <span className="arrowup text-info">
+                                      {Number(district.delta.confirmed) !==
+                                        0 && (
+                                        <Icon.ArrowUp
+                                          color="#42b3f4"
+                                          size={9}
+                                          strokeWidth={3.5}
+                                        />
+                                      )}
+                                      <b className="deltainc-md text-info">
+                                        {Number(district.delta.confirmed) === 0
+                                          ? ""
+                                          : commaSeperated(
+                                              district.delta.confirmed
+                                            )}
+                                      </b>
+                                    </span>
+                                    &nbsp;&nbsp;
+                                    {commaSeperated(district.confirmed)}
+                                  </td>
+                                  <td
+                                    className="delta td text-secondary narrowRow align-middle"
+                                    style={{ textAlign: "right" }}
+                                  >
+                                    {Number(district.active)
+                                      ? commaSeperated(district.active)
+                                      : "-"}
+                                  </td>
+                                  <td
+                                    className="delta td text-secondary align-middle"
+                                    style={{ textAlign: "right" }}
+                                  >
+                                    <span className="arrowup text-success">
+                                      {Number(district.delta.recovered) !==
+                                        0 && (
+                                        <Icon.ArrowUp
+                                          color="#28a745"
+                                          size={9}
+                                          strokeWidth={3.5}
+                                        />
+                                      )}
+                                      <b className="deltainc-md text-success align-middle">
+                                        {Number(district.delta.recovered) === 0
+                                          ? ""
+                                          : commaSeperated(
+                                              district.delta.recovered
+                                            )}
+                                      </b>
+                                    </span>
+                                    &nbsp;&nbsp;
+                                    {Number(district.recovered)
+                                      ? commaSeperated(district.recovered)
+                                      : "-"}
+                                  </td>
+                                  <td
+                                    className="delta td text-secondary narrowRow align-middle"
+                                    style={{ textAlign: "right" }}
+                                  >
+                                    <span className="arrowup text-secondary">
+                                      {Number(district.delta.deceased) !==
+                                        0 && (
+                                        <Icon.ArrowUp
+                                          color="#6c757d"
+                                          size={9}
+                                          strokeWidth={3.5}
+                                        />
+                                      )}
+                                      <b className="deltainc-md text-secondary align-middle">
+                                        {Number(district.delta.deceased) === 0
+                                          ? ""
+                                          : commaSeperated(
+                                              district.delta.deceased
+                                            )}
+                                      </b>
+                                    </span>
+                                    &nbsp;&nbsp;
+                                    {Number(district.deceased)
+                                      ? commaSeperated(district.deceased)
+                                      : "-"}
+                                  </td>
+                                </tr>
+                              ))
+                            )}
+                          </tbody>
+                        </table>
+                      </div>
+                    </React.Fragment>
+                  ) : (
+                    ""
+                  )}
                 </div>
               </div>
               <div className="col-sm">
@@ -2385,6 +2754,8 @@ class StateDetails extends Component {
                     </React.Fragment>
                   )}
                 </div>
+                <div className="w-100"></div>
+                <h6>1Week</h6>
               </div>
             </div>
             <Footer />
