@@ -4,6 +4,9 @@ const url1 = "https://corona.lmao.ninja/v2/countries";
 const url2 = "https://corona.lmao.ninja/v2";
 const url3 = "https://corona.lmao.ninja/v2/historical/all/?lastdays=all";
 const url4 = "https://api.covid19india.org/v2/state_district_wise.json";
+const url5 = "https://api.covid19india.org/state_test_data.json";
+const url6 = "https://corona.lmao.ninja/v2/all";
+const url7 = "https://api.covid19india.org/districts_daily.json";
 
 export const countries = async () => {
   try {
@@ -93,6 +96,39 @@ export const indianstates = async () => {
   try {
     const { data } = await axios.get(url4);
     return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const statesTestData = async () => {
+  try {
+    const {
+      data: { states_tested_data },
+    } = await axios.get(url5);
+    return states_tested_data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const worldTotalData = async () => {
+  try {
+    const {
+      data: { cases, todayCases, deaths, todayDeaths, recovered, active },
+    } = await axios.get(url6);
+    return { cases, todayCases, deaths, todayDeaths, recovered, active };
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const districtsDaily = async () => {
+  try {
+    const {
+      data: { districtsDaily },
+    } = await axios.get(url7);
+    return districtsDaily;
   } catch (error) {
     console.log(error);
   }
