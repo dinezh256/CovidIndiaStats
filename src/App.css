@@ -60,7 +60,6 @@ body {
 
 .total {
   color: #5e5959;
-  text-transform: uppercase;
   font-weight: 500;
   font-size: 0.7rem;
 }
@@ -311,6 +310,26 @@ span.MuiBadge-colorSecondary {
   height: max-content;
 }
 
+.timelineButton {
+  background-color: moccasin;
+  color: chocolate;
+  padding: 3px 2px;
+  cursor: pointer;
+  text-align: left;
+  border-radius: 3px;
+  font-size: 12px;
+  transition: box-shadow 0.3s linear; /* vendorless fallback */
+  -o-transition: box-shadow 0.3s linear; /* opera */
+  -ms-transition: box-shadow 0.3s linear; /* IE 10 */
+  -moz-transition: box-shadow 0.3s linear; /* Firefox */
+  -webkit-transition: box-shadow 0.3s linear; /*safari and chrome */
+}
+
+.timelineButton:hover {
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.25) !important;
+  animation-delay: 0.2s;
+}
+
 .custom-control {
   margin-bottom: 30px;
 }
@@ -345,6 +364,20 @@ span.MuiBadge-colorSecondary {
   word-wrap: break-word;
   color: #494545;
   font-family: notosans;
+}
+
+.toggleDay {
+  background-color: peru;
+  color: rgb(235, 224, 209);
+  padding: 3px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 8.5rem;
+}
+
+.toggleDay:hover {
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.25) !important;
+  transition: all 0.3s linear;
 }
 
 .FAQ {
@@ -472,43 +505,6 @@ span.MuiBadge-colorSecondary {
   cursor: pointer;
 }
 
-.test-stats {
-  display: inline-flexbox;
-  flex-direction: row;
-  width: 100%;
-  position: relative;
-  margin-bottom: 1rem;
-  justify-content: center;
-}
-
-.stats {
-  border-radius: 5px;
-  display: flex;
-  flex-direction: column;
-  margin-right: 0.125rem;
-  margin-left: 0.125rem;
-  margin-bottom: 0.25rem;
-  text-align: center;
-  padding: 0.25rem;
-  background: #e6e8f1;
-}
-
-.stats:hover {
-  cursor: pointer;
-}
-
-.stats-header {
-  font-size: 0.8rem;
-  color: #3f51b5;
-  word-wrap: none;
-  word-break: break-all;
-}
-
-.stats-count {
-  font-size: 1rem;
-  color: #3e4da3;
-}
-
 .recharts-legend-item {
   font-size: 0.8rem;
   vertical-align: 0.3rem;
@@ -542,6 +538,7 @@ span.MuiBadge-colorSecondary {
 .viewState {
   color: rgba(255, 153, 0, 1);
   text-decoration: none;
+  font-weight: 600;
 }
 
 .viewState:hover {
@@ -573,7 +570,7 @@ span.MuiBadge-colorSecondary {
 
 .btnViewAll {
   text-align: center;
-  margin-left: 2px !important;
+  margin-left: 4px !important;
   width: 11rem;
   background-color: peru;
   color: rgb(235, 224, 209);
@@ -582,8 +579,8 @@ span.MuiBadge-colorSecondary {
   padding-bottom: 7px;
   cursor: pointer;
   font-size: 12px;
-  margin-bottom: -10px;
-  margin-top: -7px !important;
+  margin-bottom: 0px;
+  margin-top: 5px !important;
   animation: fadeIn 2s;
 }
 
@@ -593,7 +590,7 @@ span.MuiBadge-colorSecondary {
 
 .btnBackAll {
   text-align: center;
-  margin-left: -20px !important;
+  margin-left: -18px !important;
   width: 11rem;
   background-color: peru;
   color: rgb(235, 224, 209);
@@ -602,8 +599,8 @@ span.MuiBadge-colorSecondary {
   padding-bottom: 7px;
   cursor: pointer;
   font-size: 12px;
-  margin-bottom: 25px;
-  margin-top: -73px !important;
+  margin-bottom: 30px;
+  margin-top: -16px !important;
   animation: fadeIn 2s;
 }
 
@@ -613,19 +610,22 @@ span.MuiBadge-colorSecondary {
 
 @media only screen and (max-width: 768px) {
   .btnBackAll {
-    margin-top: -71px !important;
+    margin-top: -16px !important;
+    margin-left: -17px !important;
   }
 }
 
 .shareBtn {
   text-align: center;
-  margin-left: 0px !important;
-  width: 30px;
+  align-content: center;
+  width: 100px;
   color: rgb(235, 224, 209);
   cursor: pointer;
-  margin-top: -4px !important;
   color: rgb(59, 89, 152);
   text-decoration: none;
+  margin-bottom: 6px;
+  margin-top: -2px;
+  margin-left: 2px !important;
 }
 
 @media only screen and (max-width: 360px) {
@@ -635,8 +635,27 @@ span.MuiBadge-colorSecondary {
   }
 }
 
+@media only screen and (max-width: 360px) {
+  .smScreen {
+    margin-left: 0px !important;
+    margin-right: -8px !important;
+  }
+}
+
 .likeShare {
   font-size: 0.8rem;
+  text-align: center !important;
+  vertical-align: middle;
+  margin-top: 4px !important;
+  color: black !important;
+  cursor: text;
+  margin-left: -5px;
+}
+
+.feedbackBtn {
+  font-size: 0.8rem;
+  text-align: center !important;
+  vertical-align: middle;
 }
 
 .fadeInUp {
@@ -659,14 +678,14 @@ span.MuiBadge-colorSecondary {
 
 .fadeOutDown {
   animation-name: fadeOutDown;
-  animation-duration: 0.5s;
+  animation-duration: 1s;
   animation-fill-mode: both;
 }
 
 @keyframes fadeOutDown {
   0% {
-    opacity: 0.5;
-    transform: translateY(10px);
+    opacity: 0.9;
+    transform: translateY(-25px);
   }
 
   100% {
@@ -741,6 +760,24 @@ span.MuiBadge-colorSecondary {
   }
 }
 
+.test {
+  color: rgb(64, 145, 64);
+  color: rgb(228, 116, 138);
+  color: rgb(62, 77, 163);
+  color: rgb(18, 167, 190);
+  color: rgb(226, 42, 79);
+  color: rgb(108, 117, 125);
+  color: rgb(74, 79, 83);
+  color: rgb(255, 68, 106);
+  color: rgb(255, 153, 0);
+  color: rgb(66, 179, 244);
+  color: rgb(10, 111, 145);
+  /* fb */
+  color: rgb(59, 89, 152);
+  color: rgb(23, 162, 184);
+  color: rgb(40, 167, 69);
+}
+
 @media only screen and (min-width: 576px) {
   #line1 {
     display: none;
@@ -753,13 +790,6 @@ span.MuiBadge-colorSecondary {
 }
 
 @media screen and (device-width: 360px) and (device-height: 640px) and (-webkit-device-pixel-ratio: 3) {
-}
-
-@font-face {
-  font-family: "Baloo-Paaji";
-  src: url(fonts/PatuaOne-Regular.ttf);
-  font-style: normal;
-  font-weight: 600;
 }
 
 @font-face {
