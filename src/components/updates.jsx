@@ -1,12 +1,15 @@
 import React, { Component } from "react";
-import NotificationsNoneOutlinedIcon from "@material-ui/icons/NotificationsNoneTwoTone";
+import ReactGa from "react-ga";
+import { formatDate, formatDateAbsolute } from "../utils/common-functions";
+import FiberNewOutlinedIcon from "@material-ui/icons/FiberNewOutlined";
+import NotificationsIcon from "@material-ui/icons/Notifications";
+import NotificationsOffIcon from "@material-ui/icons/NotificationsOff";
+import LaunchRoundedIcon from "@material-ui/icons/LaunchRounded";
 import Badge from "@material-ui/core/Badge";
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
-import NotificationsOffTwoToneIcon from "@material-ui/icons/NotificationsOffTwoTone";
 import QueryBuilderTwoToneIcon from "@material-ui/icons/QueryBuilderTwoTone";
 import GroupWorkTwoToneIcon from "@material-ui/icons/GroupWorkTwoTone";
-import { formatDate, formatDateAbsolute } from "../utils/common-functions";
-import ReactGa from "react-ga";
+import { Link } from "react-router-dom";
 
 class Updates extends Component {
   constructor(props) {
@@ -16,14 +19,10 @@ class Updates extends Component {
       data: [],
       toggleActive: false,
       items: [],
-      wasSeen: localStorage.getItem("wasSeen") ? true : false,
+      lastUpdated: "",
+      wasSeen: false,
     };
     this.onToggle = this.onToggle.bind(this);
-  }
-
-  close() {
-    localStorage.setItem("wasSeen", "true");
-    this.setState({ wasSeen: true });
   }
 
   onToggle(toggleActive) {
@@ -43,9 +42,20 @@ class Updates extends Component {
             (item) => item.confirmed !== "0" && item.state !== "Total"
           ),
         });
+        let localLastUpdated = localStorage.getItem("localLastUpdated");
+
+        if (localLastUpdated === this.state.lastUpdated) {
+          this.setState({ wasSeen: true });
+        } else {
+          this.setState({ wasSeen: false });
+        }
       })
     );
-    this.setState({ wasSeen: false });
+  }
+
+  close() {
+    localStorage.setItem("localLastUpdated", this.state.lastUpdated);
+    this.setState({ wasSeen: true });
   }
 
   render() {
@@ -131,17 +141,12 @@ class Updates extends Component {
             }}
           >
             <span className="font-weight-bold" style={{ color: "#3f51b5" }}>
-              <h4
-                className=" total"
-                style={{
-                  textTransform: "uppercase",
-                }}
-              >
+              <h4 className="total">
                 <span style={{ verticalAlign: "0.1rem", cursor: "pointer" }}>
                   <QueryBuilderTwoToneIcon color="primary" fontSize="small" />
                 </span>
                 &nbsp;
-                <span style={{ color: "#3f51b5" }}>
+                <span style={{ color: "#3f51b5", textTransform: "uppercase" }}>
                   {isNaN(Date.parse(formatDate(lastUpdated)))
                     ? ""
                     : formatDateAbsolute(lastUpdated)}
@@ -160,23 +165,23 @@ class Updates extends Component {
                   {!toggleActive ? (
                     !wasSeen ? (
                       <Badge
-                        color="secondary"
+                        color="primary"
                         overlap="circle"
                         variant="dot"
                         fontSize="inherit"
                         onClick={this.close.bind(this)}
                       >
-                        <NotificationsNoneOutlinedIcon color="primary" />
+                        <NotificationsIcon color="primary" />
                       </Badge>
                     ) : (
-                      <NotificationsNoneOutlinedIcon color="primary" />
+                      <NotificationsIcon color="primary" />
                     )
                   ) : (
-                    <NotificationsOffTwoToneIcon color="disabled" />
+                    <NotificationsOffIcon color="disabled" />
                   )}
                 </span>
                 &nbsp;|&nbsp;
-                <span style={{ color: "red" }}>{items.length}</span>
+                <span style={{ color: "red" }}>{items.length - 1}</span>
                 <span style={{ color: "#3f51b5" }}>
                   {" "}
                   STATES/UTs AFFECTED
@@ -196,7 +201,7 @@ class Updates extends Component {
           <div style={{ marginTop: "20px", marginBottom: "20px" }}>
             {toggleActive && (
               <div
-                className="alert"
+                className="alert hoveralert"
                 role="alert"
                 style={{
                   marginBottom: "5px",
@@ -207,23 +212,15 @@ class Updates extends Component {
                   cursor: "pointer",
                 }}
               >
-                <h6
-                  className="align-middle"
-                  style={{ fontSize: 12, color: "#3a3838" }}
-                >
-                  <h6 style={{ fontSize: 12, color: "#3a3838" }}>
-                    NEW! Added separate page for every State/UT. Select any
-                    State/UT below.
-                  </h6>
-                  <span style={{ color: "#11789b" }}>ATTENTION</span>: We are
-                  now{" "}
-                  <a
-                    style={{ color: "navy" }}
-                    href="https://www.covidindiastats.com"
-                  >
-                    {" "}
-                    covidindiastats.com{" "}
-                  </a>
+                <h6>
+                  <FiberNewOutlinedIcon
+                    color="primary"
+                    style={{ fontSize: 20 }}
+                  />
+                </h6>
+                <h6 style={{ fontSize: 12, color: "#3a3838" }}>
+                  Tap on the icon of the updates below to visit your own
+                  State/UT
                 </h6>
               </div>
             )}
@@ -267,32 +264,50 @@ class Updates extends Component {
                             />
                           </span>
                         </h6>
-                        <h6
-                          style={{ fontSize: 12, color: "#3a3838" }}
-                        >{` ${Number(item.deltaconfirmed)} new case${
-                          Number(item.deltaconfirmed) > 1 ? "s" : ""
-                        }${
-                          Number(item.deltarecovered) > 0
-                            ? (Number(item.deltadeaths) ? ", " : " and ") +
-                              item.deltarecovered +
-                              " recovered"
-                            : ""
-                        }${
-                          Number(item.deltadeaths) > 0
-                            ? (Number(item.deltarecovered) ||
-                              Number(item.deltaconfirmed)
-                                ? " and "
-                                : ", ") +
-                              item.deltadeaths +
-                              " died"
-                            : ""
-                        } in ${item.state}`}</h6>
+                        <h6 style={{ fontSize: 12, color: "#3a3838" }}>
+                          {` ${Number(item.deltaconfirmed)} new case${
+                            Number(item.deltaconfirmed) > 1 ? "s" : ""
+                          }${
+                            Number(item.deltarecovered) > 0
+                              ? (Number(item.deltadeaths) ? ", " : " and ") +
+                                item.deltarecovered +
+                                " recovered"
+                              : ""
+                          }${
+                            Number(item.deltadeaths) > 0
+                              ? (Number(item.deltarecovered) ||
+                                Number(item.deltaconfirmed)
+                                  ? " and "
+                                  : ", ") +
+                                item.deltadeaths +
+                                " died"
+                              : ""
+                          } in ${item.state}`}
+                          {"  "}
+                          {
+                            <Link
+                              key={item.statecode}
+                              to={`/${item.statecode}`}
+                            >
+                              <LaunchRoundedIcon
+                                style={{
+                                  color: "peru",
+                                  background: "rgb(235, 224, 209)",
+                                  borderRadius: "3px",
+                                  padding: "2 2",
+                                  fontWeight: 700,
+                                  fontSize: 16,
+                                }}
+                              />
+                            </Link>
+                          }
+                        </h6>
                       </div>
                     )
                 )
               ) : (
                 <div
-                  className="alert"
+                  className="alert hoveralert"
                   role="alert"
                   style={{
                     marginBottom: "5px",
