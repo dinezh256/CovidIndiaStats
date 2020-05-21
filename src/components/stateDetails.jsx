@@ -1,16 +1,16 @@
 import React, { Component } from "react";
-import { indianstates } from "./API/index";
+import { indianstates, statesTestData, districtsDaily } from "./API/index";
 import * as Icon from "react-feather";
 import FacebookIcon from "@material-ui/icons/Facebook";
 import WhatsAppIcon from "@material-ui/icons/WhatsApp";
 import TwitterIcon from "@material-ui/icons/Twitter";
-import Tooltip, { TooltipProps } from "@material-ui/core/Tooltip";
-import { Theme, makeStyles } from "@material-ui/core/styles";
 import InfoTwoToneIcon from "@material-ui/icons/InfoTwoTone";
-import Switch from "react-switch";
-import { formatDate, formatDateAbsolute } from "../utils/common-functions";
 import QueryBuilderTwoToneIcon from "@material-ui/icons/QueryBuilderTwoTone";
+import Switch from "react-switch";
+import Tooltip, { TooltipProps } from "@material-ui/core/Tooltip";
 import { format } from "d3";
+import { Theme, makeStyles } from "@material-ui/core/styles";
+import { formatDate, formatDateAbsolute } from "../utils/common-functions";
 import parse from "html-react-parser";
 import {
   LineChart,
@@ -26,7 +26,10 @@ import {
 } from "recharts";
 import ReactGa from "react-ga";
 import PropTypes from "prop-types";
+import { Helmet } from "react-helmet";
 import Footer from "./footer";
+import ControlledExpansionPanels from "./expansionPanel";
+import DistrictPicker from "./districtPicker";
 let CreateReactClass = require("create-react-class");
 
 class StateDetails extends Component {
@@ -41,6 +44,10 @@ class StateDetails extends Component {
       totalStateDataLoaded: false,
       statesDailyData: [],
       statesDailyDataLoaded: false,
+      testData: [],
+      testDataLoaded: false,
+      districtsDaily: [],
+      districtsDailyLoaded: false,
       toggleSwitch: false,
       toggleConfirmed: true,
       toggleActive: false,
@@ -48,6 +55,11 @@ class StateDetails extends Component {
       toggleDeceased: false,
       viewTable: false,
       back: true,
+      sortConfirmed: true,
+      sortActive: false,
+      sortRecovered: false,
+      sortDeceased: false,
+      sortOrder: true,
     };
     this.onSwitch = this.onSwitch.bind(this);
     this.onClickConfirmed = this.onClickConfirmed.bind(this);
@@ -56,6 +68,11 @@ class StateDetails extends Component {
     this.onClickDeceased = this.onClickDeceased.bind(this);
     this.onViewTable = this.onViewTable.bind(this);
     this.onBack = this.onBack.bind(this);
+    this.onSortConfirmed = this.onSortConfirmed.bind(this);
+    this.onSortActive = this.onSortActive.bind(this);
+    this.onSortRecovered = this.onSortRecovered.bind(this);
+    this.onSortDeceased = this.onSortDeceased.bind(this);
+    this.handleSortOrder = this.handleSortOrder.bind(this);
   }
 
   onSwitch(toggleSwitch) {
@@ -83,20 +100,102 @@ class StateDetails extends Component {
     this.setState({ back });
   }
 
+  onSortConfirmed({ sortConfirmed }) {
+    this.setState({ sortConfirmed });
+  }
+
+  onSortActive({ sortActive }) {
+    this.setState({ sortActive });
+  }
+
+  onSortRecovered({ sortRecovered }) {
+    this.setState({ sortRecovered });
+  }
+
+  onSortDeceased({ sortDeceased }) {
+    this.setState({ sortDeceased });
+  }
+
+  handleSortOrder({ sortOrder }) {
+    this.setState({ sortOrder });
+  }
+
+  handleDistrictChange = async (district) => {
+    const stateFullName = {
+      AP: "Andhra Pradesh",
+      AN: "Andaman and Nicobar Islands",
+      AR: "Arunachal Pradesh",
+      AS: "Assam",
+      BR: "Bihar",
+      CH: "Chandigarh",
+      CT: "Chhattisgarh",
+      DN: "Dadra and Nagar Haveli and Daman and Diu",
+      DL: "Delhi",
+      GA: "Goa",
+      GJ: "Gujarat",
+      HP: "Himachal Pradesh",
+      HR: "Haryana",
+      JH: "Jharkhand",
+      JK: "Jammu and Kashmir",
+      KA: "Karnataka",
+      KL: "Kerala",
+      LA: "Ladakh",
+      LD: "Lakshadweep",
+      MH: "Maharashtra",
+      ML: "Meghalaya",
+      MN: "Manipur",
+      MP: "Madhya Pradesh",
+      MZ: "Mizoram",
+      NL: "Nagaland",
+      OR: "Odisha",
+      PB: "Punjab",
+      PY: "Puducherry",
+      RJ: "Rajasthan",
+      SK: "Sikkim",
+      TG: "Telangana",
+      TN: "Tamil Nadu",
+      TR: "Tripura",
+      UP: "Uttar Pradesh",
+      UT: "Uttarakhand",
+      WB: "West Bengal",
+      UN: "State Unassigned",
+    };
+    const requiredDistrictData = this.state.districtsDaily[
+      stateFullName[this.props.match.params.stateid.toUpperCase()]
+    ][district];
+
+    this.setState({
+      requiredDistrictData: requiredDistrictData,
+      requiredDistrict: district,
+      districtHide: true,
+    });
+  };
+
   async componentDidMount() {
+    const fetchedStates = await indianstates();
+    this.setState({ stateData: fetchedStates, isLoaded: true });
+
+    const requiredData = [];
+    fetchedStates.map((item) => {
+      if (this.props.match.params.stateid.toUpperCase() === item.statecode)
+        requiredData.push(item.districtData);
+    });
+    this.setState({ requiredData });
+
+    const fetchedStateTestData = await statesTestData();
+    this.setState({ testData: fetchedStateTestData, testDataLoaded: true });
+
+    const fetchedDistrictsDaily = await districtsDaily();
+    this.setState({
+      districtsDaily: fetchedDistrictsDaily,
+      districtsDailyLoaded: true,
+    });
+
     fetch("https://api.covid19india.org/zones.json").then((res) =>
       res.json().then((json) => {
         this.setState({ zones: json.zones, zonesLoaded: true });
       })
     );
-    const fetchedStates = await indianstates();
-    this.setState({ stateData: fetchedStates, isLoaded: true });
-    const requiredData = [];
-    fetchedStates.map((item) => {
-      if (this.props.match.params.stateid === item.statecode)
-        requiredData.push(item.districtData);
-    });
-    this.setState({ requiredData });
 
     fetch("https://api.covid19india.org/data.json").then((res) =>
       res.json().then((json) => {
@@ -127,6 +226,11 @@ class StateDetails extends Component {
       requiredData,
       statesDailyData,
       statesDailyDataLoaded,
+      testData,
+      testDataLoaded,
+      districtsDaily,
+      districtsDailyLoaded,
+      requiredDistrictData,
       toggleConfirmed,
       toggleActive,
       toggleRecovered,
@@ -134,7 +238,119 @@ class StateDetails extends Component {
       toggleSwitch,
       viewTable,
       back,
+      sortConfirmed,
+      sortActive,
+      sortRecovered,
+      sortDeceased,
+      sortOrder,
     } = this.state;
+
+    const stateFullName = {
+      AP: "Andhra Pradesh",
+      AN: "Andaman and Nicobar Islands",
+      AR: "Arunachal Pradesh",
+      AS: "Assam",
+      BR: "Bihar",
+      CH: "Chandigarh",
+      CT: "Chhattisgarh",
+      DN: "Dadra and Nagar Haveli and Daman and Diu",
+      DL: "Delhi",
+      GA: "Goa",
+      GJ: "Gujarat",
+      HP: "Himachal Pradesh",
+      HR: "Haryana",
+      JH: "Jharkhand",
+      JK: "Jammu and Kashmir",
+      KA: "Karnataka",
+      KL: "Kerala",
+      LA: "Ladakh",
+      LD: "Lakshadweep",
+      MH: "Maharashtra",
+      ML: "Meghalaya",
+      MN: "Manipur",
+      MP: "Madhya Pradesh",
+      MZ: "Mizoram",
+      NL: "Nagaland",
+      OR: "Odisha",
+      PB: "Punjab",
+      PY: "Puducherry",
+      RJ: "Rajasthan",
+      SK: "Sikkim",
+      TG: "Telangana",
+      TN: "Tamil Nadu",
+      TR: "Tripura",
+      UP: "Uttar Pradesh",
+      UT: "Uttarakhand",
+      WB: "West Bengal",
+      UN: "State Unassigned",
+    };
+
+    const months = [
+      "",
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+
+    if (requiredDistrictData) {
+      for (let i = 0; i < requiredDistrictData.length; i++) {
+        requiredDistrictData[i].newDate =
+          String(requiredDistrictData[i].date.split(/\-/)[2]) +
+          " " +
+          String(months[Number(requiredDistrictData[i].date.split(/\-/)[1])]);
+      }
+    }
+
+    const requiredDistricts = [];
+    if (districtsDailyLoaded) {
+      requiredDistricts.push(
+        Object.keys(
+          districtsDaily[
+            stateFullName[this.props.match.params.stateid.toUpperCase()]
+          ]
+        )
+      );
+    }
+
+    if (requiredData) {
+      if (sortConfirmed) {
+        requiredData[0].sort(function (x, y) {
+          return sortOrder
+            ? Number(y.confirmed) - Number(x.confirmed)
+            : Number(x.confirmed) - Number(y.confirmed);
+        });
+      }
+      if (sortActive) {
+        requiredData[0].sort(function (x, y) {
+          return !sortOrder
+            ? Number(y.active) - Number(x.active)
+            : Number(x.active) - Number(y.active);
+        });
+      }
+      if (sortRecovered) {
+        requiredData[0].sort(function (x, y) {
+          return !sortOrder
+            ? Number(y.recovered) - Number(x.recovered)
+            : Number(x.recovered) - Number(y.recovered);
+        });
+      }
+      if (sortDeceased) {
+        requiredData[0].sort(function (x, y) {
+          return !sortOrder
+            ? Number(y.deceased) - Number(x.deceased)
+            : Number(x.deceased) - Number(y.deceased);
+        });
+      }
+    }
 
     const CustomTooltip = CreateReactClass({
       propTypes: {
@@ -161,9 +377,16 @@ class StateDetails extends Component {
       },
     });
 
+    for (let i = 0; i < statesDailyData.length; i++) {
+      statesDailyData[i].newdate =
+        statesDailyData[i].date.split(/\-/)[0] +
+        " " +
+        statesDailyData[i].date.split(/\-/)[1];
+    }
+
     const confirmedTopDistricts = [];
     stateData.map((item) => {
-      if (this.props.match.params.stateid === item.statecode)
+      if (this.props.match.params.stateid.toUpperCase() === item.statecode)
         confirmedTopDistricts.push(item.districtData);
     });
     if (isLoaded && toggleConfirmed) {
@@ -173,7 +396,7 @@ class StateDetails extends Component {
     }
     const activeTopDistricts = [];
     stateData.map((item) => {
-      if (this.props.match.params.stateid === item.statecode)
+      if (this.props.match.params.stateid.toUpperCase() === item.statecode)
         activeTopDistricts.push(item.districtData);
     });
     if (isLoaded && toggleActive) {
@@ -184,7 +407,7 @@ class StateDetails extends Component {
 
     const recoveredTopDistricts = [];
     stateData.map((item) => {
-      if (this.props.match.params.stateid === item.statecode)
+      if (this.props.match.params.stateid.toUpperCase() === item.statecode)
         recoveredTopDistricts.push(item.districtData);
     });
     if (isLoaded && toggleRecovered) {
@@ -195,7 +418,7 @@ class StateDetails extends Component {
 
     const deceasedTopDistricts = [];
     stateData.map((item) => {
-      if (this.props.match.params.stateid === item.statecode)
+      if (this.props.match.params.stateid.toUpperCase() === item.statecode)
         deceasedTopDistricts.push(item.districtData);
     });
     if (isLoaded && toggleDeceased) {
@@ -207,7 +430,7 @@ class StateDetails extends Component {
     const requiredStateTotalData = [];
     if (totalStateDataLoaded) {
       totalStateData.map((item) => {
-        if (this.props.match.params.stateid === item.statecode)
+        if (this.props.match.params.stateid.toUpperCase() === item.statecode)
           requiredStateTotalData.push(item);
       });
     }
@@ -223,7 +446,7 @@ class StateDetails extends Component {
     const date = [];
     if (statesDailyDataLoaded) {
       statesDailyData.map((item) => {
-        if (item.status === "Confirmed") date.push(item.date);
+        if (item.status === "Confirmed") date.push(item.newdate);
       });
     }
 
@@ -249,7 +472,7 @@ class StateDetails extends Component {
     const sparklineTotalConfirmedData = [];
     if (statesDailyDataLoaded) {
       statesDailyData.map((item) => {
-        if (item.status == "Confirmed")
+        if (item.status === "Confirmed")
           sparklineTotalConfirmedData.push(
             Number(item[this.props.match.params.stateid.toLowerCase()])
           );
@@ -260,12 +483,12 @@ class StateDetails extends Component {
 
     if (statesDailyDataLoaded) {
       statesDailyData.map((item) => {
-        if (item.status == "Confirmed")
+        if (item.status === "Confirmed")
           barDailyConfirmedData.push({
             stateid: Number(
               item[this.props.match.params.stateid.toLowerCase()]
             ),
-            date: item.date,
+            date: item.newdate,
             label: Number(item[this.props.match.params.stateid.toLowerCase()]),
           });
       });
@@ -316,12 +539,12 @@ class StateDetails extends Component {
     const lineTotalConfirmedData = [];
     if (statesDailyDataLoaded) {
       statesDailyData.map((item) => {
-        if (item.status == "Confirmed")
+        if (item.status === "Confirmed")
           lineTotalConfirmedData.push({
             stateid: Number(
               item[this.props.match.params.stateid.toLowerCase()]
             ),
-            date: item.date,
+            date: item.newdate,
           });
       });
     }
@@ -334,7 +557,7 @@ class StateDetails extends Component {
     const sparklineDailyRecoveredData = [];
     if (statesDailyDataLoaded) {
       statesDailyData.map((item) => {
-        if (item.status == "Recovered")
+        if (item.status === "Recovered")
           sparklineDailyRecoveredData.push(
             Number(item[this.props.match.params.stateid.toLowerCase()])
           );
@@ -344,12 +567,12 @@ class StateDetails extends Component {
     const barDailyRecoveredData = [];
     if (statesDailyDataLoaded) {
       statesDailyData.map((item) => {
-        if (item.status == "Recovered")
+        if (item.status === "Recovered")
           barDailyRecoveredData.push({
             stateid: Number(
               item[this.props.match.params.stateid.toLowerCase()]
             ),
-            date: item.date,
+            date: item.newdate,
             label: Number(item[this.props.match.params.stateid.toLowerCase()]),
           });
       });
@@ -397,12 +620,12 @@ class StateDetails extends Component {
     const lineTotalRecoveredData = [];
     if (statesDailyDataLoaded) {
       statesDailyData.map((item) => {
-        if (item.status == "Recovered")
+        if (item.status === "Recovered")
           lineTotalRecoveredData.push({
             stateid: Number(
               item[this.props.match.params.stateid.toLowerCase()]
             ),
-            date: item.date,
+            date: item.newdate,
           });
       });
     }
@@ -415,7 +638,7 @@ class StateDetails extends Component {
     const sparklineDailyDeceasedData = [];
     if (statesDailyDataLoaded) {
       statesDailyData.map((item) => {
-        if (item.status == "Deceased")
+        if (item.status === "Deceased")
           sparklineDailyDeceasedData.push(
             Number(item[this.props.match.params.stateid.toLowerCase()])
           );
@@ -439,12 +662,12 @@ class StateDetails extends Component {
     const barDailyDeceasedData = [];
     if (statesDailyDataLoaded) {
       statesDailyData.map((item) => {
-        if (item.status == "Deceased")
+        if (item.status === "Deceased")
           barDailyDeceasedData.push({
             stateid: Number(
               item[this.props.match.params.stateid.toLowerCase()]
             ),
-            date: item.date,
+            date: item.newdate,
             label: Number(item[this.props.match.params.stateid.toLowerCase()]),
           });
       });
@@ -496,12 +719,12 @@ class StateDetails extends Component {
     const lineTotalDeceasedData = [];
     if (statesDailyDataLoaded) {
       statesDailyData.map((item) => {
-        if (item.status == "Deceased")
+        if (item.status === "Deceased")
           lineTotalDeceasedData.push({
             stateid: Number(
               item[this.props.match.params.stateid.toLowerCase()]
             ),
-            date: item.date,
+            date: item.newdate,
           });
       });
     }
@@ -584,44 +807,139 @@ class StateDetails extends Component {
     const max = Math.max(maxConfirmed, maxActive, maxRecovered, maxDeceased);
     const min = Math.min(minConfirmed, minActive, minRecovered, minDeceased);
 
-    const stateFullName = {
-      AP: "Andhra Pradesh",
-      AN: "Andaman and Nicobar Islands",
-      AR: "Arunachal Pradesh",
-      AS: "Assam",
-      BR: "Bihar",
-      CH: "Chandigarh",
-      CT: "Chattisgarh",
-      DN: "Dadra & Nagar Valley, Daman & Diu",
-      DL: "Delhi",
-      GA: "Goa",
-      GJ: "Gujarat",
-      HP: "Himachal Pradesh",
-      HR: "Haryana",
-      JH: "Jharkhand",
-      JK: "Jammu & Kashmir",
-      KA: "Karnataka",
-      KL: "Kerala",
-      LA: "Ladakh",
-      LD: "Lakshadweep",
-      MH: "Maharashtra",
-      ML: "Meghalaya",
-      MN: "Manipur",
-      MP: "Madhya Pradesh",
-      MZ: "Mizoram",
-      NL: "Nagaland",
-      OR: "Odisha",
-      PB: "Punjab",
-      PY: "Puducherry",
-      RJ: "Rajasthan",
-      SK: "Sikkim",
-      TG: "Telangana",
-      TN: "Tamil Nadu",
-      TR: "Tripura",
-      UP: "Uttar Pradesh",
-      UT: "Uttarakhand",
-      WB: "West Bengal",
-    };
+    const requiredStateTestData = [];
+    testData.map((item) => {
+      if (
+        item.state ===
+          stateFullName[this.props.match.params.stateid.toUpperCase()] &&
+        this.props.match.params.stateid.toUpperCase() !== "LD"
+      )
+        requiredStateTestData.push(item);
+    });
+
+    for (let i = 0; i < requiredStateTestData.length; i++) {
+      requiredStateTestData[i].date =
+        requiredStateTestData[i].updatedon.split(/\//)[0] +
+        " " +
+        months[Number(requiredStateTestData[i].updatedon.split(/\//)[1])];
+    }
+
+    const expansionPanelData = [];
+    const expansionPanelDataPopulation = [];
+
+    for (let i = requiredStateTestData.length - 1; i >= 0; i--) {
+      if (requiredStateTestData[i].testspermillion) {
+        expansionPanelData.push(requiredStateTestData[i]);
+        break;
+      }
+    }
+    for (let i = requiredStateTestData.length - 1; i >= 0; i--) {
+      if (requiredStateTestData[i].populationncp2019projection) {
+        expansionPanelDataPopulation.push(
+          requiredStateTestData[i].populationncp2019projection
+        );
+        break;
+      }
+    }
+
+    const cumulativeTestDataArray = [];
+    const cumulativeTestDataDateArray = [];
+
+    requiredStateTestData.map((item) => {
+      cumulativeTestDataArray.push(Number(item.totaltested));
+      cumulativeTestDataDateArray.push(item.date);
+    });
+
+    const dateFormattedTestData = [];
+
+    for (let i = 0; i < date.length; i++) {
+      if (cumulativeTestDataDateArray.includes(date[i])) {
+        const index = cumulativeTestDataDateArray.indexOf(date[i]);
+        if (cumulativeTestDataArray[index]) {
+          dateFormattedTestData.push({
+            totaltested: cumulativeTestDataArray[index],
+            date: date[i],
+          });
+        } else
+          dateFormattedTestData.push({
+            date: date[i],
+          });
+      } else dateFormattedTestData.push({ date: date[i] });
+    }
+
+    const formattedTestData = [];
+    for (let i = 0; i < date.length; i++) {
+      if (cumulativeTestDataDateArray.includes(date[i])) {
+        const index = cumulativeTestDataDateArray.indexOf(date[i]);
+        formattedTestData.push({
+          totaltested: cumulativeTestDataArray[index],
+          date: date[i],
+        });
+      } else formattedTestData.push({ totaltested: 0, date: date[i] });
+    }
+
+    const dailyFormattedTestData = [];
+    let previousData = 0;
+
+    for (let i = 0; i < formattedTestData.length; i++) {
+      if (i === 0)
+        dailyFormattedTestData.push({
+          dailytested: formattedTestData[i].totaltested,
+          date: formattedTestData[i].date,
+        });
+      else {
+        if (
+          formattedTestData[i].totaltested &&
+          formattedTestData[i - 1].totaltested
+        ) {
+          dailyFormattedTestData.push({
+            dailytested:
+              formattedTestData[i].totaltested -
+              formattedTestData[i - 1].totaltested,
+            date: formattedTestData[i].date,
+          });
+          previousData = formattedTestData[i].totaltested;
+        } else if (
+          formattedTestData[i].totaltested === 0 &&
+          formattedTestData[i - 1].totaltested === 0
+        ) {
+          dailyFormattedTestData.push({
+            dailytested: 0,
+            date: formattedTestData[i].date,
+          });
+        } else if (
+          formattedTestData[i].totaltested !== 0 &&
+          formattedTestData[i - 1].totaltested === 0
+        ) {
+          dailyFormattedTestData.push({
+            dailytested: formattedTestData[i].totaltested - previousData,
+            date: formattedTestData[i].date,
+          });
+          previousData = formattedTestData[i].totaltested;
+        } else if (
+          formattedTestData[i].totaltested === 0 &&
+          formattedTestData[i - 1].totaltested !== 0
+        ) {
+          dailyFormattedTestData.push({
+            dailytested: 0,
+            date: formattedTestData[i].date,
+          });
+        }
+      }
+    }
+
+    const lastTotalTestedData = [];
+    for (let i = dateFormattedTestData.length - 1; i >= 0; i--)
+      if (
+        Number(dateFormattedTestData[i].totaltested) !== 0 &&
+        dateFormattedTestData[i].totaltested !== undefined
+      ) {
+        lastTotalTestedData.push({
+          totaltested: dateFormattedTestData[i].totaltested,
+          date: dateFormattedTestData[i].date,
+        });
+        break;
+      }
 
     const useStylesBootstrap = makeStyles((theme: Theme) => ({
       arrow: {
@@ -641,12 +959,15 @@ class StateDetails extends Component {
     }
 
     function commaSeperated(x) {
-      x = x.toString();
-      let lastThree = x.substring(x.length - 3);
-      let otherNumbers = x.substring(0, x.length - 3);
-      if (otherNumbers !== "") lastThree = "," + lastThree;
-      let res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
-      return res;
+      if (x !== undefined) {
+        x = x.toString();
+        let lastThree = x.substring(x.length - 3);
+        let otherNumbers = x.substring(0, x.length - 3);
+        if (otherNumbers !== "") lastThree = "," + lastThree;
+        let res =
+          otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
+        return res;
+      } else return 0;
     }
 
     function districtZone(district) {
@@ -679,33 +1000,45 @@ class StateDetails extends Component {
       isLoaded &&
       zonesLoaded &&
       totalStateDataLoaded &&
-      statesDailyDataLoaded
+      statesDailyDataLoaded &&
+      testDataLoaded
     ) {
       return (
         <React.Fragment>
           <div className="container">
-            <div className="row">
-              <div className="col" style={{ marginTop: 12 }}>
-                <h4
+            <Helmet>
+              <title>
+                {stateFullName[this.props.match.params.stateid.toUpperCase()]}{" "}
+                Covid Dashboard
+              </title>
+              <meta
+                name="description"
+                content={`Track the spread of Coronavirus (COVID-19) in ${
+                  stateFullName[this.props.match.params.stateid.toUpperCase()]
+                }`}
+              />
+            </Helmet>
+            <div className="row fadeInUp" style={{ animationDelay: "0.4s" }}>
+              <div className="col-7" style={{ marginTop: 12 }}>
+                <h5
                   style={{
                     fontFamily: "notosans",
                     textTransform: "uppercase",
                     textAlign: "left",
-                    color: "rgba(62, 77, 163, 0.8)",
+                    color: "rgb(226, 42, 79)",
                   }}
                 >
-                  &nbsp;{stateFullName[this.props.match.params.stateid]}
-                </h4>
+                  {stateFullName[this.props.match.params.stateid.toUpperCase()]}
+                </h5>
               </div>
-              <div className="col" style={{ marginTop: 12 }}>
+              <div className="col-5" style={{ marginTop: 12 }}>
                 <h6
-                  className="float-middle"
                   style={{
                     fontFamily: "notosans",
                     textTransform: "uppercase",
                     textAlign: "right",
                     color: "rgba(62, 77, 163, 0.8)",
-                    fontSize: 12,
+                    fontSize: 10,
                   }}
                 >
                   <span style={{ verticalAlign: "0.1rem", cursor: "pointer" }}>
@@ -729,9 +1062,34 @@ class StateDetails extends Component {
 
               <div
                 className="col fadeInUp"
-                style={{ alignContent: "center", animationDelay: "0.1s" }}
+                style={{ alignContent: "center", animationDelay: "0.6s" }}
               >
-                <table className="table-borderless table table-sm">
+                <div className="row" style={{ marginBottom: -5 }}>
+                  <div className="col" style={{ textAlign: "left" }}>
+                    <h6
+                      style={{ fontSize: 9, marginLeft: 5, color: "#3e4da3" }}
+                    >
+                      Total samples tested:{" "}
+                      {lastTotalTestedData[0] === undefined
+                        ? "0"
+                        : commaSeperated(lastTotalTestedData[0].totaltested)}
+                    </h6>
+                  </div>
+                  <div className="col" style={{ textAlign: "right" }}>
+                    <h6
+                      style={{ fontSize: 9, marginRight: 5, color: "#3e4da3" }}
+                    >
+                      {lastTotalTestedData[0] !== undefined
+                        ? `as of ${lastTotalTestedData[0].date}`
+                        : ""}
+                    </h6>
+                  </div>
+                </div>
+
+                <table
+                  className="table-borderless table table-sm fadeInUp"
+                  style={{ animationDelay: "0.4s" }}
+                >
                   <tr className="tr">
                     <td
                       className="td stateTable"
@@ -858,11 +1216,13 @@ class StateDetails extends Component {
                           color: "rgba(255, 68, 106, 0.7)",
                         }}
                       >
-                        {(
-                          (requiredStateTotalData[0].active /
-                            requiredStateTotalData[0].confirmed) *
-                          100
-                        ).toFixed(2)}
+                        {Number(requiredStateTotalData[0].confirmed)
+                          ? (
+                              (requiredStateTotalData[0].active /
+                                requiredStateTotalData[0].confirmed) *
+                              100
+                            ).toFixed(2)
+                          : "0"}
                         %
                       </h6>
                       <h5 style={{ color: "#ff446a" }}>
@@ -1100,8 +1460,10 @@ class StateDetails extends Component {
                 <div className="row">
                   <div
                     className="col-6 fadeInUp"
-                    style={{ transitionDelay: "0.3s" }}
+                    style={{ transitionDelay: "0.9s" }}
                   >
+                    {<br id="line2" />}
+                    {<br id="line2" />}
                     {isLoaded && toggleConfirmed ? (
                       <div>
                         <h6
@@ -1120,23 +1482,23 @@ class StateDetails extends Component {
                                 style={{
                                   color: `${districtZone(district.district)}`,
                                   fontWeight: 600,
-                                  fontSize: 14,
+                                  fontSize: 12,
                                   fontFamily: "notosans",
                                 }}
                               >
                                 {commaSeperated(district.confirmed)}{" "}
-                                <span style={{ fontSize: 12 }}>
+                                <span style={{ fontSize: 11 }}>
                                   {district.district}
                                 </span>
                                 &nbsp;
                                 <span
                                   style={{
                                     color: "rgba(66, 179, 244, 0.6)",
-                                    fontSize: 12,
+                                    fontSize: 11,
                                   }}
                                 >
                                   {district.delta.confirmed ? (
-                                    <Icon.ArrowUp size={13} />
+                                    <Icon.ArrowUp size={12} />
                                   ) : (
                                     ""
                                   )}
@@ -1165,12 +1527,12 @@ class StateDetails extends Component {
                                 style={{
                                   color: `${districtZone(district.district)}`,
                                   fontWeight: 600,
-
+                                  fontSize: 12,
                                   fontFamily: "notosans",
                                 }}
                               >
                                 {commaSeperated(district.active)}{" "}
-                                <span style={{ fontSize: 12 }}>
+                                <span style={{ fontSize: 11 }}>
                                   {district.district}
                                 </span>
                               </li>
@@ -1195,23 +1557,23 @@ class StateDetails extends Component {
                                 style={{
                                   color: `${districtZone(district.district)}`,
                                   fontWeight: 600,
-                                  fontSize: 14,
+                                  fontSize: 12,
                                   fontFamily: "notosans",
                                 }}
                               >
                                 {commaSeperated(district.recovered)}{" "}
-                                <span style={{ fontSize: 12 }}>
+                                <span style={{ fontSize: 11 }}>
                                   {district.district}
                                 </span>
                                 &nbsp;
                                 <span
                                   style={{
                                     color: "rgba(88, 189, 88, 0.9)",
-                                    fontSize: 12,
+                                    fontSize: 11,
                                   }}
                                 >
                                   {district.delta.recovered ? (
-                                    <Icon.ArrowUp size={13} />
+                                    <Icon.ArrowUp size={12} />
                                   ) : (
                                     ""
                                   )}
@@ -1241,22 +1603,22 @@ class StateDetails extends Component {
                                   color: `${districtZone(district.district)}`,
                                   fontWeight: 600,
                                   fontFamily: "notosans",
-                                  fontSize: 14,
+                                  fontSize: 12,
                                 }}
                               >
                                 {district.deceased}{" "}
-                                <span style={{ fontSize: 12 }}>
+                                <span style={{ fontSize: 11 }}>
                                   {district.district}
                                 </span>
                                 &nbsp;
                                 <span
                                   style={{
                                     color: "rgba(74, 79, 83, 0.8)",
-                                    fontSize: 12,
+                                    fontSize: 11,
                                   }}
                                 >
                                   {district.delta.deceased ? (
-                                    <Icon.ArrowUp size={13} />
+                                    <Icon.ArrowUp size={12} />
                                   ) : (
                                     ""
                                   )}
@@ -1451,6 +1813,28 @@ class StateDetails extends Component {
                 </div>
                 <div className="w-100"></div>
                 <div className="row">
+                  <div
+                    className="col fadeInUp"
+                    style={{
+                      paddingLeft: "3.2%",
+                      paddingRight: "3.2%",
+                      animationDelay: "1s",
+                    }}
+                  >
+                    <ControlledExpansionPanels
+                      data={expansionPanelData}
+                      stateData={requiredStateTotalData}
+                      state={
+                        stateFullName[
+                          this.props.match.params.stateid.toUpperCase()
+                        ]
+                      }
+                      population={expansionPanelDataPopulation}
+                    />
+                  </div>
+                </div>
+                <div className="w-100"></div>
+                <div className="row fadeInUp" style={{ animationDelay: "1s" }}>
                   <div className="col">
                     {back && (
                       <h6
@@ -1471,70 +1855,6 @@ class StateDetails extends Component {
                       </h6>
                     )}
                   </div>
-                  <div className="col">
-                    <div className="row">
-                      <h6 className="likeShare">Like it? Share</h6>
-                      <h6
-                        className="shareBtn"
-                        onClick={() => {
-                          ReactGa.event({
-                            category: "FB Share",
-                            action: "fb clicked",
-                          });
-                        }}
-                      >
-                        <a
-                          href={`https://www.facebook.com/sharer/sharer.php?u=covidindiastats.com/${this.props.match.params.stateid}`}
-                          onClick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600');return false;"
-                          target="_blank"
-                          title="Share COVIDINDIASTATS on Facebook"
-                          style={{ color: "rgb(59, 89, 152)" }}
-                        >
-                          <FacebookIcon size="inherit" />
-                        </a>
-                      </h6>
-
-                      <h6
-                        className="shareBtn"
-                        onClick={() => {
-                          ReactGa.event({
-                            category: "WA Share",
-                            action: "wa clicked",
-                          });
-                        }}
-                      >
-                        <a
-                          href={`whatsapp://send?text=covidindiastats.com/${this.props.match.params.stateid}`}
-                          onClick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600');return false;"
-                          target="_blank"
-                          title="Share COVIDINDIASTATS on Whatsapp"
-                          style={{ color: "#25D366" }}
-                        >
-                          <WhatsAppIcon size="inherit" />
-                        </a>
-                      </h6>
-
-                      <h6
-                        className="shareBtn"
-                        onClick={() => {
-                          ReactGa.event({
-                            category: "Twitter Share",
-                            action: "T clicked",
-                          });
-                        }}
-                      >
-                        <a
-                          href={`https://twitter.com/share?url=covidindiastats.com/${this.props.match.params.stateid}`}
-                          onClick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600');return false;"
-                          target="_blank"
-                          title="Share COVIDINDIASTATS on Twitter"
-                          style={{ color: "#00ACEE" }}
-                        >
-                          <TwitterIcon size="inherit" />
-                        </a>
-                      </h6>
-                    </div>
-                  </div>
                 </div>
                 <div className="w-100"></div>
                 <div className="col">
@@ -1547,7 +1867,7 @@ class StateDetails extends Component {
                             this.setState({ viewTable: false, back: true });
                           }}
                         >
-                          BACK{" "}
+                          HIDE ALL DISTRICTS{" "}
                           <Icon.ArrowUpCircle
                             size={12}
                             style={{ verticalAlign: "-0.1rem" }}
@@ -1557,7 +1877,7 @@ class StateDetails extends Component {
                       <div className="w-100"></div>
                       <div
                         className="row fadeInUp"
-                        style={{ transitionDelay: "0.1s" }}
+                        style={{ animationDelay: "0.1s" }}
                       >
                         <table
                           className="table table-sm table-striped table-borderless"
@@ -1565,7 +1885,6 @@ class StateDetails extends Component {
                             minWidth: "290px",
                             tableLayout: "fixed",
                             width: "100%",
-                            marginBottom: "-5px",
                           }}
                           align="center"
                         >
@@ -1589,6 +1908,15 @@ class StateDetails extends Component {
                                 className="th sticky-top text-info smallRow"
                                 style={{ textAlign: "center" }}
                                 id="line1"
+                                onClick={() =>
+                                  this.setState({
+                                    sortConfirmed: true,
+                                    sortActive: false,
+                                    sortRecovered: false,
+                                    sortDeceased: false,
+                                    sortOrder: !sortOrder,
+                                  })
+                                }
                               >
                                 CNFRMD
                               </th>
@@ -1596,6 +1924,15 @@ class StateDetails extends Component {
                                 className="th sticky-top text-info"
                                 style={{ textAlign: "center" }}
                                 id="line2"
+                                onClick={() =>
+                                  this.setState({
+                                    sortConfirmed: true,
+                                    sortActive: false,
+                                    sortRecovered: false,
+                                    sortDeceased: false,
+                                    sortOrder: !sortOrder,
+                                  })
+                                }
                               >
                                 CONFIRMED
                               </th>
@@ -1606,6 +1943,15 @@ class StateDetails extends Component {
                                   textAlign: "center",
                                 }}
                                 id="line1"
+                                onClick={() =>
+                                  this.setState({
+                                    sortConfirmed: false,
+                                    sortActive: true,
+                                    sortRecovered: false,
+                                    sortDeceased: false,
+                                    sortOrder: !sortOrder,
+                                  })
+                                }
                               >
                                 ACTIVE
                               </th>
@@ -1616,6 +1962,15 @@ class StateDetails extends Component {
                                   textAlign: "center",
                                 }}
                                 id="line2"
+                                onClick={() =>
+                                  this.setState({
+                                    sortConfirmed: false,
+                                    sortActive: true,
+                                    sortRecovered: false,
+                                    sortDeceased: false,
+                                    sortOrder: !sortOrder,
+                                  })
+                                }
                               >
                                 ACTIVE
                               </th>
@@ -1623,6 +1978,15 @@ class StateDetails extends Component {
                                 className="th sticky-top text-success smallRow"
                                 style={{ textAlign: "center" }}
                                 id="line1"
+                                onClick={() =>
+                                  this.setState({
+                                    sortConfirmed: false,
+                                    sortActive: false,
+                                    sortRecovered: true,
+                                    sortDeceased: false,
+                                    sortOrder: !sortOrder,
+                                  })
+                                }
                               >
                                 RCVRD
                               </th>
@@ -1630,6 +1994,15 @@ class StateDetails extends Component {
                                 className="th sticky-top text-success"
                                 style={{ textAlign: "center" }}
                                 id="line2"
+                                onClick={() =>
+                                  this.setState({
+                                    sortConfirmed: false,
+                                    sortActive: false,
+                                    sortRecovered: true,
+                                    sortDeceased: false,
+                                    sortOrder: !sortOrder,
+                                  })
+                                }
                               >
                                 RECOVERED
                               </th>
@@ -1637,6 +2010,15 @@ class StateDetails extends Component {
                                 className="th sticky-top text-secondary smallRow"
                                 id="line1"
                                 style={{ textAlign: "center" }}
+                                onClick={() =>
+                                  this.setState({
+                                    sortConfirmed: false,
+                                    sortActive: false,
+                                    sortRecovered: false,
+                                    sortDeceased: true,
+                                    sortOrder: !sortOrder,
+                                  })
+                                }
                               >
                                 DEATHS
                               </th>
@@ -1644,6 +2026,15 @@ class StateDetails extends Component {
                                 className="th sticky-top text-secondary"
                                 id="line2"
                                 style={{ textAlign: "center", width: "70px" }}
+                                onClick={() =>
+                                  this.setState({
+                                    sortConfirmed: false,
+                                    sortActive: false,
+                                    sortRecovered: false,
+                                    sortDeceased: true,
+                                    sortOrder: !sortOrder,
+                                  })
+                                }
                               >
                                 DECEASED
                               </th>
@@ -1773,17 +2164,100 @@ class StateDetails extends Component {
                       </div>
                     </React.Fragment>
                   ) : (
-                    ""
+                    <div className="row" style={{ alignContent: "center" }}>
+                      <div
+                        align="center"
+                        className="col-6 fadeInUp"
+                        style={{ animationDelay: "0.1s" }}
+                      >
+                        <h6 className="feedbackBtn">
+                          <a
+                            href="https://forms.gle/N6V7VTgcmBtxkU4Q9"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            title="Provide us your valuable feedback"
+                            style={{ color: "rgb(59, 89, 152)" }}
+                          >
+                            <Icon.FileText size={19} />{" "}
+                          </a>
+                        </h6>
+                        <h6 className="feedbackBtn">Feedback</h6>
+                      </div>
+                      <div
+                        className="col-6 fadeInUp"
+                        style={{ animationDelay: "0.1s" }}
+                      >
+                        <div className="row shareBtn">
+                          <a
+                            href={`https://www.facebook.com/sharer/sharer.php?u=covidindiastats.com/${this.props.match.params.stateid.toUpperCase()}`}
+                            onClick={() => {
+                              ReactGa.event({
+                                category: "FB Share",
+                                action: "fb clicked",
+                              });
+                            }}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            title="Share COVID INDIA STATS on Facebook"
+                            style={{ color: "rgb(59, 89, 152)" }}
+                          >
+                            <FacebookIcon size="inherit" />
+                          </a>
+                          <a
+                            href={`whatsapp://send?text=covidindiastats.com/${this.props.match.params.stateid.toUpperCase()}`}
+                            onClick={() => {
+                              ReactGa.event({
+                                category: "WA Share",
+                                action: "wa clicked",
+                              });
+                            }}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            title="Share COVID INDIA STATS on Whatsapp"
+                            style={{ color: "#25D366" }}
+                          >
+                            <WhatsAppIcon size="inherit" />
+                          </a>
+                          <a
+                            href={`https://twitter.com/share?url=covidindiastats.com/${this.props.match.params.stateid.toUpperCase()}`}
+                            onClick={() => {
+                              ReactGa.event({
+                                category: "Twitter Share",
+                                action: "T clicked",
+                              });
+                            }}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            title="Share COVID INDIA STATS on Twitter"
+                            style={{ color: "#00ACEE" }}
+                          >
+                            <TwitterIcon size="inherit" />
+                          </a>
+                          <h6 className="likeShare">Like it, Share</h6>
+                        </div>
+                      </div>
+                    </div>
                   )}
                 </div>
+                <div className="w-100"></div>
+                <div className="row">
+                  <div className="col">
+                    <DistrictPicker
+                      districts={requiredDistricts[0]}
+                      isLoaded={districtsDailyLoaded}
+                      handleDistrictChange={this.handleDistrictChange}
+                    />
+                  </div>
+                </div>
               </div>
+
               <div className="col-sm">
                 <div className="row">
                   <div
                     className="col fadeInUp"
                     style={{
                       textAlign: "left",
-                      animationDelay: "1s",
+                      animationDelay: "1.2s",
                       marginBottom: "-8px",
                     }}
                   >
@@ -1846,6 +2320,13 @@ class StateDetails extends Component {
                   {!toggleSwitch && (
                     <React.Fragment>
                       <div className="col">
+                        <h6 style={{ color: "rgb(226, 42, 79)" }}>
+                          {
+                            stateFullName[
+                              this.props.match.params.stateid.toUpperCase()
+                            ]
+                          }
+                        </h6>
                         <section
                           className="graphsection"
                           style={{
@@ -1867,7 +2348,7 @@ class StateDetails extends Component {
                           >
                             CONFIRMED
                             <h6 style={{ fontSize: "12px", color: "#6ebed6" }}>
-                              {date[date.length - 1].slice(0, -3)}
+                              {date[date.length - 1]}
 
                               <h5 style={{ fontSize: 14, color: "#55b2ce" }}>
                                 {commaSeperated(
@@ -1944,12 +2425,12 @@ class StateDetails extends Component {
                                   strokeWidth: 0.1,
                                   fill: "#0992c0",
                                 }}
-                                // onClick={() => {
-                                //   ReactGa.event({
-                                //     category: "Graph confirmed",
-                                //     action: "confirmed hover",
-                                //   });
-                                // }}
+                                onClick={() => {
+                                  ReactGa.event({
+                                    category: "Graph state confirmed",
+                                    action: "confirmed state hover",
+                                  });
+                                }}
                               />
                             </LineChart>
                           </ResponsiveContainer>
@@ -1979,7 +2460,7 @@ class StateDetails extends Component {
                           >
                             ACTIVE
                             <h6 style={{ fontSize: "12px", color: "#f16783" }}>
-                              {date[date.length - 1].slice(0, -3)}
+                              {date[date.length - 1]}
 
                               <h5 style={{ fontSize: 14, color: "#ff446a" }}>
                                 {commaSeperated(
@@ -2061,12 +2542,12 @@ class StateDetails extends Component {
                                   strokeWidth: 0.1,
                                   fill: "#ff446a",
                                 }}
-                                // onClick={() => {
-                                //   ReactGa.event({
-                                //     category: "Graph confirmed",
-                                //     action: "confirmed hover",
-                                //   });
-                                // }}
+                                onClick={() => {
+                                  ReactGa.event({
+                                    category: "Graph state active",
+                                    action: "active state hover",
+                                  });
+                                }}
                               />
                             </LineChart>
                           </ResponsiveContainer>
@@ -2096,7 +2577,7 @@ class StateDetails extends Component {
                           >
                             RECOVERED
                             <h6 style={{ fontSize: "12px", color: "#5cb85c" }}>
-                              {date[date.length - 1].slice(0, -3)}
+                              {date[date.length - 1]}
 
                               <h5 style={{ fontSize: 14, color: "#5cb85c" }}>
                                 {commaSeperated(
@@ -2173,12 +2654,12 @@ class StateDetails extends Component {
                                   strokeWidth: 0.1,
                                   fill: "#469246",
                                 }}
-                                // onClick={() => {
-                                //   ReactGa.event({
-                                //     category: "Graph confirmed",
-                                //     action: "confirmed hover",
-                                //   });
-                                // }}
+                                onClick={() => {
+                                  ReactGa.event({
+                                    category: "Graph state recovered",
+                                    action: "state recovered hover",
+                                  });
+                                }}
                               />
                             </LineChart>
                           </ResponsiveContainer>
@@ -2208,7 +2689,7 @@ class StateDetails extends Component {
                           >
                             DECEASED
                             <h6 style={{ fontSize: "12px", color: "#808080" }}>
-                              {date[date.length - 1].slice(0, -3)}
+                              {date[date.length - 1]}
 
                               <h5 style={{ fontSize: 14, color: "#5e5a5a" }}>
                                 {commaSeperated(
@@ -2285,12 +2766,144 @@ class StateDetails extends Component {
                                   strokeWidth: 0.1,
                                   fill: "#2e2d2d",
                                 }}
-                                // onClick={() => {
-                                //   ReactGa.event({
-                                //     category: "Graph confirmed",
-                                //     action: "confirmed hover",
-                                //   });
-                                // }}
+                                onClick={() => {
+                                  ReactGa.event({
+                                    category: "Graph state deceased",
+                                    action: "state deceased hover",
+                                  });
+                                }}
+                              />
+                            </LineChart>
+                          </ResponsiveContainer>
+                        </section>
+                      </div>
+                      <div className="w-100"></div>
+
+                      <div className="col">
+                        <section
+                          className="graphsection"
+                          style={{
+                            backgroundColor: "#e6e8f1",
+                            borderRadius: "6px",
+                            paddingTop: "5px",
+                            marginTop: "10px",
+                          }}
+                        >
+                          <h5
+                            style={{
+                              paddingTop: "5px",
+                              marginBottom: "-80px",
+                              textAlign: "left",
+                              marginLeft: 10,
+                              fontSize: 16,
+                              color: "#3e4da3",
+                            }}
+                          >
+                            TESTED
+                            <h6 style={{ fontSize: "12px", color: "#3f51b5" }}>
+                              {
+                                dateFormattedTestData[
+                                  dateFormattedTestData.length - 1
+                                ].date
+                              }
+
+                              <h5 style={{ fontSize: 14, color: "#3e4da3" }}>
+                                {commaSeperated(
+                                  dateFormattedTestData[
+                                    dateFormattedTestData.length - 1
+                                  ].totaltested
+                                )}{" "}
+                                <span style={{ fontSize: 9 }}>
+                                  {dateFormattedTestData[
+                                    dateFormattedTestData.length - 1
+                                  ].totaltested &&
+                                  dateFormattedTestData[
+                                    dateFormattedTestData.length - 2
+                                  ].totaltested
+                                    ? "+" +
+                                      commaSeperated(
+                                        dateFormattedTestData[
+                                          dateFormattedTestData.length - 1
+                                        ].totaltested -
+                                          dateFormattedTestData[
+                                            dateFormattedTestData.length - 2
+                                          ].totaltested
+                                      )
+                                    : ""}
+                                </span>
+                              </h5>
+                            </h6>
+                          </h5>
+                          <ResponsiveContainer
+                            width="100%"
+                            height="100%"
+                            aspect={2.6}
+                          >
+                            <LineChart
+                              data={dateFormattedTestData}
+                              margin={{
+                                top: 35,
+                                right: -30,
+                                left: 10,
+                                bottom: -12,
+                              }}
+                              syncId="linechart"
+                            >
+                              <XAxis
+                                dataKey="date"
+                                tick={{ stroke: "#6471b3", strokeWidth: 0.2 }}
+                                style={{ fontSize: 8 }}
+                                tickSize={5}
+                                tickCount={8}
+                              />
+                              <YAxis
+                                domain={[
+                                  0,
+                                  Math.ceil(
+                                    Math.max(...cumulativeTestDataArray) / 1000
+                                  ) * 1000,
+                                ]}
+                                orientation="right"
+                                tick={{ stroke: "#6471b3", strokeWidth: 0.2 }}
+                                tickFormatter={format("~s")}
+                                tickSize={5}
+                                style={{ fontSize: 8 }}
+                                tickCount={8}
+                              />
+                              <Retooltip
+                                contentStyle={{
+                                  background: "rgba(255,255,255,0)",
+                                  border: "none",
+                                  borderRadius: "5px",
+                                  fontSize: "8px",
+                                  fontFamily: "notosans",
+                                  textTransform: "uppercase",
+                                  textAlign: "left",
+                                  lineHeight: 0.8,
+                                }}
+                                cursor={false}
+                                position={{ x: 120, y: 16 }}
+                              />
+                              <Line
+                                type="monotone"
+                                dataKey="totaltested"
+                                stroke="#6471b3"
+                                strokeWidth="3"
+                                strokeLinecap="round"
+                                name="Tested"
+                                isAnimationActive={true}
+                                connectNulls={true}
+                                dot={{
+                                  stroke: "#3e4da3",
+                                  strokeWidth: 0.1,
+                                  fill: "#3e4da3",
+                                }}
+                                onClick={() => {
+                                  ReactGa.event({
+                                    category: "State test Data Tested",
+                                    action: "test line hover",
+                                  });
+                                }}
                               />
                             </LineChart>
                           </ResponsiveContainer>
@@ -2301,6 +2914,13 @@ class StateDetails extends Component {
                   {toggleSwitch && (
                     <React.Fragment>
                       <div className="col">
+                        <h6 style={{ color: "rgb(226, 42, 79)" }}>
+                          {
+                            stateFullName[
+                              this.props.match.params.stateid.toUpperCase()
+                            ]
+                          }
+                        </h6>
                         <section
                           className="graphsection"
                           style={{
@@ -2322,7 +2942,7 @@ class StateDetails extends Component {
                           >
                             CONFIRMED
                             <h6 style={{ fontSize: "12px", color: "#6ebed6" }}>
-                              {date[date.length - 1].slice(0, -3)}
+                              {date[date.length - 1]}
                               <h6 style={{ fontSize: "8px" }}>
                                 <h5 style={{ fontSize: 14, color: "#55b2ce" }}>
                                   {commaSeperated(dailyConfirmed[0])}{" "}
@@ -2397,12 +3017,12 @@ class StateDetails extends Component {
                                 name="Confirmed"
                                 fill="#0992c0"
                                 radius={[2, 2, 0, 0]}
-                                // onClick={() => {
-                                //   ReactGa.event({
-                                //     category: "Graph Confirmedbar",
-                                //     action: "Confirmedbar hover",
-                                //   });
-                                // }}
+                                onClick={() => {
+                                  ReactGa.event({
+                                    category: "Graph state Confirmedbar",
+                                    action: "State Confirmedbar hover",
+                                  });
+                                }}
                               />
                             </BarChart>
                           </ResponsiveContainer>
@@ -2416,7 +3036,7 @@ class StateDetails extends Component {
                             alignSelf: "center",
                             backgroundColor: "#f5d2d2",
                             borderRadius: "6px",
-                            marginTop: "8px",
+                            marginTop: 10,
                           }}
                         >
                           <h5
@@ -2431,7 +3051,7 @@ class StateDetails extends Component {
                           >
                             ACTIVE
                             <h6 style={{ fontSize: "12px", color: "#f16783" }}>
-                              {date[0].slice(0, -3)}
+                              {date[date.length - 1]}
 
                               <h5 style={{ fontSize: 14, color: "#ff446a" }}>
                                 {commaSeperated(
@@ -2496,7 +3116,9 @@ class StateDetails extends Component {
                               />
                               <YAxis
                                 domain={[
-                                  min,
+                                  Math.floor(
+                                    Math.min(...sparklineDailyActiveData) / 100
+                                  ) * 100,
                                   Math.ceil(
                                     Math.max(...sparklineDailyActiveData) / 100
                                   ) * 100,
@@ -2528,12 +3150,12 @@ class StateDetails extends Component {
                                 name="Active"
                                 fill="#f16783"
                                 radius={[2, 2, 0, 0]}
-                                // onClick={() => {
-                                //   ReactGa.event({
-                                //     category: "Graph Activebar",
-                                //     action: "Activebar hover",
-                                //   });
-                                // }}
+                                onClick={() => {
+                                  ReactGa.event({
+                                    category: "Graph Activebar State",
+                                    action: "State Activebar hover",
+                                  });
+                                }}
                               />
                             </BarChart>
                           </ResponsiveContainer>
@@ -2547,7 +3169,7 @@ class StateDetails extends Component {
                             alignSelf: "center",
                             backgroundColor: "#d5e9d5",
                             borderRadius: "6px",
-                            marginTop: "8px",
+                            marginTop: 10,
                           }}
                         >
                           <h5
@@ -2562,7 +3184,7 @@ class StateDetails extends Component {
                           >
                             RECOVERED
                             <h6 style={{ fontSize: "12px", color: "#7ed87e" }}>
-                              {date[date.length - 1].slice(0, -3)}
+                              {date[date.length - 1]}
 
                               <h5 style={{ fontSize: 14, color: "#5cb85c" }}>
                                 {commaSeperated(dailyRecovered[0])}{" "}
@@ -2634,12 +3256,12 @@ class StateDetails extends Component {
                                 name="Recovered"
                                 fill="#58bd58"
                                 radius={[2, 2, 0, 0]}
-                                // onClick={() => {
-                                //   ReactGa.event({
-                                //     category: "Graph Recoveredbar",
-                                //     action: "Recoveredbar hover",
-                                //   });
-                                // }}
+                                onClick={() => {
+                                  ReactGa.event({
+                                    category: "Graph State Recoveredbar",
+                                    action: "State Recoveredbar hover",
+                                  });
+                                }}
                               />
                             </BarChart>
                           </ResponsiveContainer>
@@ -2653,7 +3275,7 @@ class StateDetails extends Component {
                             alignSelf: "center",
                             backgroundColor: "#f3f3f3",
                             borderRadius: "6px",
-                            marginTop: "8px",
+                            marginTop: 10,
                           }}
                         >
                           <h5
@@ -2668,7 +3290,7 @@ class StateDetails extends Component {
                           >
                             DECEASED
                             <h6 style={{ fontSize: "12px", color: "#808080" }}>
-                              {date[date.length - 1].slice(0, -3)}
+                              {date[date.length - 1]}
 
                               <h5 style={{ fontSize: 14, color: "#5e5a5a" }}>
                                 {commaSeperated(dailyDeceased[0])}{" "}
@@ -2740,12 +3362,171 @@ class StateDetails extends Component {
                                 name="Deceased"
                                 fill="#474646"
                                 radius={[2, 2, 0, 0]}
-                                // onClick={() => {
-                                //   ReactGa.event({
-                                //     category: "Graph Deceasedbar",
-                                //     action: "Deceasedbar hover",
-                                //   });
-                                // }}
+                                onClick={() => {
+                                  ReactGa.event({
+                                    category: "Graph State Deceasedbar",
+                                    action: " State Deceasedbar hover",
+                                  });
+                                }}
+                              />
+                            </BarChart>
+                          </ResponsiveContainer>
+                        </section>
+                      </div>
+                      <div className="w-100"></div>
+                      <div className="col">
+                        <section
+                          className="graphsection"
+                          style={{
+                            alignSelf: "center",
+                            backgroundColor: "#e6e8f1",
+                            borderRadius: "6px",
+                            marginTop: 10,
+                          }}
+                        >
+                          <h5
+                            style={{
+                              paddingTop: "8px",
+                              marginBottom: "-80px",
+                              textAlign: "left",
+                              marginLeft: 10,
+                              color: "#3e4da3",
+                              fontSize: 16,
+                            }}
+                          >
+                            TESTED
+                            <h6 style={{ fontSize: "12px", color: "#3f51b5" }}>
+                              {
+                                dailyFormattedTestData[
+                                  dailyFormattedTestData.length - 1
+                                ].date
+                              }
+
+                              <h5 style={{ fontSize: 14, color: "#3e4da3" }}>
+                                {commaSeperated(
+                                  dailyFormattedTestData[
+                                    dailyFormattedTestData.length - 1
+                                  ].dailytested
+                                )}{" "}
+                                <span style={{ fontSize: 9 }}>
+                                  {dailyFormattedTestData[
+                                    dailyFormattedTestData.length - 1
+                                  ].dailytested &&
+                                  dailyFormattedTestData[
+                                    dailyFormattedTestData.length - 2
+                                  ].dailytested
+                                    ? dailyFormattedTestData[
+                                        dailyFormattedTestData.length - 1
+                                      ].dailytested -
+                                        dailyFormattedTestData[
+                                          dailyFormattedTestData.length - 2
+                                        ].dailytested >
+                                      0
+                                      ? `+${commaSeperated(
+                                          Math.abs(
+                                            dailyFormattedTestData[
+                                              dailyFormattedTestData.length - 1
+                                            ].dailytested -
+                                              dailyFormattedTestData[
+                                                dailyFormattedTestData.length -
+                                                  2
+                                              ].dailytested
+                                          )
+                                        )}`
+                                      : `-${commaSeperated(
+                                          Math.abs(
+                                            dailyFormattedTestData[
+                                              dailyFormattedTestData.length - 1
+                                            ].dailytested -
+                                              dailyFormattedTestData[
+                                                dailyFormattedTestData.length -
+                                                  2
+                                              ].dailytested
+                                          )
+                                        )}`
+                                    : ""}
+                                </span>
+                              </h5>
+                            </h6>
+                          </h5>
+                          <ResponsiveContainer
+                            width="100%"
+                            height="100%"
+                            aspect={2.6}
+                          >
+                            <BarChart
+                              data={dailyFormattedTestData}
+                              margin={{
+                                top: 35,
+                                right: -30,
+                                left: 10,
+                                bottom: -12,
+                              }}
+                              syncId="barchart"
+                            >
+                              <XAxis
+                                dataKey="date"
+                                tick={{ stroke: "#6471b3", strokeWidth: 0.2 }}
+                                axisLine={{ color: "#6471b3" }}
+                                style={{ fontSize: 8 }}
+                                tickSize={5}
+                                tickCount={6}
+                              />
+                              <YAxis
+                                domain={[
+                                  Math.floor(
+                                    Math.min.apply(
+                                      Math,
+                                      dailyFormattedTestData.map(function (
+                                        item
+                                      ) {
+                                        return Number(item.dailytested);
+                                      })
+                                    ) / 1000
+                                  ) * 1000,
+                                  Math.ceil(
+                                    Math.max.apply(
+                                      Math,
+                                      dailyFormattedTestData.map(function (
+                                        item
+                                      ) {
+                                        return Number(item.dailytested);
+                                      })
+                                    ) / 1000
+                                  ) * 1000,
+                                ]}
+                                orientation="right"
+                                tick={{ stroke: "#6471b3", strokeWidth: 0.2 }}
+                                tickFormatter={format("~s")}
+                                tickSize={5}
+                                style={{ fontSize: 8 }}
+                                tickCount={8}
+                              />
+                              <Retooltip
+                                contentStyle={{
+                                  background: "rgba(255,255,255,0)",
+                                  border: "none",
+                                  borderRadius: "5px",
+                                  fontSize: "8px",
+                                  fontFamily: "notosans",
+                                  textTransform: "uppercase",
+                                  textAlign: "left",
+                                  lineHeight: 0.8,
+                                }}
+                                cursor={{ fill: "transparent" }}
+                                position={{ x: 120, y: 16 }}
+                              />
+                              <Bar
+                                dataKey="dailytested"
+                                name="Tested"
+                                fill="#3e4da3"
+                                radius={[2, 2, 0, 0]}
+                                onClick={() => {
+                                  ReactGa.event({
+                                    category: "Graph TestedBar State",
+                                    action: "State Testedbar hover",
+                                  });
+                                }}
                               />
                             </BarChart>
                           </ResponsiveContainer>
@@ -2754,15 +3535,24 @@ class StateDetails extends Component {
                     </React.Fragment>
                   )}
                 </div>
-                <div className="w-100"></div>
-                <h6>1Week</h6>
               </div>
             </div>
             <Footer />
           </div>
         </React.Fragment>
       );
-    } else return null;
+    } else
+      return (
+        <div className="containerHome">
+          <div
+            className="spinner-grow"
+            role="status"
+            style={{ alignContent: "center" }}
+          >
+            <span className="sr-only">Loading...</span>
+          </div>
+        </div>
+      );
   }
 }
 
