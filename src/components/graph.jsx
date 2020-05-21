@@ -13,10 +13,8 @@ import Switch from "react-switch";
 import { format } from "d3";
 import Choropleth from "./choropleth";
 import ReactGa from "react-ga";
-import CountUp from "react-countup";
-import LanguageIcon from "@material-ui/icons/Language";
-import { NavLink } from "react-router-dom";
-import ArrowRightIcon from "@material-ui/icons/ArrowRight";
+import * as Icon from "react-feather";
+import WorldHomeCard from "./worldHomeCard";
 
 class Graph extends Component {
   constructor(props) {
@@ -27,22 +25,22 @@ class Graph extends Component {
       tests: [],
       isLoaded: false,
       toggleActive: false,
-      cases: "",
-      todayCases: "",
-      deaths: "",
-      todayDeaths: "",
-      recovered: "",
-      active: "",
       clickConfirmedMap: true,
       clickActiveMap: false,
       clickRecoveredMap: false,
       clickDeceasedMap: false,
+      beginning: true,
+      twoWeeks: false,
+      oneMonth: false,
     };
     this.onToggle = this.onToggle.bind(this);
     this.onClickConfirmed = this.onClickConfirmed.bind(this);
     this.onClickActive = this.onClickActive.bind(this);
     this.onClickRecovered = this.onClickRecovered.bind(this);
     this.onClickDeceased = this.onClickDeceased.bind(this);
+    this.handleBeginning = this.handleBeginning.bind(this);
+    this.handleTwoWeeks = this.handleTwoWeeks.bind(this);
+    this.handleOneMonth = this.handleOneMonth.bind(this);
   }
   onToggle(toggleActive) {
     this.setState({ toggleActive });
@@ -61,6 +59,19 @@ class Graph extends Component {
     this.setState({ clickDeceasedMap });
   }
 
+  handleBeginning({ beginning }) {
+    this.setState({ beginning });
+  }
+  handleOneWeek({ oneWeek }) {
+    this.setState({ oneWeek });
+  }
+  handleTwoWeeks({ twoWeeks }) {
+    this.setState({ twoWeeks });
+  }
+  handleOneMonth({ oneMonth }) {
+    this.setState({ oneMonth });
+  }
+
   componentDidMount() {
     fetch("https://api.covid19india.org/data.json").then((res) =>
       res.json().then((json) => {
@@ -72,18 +83,6 @@ class Graph extends Component {
         });
       })
     );
-    fetch("https://corona.lmao.ninja/v2/all").then((res) => {
-      res.json().then((json) => {
-        this.setState({
-          cases: json.cases,
-          todayCases: json.todayCases,
-          deaths: json.deaths,
-          todayDeaths: json.todayDeaths,
-          recovered: json.recovered,
-          active: json.active,
-        });
-      });
-    });
   }
 
   render() {
@@ -93,16 +92,13 @@ class Graph extends Component {
       data2,
       toggleActive,
       tests,
-      cases,
-      todayCases,
-      deaths,
-      todayDeaths,
-      recovered,
-      active,
       clickConfirmedMap,
       clickActiveMap,
       clickRecoveredMap,
       clickDeceasedMap,
+      beginning,
+      twoWeeks,
+      oneMonth,
     } = this.state;
     const graphClass = window.innerWidth < 767 ? "" : "container";
 
@@ -210,54 +206,136 @@ class Graph extends Component {
       "December",
     ];
 
-    const formattedTests = [];
-    tests.map((item) =>
-      formattedTests.push(
-        Number(item.totalsamplestested)
-          ? {
-              totalsamplestested: Number(item.totalsamplestested),
-              totalpositivecases: Number(item.totalpositivecases),
-              updatedtime: `${item.updatetimestamp.split(/\//)[0]} ${
-                months2[
-                  new Date([
-                    item.updatetimestamp.split(/\//)[1],
-                    item.updatetimestamp.split(/\//)[0],
-                    item.updatetimestamp.split(/\//)[2],
-                  ]).getMonth()
-                ]
-              }`,
-            }
-          : {
-              updatedtime: `${item.updatetimestamp.split(/\//)[0]} ${
-                months2[
-                  new Date([
-                    item.updatetimestamp.split(/\//)[1],
-                    item.updatetimestamp.split(/\//)[0],
-                    item.updatetimestamp.split(/\//)[2],
-                  ]).getMonth()
-                ]
-              }`,
-            }
-      )
-    );
-
-    const removeItemFromIndices = [0, 2, 4, 6, 8, 10, 12, 14, 16];
-    for (let i = removeItemFromIndices.length - 1; i >= 0; i--) {
-      formattedTests.splice(removeItemFromIndices[i], 1);
-    }
-
     const totalSamplesTested = [];
     tests.map((item) =>
       totalSamplesTested.push(Number(item.totalsamplestested))
     );
 
+    const testedDates = [];
+    const testedData = [];
+
+    tests.map((item) => {
+      if (Number(item.totalsamplestested)) {
+        testedData.push(item.totalsamplestested);
+        testedDates.push(
+          `${item.updatetimestamp.split(/\//)[0]} ${
+            months2[
+              new Date([
+                item.updatetimestamp.split(/\//)[1],
+                item.updatetimestamp.split(/\//)[0],
+                item.updatetimestamp.split(/\//)[2],
+              ]).getMonth()
+            ]
+          } `
+        );
+      }
+    });
+
+    const removeItemIndices = [2, 4, 6, 8, 10, 12, 14, 16];
+    for (let i = removeItemIndices.length - 1; i >= 0; i--) {
+      testedData.splice(removeItemIndices[i], 1);
+      testedDates.splice(removeItemIndices[i], 1);
+    }
+
+    const cumulativeDateFormattedTests = [];
+
+    for (let i = 0; i < date.length; i++) {
+      if (testedDates.includes(date[i])) {
+        const index = testedDates.indexOf(date[i]);
+        cumulativeDateFormattedTests.push({
+          totaltested: testedData[index],
+          date: date[i],
+        });
+      } else
+        cumulativeDateFormattedTests.push({ totaltested: "-", date: date[i] });
+    }
+
+    const dateFormattedTests = [];
+
+    for (let i = 0; i < date.length; i++) {
+      if (testedDates.includes(date[i])) {
+        const index = testedDates.indexOf(date[i]);
+        dateFormattedTests.push({
+          totaltested: testedData[index],
+          date: date[i],
+        });
+      } else dateFormattedTests.push({ totaltested: 0, date: date[i] });
+    }
+
+    const dailyDateFormattedTests = [];
+    let previousData = 0;
+
+    for (let i = 0; i < dateFormattedTests.length; i++) {
+      if (i === 0) {
+        dailyDateFormattedTests.push({
+          dailytested: dateFormattedTests[i].totaltested,
+          date: dateFormattedTests[i].date,
+        });
+      } else {
+        if (
+          dateFormattedTests[i].totaltested &&
+          dateFormattedTests[i - 1].totaltested
+        ) {
+          dailyDateFormattedTests.push({
+            dailytested:
+              dateFormattedTests[i].totaltested -
+              dateFormattedTests[i - 1].totaltested,
+            date: dateFormattedTests[i].date,
+          });
+          previousData = dateFormattedTests[i].totaltested;
+        } else if (
+          dateFormattedTests[i].totaltested === 0 &&
+          dateFormattedTests[i - 1].totaltested === 0
+        ) {
+          dailyDateFormattedTests.push({
+            dailytested: 0,
+            date: dateFormattedTests[i].date,
+          });
+        } else if (
+          dateFormattedTests[i].totaltested !== 0 &&
+          dateFormattedTests[i - 1].totaltested === 0
+        ) {
+          dailyDateFormattedTests.push({
+            dailytested: dateFormattedTests[i].totaltested - previousData,
+            date: dateFormattedTests[i].date,
+          });
+          previousData = dateFormattedTests[i].totaltested;
+        } else if (
+          dateFormattedTests[i].totaltested === 0 &&
+          dateFormattedTests[i - 1].totaltested !== 0
+        ) {
+          dailyDateFormattedTests.push({
+            dailytested: 0,
+            date: dateFormattedTests[i].date,
+          });
+        }
+      }
+    }
+
     function commaSeperated(x) {
-      x = x.toString();
-      let lastThree = x.substring(x.length - 3);
-      let otherNumbers = x.substring(0, x.length - 3);
-      if (otherNumbers !== "") lastThree = "," + lastThree;
-      let res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
-      return res;
+      if (x !== undefined || x !== 0) {
+        x = x.toString();
+        let lastThree = x.substring(x.length - 3);
+        let otherNumbers = x.substring(0, x.length - 3);
+        if (otherNumbers !== "") lastThree = "," + lastThree;
+        let res =
+          otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
+        return res;
+      } else return x;
+    }
+
+    let timelineLength = 0;
+
+    if (isLoaded) {
+      if (beginning) {
+        timelineLength = 0;
+      }
+      if (twoWeeks) {
+        timelineLength = data.length - 15;
+      }
+      if (oneMonth) {
+        timelineLength = data.length - 30;
+      }
     }
 
     if (isLoaded) {
@@ -271,163 +349,8 @@ class Graph extends Component {
                 marginBottom: "25px",
               }}
             >
-              <div
-                className="fadeInUp"
-                style={{
-                  marginBottom: "-5px",
-                  animationDelay: "0.7s",
-                  boxShadow: "0 0 20px rgba(0,0,0,0.25)",
-                  borderRadius: "6px",
-                }}
-              >
-                <div
-                  style={{
-                    background: "#e6e8f1",
-                    borderTopLeftRadius: "6px",
-                    borderTopRightRadius: "6px",
-                    borderSpacing: "1px",
-                    textAlign: "center",
-                  }}
-                >
-                  <LanguageIcon
-                    size="inherit"
-                    color="primary"
-                    style={{ verticalAlign: "-0.25rem" }}
-                  />
-                  <NavLink to="/dive" className="coverage">
-                    &nbsp; GLOBAL COVERAGE
-                  </NavLink>
-                  <ArrowRightIcon
-                    size="small"
-                    color="primary"
-                    style={{ verticalAlign: "-0.25rem" }}
-                    className="float"
-                  />
-                </div>
-                <div className="w-100"></div>
-                <table className="table table-sm table-borderless">
-                  <thead>
-                    <tr>
-                      <th
-                        className="text-info span delta"
-                        style={{ width: "25%" }}
-                      >
-                        CONFIRMED
-                      </th>
-                      <th
-                        className="delta span"
-                        style={{
-                          width: "25%",
-
-                          color: "#ff446a",
-                        }}
-                      >
-                        ACTIVE
-                      </th>
-                      <th
-                        className="text-success delta span"
-                        style={{ width: "25%" }}
-                      >
-                        Recovered
-                      </th>
-                      <th
-                        className="text-secondary delta span"
-                        style={{
-                          fontWeight: 600,
-                          width: "25%",
-                        }}
-                      >
-                        DECEASED
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="tbody">
-                    <td>
-                      <h6
-                        className="delta"
-                        style={{
-                          fontSize: 12,
-                          color: "rgba(23, 162, 184, 0.7)",
-                        }}
-                      >
-                        +{commaSeperated(Number(todayCases))}
-                      </h6>
-                      <h4 className="text-info delta">
-                        <CountUp
-                          start={0}
-                          end={Number(cases)}
-                          duration={2.5}
-                          separator=","
-                        />
-                      </h4>
-                    </td>
-
-                    <td>
-                      <h6
-                        className="delta"
-                        style={{
-                          color: "rgba(255, 68, 106, 0.7)",
-                          fontSize: 12,
-                        }}
-                      >
-                        {((Number(active) / Number(cases)) * 100).toFixed(1)}%
-                      </h6>
-                      <h5
-                        className="delta"
-                        style={{ color: "rgb(255, 68, 106)" }}
-                      >
-                        <CountUp
-                          start={0}
-                          end={Number(active)}
-                          duration={2.5}
-                          separator=","
-                        />
-                      </h5>
-                    </td>
-
-                    <td>
-                      <h5
-                        className="delta"
-                        style={{
-                          fontSize: 12,
-                          color: "rgba(40, 167, 69, 0.7)",
-                        }}
-                      >
-                        {((Number(recovered) / Number(cases)) * 100).toFixed(1)}
-                        %
-                      </h5>
-                      <h5 className="text-success delta">
-                        <CountUp
-                          start={0}
-                          end={Number(recovered)}
-                          duration={2.5}
-                          separator=","
-                        />
-                      </h5>
-                    </td>
-
-                    <td>
-                      <h6
-                        className="delta"
-                        style={{
-                          fontSize: 12,
-                          color: "rgba(108, 117, 125, 0.7)",
-                        }}
-                      >
-                        +{commaSeperated(Number(todayDeaths))}
-                      </h6>
-                      <h5 className="text-secondary delta">
-                        <CountUp
-                          start={0}
-                          end={Number(deaths)}
-                          duration={2.5}
-                          separator=","
-                        />
-                      </h5>
-                    </td>
-                  </tbody>
-                </table>
-              </div>
+              {" "}
+              <WorldHomeCard />
             </div>
             <div className="w-100"></div>
             <div className="row">
@@ -436,7 +359,7 @@ class Graph extends Component {
                   className="fadeInUp"
                   style={{
                     justifyContent: "center",
-                    animationDelay: "1s",
+                    animationDelay: "2.2s",
                     marginBottom: "10px",
                   }}
                 >
@@ -452,7 +375,7 @@ class Graph extends Component {
               <div className="w-100"></div>
               <div
                 className="container fadeInUp toggle-map"
-                style={{ animationDelay: "1.1s" }}
+                style={{ animationDelay: "2.3s" }}
               >
                 <div className="row row-cols-4">
                   <div
@@ -539,7 +462,7 @@ class Graph extends Component {
                 className="col fadeInUp"
                 style={{
                   justifyContent: "left",
-                  animationDelay: "1.2s",
+                  animationDelay: "2.35s",
                 }}
               >
                 {clickConfirmedMap && (
@@ -596,7 +519,7 @@ class Graph extends Component {
                       1,
                       deceasedStatesData.length - 1
                     )}
-                    colorLow="rgba(74, 79, 83, 0.9)"
+                    colorLow="rgba(74, 79, 83, 0.6)"
                     colorHigh="rgba(74, 79, 83, 1)"
                     fill="rgb(108, 117, 125)"
                     type="deaths"
@@ -609,7 +532,7 @@ class Graph extends Component {
               </div>
               <div className="w-100"></div>
 
-              <div className="col fadeInUp" style={{ animationDelay: "1.1s" }}>
+              <div className="col fadeInUp" style={{ animationDelay: "2.4s" }}>
                 <h6
                   style={{ fontSize: 10, color: "grey", fontWeight: "lighter" }}
                 >
@@ -624,7 +547,7 @@ class Graph extends Component {
                 className="col fadeInUp"
                 style={{
                   textAlign: "left",
-                  animationDelay: "1s",
+                  animationDelay: "2.3s",
                   marginBottom: "-8px",
                 }}
               >
@@ -653,7 +576,7 @@ class Graph extends Component {
               </div>
               <div
                 className="col fadeInUp"
-                style={{ animationDelay: "1.3s", alignItems: "right" }}
+                style={{ animationDelay: "2.45s", alignItems: "right" }}
               >
                 <div
                   className="home-toggle float-right"
@@ -682,10 +605,59 @@ class Graph extends Component {
                 </div>
               </div>
             </div>
+            <div className="w-100"></div>
+            <div className="row">
+              <div className="col fadeInUp" style={{ animationDelay: "2.5s" }}>
+                <h6
+                  className="timelineButton"
+                  onClick={() =>
+                    this.setState({
+                      beginning: true,
+                      twoWeeks: false,
+                      oneMonth: false,
+                    })
+                  }
+                >
+                  &nbsp;Beginning{" "}
+                  {beginning && <Icon.CheckCircle size={10} strokeWidth={3} />}
+                </h6>
+              </div>
 
+              <div className="col fadeInUp" style={{ animationDelay: "2.55s" }}>
+                <h6
+                  className="timelineButton"
+                  onClick={() =>
+                    this.setState({
+                      beginning: false,
+                      twoWeeks: false,
+                      oneMonth: true,
+                    })
+                  }
+                >
+                  &nbsp;1 Month{" "}
+                  {oneMonth && <Icon.CheckCircle size={10} strokeWidth={3} />}
+                </h6>
+              </div>
+
+              <div className="col fadeInUp" style={{ animationDelay: "2.6s" }}>
+                <h6
+                  className="timelineButton"
+                  onClick={() =>
+                    this.setState({
+                      beginning: false,
+                      twoWeeks: true,
+                      oneMonth: false,
+                    })
+                  }
+                >
+                  &nbsp;15 Days{" "}
+                  {twoWeeks && <Icon.CheckCircle size={10} strokeWidth={3} />}
+                </h6>
+              </div>
+            </div>
             <div
               className="row fadeInUp"
-              style={{ animationDelay: "1.3s", marginTop: "-8px" }}
+              style={{ animationDelay: "2.65s", marginTop: "-8px" }}
             >
               {!toggleActive && (
                 <React.Fragment>
@@ -706,7 +678,7 @@ class Graph extends Component {
                           marginBottom: "-80px",
                           textAlign: "left",
                           marginLeft: 10,
-                          fontSize: 16,
+                          fontSize: "0.8rem",
                         }}
                       >
                         CONFIRMED
@@ -717,7 +689,9 @@ class Graph extends Component {
                             new Date().getDate()
                               ? "Today"
                               : "Yesterday"}
-                            <h5 style={{ fontSize: 14, color: "#55b2ce" }}>
+                            <h5
+                              style={{ fontSize: "0.8rem", color: "#55b2ce" }}
+                            >
                               {commaSeperated(totalConfirmed.slice(-1)[0])}{" "}
                               <span style={{ fontSize: 8 }}>
                                 +{commaSeperated(dailyConfirmed.slice(-1)[0])}
@@ -729,12 +703,12 @@ class Graph extends Component {
                       <ResponsiveContainer
                         width="100%"
                         height="100%"
-                        aspect={2.8}
+                        aspect={2.4}
                       >
                         <LineChart
-                          data={data.slice(10, data.length)}
+                          data={data.slice(timelineLength, data.length)}
                           margin={{
-                            top: 10,
+                            top: 40,
                             right: -32,
                             left: 10,
                             bottom: -12,
@@ -773,7 +747,7 @@ class Graph extends Component {
                               lineHeight: 0.8,
                             }}
                             cursor={false}
-                            position={{ x: 120, y: 6 }}
+                            position={{ x: 120, y: 15 }}
                           />
                           <Line
                             type="monotone"
@@ -782,7 +756,7 @@ class Graph extends Component {
                             strokeWidth="3"
                             strokeLinecap="round"
                             name="Confirmed"
-                            isAnimationActive={false}
+                            animationEasing="ease-out"
                             dot={{
                               stroke: "#0992c0",
                               strokeWidth: 0.1,
@@ -815,7 +789,7 @@ class Graph extends Component {
                           marginBottom: "-80px",
                           textAlign: "left",
                           marginLeft: 10,
-                          fontSize: 16,
+                          fontSize: "0.8rem",
                           color: "#ff446a",
                         }}
                       >
@@ -827,7 +801,9 @@ class Graph extends Component {
                             new Date().getDate()
                               ? "Today"
                               : "Yesterday"}
-                            <h5 style={{ fontSize: 14, color: "#ff446a" }}>
+                            <h5
+                              style={{ fontSize: "0.8rem", color: "#ff446a" }}
+                            >
                               {commaSeperated(totalActive.slice(-1)[0])}{" "}
                               <span style={{ fontSize: 8 }}>
                                 +{commaSeperated(dailyActive.slice(-1)[0])}
@@ -839,12 +815,15 @@ class Graph extends Component {
                       <ResponsiveContainer
                         width="100%"
                         height="100%"
-                        aspect={2.8}
+                        aspect={2.4}
                       >
                         <LineChart
-                          data={totalActiveJson.slice(10, data.length)}
+                          data={totalActiveJson.slice(
+                            timelineLength,
+                            data.length
+                          )}
                           margin={{
-                            top: 10,
+                            top: 40,
                             right: -32,
                             left: 10,
                             bottom: -12,
@@ -882,7 +861,7 @@ class Graph extends Component {
                               lineHeight: 0.8,
                             }}
                             cursor={false}
-                            position={{ x: 120, y: 6 }}
+                            position={{ x: 120, y: 15 }}
                           />
                           <Line
                             type="monotone"
@@ -890,7 +869,7 @@ class Graph extends Component {
                             stroke="#ec7d93"
                             strokeWidth="3"
                             strokeLinecap="round"
-                            isAnimationActive={false}
+                            isAnimationActive={true}
                             name="Active"
                             dot={{
                               stroke: "#ff446a",
@@ -926,7 +905,7 @@ class Graph extends Component {
                           marginBottom: "-80px",
                           textAlign: "left",
                           marginLeft: 10,
-                          fontSize: 16,
+                          fontSize: "0.8rem",
                         }}
                       >
                         RECOVERED
@@ -937,7 +916,9 @@ class Graph extends Component {
                             new Date().getDate()
                               ? "Today"
                               : "Yesterday"}
-                            <h5 style={{ fontSize: 14, color: "#5cb85c" }}>
+                            <h5
+                              style={{ fontSize: "0.8rem", color: "#5cb85c" }}
+                            >
                               {commaSeperated(totalRecovered.slice(-1)[0])}{" "}
                               <span style={{ fontSize: 8 }}>
                                 +{commaSeperated(dailyRecovered.slice(-1)[0])}
@@ -949,12 +930,12 @@ class Graph extends Component {
                       <ResponsiveContainer
                         width="100%"
                         height="100%"
-                        aspect={2.8}
+                        aspect={2.4}
                       >
                         <LineChart
-                          data={data.slice(10, data.length)}
+                          data={data.slice(timelineLength, data.length)}
                           margin={{
-                            top: 10,
+                            top: 40,
                             right: -32,
                             left: 10,
                             bottom: -12,
@@ -993,7 +974,7 @@ class Graph extends Component {
                               lineHeight: 0.8,
                             }}
                             cursor={false}
-                            position={{ x: 120, y: 6 }}
+                            position={{ x: 120, y: 15 }}
                           />
                           <Line
                             type="monotone"
@@ -1001,7 +982,7 @@ class Graph extends Component {
                             stroke="#78b978"
                             strokeWidth="3"
                             name="Recovered"
-                            isAnimationActive={false}
+                            isAnimationActive={true}
                             dot={{
                               stroke: "#469246",
                               strokeWidth: 0.1,
@@ -1036,7 +1017,7 @@ class Graph extends Component {
                           textAlign: "left",
                           marginLeft: 10,
                           color: "#464545",
-                          fontSize: 16,
+                          fontSize: "0.8rem",
                         }}
                       >
                         DECEASED
@@ -1047,7 +1028,9 @@ class Graph extends Component {
                             new Date().getDate()
                               ? "Today"
                               : "Yesterday"}
-                            <h5 style={{ fontSize: 14, color: "#5e5a5a" }}>
+                            <h5
+                              style={{ fontSize: "0.8rem", color: "#5e5a5a" }}
+                            >
                               {commaSeperated(totalDeceased.slice(-1)[0])}{" "}
                               <span style={{ fontSize: 8 }}>
                                 +{commaSeperated(dailyDeceased.slice(-1)[0])}
@@ -1059,12 +1042,12 @@ class Graph extends Component {
                       <ResponsiveContainer
                         width="100%"
                         height="100%"
-                        aspect={2.8}
+                        aspect={2.4}
                       >
                         <LineChart
-                          data={data.slice(10, data.length)}
+                          data={data.slice(timelineLength, data.length)}
                           margin={{
-                            top: 10,
+                            top: 40,
                             right: -32,
                             left: 10,
                             bottom: -12,
@@ -1103,7 +1086,7 @@ class Graph extends Component {
                               lineHeight: 0.8,
                             }}
                             cursor={false}
-                            position={{ x: 120, y: 6 }}
+                            position={{ x: 120, y: 15 }}
                           />
                           <Line
                             type="monotone"
@@ -1111,7 +1094,7 @@ class Graph extends Component {
                             stroke="#666565"
                             strokeWidth="3"
                             name="Deceased"
-                            isAnimationActive={false}
+                            isAnimationActive={true}
                             dot={{
                               stroke: "#2e2d2d",
                               strokeWidth: 0.1,
@@ -1128,57 +1111,55 @@ class Graph extends Component {
                       </ResponsiveContainer>
                     </section>
                     <section
-                      className="graphsection fadeInUp"
+                      className="graphsection"
                       style={{
                         backgroundColor: "#e6e8f1",
                         borderRadius: "6px",
-                        paddingTop: "5px",
                         marginTop: "8px",
                       }}
                     >
                       <h5
                         style={{
-                          paddingTop: "3px",
+                          paddingTop: "8px",
                           marginBottom: "-75px",
                           textAlign: "left",
                           marginLeft: 10,
-                          fontSize: 16,
+                          fontSize: "0.8rem",
                           color: "#3e4da3",
                         }}
                       >
-                        TESTS
+                        TESTED
                         <h6 style={{ fontSize: "12px", color: "#3f51b5" }}>
                           {
-                            tests[tests.length - 1].updatetimestamp.split(
-                              /\//
-                            )[0]
-                          }{" "}
-                          {
-                            months2[
-                              Number(
-                                tests[tests.length - 1].updatetimestamp.split(
-                                  /\//
-                                )[1] - 1
-                              )
-                            ]
+                            cumulativeDateFormattedTests[
+                              cumulativeDateFormattedTests.length - 1
+                            ].date
                           }
                           <h6 style={{ fontSize: "8px" }}>
                             {Number(
-                              tests[tests.length - 1].updatetimestamp.split(
-                                /\//
-                              )[0]
+                              cumulativeDateFormattedTests[
+                                cumulativeDateFormattedTests.length - 1
+                              ].date.split(/\ /)[0]
                             ) === new Date().getDate()
                               ? "Today"
                               : "Yesterday"}
-                            <h5 style={{ fontSize: 14, color: "#3e4da3" }}>
+                            <h5
+                              style={{ fontSize: "0.8rem", color: "#3e4da3" }}
+                            >
                               {commaSeperated(
-                                tests[tests.length - 1].totalsamplestested
+                                cumulativeDateFormattedTests[
+                                  cumulativeDateFormattedTests.length - 1
+                                ].totaltested
                               )}{" "}
                               <span style={{ fontSize: 8 }}>
                                 +
                                 {commaSeperated(
-                                  tests[tests.length - 1].totalsamplestested -
-                                    tests[tests.length - 2].totalsamplestested
+                                  cumulativeDateFormattedTests[
+                                    cumulativeDateFormattedTests.length - 1
+                                  ].totaltested -
+                                    cumulativeDateFormattedTests[
+                                      cumulativeDateFormattedTests.length - 2
+                                    ].totaltested
                                 )}
                               </span>
                             </h5>
@@ -1188,19 +1169,23 @@ class Graph extends Component {
                       <ResponsiveContainer
                         width="100%"
                         height="100%"
-                        aspect={2.8}
+                        aspect={2.4}
                       >
                         <LineChart
-                          data={formattedTests}
+                          data={cumulativeDateFormattedTests.slice(
+                            timelineLength,
+                            cumulativeDateFormattedTests.length
+                          )}
                           margin={{
-                            top: 10,
+                            top: 40,
                             right: -30,
                             left: 10,
                             bottom: -12,
                           }}
+                          syncId="linechart"
                         >
                           <XAxis
-                            dataKey="updatedtime"
+                            dataKey="date"
                             tick={{ stroke: "#6471b3", strokeWidth: 0.2 }}
                             style={{ fontSize: 8 }}
                             tickSize={5}
@@ -1232,16 +1217,16 @@ class Graph extends Component {
                               lineHeight: 0.8,
                             }}
                             cursor={false}
-                            position={{ x: 100, y: 3 }}
+                            position={{ x: 100, y: 10 }}
                           />
                           <Line
                             type="monotone"
-                            dataKey="totalsamplestested"
+                            dataKey="totaltested"
                             stroke="#6471b3"
                             strokeWidth="3"
                             strokeLinecap="round"
                             name="Total samples tested"
-                            isAnimationActive={false}
+                            isAnimationActive={true}
                             connectNulls={true}
                             dot={{
                               stroke: "#3e4da3",
@@ -1274,7 +1259,7 @@ class Graph extends Component {
                           marginBottom: "-80px",
                           textAlign: "left",
                           marginLeft: 10,
-                          fontSize: 16,
+                          fontSize: "0.8rem",
                         }}
                       >
                         CONFIRMED
@@ -1285,7 +1270,9 @@ class Graph extends Component {
                             new Date().getDate()
                               ? "Today"
                               : "Yesterday"}
-                            <h5 style={{ fontSize: 14, color: "#55b2ce" }}>
+                            <h5
+                              style={{ fontSize: "0.8rem", color: "#55b2ce" }}
+                            >
                               {commaSeperated(dailyConfirmed.slice(-1)[0])}{" "}
                               <span style={{ fontSize: 8 }}>
                                 {dailyConfirmed.slice(-1)[0] -
@@ -1312,14 +1299,14 @@ class Graph extends Component {
                       <ResponsiveContainer
                         width="100%"
                         height="100%"
-                        aspect={2.8}
+                        aspect={2.4}
                       >
                         <BarChart
                           width={310}
                           height={120}
-                          data={data.slice(10, data.length)}
+                          data={data.slice(timelineLength, data.length)}
                           margin={{
-                            top: 10,
+                            top: 40,
                             right: -32,
                             left: 10,
                             bottom: -12,
@@ -1359,12 +1346,13 @@ class Graph extends Component {
                             }}
                             active={true}
                             cursor={{ fill: "transparent" }}
-                            position={{ x: 120, y: 5 }}
+                            position={{ x: 120, y: 15 }}
                           />
                           <Bar
                             dataKey="dailyconfirmed"
                             name="Confirmed"
                             fill="#0992c0"
+                            radius={[3, 3, 0, 0]}
                             onMouseEnter={() => {
                               ReactGa.event({
                                 category: "Graph Confirmedbar",
@@ -1394,7 +1382,7 @@ class Graph extends Component {
                           marginBottom: "-80px",
                           textAlign: "left",
                           marginLeft: 10,
-                          fontSize: 16,
+                          fontSize: "0.8rem",
                           color: "#ff446a",
                         }}
                       >
@@ -1406,7 +1394,9 @@ class Graph extends Component {
                             new Date().getDate()
                               ? "Today"
                               : "Yesterday"}
-                            <h5 style={{ fontSize: 14, color: "#ff446a" }}>
+                            <h5
+                              style={{ fontSize: "0.8rem", color: "#ff446a" }}
+                            >
                               {commaSeperated(dailyActive.slice(-1)[0])}{" "}
                               <span style={{ fontSize: 8 }}>
                                 {dailyActive.slice(-1)[0] -
@@ -1433,17 +1423,17 @@ class Graph extends Component {
                       <ResponsiveContainer
                         width="100%"
                         height="100%"
-                        aspect={2.8}
+                        aspect={2.4}
                       >
                         <BarChart
                           width={310}
                           height={120}
                           data={dailyActiveJson.slice(
-                            10,
+                            timelineLength,
                             dailyActiveJson.length
                           )}
                           margin={{
-                            top: 10,
+                            top: 40,
                             right: -32,
                             left: 10,
                             bottom: -12,
@@ -1481,13 +1471,14 @@ class Graph extends Component {
                               lineHeight: 0.8,
                             }}
                             cursor={{ fill: "transparent" }}
-                            position={{ x: 120, y: 6 }}
+                            position={{ x: 120, y: 15 }}
                           />
 
                           <Bar
                             dataKey="dailyactive"
                             name="Active"
                             fill="#f16783"
+                            radius={[3, 3, 0, 0]}
                             onMouseEnter={() => {
                               ReactGa.event({
                                 category: "Graph Activebar",
@@ -1517,7 +1508,7 @@ class Graph extends Component {
                           marginBottom: "-80px",
                           textAlign: "left",
                           marginLeft: 10,
-                          fontSize: 16,
+                          fontSize: "0.8rem",
                         }}
                       >
                         RECOVERED
@@ -1528,7 +1519,9 @@ class Graph extends Component {
                             new Date().getDate()
                               ? "Today"
                               : "Yesterday"}
-                            <h5 style={{ fontSize: 14, color: "#5cb85c" }}>
+                            <h5
+                              style={{ fontSize: "0.8rem", color: "#5cb85c" }}
+                            >
                               {commaSeperated(dailyRecovered.slice(-1)[0])}{" "}
                               <span style={{ fontSize: 8 }}>
                                 {dailyRecovered.slice(-1)[0] -
@@ -1554,12 +1547,12 @@ class Graph extends Component {
                       <ResponsiveContainer
                         width="100%"
                         height="100%"
-                        aspect={2.8}
+                        aspect={2.4}
                       >
                         <BarChart
-                          data={data.slice(10, data.length)}
+                          data={data.slice(timelineLength, data.length)}
                           margin={{
-                            top: 10,
+                            top: 40,
                             right: -32,
                             left: 10,
                             bottom: -12,
@@ -1598,12 +1591,13 @@ class Graph extends Component {
                               lineHeight: 0.8,
                             }}
                             cursor={{ fill: "transparent" }}
-                            position={{ x: 120, y: 6 }}
+                            position={{ x: 120, y: 15 }}
                           />
                           <Bar
                             dataKey="dailyrecovered"
                             name="Recovered"
                             fill="#58bd58"
+                            radius={[3, 3, 0, 0]}
                             onMouseEnter={() => {
                               ReactGa.event({
                                 category: "Graph Recoveredbar",
@@ -1633,7 +1627,7 @@ class Graph extends Component {
                           textAlign: "left",
                           marginLeft: 10,
                           color: "#464545",
-                          fontSize: 16,
+                          fontSize: "0.8rem",
                         }}
                       >
                         DECEASED
@@ -1644,7 +1638,9 @@ class Graph extends Component {
                             new Date().getDate()
                               ? "Today"
                               : "Yesterday"}
-                            <h5 style={{ fontSize: 14, color: "#5e5a5a" }}>
+                            <h5
+                              style={{ fontSize: "0.8rem", color: "#5e5a5a" }}
+                            >
                               {commaSeperated(dailyDeceased.slice(-1)[0])}{" "}
                               <span style={{ fontSize: 8 }}>
                                 {dailyDeceased.slice(-1)[0] -
@@ -1670,12 +1666,12 @@ class Graph extends Component {
                       <ResponsiveContainer
                         width="100%"
                         height="100%"
-                        aspect={2.8}
+                        aspect={2.4}
                       >
                         <BarChart
-                          data={data.slice(10, data.length)}
+                          data={data.slice(timelineLength, data.length)}
                           margin={{
-                            top: 10,
+                            top: 40,
                             right: -32,
                             left: 10,
                             bottom: -12,
@@ -1714,16 +1710,155 @@ class Graph extends Component {
                               lineHeight: 0.8,
                             }}
                             cursor={{ fill: "transparent" }}
-                            position={{ x: 120, y: 6 }}
+                            position={{ x: 120, y: 15 }}
                           />
                           <Bar
                             dataKey="dailydeceased"
                             name="Deceased"
                             fill="#474646"
+                            radius={[3, 3, 0, 0]}
                             onMouseEnter={() => {
                               ReactGa.event({
                                 category: "Graph Deceasedbar",
                                 action: "Deceasedbar hover",
+                              });
+                            }}
+                          />
+                        </BarChart>
+                      </ResponsiveContainer>
+                    </section>
+                  </div>
+                  <div className="w-100"></div>
+                  <div className="col">
+                    <section
+                      className="graphsection"
+                      style={{
+                        alignSelf: "center",
+                        backgroundColor: "#e6e8f1",
+                        borderRadius: "6px",
+                        marginTop: "8px",
+                      }}
+                    >
+                      <h5
+                        style={{
+                          paddingTop: "8px",
+                          marginBottom: "-75px",
+                          textAlign: "left",
+                          marginLeft: 10,
+                          color: "#3e4da3",
+                          fontSize: "0.8rem",
+                        }}
+                      >
+                        TESTED
+                        <h6 style={{ fontSize: "12px", color: "#3f51b5" }}>
+                          {date.slice(-1)[0]}
+                          <h6 style={{ fontSize: "8px" }}>
+                            {new Date(date.slice(-1)[0]).getDate() ===
+                            new Date().getDate()
+                              ? "Today"
+                              : "Yesterday"}
+                            <h5
+                              style={{ fontSize: "0.8rem", color: "#3e4da3" }}
+                            >
+                              {commaSeperated(
+                                dailyDateFormattedTests[
+                                  dailyDateFormattedTests.length - 1
+                                ].dailytested
+                              )}{" "}
+                              <span style={{ fontSize: 8 }}>
+                                {dailyDateFormattedTests[
+                                  dailyDateFormattedTests.length - 1
+                                ].dailytested -
+                                  dailyDateFormattedTests[
+                                    dailyDateFormattedTests.length - 2
+                                  ].dailytested >
+                                0
+                                  ? `+${commaSeperated(
+                                      Math.abs(
+                                        dailyDateFormattedTests[
+                                          dailyDateFormattedTests.length - 1
+                                        ].dailytested -
+                                          dailyDateFormattedTests[
+                                            dailyDateFormattedTests.length - 2
+                                          ].dailytested
+                                      )
+                                    )}`
+                                  : `-${commaSeperated(
+                                      Math.abs(
+                                        dailyDateFormattedTests[
+                                          dailyDateFormattedTests.length - 1
+                                        ].dailytested -
+                                          dailyDateFormattedTests[
+                                            dailyDateFormattedTests.length - 2
+                                          ].dailytested
+                                      )
+                                    )}`}
+                              </span>
+                            </h5>
+                          </h6>
+                        </h6>
+                      </h5>
+                      <ResponsiveContainer
+                        width="100%"
+                        height="100%"
+                        aspect={2.4}
+                      >
+                        <BarChart
+                          data={dailyDateFormattedTests.slice(
+                            timelineLength,
+                            dailyDateFormattedTests.length
+                          )}
+                          margin={{
+                            top: 40,
+                            right: -32,
+                            left: 10,
+                            bottom: -12,
+                          }}
+                          syncId="barchart"
+                        >
+                          <XAxis
+                            dataKey="date"
+                            tick={{ stroke: "#474646", strokeWidth: 0.2 }}
+                            axisLine={{ color: "#474646" }}
+                            style={{ fontSize: 8 }}
+                            tickSize={5}
+                            tickCount={6}
+                          />
+                          <YAxis
+                            // domain={[
+                            //   0,
+                            //   Math.ceil(Math.max(...dailyDeceased) / 10) * 10,
+                            // ]}
+                            orientation="right"
+                            tick={{ stroke: "#474646", strokeWidth: 0.2 }}
+                            tickFormatter={format("~s")}
+                            tickSize={5}
+                            style={{ fontSize: 8 }}
+                            tickCount={8}
+                          />
+                          <Tooltip
+                            contentStyle={{
+                              background: "rgba(255,255,255,0)",
+                              border: "none",
+                              borderRadius: "5px",
+                              fontSize: "8px",
+                              fontFamily: "notosans",
+                              textTransform: "uppercase",
+                              textAlign: "left",
+                              lineHeight: 0.8,
+                            }}
+                            cursor={{ fill: "transparent" }}
+                            position={{ x: 120, y: 10 }}
+                          />
+                          <Bar
+                            dataKey="dailytested"
+                            name="Daily Tested Samples"
+                            fill="#3e4da3"
+                            radius={[3, 3, 0, 0]}
+                            onMouseEnter={() => {
+                              ReactGa.event({
+                                category: "Graph Testedbar",
+                                action: "Testedbar hover",
                               });
                             }}
                           />
