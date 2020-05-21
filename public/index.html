@@ -13,6 +13,14 @@
     <meta name="theme-color" content="#000000" />
 
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192x192.png" />
+    <link
+      rel="preload"
+      importance="low"
+      href="/fonts/NotoSans-Bold.ttf"
+      as="font"
+      type="font/ttf"
+      crossorigin="anonymous"
+    />
     <script
       src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
       integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
@@ -34,6 +42,7 @@
       integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
       crossorigin="anonymous"
     />
+
     <!--
       manifest.json provides metadata used when your web app is installed on a
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
@@ -48,10 +57,10 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-    <title>Covid19 Dashboard</title>
+    <title>Covid India Stats</title>
     <meta
       name="description"
-      content="Track the spread of Coronavirus (COVID-19) in India"
+      content="Track the spread of Coronavirus (COVID-19) in India and World"
     />
     <meta
       name="keywords"
@@ -60,6 +69,40 @@
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="/logo32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/logo16x16.png" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://www.covidindiastats.com" />
+    <meta
+      property="og:title"
+      content="Track the spread of Coronavirus (COVID-19) in India and World"
+    />
+    <meta
+      property="og:description"
+      content="A detailed webpage that shows the spread of the coronavirus, with tables of the number of cases by state and district."
+    />
+    <meta
+      property="og:image"
+      content="https://covidindiastats.com/static/media/logo.244820de.png"
+    />
+
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="512" />
+    <meta property="og:image:height" content="512" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://www.covidindiastats.com" />
+    <meta property="twitter:title" content="Covid India Stats" />
+    <meta name="twitter:site" value="@covidindiastats" />
+    <meta
+      property="twitter:description"
+      content="A detailed webpage that shows the spread of the coronavirus, with tables of the number of cases by state and district."
+    />
+    <meta
+      property="twitter:image"
+      content="https://covidindiastats.com/static/media/logo.244820de.png"
+    />
   </head>
   <body>
     <div id="root"></div>
