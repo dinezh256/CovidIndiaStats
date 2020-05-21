@@ -19,12 +19,42 @@ class StateTable extends Component {
       zones: null,
       zonesLoaded: false,
       back: false,
+      sortConfirmed: true,
+      sortActive: false,
+      sortRecovered: false,
+      sortDeceased: false,
+      sortOrder: true,
     };
     this.onBack = this.onBack.bind(this);
+    this.onSortConfirmed = this.onSortConfirmed.bind(this);
+    this.onSortActive = this.onSortActive.bind(this);
+    this.onSortRecovered = this.onSortRecovered.bind(this);
+    this.onSortDeceased = this.onSortDeceased.bind(this);
+    this.handleSortOrder = this.handleSortOrder.bind(this);
   }
 
   onBack({ back }) {
     this.setState({ back });
+  }
+
+  onSortConfirmed({ sortConfirmed }) {
+    this.setState({ sortConfirmed });
+  }
+
+  onSortActive({ sortActive }) {
+    this.setState({ sortActive });
+  }
+
+  onSortRecovered({ sortRecovered }) {
+    this.setState({ sortRecovered });
+  }
+
+  onSortDeceased({ sortDeceased }) {
+    this.setState({ sortDeceased });
+  }
+
+  handleSortOrder({ sortOrder }) {
+    this.setState({ sortOrder });
   }
 
   async componentDidMount() {
@@ -43,9 +73,7 @@ class StateTable extends Component {
     this.state.stateData.map((item) => {
       if (state === item.statecode) requiredStateData.push(item.districtData);
     });
-    requiredStateData[0].sort(function (x, y) {
-      return Number(y.confirmed) - Number(x.confirmed);
-    });
+
     this.setState({
       requiredData: requiredStateData,
       requiredState: state,
@@ -60,7 +88,43 @@ class StateTable extends Component {
       zonesLoaded,
       zones,
       back,
+      sortConfirmed,
+      sortActive,
+      sortRecovered,
+      sortDeceased,
+      sortOrder,
     } = this.state;
+
+    if (requiredData.length) {
+      if (sortConfirmed) {
+        requiredData[0].sort(function (x, y) {
+          return sortOrder
+            ? Number(y.confirmed) - Number(x.confirmed)
+            : Number(x.confirmed) - Number(y.confirmed);
+        });
+      }
+      if (sortActive) {
+        requiredData[0].sort(function (x, y) {
+          return !sortOrder
+            ? Number(y.active) - Number(x.active)
+            : Number(x.active) - Number(y.active);
+        });
+      }
+      if (sortRecovered) {
+        requiredData[0].sort(function (x, y) {
+          return !sortOrder
+            ? Number(y.recovered) - Number(x.recovered)
+            : Number(x.recovered) - Number(y.recovered);
+        });
+      }
+      if (sortDeceased) {
+        requiredData[0].sort(function (x, y) {
+          return !sortOrder
+            ? Number(y.deceased) - Number(x.deceased)
+            : Number(x.deceased) - Number(y.deceased);
+        });
+      }
+    }
 
     const useStylesBootstrap = makeStyles((theme: Theme) => ({
       arrow: {
@@ -169,13 +233,14 @@ class StateTable extends Component {
         <div className="w-100"></div>
         {requiredData.length && back ? (
           <React.Fragment>
-            <div className="row">
+            <div className="row fadeInUp" style={{ animationDelay: "0.1s" }}>
               <h6
                 style={{
                   fontSize: 9,
                   color: "grey",
                   textAlign: "left",
                   marginBottom: -35,
+                  marginLeft: 5,
                 }}
               >
                 District not mentioned? Might be in the GreenZone{" "}
@@ -195,7 +260,7 @@ class StateTable extends Component {
         <div className="w-100"></div>
         {requiredData.length && back ? (
           <div className="row">
-            <div className="col-10">
+            <div className="col-10 fadeInUp" style={{ animationDelay: "0.3s" }}>
               <button
                 className="btnMainPage btn"
                 style={{
@@ -218,7 +283,7 @@ class StateTable extends Component {
                 </Link>
               </button>
             </div>
-            <div className="col-2">
+            <div className="col-2 fadeInUp" style={{ animationDelay: "0.4s" }}>
               <h6
                 className="backButton"
                 onClick={() => {
@@ -227,7 +292,7 @@ class StateTable extends Component {
                   });
                 }}
               >
-                BACK
+                HIDE
               </h6>
             </div>
           </div>
@@ -236,7 +301,7 @@ class StateTable extends Component {
         )}
         <div className="w-100"></div>
         {requiredData.length && back ? (
-          <div className="row fadeInUp" style={{ transitionDelay: "0.3s" }}>
+          <div className="row fadeInUp" style={{ animationDelay: "0.5s" }}>
             <table
               className="table table-sm table-striped table-borderless"
               style={{
@@ -263,18 +328,45 @@ class StateTable extends Component {
                   <th
                     className="th sticky-top text-info"
                     style={{ textAlign: "center" }}
+                    onClick={() =>
+                      this.setState({
+                        sortConfirmed: true,
+                        sortActive: false,
+                        sortRecovered: false,
+                        sortDeceased: false,
+                        sortOrder: !sortOrder,
+                      })
+                    }
                   >
                     CONFIRMED
                   </th>
                   <th
                     className="th sticky-top narrowRow"
                     style={{ color: "rgb(255, 68, 106)", textAlign: "center" }}
+                    onClick={() =>
+                      this.setState({
+                        sortConfirmed: false,
+                        sortActive: true,
+                        sortRecovered: false,
+                        sortDeceased: false,
+                        sortOrder: !sortOrder,
+                      })
+                    }
                   >
                     ACTIVE
                   </th>
                   <th
                     className="th sticky-top text-success"
                     style={{ textAlign: "center" }}
+                    onClick={() =>
+                      this.setState({
+                        sortConfirmed: false,
+                        sortActive: false,
+                        sortRecovered: true,
+                        sortDeceased: false,
+                        sortOrder: !sortOrder,
+                      })
+                    }
                   >
                     RECOVERED
                   </th>
@@ -282,6 +374,15 @@ class StateTable extends Component {
                     className="th sticky-top narrowRow text-secondary"
                     id="line1"
                     style={{ textAlign: "center" }}
+                    onClick={() =>
+                      this.setState({
+                        sortConfirmed: false,
+                        sortActive: false,
+                        sortRecovered: false,
+                        sortDeceased: true,
+                        sortOrder: !sortOrder,
+                      })
+                    }
                   >
                     DEATHS
                   </th>
@@ -289,6 +390,15 @@ class StateTable extends Component {
                     className="th sticky-top text-secondary"
                     id="line2"
                     style={{ textAlign: "center", width: "70px" }}
+                    onClick={() =>
+                      this.setState({
+                        sortConfirmed: false,
+                        sortActive: false,
+                        sortRecovered: false,
+                        sortDeceased: true,
+                        sortOrder: !sortOrder,
+                      })
+                    }
                   >
                     DECEASED
                   </th>
