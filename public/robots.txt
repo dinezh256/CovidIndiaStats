@@ -1,3 +1,4 @@
 # https://www.robotstxt.org/robotstxt.html
+Sitemap: https://covidindiastats.com/sitemap.xml
 User-agent: *
 Disallow:
