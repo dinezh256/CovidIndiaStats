@@ -10,7 +10,11 @@ import Switch from "react-switch";
 import Tooltip, { TooltipProps } from "@material-ui/core/Tooltip";
 import { format } from "d3";
 import { Theme, makeStyles } from "@material-ui/core/styles";
-import { formatDate, formatDateAbsolute } from "../utils/common-functions";
+import {
+  formatDate,
+  formatDateAbsolute,
+  commaSeperated,
+} from "../utils/common-functions";
 import parse from "html-react-parser";
 import {
   LineChart,
@@ -18,19 +22,19 @@ import {
   YAxis,
   ResponsiveContainer,
   Tooltip as Retooltip,
-  ReferenceDot,
   BarChart,
   Bar,
   XAxis,
-  LabelList,
 } from "recharts";
+import StateLinePlot from "./stateLinePlot";
+import StateBarPlot from "./stateBarPlot";
 import ReactGa from "react-ga";
-import PropTypes from "prop-types";
 import { Helmet } from "react-helmet";
 import Footer from "./footer";
 import ControlledExpansionPanels from "./expansionPanel";
-import DistrictPicker from "./districtPicker";
-let CreateReactClass = require("create-react-class");
+// import DistrictPicker from "./districtPicker";
+import MiniBarPlot from "./miniBarPlot";
+import MiniStateSparkline from "./miniSateSparkline";
 
 class StateDetails extends Component {
   constructor(props) {
@@ -351,31 +355,6 @@ class StateDetails extends Component {
         });
       }
     }
-
-    const CustomTooltip = CreateReactClass({
-      propTypes: {
-        type: PropTypes.string,
-        payload: PropTypes.array,
-        label: PropTypes.string,
-      },
-
-      render() {
-        const { active } = this.props;
-
-        if (active) {
-          const { payload } = this.props;
-
-          return (
-            <div>
-              <p style={{ fontSize: 8, fontFamily: "notosans" }}>
-                {commaSeperated(payload[0].value)}
-              </p>
-            </div>
-          );
-        }
-        return null;
-      },
-    });
 
     for (let i = 0; i < statesDailyData.length; i++) {
       statesDailyData[i].newdate =
@@ -958,18 +937,6 @@ class StateDetails extends Component {
       );
     }
 
-    function commaSeperated(x) {
-      if (x !== undefined) {
-        x = x.toString();
-        let lastThree = x.substring(x.length - 3);
-        let otherNumbers = x.substring(0, x.length - 3);
-        if (otherNumbers !== "") lastThree = "," + lastThree;
-        let res =
-          otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
-        return res;
-      } else return 0;
-    }
-
     function districtZone(district) {
       const redZone = [];
       const orangeZone = [];
@@ -1113,7 +1080,7 @@ class StateDetails extends Component {
                     >
                       <h6
                         className="text-info"
-                        style={{ fontSize: "0.9rem", background: "#d9ecf5" }}
+                        style={{ fontSize: "0.8rem", background: "#d9ecf5" }}
                       >
                         CONFIRMED
                       </h6>
@@ -1131,57 +1098,14 @@ class StateDetails extends Component {
                       <h5 className="text-info">
                         {commaSeperated(requiredStateTotalData[0].confirmed)}
                       </h5>
-                      <section style={{ alignContent: "center" }}>
-                        <ResponsiveContainer
-                          width="95%"
-                          height="100%"
-                          aspect={2.35}
-                        >
-                          <LineChart
-                            data={requiredConfirmedStateDailyData.slice(
-                              requiredConfirmedStateDailyData.length - 20,
-                              requiredConfirmedStateDailyData.length
-                            )}
-                            syncId="line2"
-                          >
-                            <YAxis domain={[min, max]} hide={true} />
-
-                            <Retooltip
-                              content={<CustomTooltip />}
-                              contentStyle={{
-                                background: "rgba(255,255,255,0)",
-                                border: "none",
-                                textAlign: "left",
-                              }}
-                              active={true}
-                              cursor={false}
-                              position={{ x: -5, y: 0 }}
-                              offset={5}
-                            />
-                            <Line
-                              type="monotone"
-                              dataKey={this.props.match.params.stateid.toLowerCase()}
-                              stroke="#42b3f4"
-                              strokeWidth={2.3}
-                              dot={false}
-                              animationDuration={2000}
-                            />
-                            <ReferenceDot
-                              x={
-                                sparklineTotalConfirmedData.slice(
-                                  sparklineTotalConfirmedData.length - 20,
-                                  sparklineTotalConfirmedData.length
-                                ).length - 1
-                              }
-                              y={Number(sparklineTotalConfirmedData.slice(-1))}
-                              r={3}
-                              fill="#42b3f4"
-                              stroke="rgba(66, 179, 244, 0.7)"
-                              isAbove={true}
-                            />
-                          </LineChart>
-                        </ResponsiveContainer>
-                      </section>
+                      <MiniStateSparkline
+                        requiredStateDailyData={requiredConfirmedStateDailyData}
+                        dataKey={this.props.match.params.stateid.toLowerCase()}
+                        min={min}
+                        max={max}
+                        sparklineData={sparklineTotalConfirmedData}
+                        stroke="#42b3f4"
+                      />
                     </td>
                     <td
                       className="td stateTable"
@@ -1203,7 +1127,7 @@ class StateDetails extends Component {
                     >
                       <h6
                         style={{
-                          fontSize: "0.9rem",
+                          fontSize: "0.8rem",
                           color: "#ff446a",
                           background: "#f5d2d2",
                         }}
@@ -1228,55 +1152,14 @@ class StateDetails extends Component {
                       <h5 style={{ color: "#ff446a" }}>
                         {commaSeperated(requiredStateTotalData[0].active)}
                       </h5>
-                      <section style={{ alignContent: "center" }}>
-                        <ResponsiveContainer
-                          width="95%"
-                          height="100%"
-                          aspect={2.35}
-                        >
-                          <LineChart
-                            data={requiredActiveStateDailyData.slice(
-                              requiredActiveStateDailyData.length - 20,
-                              requiredActiveStateDailyData.length
-                            )}
-                            syncId="line2"
-                          >
-                            <YAxis domain={[min, max]} hide={true} />
-                            <Retooltip
-                              content={<CustomTooltip />}
-                              contentStyle={{
-                                background: "rgba(255,255,255,0)",
-                                border: "none",
-                                textAlign: "left",
-                              }}
-                              active={true}
-                              cursor={false}
-                              position={{ x: -5, y: 0 }}
-                              offset={5}
-                            />
-                            <Line
-                              type="monotone"
-                              dataKey="stateid"
-                              stroke="#ff446a"
-                              strokeWidth={2.3}
-                              dot={false}
-                              animationDuration={2000}
-                            />
-                            <ReferenceDot
-                              x={
-                                sparklineDailyActiveData.slice(
-                                  sparklineDailyActiveData.length - 20,
-                                  sparklineDailyActiveData.length
-                                ).length - 1
-                              }
-                              y={Number(sparklineDailyActiveData.slice(-1))}
-                              r={3}
-                              fill="#ff446a"
-                              stroke="rgba(255, 68, 106, 0.7)"
-                            />
-                          </LineChart>
-                        </ResponsiveContainer>
-                      </section>
+                      <MiniStateSparkline
+                        requiredStateDailyData={requiredActiveStateDailyData}
+                        dataKey="stateid"
+                        min={min}
+                        max={max}
+                        sparklineData={sparklineDailyActiveData}
+                        stroke="#ff446a"
+                      />
                     </td>
                     <td
                       className="td stateTable"
@@ -1300,7 +1183,7 @@ class StateDetails extends Component {
                     >
                       <h6
                         className="text-success"
-                        style={{ fontSize: "0.9rem", background: "#d5e9d5" }}
+                        style={{ fontSize: "0.8rem", background: "#d5e9d5" }}
                       >
                         RECOVERED
                       </h6>
@@ -1318,55 +1201,14 @@ class StateDetails extends Component {
                       <h5 className="text-success">
                         {commaSeperated(requiredStateTotalData[0].recovered)}
                       </h5>
-                      <section style={{ alignContent: "center" }}>
-                        <ResponsiveContainer
-                          width="95%"
-                          height="100%"
-                          aspect={2.35}
-                        >
-                          <LineChart
-                            data={requiredRecoveredStateDailyData.slice(
-                              requiredRecoveredStateDailyData.length - 20,
-                              requiredRecoveredStateDailyData.length
-                            )}
-                            syncId="line2"
-                          >
-                            <YAxis domain={[min, max]} hide={true} />
-                            <Retooltip
-                              content={<CustomTooltip />}
-                              contentStyle={{
-                                background: "rgba(255,255,255,0)",
-                                border: "none",
-                                textAlign: "left",
-                              }}
-                              active={true}
-                              cursor={false}
-                              position={{ x: -5, y: 0 }}
-                              offset={5}
-                            />
-                            <Line
-                              type="monotone"
-                              dataKey={this.props.match.params.stateid.toLowerCase()}
-                              stroke="#58bd58"
-                              strokeWidth={2.3}
-                              dot={false}
-                              animationDuration={2000}
-                            />
-                            <ReferenceDot
-                              x={
-                                sparklineDailyRecoveredData.slice(
-                                  sparklineDailyRecoveredData.length - 20,
-                                  sparklineDailyRecoveredData.length
-                                ).length - 1
-                              }
-                              y={Number(sparklineDailyRecoveredData.slice(-1))}
-                              r={3}
-                              fill="#58bd58"
-                              stroke="rgba(88, 189, 88, 0.7)"
-                            />
-                          </LineChart>
-                        </ResponsiveContainer>
-                      </section>
+                      <MiniStateSparkline
+                        requiredStateDailyData={requiredRecoveredStateDailyData}
+                        dataKey={this.props.match.params.stateid.toLowerCase()}
+                        min={min}
+                        max={max}
+                        sparklineData={sparklineDailyRecoveredData}
+                        stroke="#58bd58"
+                      />
                     </td>
                     <td
                       className="td stateTable"
@@ -1388,7 +1230,7 @@ class StateDetails extends Component {
                     >
                       <h6
                         className="text-secondary"
-                        style={{ fontSize: "0.9rem", background: "#ece7e7" }}
+                        style={{ fontSize: "0.8rem", background: "#ece7e7" }}
                       >
                         DECEASED
                       </h6>
@@ -1403,55 +1245,14 @@ class StateDetails extends Component {
                       <h5 className="text-secondary">
                         {commaSeperated(requiredStateTotalData[0].deaths)}
                       </h5>
-                      <section style={{ alignContent: "center" }}>
-                        <ResponsiveContainer
-                          width="95%"
-                          height="100%"
-                          aspect={2.35}
-                        >
-                          <LineChart
-                            data={requiredDeceasedStateDailyData.slice(
-                              requiredDeceasedStateDailyData.length - 20,
-                              requiredDeceasedStateDailyData.length
-                            )}
-                            syncId="line2"
-                          >
-                            <YAxis domain={[min, max]} hide={true} />
-                            <Retooltip
-                              content={<CustomTooltip />}
-                              contentStyle={{
-                                background: "rgba(255,255,255,0)",
-                                border: "none",
-                                textAlign: "left",
-                              }}
-                              active={true}
-                              cursor={false}
-                              position={{ x: -5, y: 0 }}
-                              offset={5}
-                            />
-                            <Line
-                              type="monotone"
-                              dataKey={this.props.match.params.stateid.toLowerCase()}
-                              stroke="#5c5756"
-                              strokeWidth={2.3}
-                              dot={false}
-                              animationDuration={2000}
-                            />
-                            <ReferenceDot
-                              x={
-                                sparklineDailyDeceasedData.slice(
-                                  sparklineDailyDeceasedData.length - 20,
-                                  sparklineDailyDeceasedData.length
-                                ).length - 1
-                              }
-                              y={Number(sparklineDailyDeceasedData.slice(-1))}
-                              r={3}
-                              fill="#5c5756"
-                              stroke="rgba(92, 87, 86, 0.7)"
-                            />
-                          </LineChart>
-                        </ResponsiveContainer>
-                      </section>
+                      <MiniStateSparkline
+                        requiredStateDailyData={requiredDeceasedStateDailyData}
+                        dataKey={this.props.match.params.stateid.toLowerCase()}
+                        min={min}
+                        max={max}
+                        sparklineData={sparklineDailyDeceasedData}
+                        stroke="#5c5756"
+                      />
                     </td>
                   </tr>
                 </table>
@@ -1637,177 +1438,35 @@ class StateDetails extends Component {
                   </div>
                   <div className="col-6">
                     {toggleConfirmed && (
-                      <ResponsiveContainer
-                        aspect={1.4}
-                        width="100%"
-                        height="100%"
-                      >
-                        <BarChart
-                          data={barDailyConfirmedData.slice(
-                            barDailyConfirmedData.length - 7,
-                            barDailyConfirmedData.length
-                          )}
-                          margin={{
-                            top: 35,
-                          }}
-                        >
-                          <XAxis hide={true} dataKey="date" />
-                          <YAxis hide={true} />
-                          <Retooltip
-                            contentStyle={{
-                              background: "rgba(255,255,255,0)",
-                              border: "none",
-                              borderRadius: "5px",
-                              fontSize: "8px",
-                              fontFamily: "notosans",
-                              textTransform: "uppercase",
-                              textAlign: "left",
-                              lineHeight: 0.8,
-                            }}
-                            active={true}
-                            cursor={{ fill: "transparent" }}
-                            position={{ x: -5, y: 0 }}
-                          />
-                          <Bar
-                            dataKey="stateid"
-                            name="Confirmed"
-                            fill="rgb(10, 111, 145)"
-                            radius={[5, 5, 0, 0]}
-                          >
-                            <LabelList dataKey="label" position="top" />
-                          </Bar>
-                        </BarChart>
-                      </ResponsiveContainer>
+                      <MiniBarPlot
+                        barDailyData={barDailyConfirmedData}
+                        type="confirmed"
+                        fill="rgb(10, 111, 145)"
+                      />
                     )}
 
                     {toggleActive && (
-                      <ResponsiveContainer
-                        aspect={1.4}
-                        width="100%"
-                        height="100%"
-                      >
-                        <BarChart
-                          data={barDailyActiveData.slice(
-                            barDailyActiveData.length - 7,
-                            barDailyActiveData.length
-                          )}
-                          margin={{
-                            top: 35,
-                          }}
-                        >
-                          <XAxis hide={true} dataKey="date" />
-                          <YAxis hide={true} />
-                          <Retooltip
-                            contentStyle={{
-                              background: "rgba(255,255,255,0)",
-                              border: "none",
-                              borderRadius: "5px",
-                              fontSize: "8px",
-                              fontFamily: "notosans",
-                              textTransform: "uppercase",
-                              textAlign: "left",
-                              lineHeight: 0.8,
-                            }}
-                            active={true}
-                            cursor={{ fill: "transparent" }}
-                            position={{ x: -5, y: 0 }}
-                          />
-                          <Bar
-                            dataKey="stateid"
-                            name="Active"
-                            fill="rgb(211, 25, 60)"
-                            radius={[5, 5, 0, 0]}
-                          />
-                        </BarChart>
-                      </ResponsiveContainer>
+                      <MiniBarPlot
+                        barDailyData={barDailyActiveData}
+                        type="active"
+                        fill="rgb(211, 25, 60)"
+                      />
                     )}
 
                     {toggleRecovered && (
-                      <ResponsiveContainer
-                        aspect={1.4}
-                        width="100%"
-                        height="100%"
-                      >
-                        <BarChart
-                          data={barDailyRecoveredData.slice(
-                            barDailyRecoveredData.length - 7,
-                            barDailyRecoveredData.length
-                          )}
-                          margin={{
-                            top: 35,
-                          }}
-                        >
-                          <XAxis hide={true} dataKey="date" />
-                          <YAxis hide={true} />
-                          <Retooltip
-                            contentStyle={{
-                              background: "rgba(255,255,255,0)",
-                              border: "none",
-                              borderRadius: "5px",
-                              fontSize: "8px",
-                              fontFamily: "notosans",
-                              textTransform: "uppercase",
-                              textAlign: "left",
-                              lineHeight: 0.8,
-                            }}
-                            active={true}
-                            cursor={{ fill: "transparent" }}
-                            position={{ x: -5, y: 0 }}
-                          />
-                          <Bar
-                            dataKey="stateid"
-                            name="Recovered"
-                            fill="rgb(64, 145, 64)"
-                            radius={[5, 5, 0, 0]}
-                          >
-                            <LabelList dataKey="label" position="top" />
-                          </Bar>
-                        </BarChart>
-                      </ResponsiveContainer>
+                      <MiniBarPlot
+                        barDailyData={barDailyRecoveredData}
+                        type="recovered"
+                        fill="rgb(64, 145, 64)"
+                      />
                     )}
 
                     {toggleDeceased && (
-                      <ResponsiveContainer
-                        aspect={1.4}
-                        width="100%"
-                        height="100%"
-                      >
-                        <BarChart
-                          data={barDailyDeceasedData.slice(
-                            barDailyDeceasedData.length - 7,
-                            barDailyDeceasedData.length
-                          )}
-                          margin={{
-                            top: 35,
-                          }}
-                        >
-                          <XAxis hide={true} dataKey="date" />
-                          <YAxis hide={true} />
-                          <Retooltip
-                            contentStyle={{
-                              background: "rgba(255,255,255,0)",
-                              border: "none",
-                              borderRadius: "5px",
-                              fontSize: "8px",
-                              fontFamily: "notosans",
-                              textTransform: "uppercase",
-                              textAlign: "left",
-                              lineHeight: 0.8,
-                            }}
-                            active={true}
-                            cursor={{ fill: "transparent" }}
-                            position={{ x: -5, y: 0 }}
-                          />
-                          <Bar
-                            dataKey="stateid"
-                            name="Deceased"
-                            fill="#474646"
-                            radius={[5, 5, 0, 0]}
-                          >
-                            <LabelList dataKey="label" position="top" />
-                          </Bar>
-                        </BarChart>
-                      </ResponsiveContainer>
+                      <MiniBarPlot
+                        barDailyData={barDailyDeceasedData}
+                        type="deceased"
+                        fill="#474646"
+                      />
                     )}
                   </div>
                 </div>
@@ -2167,7 +1826,7 @@ class StateDetails extends Component {
                     <div className="row" style={{ alignContent: "center" }}>
                       <div
                         align="center"
-                        className="col-6 fadeInUp"
+                        className="col-7 fadeInUp"
                         style={{ animationDelay: "0.1s" }}
                       >
                         <h6 className="feedbackBtn">
@@ -2184,7 +1843,7 @@ class StateDetails extends Component {
                         <h6 className="feedbackBtn">Feedback</h6>
                       </div>
                       <div
-                        className="col-6 fadeInUp"
+                        className="col-5 fadeInUp"
                         style={{ animationDelay: "0.1s" }}
                       >
                         <div className="row shareBtn">
@@ -2240,7 +1899,7 @@ class StateDetails extends Component {
                   )}
                 </div>
                 <div className="w-100"></div>
-                <div className="row">
+                {/* <div className="row">
                   <div className="col">
                     <DistrictPicker
                       districts={requiredDistricts[0]}
@@ -2248,7 +1907,7 @@ class StateDetails extends Component {
                       handleDistrictChange={this.handleDistrictChange}
                     />
                   </div>
-                </div>
+                </div> */}
               </div>
 
               <div className="col-sm">
@@ -2327,456 +1986,88 @@ class StateDetails extends Component {
                             ]
                           }
                         </h6>
-                        <section
-                          className="graphsection"
-                          style={{
-                            backgroundColor: "#e4f3fa",
-                            borderRadius: "6px",
-                            paddingTop: "5px",
-                            marginTop: 10,
-                          }}
-                        >
-                          <h5
-                            className="text-info"
-                            style={{
-                              paddingTop: "5px",
-                              marginBottom: "-80px",
-                              textAlign: "left",
-                              marginLeft: 10,
-                              fontSize: 16,
-                            }}
-                          >
-                            CONFIRMED
-                            <h6 style={{ fontSize: "12px", color: "#6ebed6" }}>
-                              {date[date.length - 1]}
-
-                              <h5 style={{ fontSize: 14, color: "#55b2ce" }}>
-                                {commaSeperated(
-                                  lineTotalConfirmedData[
-                                    lineTotalConfirmedData.length - 1
-                                  ].stateid
-                                )}{" "}
-                                <span style={{ fontSize: 9 }}>
-                                  +{commaSeperated(dailyConfirmed[0])}
-                                </span>
-                              </h5>
-                            </h6>
-                          </h5>
-                          <ResponsiveContainer
-                            width="100%"
-                            height="100%"
-                            aspect={2.6}
-                          >
-                            <LineChart
-                              data={lineTotalConfirmedData}
-                              margin={{
-                                top: 35,
-                                right: -30,
-                                left: 10,
-                                bottom: -12,
-                              }}
-                              syncId="linechart"
-                            >
-                              <XAxis
-                                dataKey="date"
-                                tick={{ stroke: "#0992c0", strokeWidth: 0.2 }}
-                                style={{ fontSize: 8 }}
-                                tickSize={5}
-                                tickCount={8}
-                              />
-                              <YAxis
-                                domain={[
-                                  0,
-                                  Math.ceil(
-                                    requiredStateTotalData[0].confirmed / 100
-                                  ) * 100,
-                                ]}
-                                orientation="right"
-                                tick={{ stroke: "#0992c0", strokeWidth: 0.2 }}
-                                tickFormatter={format("~s")}
-                                tickSize={5}
-                                style={{ fontSize: 8 }}
-                                tickCount={8}
-                              />
-                              <Retooltip
-                                contentStyle={{
-                                  background: "rgba(255,255,255,0)",
-                                  border: "none",
-                                  borderRadius: "5px",
-                                  fontSize: "8px",
-                                  fontFamily: "notosans",
-                                  textTransform: "uppercase",
-                                  textAlign: "left",
-                                  lineHeight: 0.8,
-                                }}
-                                cursor={false}
-                                position={{ x: 120, y: 16 }}
-                              />
-                              <Line
-                                type="monotone"
-                                dataKey="stateid"
-                                stroke="#35aad1"
-                                strokeWidth="3"
-                                strokeLinecap="round"
-                                name="Confirmed"
-                                isAnimationActive={true}
-                                dot={{
-                                  stroke: "#0992c0",
-                                  strokeWidth: 0.1,
-                                  fill: "#0992c0",
-                                }}
-                                onClick={() => {
-                                  ReactGa.event({
-                                    category: "Graph state confirmed",
-                                    action: "confirmed state hover",
-                                  });
-                                }}
-                              />
-                            </LineChart>
-                          </ResponsiveContainer>
-                        </section>
                       </div>
                       <div className="w-100"></div>
-
-                      <div className="col">
-                        <section
-                          className="graphsection"
-                          style={{
-                            backgroundColor: "#f5d2d2",
-                            borderRadius: "6px",
-                            paddingTop: "5px",
-                            marginTop: "10px",
-                          }}
-                        >
-                          <h5
-                            style={{
-                              paddingTop: "5px",
-                              marginBottom: "-80px",
-                              textAlign: "left",
-                              marginLeft: 10,
-                              fontSize: 16,
-                              color: "#ff446a",
-                            }}
-                          >
-                            ACTIVE
-                            <h6 style={{ fontSize: "12px", color: "#f16783" }}>
-                              {date[date.length - 1]}
-
-                              <h5 style={{ fontSize: 14, color: "#ff446a" }}>
-                                {commaSeperated(
-                                  lineTotalActiveData[
-                                    lineTotalActiveData.length - 1
-                                  ].stateid
-                                )}{" "}
-                                <span style={{ fontSize: 9 }}>
-                                  +{commaSeperated(dailyRecovered[0])}
-                                </span>
-                              </h5>
-                            </h6>
-                          </h5>
-                          <ResponsiveContainer
-                            width="100%"
-                            height="100%"
-                            aspect={2.6}
-                          >
-                            <LineChart
-                              data={lineTotalActiveData}
-                              margin={{
-                                top: 35,
-                                right: -30,
-                                left: 10,
-                                bottom: -12,
-                              }}
-                              syncId="linechart"
-                            >
-                              <XAxis
-                                dataKey="date"
-                                tick={{ stroke: "#f16783", strokeWidth: 0.2 }}
-                                style={{ fontSize: 8 }}
-                                tickSize={5}
-                                tickCount={8}
-                              />
-                              <YAxis
-                                domain={[
-                                  0,
-                                  Math.ceil(
-                                    Math.max.apply(
-                                      Math,
-                                      lineTotalActiveData.map(function (item) {
-                                        return Number(item.stateid);
-                                      })
-                                    ) / 100
-                                  ) * 100,
-                                ]}
-                                orientation="right"
-                                tick={{ stroke: "#f16783", strokeWidth: 0.2 }}
-                                tickFormatter={format("~s")}
-                                tickSize={5}
-                                style={{ fontSize: 8 }}
-                                tickCount={8}
-                              />
-                              <Retooltip
-                                contentStyle={{
-                                  background: "rgba(255,255,255,0)",
-                                  border: "none",
-                                  borderRadius: "5px",
-                                  fontSize: "8px",
-                                  fontFamily: "notosans",
-                                  textTransform: "uppercase",
-                                  textAlign: "left",
-                                  lineHeight: 0.8,
-                                }}
-                                cursor={false}
-                                position={{ x: 120, y: 16 }}
-                              />
-                              <Line
-                                type="monotone"
-                                dataKey="stateid"
-                                stroke="#ec7d93"
-                                strokeWidth="3"
-                                strokeLinecap="round"
-                                name="Active"
-                                isAnimationActive={true}
-                                dot={{
-                                  stroke: "#ff446a",
-                                  strokeWidth: 0.1,
-                                  fill: "#ff446a",
-                                }}
-                                onClick={() => {
-                                  ReactGa.event({
-                                    category: "Graph state active",
-                                    action: "active state hover",
-                                  });
-                                }}
-                              />
-                            </LineChart>
-                          </ResponsiveContainer>
-                        </section>
-                      </div>
-
+                      <StateLinePlot
+                        stateName={
+                          stateFullName[
+                            this.props.match.params.stateid.toUpperCase()
+                          ]
+                        }
+                        bgColor="#e4f3fa"
+                        titleClass="text-info"
+                        type="confirmed"
+                        date={date}
+                        total={lineTotalConfirmedData}
+                        daily={dailyConfirmed[0]}
+                        stroke="#0992c0"
+                        lineStroke="#35aad1"
+                        color1="#6ebed6"
+                        color2="#55b2ce"
+                        divideBy={100}
+                      />
                       <div className="w-100"></div>
-                      <div className="col">
-                        <section
-                          className="graphsection"
-                          style={{
-                            backgroundColor: "#d5e9d5",
-                            borderRadius: "6px",
-                            paddingTop: "5px",
-                            marginTop: "10px",
-                          }}
-                        >
-                          <h5
-                            className="text-success"
-                            style={{
-                              paddingTop: "5px",
-                              marginBottom: "-80px",
-                              textAlign: "left",
-                              marginLeft: 10,
-                              fontSize: 16,
-                            }}
-                          >
-                            RECOVERED
-                            <h6 style={{ fontSize: "12px", color: "#5cb85c" }}>
-                              {date[date.length - 1]}
-
-                              <h5 style={{ fontSize: 14, color: "#5cb85c" }}>
-                                {commaSeperated(
-                                  lineTotalRecoveredData[
-                                    lineTotalRecoveredData.length - 1
-                                  ].stateid
-                                )}{" "}
-                                <span style={{ fontSize: 9 }}>
-                                  +{commaSeperated(dailyRecovered[0])}
-                                </span>
-                              </h5>
-                            </h6>
-                          </h5>
-                          <ResponsiveContainer
-                            width="100%"
-                            height="100%"
-                            aspect={2.6}
-                          >
-                            <LineChart
-                              data={lineTotalRecoveredData}
-                              margin={{
-                                top: 35,
-                                right: -30,
-                                left: 10,
-                                bottom: -12,
-                              }}
-                              syncId="linechart"
-                            >
-                              <XAxis
-                                dataKey="date"
-                                tick={{ stroke: "#58bd58", strokeWidth: 0.2 }}
-                                style={{ fontSize: 8 }}
-                                tickSize={5}
-                                tickCount={8}
-                              />
-                              <YAxis
-                                domain={[
-                                  0,
-                                  Math.ceil(
-                                    requiredStateTotalData[0].recovered / 50
-                                  ) * 50,
-                                ]}
-                                orientation="right"
-                                tick={{ stroke: "#58bd58", strokeWidth: 0.2 }}
-                                tickFormatter={format("~s")}
-                                tickSize={5}
-                                style={{ fontSize: 8 }}
-                                tickCount={8}
-                              />
-                              <Retooltip
-                                contentStyle={{
-                                  background: "rgba(255,255,255,0)",
-                                  border: "none",
-                                  borderRadius: "5px",
-                                  fontSize: "8px",
-                                  fontFamily: "notosans",
-                                  textTransform: "uppercase",
-                                  textAlign: "left",
-                                  lineHeight: 0.8,
-                                }}
-                                cursor={false}
-                                position={{ x: 120, y: 16 }}
-                              />
-                              <Line
-                                type="monotone"
-                                dataKey="stateid"
-                                stroke="#78b978"
-                                strokeWidth="3"
-                                strokeLinecap="round"
-                                name="Recovered"
-                                isAnimationActive={true}
-                                dot={{
-                                  stroke: "#469246",
-                                  strokeWidth: 0.1,
-                                  fill: "#469246",
-                                }}
-                                onClick={() => {
-                                  ReactGa.event({
-                                    category: "Graph state recovered",
-                                    action: "state recovered hover",
-                                  });
-                                }}
-                              />
-                            </LineChart>
-                          </ResponsiveContainer>
-                        </section>
-                      </div>
+                      <StateLinePlot
+                        stateName={
+                          stateFullName[
+                            this.props.match.params.stateid.toUpperCase()
+                          ]
+                        }
+                        bgColor="#f5d2d2"
+                        titleClass="text-danger"
+                        type="active"
+                        date={date}
+                        total={lineTotalActiveData}
+                        daily={
+                          dailyConfirmed[0] -
+                          dailyRecovered[0] -
+                          dailyDeceased[0]
+                        }
+                        stroke="#ff446a"
+                        lineStroke="#ec7d93"
+                        color1="#f16783"
+                        color2="#ff446a"
+                        divideBy={100}
+                      />
                       <div className="w-100"></div>
-
-                      <div className="col">
-                        <section
-                          className="graphsection"
-                          style={{
-                            backgroundColor: "#f3f3f3",
-                            borderRadius: "6px",
-                            paddingTop: "5px",
-                            marginTop: "10px",
-                          }}
-                        >
-                          <h5
-                            className="text-secondary"
-                            style={{
-                              paddingTop: "5px",
-                              marginBottom: "-80px",
-                              textAlign: "left",
-                              marginLeft: 10,
-                              fontSize: 16,
-                            }}
-                          >
-                            DECEASED
-                            <h6 style={{ fontSize: "12px", color: "#808080" }}>
-                              {date[date.length - 1]}
-
-                              <h5 style={{ fontSize: 14, color: "#5e5a5a" }}>
-                                {commaSeperated(
-                                  lineTotalDeceasedData[
-                                    lineTotalDeceasedData.length - 1
-                                  ].stateid
-                                )}{" "}
-                                <span style={{ fontSize: 9 }}>
-                                  +{commaSeperated(dailyDeceased[0])}
-                                </span>
-                              </h5>
-                            </h6>
-                          </h5>
-                          <ResponsiveContainer
-                            width="100%"
-                            height="100%"
-                            aspect={2.6}
-                          >
-                            <LineChart
-                              data={lineTotalDeceasedData}
-                              margin={{
-                                top: 35,
-                                right: -30,
-                                left: 10,
-                                bottom: -12,
-                              }}
-                              syncId="linechart"
-                            >
-                              <XAxis
-                                dataKey="date"
-                                tick={{ stroke: "#474646", strokeWidth: 0.2 }}
-                                style={{ fontSize: 8 }}
-                                tickSize={5}
-                                tickCount={8}
-                              />
-                              <YAxis
-                                domain={[
-                                  0,
-                                  Math.ceil(
-                                    requiredStateTotalData[0].deaths / 10
-                                  ) * 10,
-                                ]}
-                                orientation="right"
-                                tick={{ stroke: "#474646", strokeWidth: 0.2 }}
-                                tickFormatter={format("~s")}
-                                tickSize={5}
-                                style={{ fontSize: 8 }}
-                                tickCount={8}
-                              />
-                              <Retooltip
-                                contentStyle={{
-                                  background: "rgba(255,255,255,0)",
-                                  border: "none",
-                                  borderRadius: "5px",
-                                  fontSize: "8px",
-                                  fontFamily: "notosans",
-                                  textTransform: "uppercase",
-                                  textAlign: "left",
-                                  lineHeight: 0.8,
-                                }}
-                                cursor={false}
-                                position={{ x: 120, y: 16 }}
-                              />
-                              <Line
-                                type="monotone"
-                                dataKey="stateid"
-                                stroke="#666565"
-                                strokeWidth="3"
-                                strokeLinecap="round"
-                                name="Deceased"
-                                isAnimationActive={true}
-                                dot={{
-                                  stroke: "#2e2d2d",
-                                  strokeWidth: 0.1,
-                                  fill: "#2e2d2d",
-                                }}
-                                onClick={() => {
-                                  ReactGa.event({
-                                    category: "Graph state deceased",
-                                    action: "state deceased hover",
-                                  });
-                                }}
-                              />
-                            </LineChart>
-                          </ResponsiveContainer>
-                        </section>
-                      </div>
+                      <StateLinePlot
+                        stateName={
+                          stateFullName[
+                            this.props.match.params.stateid.toUpperCase()
+                          ]
+                        }
+                        bgColor="#d5e9d5"
+                        titleClass="text-success"
+                        type="recovered"
+                        date={date}
+                        total={lineTotalRecoveredData}
+                        daily={dailyRecovered[0]}
+                        stroke="#469246"
+                        lineStroke="#78b978"
+                        color1="#5cb85c"
+                        color2="#5cb85c"
+                        divideBy={10}
+                      />
+                      <div className="w-100"></div>
+                      <StateLinePlot
+                        stateName={
+                          stateFullName[
+                            this.props.match.params.stateid.toUpperCase()
+                          ]
+                        }
+                        bgColor="#f3f3f3"
+                        titleClass="text-secondary"
+                        type="deceased"
+                        date={date}
+                        total={lineTotalDeceasedData}
+                        daily={dailyDeceased[0]}
+                        stroke="#2e2d2d"
+                        lineStroke="#666565"
+                        color1="#808080"
+                        color2="#5e5a5a"
+                        divideBy={10}
+                      />
+                      <div className="w-100"></div>
                       <div className="w-100"></div>
 
                       <div className="col">
@@ -2921,459 +2212,97 @@ class StateDetails extends Component {
                             ]
                           }
                         </h6>
-                        <section
-                          className="graphsection"
-                          style={{
-                            alignSelf: "center",
-                            backgroundColor: "#e4f3fa",
-                            borderRadius: "6px",
-                            marginTop: 10,
-                          }}
-                        >
-                          <h5
-                            className="text-info"
-                            style={{
-                              paddingTop: "8px",
-                              marginBottom: "-80px",
-                              textAlign: "left",
-                              marginLeft: 10,
-                              fontSize: 16,
-                            }}
-                          >
-                            CONFIRMED
-                            <h6 style={{ fontSize: "12px", color: "#6ebed6" }}>
-                              {date[date.length - 1]}
-                              <h6 style={{ fontSize: "8px" }}>
-                                <h5 style={{ fontSize: 14, color: "#55b2ce" }}>
-                                  {commaSeperated(dailyConfirmed[0])}{" "}
-                                  <span style={{ fontSize: 9 }}>
-                                    {dailyDeltaConfirmed[0] > 0
-                                      ? `+${commaSeperated(
-                                          Math.abs(dailyDeltaConfirmed[0])
-                                        )}`
-                                      : `-${commaSeperated(
-                                          Math.abs(dailyDeltaConfirmed[0])
-                                        )}`}
-                                  </span>
-                                </h5>
-                              </h6>
-                            </h6>
-                          </h5>
-
-                          <ResponsiveContainer
-                            width="100%"
-                            height="100%"
-                            aspect={2.6}
-                          >
-                            <BarChart
-                              data={barDailyConfirmedData}
-                              margin={{
-                                top: 35,
-                                right: -30,
-                                left: 10,
-                                bottom: -12,
-                              }}
-                              syncId="barchart"
-                            >
-                              <XAxis
-                                dataKey="date"
-                                tick={{ stroke: "#0992c0", strokeWidth: 0.2 }}
-                                style={{ fontSize: 8 }}
-                                tickSize={5}
-                                tickCount={8}
-                              />
-                              <YAxis
-                                domain={[
-                                  0,
-                                  Math.ceil(
-                                    Math.max(...sparklineTotalConfirmedData) /
-                                      100
-                                  ) * 100,
-                                ]}
-                                orientation="right"
-                                tick={{ stroke: "#0992c0", strokeWidth: 0.2 }}
-                                tickFormatter={format("~s")}
-                                tickSize={5}
-                                style={{ fontSize: 8 }}
-                                tickCount={6}
-                              />
-                              <Retooltip
-                                contentStyle={{
-                                  background: "rgba(255,255,255,0)",
-                                  border: "none",
-                                  borderRadius: "5px",
-                                  fontSize: "8px",
-                                  fontFamily: "notosans",
-                                  textTransform: "uppercase",
-                                  textAlign: "left",
-                                  lineHeight: 0.8,
-                                }}
-                                active={true}
-                                cursor={{ fill: "transparent" }}
-                                position={{ x: 120, y: 16 }}
-                              />
-                              <Bar
-                                dataKey="stateid"
-                                name="Confirmed"
-                                fill="#0992c0"
-                                radius={[2, 2, 0, 0]}
-                                onClick={() => {
-                                  ReactGa.event({
-                                    category: "Graph state Confirmedbar",
-                                    action: "State Confirmedbar hover",
-                                  });
-                                }}
-                              />
-                            </BarChart>
-                          </ResponsiveContainer>
-                        </section>
                       </div>
                       <div className="w-100"></div>
-                      <div className="col">
-                        <section
-                          className="graphsection"
-                          style={{
-                            alignSelf: "center",
-                            backgroundColor: "#f5d2d2",
-                            borderRadius: "6px",
-                            marginTop: 10,
-                          }}
-                        >
-                          <h5
-                            style={{
-                              paddingTop: "8px",
-                              marginBottom: "-80px",
-                              textAlign: "left",
-                              marginLeft: 10,
-                              fontSize: 16,
-                              color: "#ff446a",
-                            }}
-                          >
-                            ACTIVE
-                            <h6 style={{ fontSize: "12px", color: "#f16783" }}>
-                              {date[date.length - 1]}
-
-                              <h5 style={{ fontSize: 14, color: "#ff446a" }}>
-                                {commaSeperated(
-                                  barDailyActiveData[
-                                    barDailyActiveData.length - 1
-                                  ].stateid
-                                )}{" "}
-                                <span style={{ fontSize: 8 }}>
-                                  {barDailyActiveData[
-                                    barDailyActiveData.length - 1
-                                  ].stateid -
-                                    barDailyActiveData[
-                                      barDailyActiveData.length - 2
-                                    ].stateid >
-                                  0
-                                    ? `+${commaSeperated(
-                                        Math.abs(
-                                          barDailyActiveData[
-                                            barDailyActiveData.length - 1
-                                          ].stateid -
-                                            barDailyActiveData[
-                                              barDailyActiveData.length - 2
-                                            ].stateid
-                                        )
-                                      )}`
-                                    : `-${commaSeperated(
-                                        Math.abs(
-                                          barDailyActiveData[
-                                            barDailyActiveData.length - 1
-                                          ].stateid -
-                                            barDailyActiveData[
-                                              barDailyActiveData.length - 2
-                                            ].stateid
-                                        )
-                                      )}`}
-                                </span>
-                              </h5>
-                            </h6>
-                          </h5>
-
-                          <ResponsiveContainer
-                            width="100%"
-                            height="100%"
-                            aspect={2.6}
-                          >
-                            <BarChart
-                              data={barDailyActiveData}
-                              margin={{
-                                top: 35,
-                                right: -32,
-                                left: 10,
-                                bottom: -12,
-                              }}
-                              syncId="barchart"
-                            >
-                              <XAxis
-                                dataKey="date"
-                                tick={{ stroke: "#f16783", strokeWidth: 0.2 }}
-                                style={{ fontSize: 8 }}
-                                tickSize={5}
-                                tickCount={6}
-                              />
-                              <YAxis
-                                domain={[
-                                  Math.floor(
-                                    Math.min(...sparklineDailyActiveData) / 100
-                                  ) * 100,
-                                  Math.ceil(
-                                    Math.max(...sparklineDailyActiveData) / 100
-                                  ) * 100,
-                                ]}
-                                orientation="right"
-                                tick={{ stroke: "#f16783", strokeWidth: 0.2 }}
-                                tickFormatter={format("~s")}
-                                tickSize={5}
-                                style={{ fontSize: 8 }}
-                                tickCount={8}
-                              />
-                              <Retooltip
-                                contentStyle={{
-                                  background: "rgba(255,255,255,0)",
-                                  border: "none",
-                                  borderRadius: "5px",
-                                  fontSize: "8px",
-                                  fontFamily: "notosans",
-                                  textTransform: "uppercase",
-                                  textAlign: "left",
-                                  lineHeight: 0.8,
-                                }}
-                                cursor={{ fill: "transparent" }}
-                                position={{ x: 120, y: 16 }}
-                              />
-
-                              <Bar
-                                dataKey="stateid"
-                                name="Active"
-                                fill="#f16783"
-                                radius={[2, 2, 0, 0]}
-                                onClick={() => {
-                                  ReactGa.event({
-                                    category: "Graph Activebar State",
-                                    action: "State Activebar hover",
-                                  });
-                                }}
-                              />
-                            </BarChart>
-                          </ResponsiveContainer>
-                        </section>
-                      </div>
+                      <StateBarPlot
+                        stateName={
+                          stateFullName[
+                            this.props.match.params.stateid.toUpperCase()
+                          ]
+                        }
+                        type="confirmed"
+                        bgColor="#e4f3fa"
+                        titleClass="text-info"
+                        data={barDailyConfirmedData}
+                        date={date}
+                        daily={dailyConfirmed[0]}
+                        dailyDelta={dailyDeltaConfirmed[0]}
+                        sparkline={sparklineTotalConfirmedData}
+                        divideBy={100}
+                        stroke="#0992c0"
+                        color1="#6ebed6"
+                        color2="#55b2ce"
+                      />
                       <div className="w-100"></div>
-                      <div className="col">
-                        <section
-                          className="graphsection"
-                          style={{
-                            alignSelf: "center",
-                            backgroundColor: "#d5e9d5",
-                            borderRadius: "6px",
-                            marginTop: 10,
-                          }}
-                        >
-                          <h5
-                            className="text-success"
-                            style={{
-                              paddingTop: "8px",
-                              marginBottom: "-80px",
-                              textAlign: "left",
-                              marginLeft: 10,
-                              fontSize: 16,
-                            }}
-                          >
-                            RECOVERED
-                            <h6 style={{ fontSize: "12px", color: "#7ed87e" }}>
-                              {date[date.length - 1]}
-
-                              <h5 style={{ fontSize: 14, color: "#5cb85c" }}>
-                                {commaSeperated(dailyRecovered[0])}{" "}
-                                <span style={{ fontSize: 8 }}>
-                                  {dailyDeltaRecovered[0] > 0
-                                    ? `+${commaSeperated(
-                                        Math.abs(dailyDeltaRecovered[0])
-                                      )}`
-                                    : `-${commaSeperated(
-                                        Math.abs(dailyDeltaRecovered[0])
-                                      )}`}
-                                </span>
-                              </h5>
-                            </h6>
-                          </h5>
-                          <ResponsiveContainer
-                            width="100%"
-                            height="100%"
-                            aspect={2.6}
-                          >
-                            <BarChart
-                              data={barDailyRecoveredData}
-                              margin={{
-                                top: 35,
-                                right: -30,
-                                left: 10,
-                                bottom: -12,
-                              }}
-                              syncId="barchart"
-                            >
-                              <XAxis
-                                dataKey="date"
-                                tick={{ stroke: "#58bd58", strokeWidth: 0.2 }}
-                                style={{ fontSize: 8 }}
-                                tickSize={5}
-                                tickCount={6}
-                              />
-                              <YAxis
-                                domain={[
-                                  0,
-                                  Math.ceil(
-                                    Math.max(...sparklineDailyRecoveredData) /
-                                      50
-                                  ) * 50,
-                                ]}
-                                orientation="right"
-                                tick={{ stroke: "#58bd58", strokeWidth: 0.2 }}
-                                tickFormatter={format("~s")}
-                                tickSize={5}
-                                style={{ fontSize: 8 }}
-                                tickCount={8}
-                              />
-                              <Retooltip
-                                contentStyle={{
-                                  background: "rgba(255,255,255,0)",
-                                  border: "none",
-                                  borderRadius: "5px",
-                                  fontSize: "8px",
-                                  fontFamily: "notosans",
-                                  textTransform: "uppercase",
-                                  textAlign: "left",
-                                  lineHeight: 0.8,
-                                }}
-                                cursor={{ fill: "transparent" }}
-                                position={{ x: 120, y: 16 }}
-                              />
-                              <Bar
-                                dataKey="stateid"
-                                name="Recovered"
-                                fill="#58bd58"
-                                radius={[2, 2, 0, 0]}
-                                onClick={() => {
-                                  ReactGa.event({
-                                    category: "Graph State Recoveredbar",
-                                    action: "State Recoveredbar hover",
-                                  });
-                                }}
-                              />
-                            </BarChart>
-                          </ResponsiveContainer>
-                        </section>
-                      </div>
+                      <StateBarPlot
+                        stateName={
+                          stateFullName[
+                            this.props.match.params.stateid.toUpperCase()
+                          ]
+                        }
+                        type="active"
+                        bgColor="#f5d2d2"
+                        titleClass="text-danger"
+                        data={barDailyActiveData}
+                        date={date}
+                        daily={
+                          dailyConfirmed[0] -
+                          dailyRecovered[0] -
+                          dailyDeceased[0]
+                        }
+                        dailyDelta={
+                          dailyDeltaConfirmed[0] -
+                          dailyDeltaRecovered[0] -
+                          dailyDeltaDeceased[0]
+                        }
+                        sparkline={sparklineDailyActiveData}
+                        divideBy={100}
+                        stroke="#f16783"
+                        color1="#f16783"
+                        color2="#ff446a"
+                      />
                       <div className="w-100"></div>
-                      <div className="col">
-                        <section
-                          className="graphsection"
-                          style={{
-                            alignSelf: "center",
-                            backgroundColor: "#f3f3f3",
-                            borderRadius: "6px",
-                            marginTop: 10,
-                          }}
-                        >
-                          <h5
-                            style={{
-                              paddingTop: "8px",
-                              marginBottom: "-80px",
-                              textAlign: "left",
-                              marginLeft: 10,
-                              color: "#464545",
-                              fontSize: 16,
-                            }}
-                          >
-                            DECEASED
-                            <h6 style={{ fontSize: "12px", color: "#808080" }}>
-                              {date[date.length - 1]}
-
-                              <h5 style={{ fontSize: 14, color: "#5e5a5a" }}>
-                                {commaSeperated(dailyDeceased[0])}{" "}
-                                <span style={{ fontSize: 9 }}>
-                                  {dailyDeltaDeceased[0] > 0
-                                    ? `+${commaSeperated(
-                                        Math.abs(dailyDeltaDeceased[0])
-                                      )}`
-                                    : `-${commaSeperated(
-                                        Math.abs(dailyDeltaDeceased[0])
-                                      )}`}
-                                </span>
-                              </h5>
-                            </h6>
-                          </h5>
-                          <ResponsiveContainer
-                            width="100%"
-                            height="100%"
-                            aspect={2.6}
-                          >
-                            <BarChart
-                              data={barDailyDeceasedData}
-                              margin={{
-                                top: 35,
-                                right: -30,
-                                left: 10,
-                                bottom: -12,
-                              }}
-                              syncId="barchart"
-                            >
-                              <XAxis
-                                dataKey="date"
-                                tick={{ stroke: "#474646", strokeWidth: 0.2 }}
-                                axisLine={{ color: "#474646" }}
-                                style={{ fontSize: 8 }}
-                                tickSize={5}
-                                tickCount={6}
-                              />
-                              <YAxis
-                                domain={[
-                                  0,
-                                  Math.ceil(
-                                    Math.max(...sparklineDailyDeceasedData) / 10
-                                  ) * 10,
-                                ]}
-                                orientation="right"
-                                tick={{ stroke: "#474646", strokeWidth: 0.2 }}
-                                tickFormatter={format("~s")}
-                                tickSize={5}
-                                style={{ fontSize: 8 }}
-                                tickCount={8}
-                              />
-                              <Retooltip
-                                contentStyle={{
-                                  background: "rgba(255,255,255,0)",
-                                  border: "none",
-                                  borderRadius: "5px",
-                                  fontSize: "8px",
-                                  fontFamily: "notosans",
-                                  textTransform: "uppercase",
-                                  textAlign: "left",
-                                  lineHeight: 0.8,
-                                }}
-                                cursor={{ fill: "transparent" }}
-                                position={{ x: 120, y: 16 }}
-                              />
-                              <Bar
-                                dataKey="stateid"
-                                name="Deceased"
-                                fill="#474646"
-                                radius={[2, 2, 0, 0]}
-                                onClick={() => {
-                                  ReactGa.event({
-                                    category: "Graph State Deceasedbar",
-                                    action: " State Deceasedbar hover",
-                                  });
-                                }}
-                              />
-                            </BarChart>
-                          </ResponsiveContainer>
-                        </section>
-                      </div>
+                      <StateBarPlot
+                        stateName={
+                          stateFullName[
+                            this.props.match.params.stateid.toUpperCase()
+                          ]
+                        }
+                        type="recovered"
+                        bgColor="#d5e9d5"
+                        titleClass="text-success"
+                        data={barDailyRecoveredData}
+                        date={date}
+                        daily={dailyRecovered[0]}
+                        dailyDelta={dailyDeltaRecovered[0]}
+                        sparkline={sparklineDailyRecoveredData}
+                        divideBy={50}
+                        stroke="#58bd58"
+                        color1="#7ed87e"
+                        color2="#5cb85c"
+                      />
                       <div className="w-100"></div>
+                      <StateBarPlot
+                        stateName={
+                          stateFullName[
+                            this.props.match.params.stateid.toUpperCase()
+                          ]
+                        }
+                        type="deceased"
+                        bgColor="#f3f3f3"
+                        titleClass="text-secondary"
+                        data={barDailyDeceasedData}
+                        date={date}
+                        daily={dailyDeceased[0]}
+                        dailyDelta={dailyDeltaDeceased[0]}
+                        sparkline={sparklineDailyDeceasedData}
+                        divideBy={10}
+                        stroke="#474646"
+                        color1="#808080"
+                        color2="#5e5a5a"
+                      />
+                      <div className="w-100"></div>
+
                       <div className="col">
                         <section
                           className="graphsection"
