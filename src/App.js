@@ -25,7 +25,7 @@ const schemaMarkup = {
   "@type": "NGO",
   name: "Track the spread of Coronavirus (COVID-19) in India and World",
   alternateName: "COVID INDIA STATS",
-  url: "https://www.covidindiastats.org/",
+  url: "https://www.covidindiastats.com/",
 };
 
 function App() {
