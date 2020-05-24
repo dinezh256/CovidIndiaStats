@@ -4,6 +4,7 @@ import CountUp from "react-countup";
 import ArrowRightIcon from "@material-ui/icons/ArrowRight";
 import { worldTotalData } from "./API/index";
 import { NavLink } from "react-router-dom";
+import { commaSeperated } from "../utils/common-functions";
 
 class WorldHomeCard extends Component {
   state = {
@@ -41,18 +42,6 @@ class WorldHomeCard extends Component {
       recovered,
       active,
     } = this.state;
-
-    function commaSeperated(x) {
-      if (x !== undefined || x !== 0) {
-        x = x.toString();
-        let lastThree = x.substring(x.length - 3);
-        let otherNumbers = x.substring(0, x.length - 3);
-        if (otherNumbers !== "") lastThree = "," + lastThree;
-        let res =
-          otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
-        return res;
-      } else return x;
-    }
 
     return (
       <React.Fragment>

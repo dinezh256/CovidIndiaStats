@@ -3,12 +3,20 @@ import Table from "./table";
 import Graph from "./graph";
 import Footer from "./footer";
 import LinearProgress from "@material-ui/core/LinearProgress";
+import { Helmet } from "react-helmet";
 
 class Home extends Component {
   render() {
     return (
       <React.Fragment>
         <div className="container">
+          <Helmet>
+            <title>Covid India Stats</title>
+            <meta
+              name="description"
+              content="Track the spread of Coronavirus (COVID-19) in India and World"
+            />
+          </Helmet>
           <div className="row">
             <LinearProgress />
             <div className="col-sm">

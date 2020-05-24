@@ -316,8 +316,13 @@ function ControlledExpansionPanels({ data, stateData, state, population }) {
               fontSize: 11,
             }}
           >
+            ≈
             {data[0] !== undefined
-              ? commaSeperated(Number(data[0].testspermillion))
+              ? commaSeperated(
+                  Math.round(
+                    (Number(data[0].totaltested) / Number(population)) * 1000000
+                  )
+                )
               : "0"}{" "}
             {data[0] !== undefined
               ? `as of
@@ -333,8 +338,13 @@ function ControlledExpansionPanels({ data, stateData, state, population }) {
               fontSize: 12,
             }}
           >
+            ≈
             {data[0] !== undefined
-              ? commaSeperated(Number(data[0].testspermillion))
+              ? commaSeperated(
+                  Math.round(
+                    (Number(data[0].totaltested) / Number(population)) * 1000000
+                  )
+                )
               : "0"}{" "}
             persons have been tested for every 1 million people.
           </Typography>

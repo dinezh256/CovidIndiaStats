@@ -16,6 +16,7 @@ import {
 import LinkTwoToneIcon from "@material-ui/icons/LinkTwoTone";
 import { format } from "d3";
 import BarChart from "chart-race-react/dist/index";
+import { Helmet } from "react-helmet";
 
 class StateGraph extends Component {
   constructor(props) {
@@ -74,21 +75,6 @@ class StateGraph extends Component {
     const dayWiseConfirmed = [];
     const dayWiseRecovered = [];
     const dayWiseDeceased = [];
-
-    const months = [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
-    ];
 
     const dailydata = [];
     data2.map((item) =>
@@ -313,22 +299,22 @@ class StateGraph extends Component {
 
     const timeseriesData = [
       "Maharashtra",
+      "Tamil Nadu",
       "Gujarat",
       "Delhi",
-      "Madhya Pradesh",
       "Rajasthan",
-      "Tamil Nadu",
+      "Madhya Pradesh",
       "Uttar Pradesh",
-      "Andhra Pradesh",
-      "Telangana",
       "West Bengal",
-      "Jammu & Kashmir",
-      "Karnataka",
-      "Kerala",
+      "Andhra Pradesh",
       "Punjab",
+      "Telangana",
+      "Karnataka",
       "Bihar",
+      "Jammu & Kashmir",
       "Haryana",
       "Odisha",
+      "Kerala",
       "Jharkhand",
     ].reduce(
       (res, item) => ({
@@ -386,6 +372,13 @@ class StateGraph extends Component {
     if (isLoaded) {
       return (
         <div className="container">
+          <Helmet>
+            <title>Covid India Stats - Indepth</title>
+            <meta
+              name="description"
+              content="Indepth report on spread of Coronavirus (COVID-19) in India"
+            />
+          </Helmet>
           <div className="row">
             <div className="col-sm">
               <div
@@ -707,7 +700,7 @@ class StateGraph extends Component {
                       width={310}
                       height={120}
                       data={dailydata.slice(
-                        dailydata.length - 50,
+                        dailydata.length - 75,
                         dailydata.length
                       )}
                       margin={{
@@ -796,7 +789,7 @@ class StateGraph extends Component {
                   <ResponsiveContainer width="100%" height="100%" aspect={1.5}>
                     <LineChart
                       data={cumulativedata.slice(
-                        cumulativedata.length - 50,
+                        cumulativedata.length - 75,
                         cumulativedata.length
                       )}
                       margin={{
@@ -901,7 +894,7 @@ class StateGraph extends Component {
                       width={310}
                       height={120}
                       data={dailydata.slice(
-                        dailydata.length - 50,
+                        dailydata.length - 75,
                         dailydata.length
                       )}
                       margin={{
@@ -989,7 +982,7 @@ class StateGraph extends Component {
                   <ResponsiveContainer width="100%" height="100%" aspect={1.5}>
                     <LineChart
                       data={cumulativedata.slice(
-                        cumulativedata.length - 50,
+                        cumulativedata.length - 75,
                         cumulativedata.length
                       )}
                       margin={{

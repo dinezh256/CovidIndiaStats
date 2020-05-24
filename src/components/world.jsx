@@ -3,20 +3,30 @@ import { getDate, getMonth } from "date-fns";
 import WorldChoropleth from "./worldchoropleth";
 import Footer from "./footer";
 import ReactGa from "react-ga";
+import { Helmet } from "react-helmet";
+import * as Icon from "react-feather";
+import { commaSeperated } from "../utils/common-functions";
 
 class World extends Component {
-  state = {
-    sortColumn: { order: "asc" },
-  };
-
   constructor(props) {
     super(props);
     this.state = {
-      isLoaded: false,
-      countries: [],
-      worldData: [],
-      on: false,
+      isLoaded1: false,
+      isLoaded2: false,
+      countiesTodayData: [],
+      countiesYesterdayData: [],
+      toggleToday: true,
+      toggleYesterday: false,
     };
+    this.onToggleToday = this.onToggleToday.bind(this);
+    this.onToggleYesterday = this.onToggleYesterday.bind(this);
+  }
+
+  onToggleToday(toggleToday) {
+    this.setState({ toggleToday });
+  }
+  onToggleYesterday(toggleYesterday) {
+    this.setState({ toggleYesterday });
   }
 
   componentDidMount() {
@@ -25,16 +35,46 @@ class World extends Component {
     ).then((res) =>
       res.json().then((json) => {
         this.setState({
-          isLoaded: true,
-          countries: json,
+          isLoaded1: true,
+          countiesTodayData: json,
+        });
+      })
+    );
+
+    fetch(
+      "https://corona.lmao.ninja/v2/countries?yesterday=true&sort=cases"
+    ).then((res) =>
+      res.json().then((json) => {
+        this.setState({
+          isLoaded2: true,
+          countiesYesterdayData: json,
         });
       })
     );
   }
 
   render() {
-    const { isLoaded, countries } = this.state;
+    const {
+      isLoaded1,
+      countiesTodayData,
+      isLoaded2,
+      countiesYesterdayData,
+      toggleToday,
+      toggleYesterday,
+    } = this.state;
 
+    let countries = [];
+    let isLoaded = "";
+
+    if (toggleToday) {
+      countries = countiesTodayData;
+      isLoaded = isLoaded1;
+    }
+
+    if (toggleYesterday) {
+      countries = countiesYesterdayData;
+      isLoaded = isLoaded2;
+    }
     const data = [];
     countries.map((country) =>
       data.push({
@@ -97,19 +137,13 @@ class World extends Component {
       })
     );
 
-    function commaSeperated(x) {
-      x = x.toString();
-      let lastThree = x.substring(x.length - 3);
-      let otherNumbers = x.substring(0, x.length - 3);
-      if (otherNumbers !== "") lastThree = "," + lastThree;
-      let res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
-      return res;
-    }
-
     if (isLoaded) {
       return (
         <React.Fragment>
           <div className="containerWorld">
+            <Helmet>
+              <title>Global COVID19 Update</title>
+            </Helmet>
             <div
               className="col-12 fadeInUp worldchoropleth"
               style={{ alignContent: "center" }}
@@ -258,11 +292,47 @@ class World extends Component {
               </table>
             </div>
             <div className="w-100"></div>
+            <div className="row" style={{ marginBottom: 0 }}>
+              <div className="col fadeInUp" style={{ animationDelay: "0.7s" }}>
+                <h6
+                  className="toggleDay"
+                  onClick={() =>
+                    this.setState({ toggleToday: true, toggleYesterday: false })
+                  }
+                >
+                  TODAY{" "}
+                  {toggleToday && (
+                    <Icon.CheckCircle
+                      size={14}
+                      style={{ verticalAlign: "-0.1rem" }}
+                    />
+                  )}
+                </h6>
+              </div>
+              <div className="col fadeInUp" style={{ animationDelay: "0.8s" }}>
+                <h6
+                  className="toggleDay"
+                  onClick={() =>
+                    this.setState({ toggleToday: false, toggleYesterday: true })
+                  }
+                >
+                  YESTERDAY{" "}
+                  {toggleYesterday && (
+                    <Icon.CheckCircle
+                      size={14}
+                      style={{ verticalAlign: "-0.1rem" }}
+                    />
+                  )}
+                </h6>
+              </div>
+            </div>
+
+            <div className="w-100"></div>
             <div className="col-12">
               <table
                 className="tableworld table-sm fadeInUp table-responsive table-hover table-bordered"
                 align="center"
-                style={{ animationDelay: "0.8s" }}
+                style={{ animationDelay: "0.9s" }}
               >
                 <thead className="thead-light">
                   <tr>
@@ -304,7 +374,7 @@ class World extends Component {
                         style={{ textAlign: "right", background: "#e9f5fa" }}
                       >
                         <span className="text-info">
-                          {country.todayCases === 0
+                          {Number(country.todayCases) === 0
                             ? ""
                             : "+" + commaSeperated(country.todayCases)}
                         </span>
@@ -319,7 +389,7 @@ class World extends Component {
                           background: "rgba(241, 199, 199, 0.7)",
                         }}
                       >
-                        {country.active === 0
+                        {Number(country.active) === 0
                           ? "-"
                           : commaSeperated(country.active)}
                       </td>
@@ -331,11 +401,9 @@ class World extends Component {
                           background: "rgba(195, 224, 195, 0.7)",
                         }}
                       >
-                        {country.cases - (country.active + country.deaths) === 0
+                        {Number(country.recovered) === 0
                           ? "-"
-                          : commaSeperated(
-                              country.cases - (country.active + country.deaths)
-                            )}
+                          : commaSeperated(country.recovered)}
                       </td>
                       <td className="td-world" style={{ textAlign: "right" }}>
                         <b
@@ -346,17 +414,17 @@ class World extends Component {
                             color: "grey",
                           }}
                         >
-                          {country.todayDeaths === 0
+                          {Number(country.todayDeaths) === 0
                             ? ""
                             : "+" + commaSeperated(country.todayDeaths)}
                         </b>
                         &nbsp;
-                        {country.deaths === 0
+                        {Number(country.deaths) === 0
                           ? "-"
                           : commaSeperated(country.deaths)}
                       </td>
                       <td className="td-world" style={{ textAlign: "right" }}>
-                        {country.critical === 0
+                        {Number(country.critical) === 0
                           ? "-"
                           : commaSeperated(country.critical)}
                       </td>
@@ -364,13 +432,13 @@ class World extends Component {
                         {commaSeperated(country.casesPerOneMillion)}
                       </td>
                       <td className="td-world" style={{ textAlign: "center" }}>
-                        {country.deathsPerOneMillion}
+                        {Number(country.deathsPerOneMillion)}
                       </td>
                       <td
                         className="td-world"
                         style={{ textAlign: "center", background: "#eee" }}
                       >
-                        {country.tests === 0
+                        {Number(country.tests) === 0
                           ? "-"
                           : commaSeperated(country.tests)}
                       </td>
@@ -378,7 +446,7 @@ class World extends Component {
                         className="td-world"
                         style={{ textAlign: "center", background: "#eee" }}
                       >
-                        {country.testsPerOneMillion === 0
+                        {Number(country.testsPerOneMillion) === 0
                           ? "-"
                           : commaSeperated(country.testsPerOneMillion)}
                       </td>

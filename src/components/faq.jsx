@@ -4,12 +4,20 @@ import { Container } from "react-bootstrap";
 import Footer from "./footer";
 import { NavLink } from "react-router-dom";
 import Typist from "react-typist";
+import { Helmet } from "react-helmet";
 
 class FAQ extends Component {
   render() {
     return (
       <React.Fragment>
         <div style={{ marginBottom: "20px" }}>
+          <Helmet>
+            <title>India Covid Stats FAQs</title>
+            <meta
+              name="description"
+              content="Covid India Stats Frequently asked questions"
+            />
+          </Helmet>
           <h2 className="faq-heading" align="center">
             <Typist cursor={{ element: "" }}>WE ARE NOT OFFICIAL</Typist>
           </h2>

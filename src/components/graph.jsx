@@ -15,6 +15,9 @@ import Choropleth from "./choropleth";
 import ReactGa from "react-ga";
 import * as Icon from "react-feather";
 import WorldHomeCard from "./worldHomeCard";
+import LinePlot from "./linePlot";
+import BarPlot from "./barPlot";
+import { commaSeperated } from "../utils/common-functions";
 
 class Graph extends Component {
   constructor(props) {
@@ -310,18 +313,6 @@ class Graph extends Component {
           });
         }
       }
-    }
-
-    function commaSeperated(x) {
-      if (x !== undefined || x !== 0) {
-        x = x.toString();
-        let lastThree = x.substring(x.length - 3);
-        let otherNumbers = x.substring(0, x.length - 3);
-        if (otherNumbers !== "") lastThree = "," + lastThree;
-        let res =
-          otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
-        return res;
-      } else return x;
     }
 
     let timelineLength = 0;
@@ -661,467 +652,84 @@ class Graph extends Component {
             >
               {!toggleActive && (
                 <React.Fragment>
+                  <LinePlot
+                    type="confirmed"
+                    bgColor="#e4f3fa"
+                    titleClass="text-info"
+                    data={data}
+                    date={date}
+                    timelineLength={timelineLength}
+                    total={totalConfirmed}
+                    daily={dailyConfirmed}
+                    stroke="#0992c0"
+                    lineStroke="#35aad1"
+                    color1="#6ebed6"
+                    color2="#55b2ce"
+                    dataKey="totalconfirmed"
+                  />
+
+                  <div className="w-100"></div>
+                  <LinePlot
+                    type="active"
+                    bgColor="#f5d2d2"
+                    titleClass="text-danger"
+                    data={totalActiveJson}
+                    date={date}
+                    timelineLength={timelineLength}
+                    total={totalActive}
+                    daily={dailyActive}
+                    stroke="#ff446a"
+                    lineStroke="#ec7d93"
+                    color1="#f16783"
+                    color2="#ff446a"
+                    dataKey="totalactive"
+                  />
+                  <div className="w-100"></div>
+                  <LinePlot
+                    type="recovered"
+                    bgColor="#d5e9d5"
+                    titleClass="text-success"
+                    data={data}
+                    date={date}
+                    timelineLength={timelineLength}
+                    total={totalRecovered}
+                    daily={dailyRecovered}
+                    stroke="#469246"
+                    lineStroke="#78b978"
+                    color1="#81ce81"
+                    color2="#5cb85c"
+                    dataKey="totalrecovered"
+                  />
+                  <div className="w-100"></div>
+                  <LinePlot
+                    type="deceased"
+                    bgColor="#f3f3f3"
+                    titleClass="text-secondary"
+                    data={data}
+                    date={date}
+                    timelineLength={timelineLength}
+                    total={totalDeceased}
+                    daily={dailyDeceased}
+                    stroke="#2e2d2d"
+                    lineStroke="#666565"
+                    color1="#808080"
+                    color2="#5e5a5a"
+                    dataKey="totaldeceased"
+                  />
                   <div className="w-100"></div>
                   <div className="col">
-                    <section
-                      className="graphsection"
-                      style={{
-                        backgroundColor: "#e4f3fa",
-                        borderRadius: "6px",
-                        paddingTop: "5px",
-                      }}
-                    >
-                      <h5
-                        className="text-info"
-                        style={{
-                          paddingTop: "5px",
-                          marginBottom: "-80px",
-                          textAlign: "left",
-                          marginLeft: 10,
-                          fontSize: "0.8rem",
-                        }}
-                      >
-                        CONFIRMED
-                        <h6 style={{ fontSize: "12px", color: "#6ebed6" }}>
-                          {date.slice(-1)[0]}
-                          <h6 style={{ fontSize: "8px" }}>
-                            {new Date(date.slice(-1)[0]).getDate() ===
-                            new Date().getDate()
-                              ? "Today"
-                              : "Yesterday"}
-                            <h5
-                              style={{ fontSize: "0.8rem", color: "#55b2ce" }}
-                            >
-                              {commaSeperated(totalConfirmed.slice(-1)[0])}{" "}
-                              <span style={{ fontSize: 8 }}>
-                                +{commaSeperated(dailyConfirmed.slice(-1)[0])}
-                              </span>
-                            </h5>
-                          </h6>
-                        </h6>
-                      </h5>
-                      <ResponsiveContainer
-                        width="100%"
-                        height="100%"
-                        aspect={2.4}
-                      >
-                        <LineChart
-                          data={data.slice(timelineLength, data.length)}
-                          margin={{
-                            top: 40,
-                            right: -32,
-                            left: 10,
-                            bottom: -12,
-                          }}
-                          syncId="linechart"
-                        >
-                          <XAxis
-                            dataKey="date"
-                            tick={{ stroke: "#0992c0", strokeWidth: 0.2 }}
-                            style={{ fontSize: 8 }}
-                            tickSize={5}
-                            tickCount={8}
-                          />
-                          <YAxis
-                            domain={[
-                              0,
-                              Math.ceil(Math.max(...totalConfirmed) / 1000) *
-                                1000,
-                            ]}
-                            orientation="right"
-                            tick={{ stroke: "#0992c0", strokeWidth: 0.2 }}
-                            tickFormatter={format("~s")}
-                            tickSize={5}
-                            style={{ fontSize: 8 }}
-                            tickCount={8}
-                          />
-                          <Tooltip
-                            contentStyle={{
-                              background: "rgba(255,255,255,0)",
-                              border: "none",
-                              borderRadius: "5px",
-                              fontSize: "8px",
-                              fontFamily: "notosans",
-                              textTransform: "uppercase",
-                              textAlign: "left",
-                              lineHeight: 0.8,
-                            }}
-                            cursor={false}
-                            position={{ x: 120, y: 15 }}
-                          />
-                          <Line
-                            type="monotone"
-                            dataKey="totalconfirmed"
-                            stroke="#35aad1"
-                            strokeWidth="3"
-                            strokeLinecap="round"
-                            name="Confirmed"
-                            animationEasing="ease-out"
-                            dot={{
-                              stroke: "#0992c0",
-                              strokeWidth: 0.1,
-                              fill: "#0992c0",
-                            }}
-                            onMouseEnter={() => {
-                              ReactGa.event({
-                                category: "Graph confirmed",
-                                action: "confirmed hover",
-                              });
-                            }}
-                          />
-                        </LineChart>
-                      </ResponsiveContainer>
-                    </section>
-                  </div>
-                  <div className="w-100"></div>
-                  <div className="col">
-                    <section
-                      className="graphsection"
-                      style={{
-                        backgroundColor: "#f5d2d2",
-                        borderRadius: "6px",
-                        marginTop: "8px",
-                      }}
-                    >
-                      <h5
-                        style={{
-                          paddingTop: "8px",
-                          marginBottom: "-80px",
-                          textAlign: "left",
-                          marginLeft: 10,
-                          fontSize: "0.8rem",
-                          color: "#ff446a",
-                        }}
-                      >
-                        ACTIVE
-                        <h6 style={{ fontSize: "12px", color: "#f16783" }}>
-                          {date.slice(-1)[0]}
-                          <h6 style={{ fontSize: "8px" }}>
-                            {new Date(date.slice(-1)[0]).getDate() ===
-                            new Date().getDate()
-                              ? "Today"
-                              : "Yesterday"}
-                            <h5
-                              style={{ fontSize: "0.8rem", color: "#ff446a" }}
-                            >
-                              {commaSeperated(totalActive.slice(-1)[0])}{" "}
-                              <span style={{ fontSize: 8 }}>
-                                +{commaSeperated(dailyActive.slice(-1)[0])}
-                              </span>
-                            </h5>
-                          </h6>
-                        </h6>
-                      </h5>
-                      <ResponsiveContainer
-                        width="100%"
-                        height="100%"
-                        aspect={2.4}
-                      >
-                        <LineChart
-                          data={totalActiveJson.slice(
-                            timelineLength,
-                            data.length
-                          )}
-                          margin={{
-                            top: 40,
-                            right: -32,
-                            left: 10,
-                            bottom: -12,
-                          }}
-                          syncId="linechart"
-                        >
-                          <XAxis
-                            dataKey="date"
-                            tick={{ stroke: "#f16783", strokeWidth: 0.2 }}
-                            style={{ fontSize: 8 }}
-                            tickSize={5}
-                            tickCount={8}
-                          />
-                          <YAxis
-                            domain={[
-                              0,
-                              Math.ceil(Math.max(...totalActive) / 1000) * 1000,
-                            ]}
-                            orientation="right"
-                            tick={{ stroke: "#f16783", strokeWidth: 0.2 }}
-                            tickFormatter={format("~s")}
-                            tickSize={5}
-                            style={{ fontSize: 8 }}
-                            tickCount={8}
-                          />
-                          <Tooltip
-                            contentStyle={{
-                              background: "rgba(255,255,255,0)",
-                              border: "none",
-                              borderRadius: "5px",
-                              fontSize: "8px",
-                              fontFamily: "notosans",
-                              textTransform: "uppercase",
-                              textAlign: "left",
-                              lineHeight: 0.8,
-                            }}
-                            cursor={false}
-                            position={{ x: 120, y: 15 }}
-                          />
-                          <Line
-                            type="monotone"
-                            dataKey="totalactive"
-                            stroke="#ec7d93"
-                            strokeWidth="3"
-                            strokeLinecap="round"
-                            isAnimationActive={true}
-                            name="Active"
-                            dot={{
-                              stroke: "#ff446a",
-                              strokeWidth: 0.1,
-                              fill: "#ff446a",
-                            }}
-                            onMouseEnter={() => {
-                              ReactGa.event({
-                                category: "Graph Active",
-                                action: "Active hover",
-                              });
-                            }}
-                          />
-                        </LineChart>
-                      </ResponsiveContainer>
-                    </section>
-                  </div>
-                  <div className="w-100"></div>
-                  <div className="col">
-                    <section
-                      className="graphsection"
-                      style={{
-                        alignSelf: "center",
-                        backgroundColor: "#d5e9d5",
-                        borderRadius: "6px",
-                        marginTop: "8px",
-                      }}
-                    >
-                      <h5
-                        className="text-success"
-                        style={{
-                          paddingTop: "8px",
-                          marginBottom: "-80px",
-                          textAlign: "left",
-                          marginLeft: 10,
-                          fontSize: "0.8rem",
-                        }}
-                      >
-                        RECOVERED
-                        <h6 style={{ fontSize: "12px", color: "#81ce81" }}>
-                          {date.slice(-1)[0]}
-                          <h6 style={{ fontSize: "8px" }}>
-                            {new Date(date.slice(-1)[0]).getDate() ===
-                            new Date().getDate()
-                              ? "Today"
-                              : "Yesterday"}
-                            <h5
-                              style={{ fontSize: "0.8rem", color: "#5cb85c" }}
-                            >
-                              {commaSeperated(totalRecovered.slice(-1)[0])}{" "}
-                              <span style={{ fontSize: 8 }}>
-                                +{commaSeperated(dailyRecovered.slice(-1)[0])}
-                              </span>
-                            </h5>
-                          </h6>
-                        </h6>
-                      </h5>
-                      <ResponsiveContainer
-                        width="100%"
-                        height="100%"
-                        aspect={2.4}
-                      >
-                        <LineChart
-                          data={data.slice(timelineLength, data.length)}
-                          margin={{
-                            top: 40,
-                            right: -32,
-                            left: 10,
-                            bottom: -12,
-                          }}
-                          syncId="linechart"
-                        >
-                          <XAxis
-                            dataKey="date"
-                            tick={{ stroke: "#58bd58", strokeWidth: 0.2 }}
-                            style={{ fontSize: 8 }}
-                            tickSize={5}
-                            tickCount={8}
-                          />
-                          <YAxis
-                            domain={[
-                              0,
-                              Math.ceil(Math.max(...totalRecovered) / 1000) *
-                                1000,
-                            ]}
-                            orientation="right"
-                            tick={{ stroke: "#58bd58", strokeWidth: 0.2 }}
-                            tickFormatter={format("~s")}
-                            tickSize={5}
-                            style={{ fontSize: 8 }}
-                            tickCount={8}
-                          />
-                          <Tooltip
-                            contentStyle={{
-                              background: "rgba(255,255,255,0)",
-                              border: "none",
-                              borderRadius: "5px",
-                              fontSize: "8px",
-                              fontFamily: "notosans",
-                              textTransform: "uppercase",
-                              textAlign: "left",
-                              lineHeight: 0.8,
-                            }}
-                            cursor={false}
-                            position={{ x: 120, y: 15 }}
-                          />
-                          <Line
-                            type="monotone"
-                            dataKey="totalrecovered"
-                            stroke="#78b978"
-                            strokeWidth="3"
-                            name="Recovered"
-                            isAnimationActive={true}
-                            dot={{
-                              stroke: "#469246",
-                              strokeWidth: 0.1,
-                              fill: "#469246",
-                            }}
-                            onMouseEnter={() => {
-                              ReactGa.event({
-                                category: "Graph Recovered",
-                                action: "Recovered hover",
-                              });
-                            }}
-                          />
-                        </LineChart>
-                      </ResponsiveContainer>
-                    </section>
-                  </div>
-                  <div className="w-100"></div>
-                  <div className="col">
-                    <section
-                      className="graphsection"
-                      style={{
-                        alignSelf: "center",
-                        backgroundColor: "#f3f3f3",
-                        borderRadius: "6px",
-                        marginTop: "8px",
-                      }}
-                    >
-                      <h5
-                        style={{
-                          paddingTop: "8px",
-                          marginBottom: "-80px",
-                          textAlign: "left",
-                          marginLeft: 10,
-                          color: "#464545",
-                          fontSize: "0.8rem",
-                        }}
-                      >
-                        DECEASED
-                        <h6 style={{ fontSize: "12px", color: "#808080" }}>
-                          {date.slice(-1)[0]}
-                          <h6 style={{ fontSize: "8px" }}>
-                            {new Date(date.slice(-1)[0]).getDate() ===
-                            new Date().getDate()
-                              ? "Today"
-                              : "Yesterday"}
-                            <h5
-                              style={{ fontSize: "0.8rem", color: "#5e5a5a" }}
-                            >
-                              {commaSeperated(totalDeceased.slice(-1)[0])}{" "}
-                              <span style={{ fontSize: 8 }}>
-                                +{commaSeperated(dailyDeceased.slice(-1)[0])}
-                              </span>
-                            </h5>
-                          </h6>
-                        </h6>
-                      </h5>
-                      <ResponsiveContainer
-                        width="100%"
-                        height="100%"
-                        aspect={2.4}
-                      >
-                        <LineChart
-                          data={data.slice(timelineLength, data.length)}
-                          margin={{
-                            top: 40,
-                            right: -32,
-                            left: 10,
-                            bottom: -12,
-                          }}
-                          syncId="linechart"
-                        >
-                          <XAxis
-                            dataKey="date"
-                            tick={{ stroke: "#474646", strokeWidth: 0.2 }}
-                            axisLine={{ color: "#474646" }}
-                            style={{ fontSize: 8 }}
-                            tickSize={5}
-                            tickCount={8}
-                          />
-                          <YAxis
-                            domain={[
-                              0,
-                              Math.ceil(Math.max(...totalDeceased) / 100) * 100,
-                            ]}
-                            orientation="right"
-                            tick={{ stroke: "#474646", strokeWidth: 0.2 }}
-                            tickFormatter={format("~s")}
-                            tickSize={5}
-                            style={{ fontSize: 8 }}
-                            tickCount={8}
-                          />
-                          <Tooltip
-                            contentStyle={{
-                              background: "rgba(255,255,255,0)",
-                              border: "none",
-                              borderRadius: "5px",
-                              fontSize: "8px",
-                              fontFamily: "notosans",
-                              textTransform: "uppercase",
-                              textAlign: "left",
-                              lineHeight: 0.8,
-                            }}
-                            cursor={false}
-                            position={{ x: 120, y: 15 }}
-                          />
-                          <Line
-                            type="monotone"
-                            dataKey="totaldeceased"
-                            stroke="#666565"
-                            strokeWidth="3"
-                            name="Deceased"
-                            isAnimationActive={true}
-                            dot={{
-                              stroke: "#2e2d2d",
-                              strokeWidth: 0.1,
-                              fill: "#2e2d2d",
-                            }}
-                            onMouseEnter={() => {
-                              ReactGa.event({
-                                category: "Graph Deceased",
-                                action: "Deceased hover",
-                              });
-                            }}
-                          />
-                        </LineChart>
-                      </ResponsiveContainer>
-                    </section>
                     <section
                       className="graphsection"
                       style={{
                         backgroundColor: "#e6e8f1",
                         borderRadius: "6px",
-                        marginTop: "8px",
+                        paddingTop: "5px",
                       }}
                     >
                       <h5
                         style={{
                           paddingTop: "8px",
-                          marginBottom: "-75px",
+                          marginBottom: "-70px",
                           textAlign: "left",
                           marginLeft: 10,
                           fontSize: "0.8rem",
@@ -1135,35 +743,25 @@ class Graph extends Component {
                               cumulativeDateFormattedTests.length - 1
                             ].date
                           }
-                          <h6 style={{ fontSize: "8px" }}>
-                            {Number(
+
+                          <h5 style={{ fontSize: "0.8rem", color: "#3e4da3" }}>
+                            {commaSeperated(
                               cumulativeDateFormattedTests[
                                 cumulativeDateFormattedTests.length - 1
-                              ].date.split(/\ /)[0]
-                            ) === new Date().getDate()
-                              ? "Today"
-                              : "Yesterday"}
-                            <h5
-                              style={{ fontSize: "0.8rem", color: "#3e4da3" }}
-                            >
+                              ].totaltested
+                            )}{" "}
+                            <span style={{ fontSize: 8 }}>
+                              +
                               {commaSeperated(
                                 cumulativeDateFormattedTests[
                                   cumulativeDateFormattedTests.length - 1
-                                ].totaltested
-                              )}{" "}
-                              <span style={{ fontSize: 8 }}>
-                                +
-                                {commaSeperated(
+                                ].totaltested -
                                   cumulativeDateFormattedTests[
-                                    cumulativeDateFormattedTests.length - 1
-                                  ].totaltested -
-                                    cumulativeDateFormattedTests[
-                                      cumulativeDateFormattedTests.length - 2
-                                    ].totaltested
-                                )}
-                              </span>
-                            </h5>
-                          </h6>
+                                    cumulativeDateFormattedTests.length - 2
+                                  ].totaltested
+                              )}
+                            </span>
+                          </h5>
                         </h6>
                       </h5>
                       <ResponsiveContainer
@@ -1217,7 +815,7 @@ class Graph extends Component {
                               lineHeight: 0.8,
                             }}
                             cursor={false}
-                            position={{ x: 100, y: 10 }}
+                            position={{ x: 100, y: 12 }}
                           />
                           <Line
                             type="monotone"
@@ -1243,491 +841,64 @@ class Graph extends Component {
               )}
               {toggleActive && (
                 <React.Fragment>
-                  <div className="col">
-                    <section
-                      className="graphsection"
-                      style={{
-                        alignSelf: "center",
-                        backgroundColor: "#e4f3fa",
-                        borderRadius: "6px",
-                      }}
-                    >
-                      <h5
-                        className="text-info"
-                        style={{
-                          paddingTop: "8px",
-                          marginBottom: "-80px",
-                          textAlign: "left",
-                          marginLeft: 10,
-                          fontSize: "0.8rem",
-                        }}
-                      >
-                        CONFIRMED
-                        <h6 style={{ fontSize: "12px", color: "#6ebed6" }}>
-                          {date.slice(-1)[0]}
-                          <h6 style={{ fontSize: "8px" }}>
-                            {new Date(date.slice(-1)[0]).getDate() ===
-                            new Date().getDate()
-                              ? "Today"
-                              : "Yesterday"}
-                            <h5
-                              style={{ fontSize: "0.8rem", color: "#55b2ce" }}
-                            >
-                              {commaSeperated(dailyConfirmed.slice(-1)[0])}{" "}
-                              <span style={{ fontSize: 8 }}>
-                                {dailyConfirmed.slice(-1)[0] -
-                                  dailyConfirmed.slice(-2)[0] >
-                                0
-                                  ? `+${commaSeperated(
-                                      Math.abs(
-                                        dailyConfirmed.slice(-2)[0] -
-                                          dailyConfirmed.slice(-1)[0]
-                                      )
-                                    )}`
-                                  : `-${commaSeperated(
-                                      Math.abs(
-                                        dailyConfirmed.slice(-2)[0] -
-                                          dailyConfirmed.slice(-1)[0]
-                                      )
-                                    )}`}
-                              </span>
-                            </h5>
-                          </h6>
-                        </h6>
-                      </h5>
-
-                      <ResponsiveContainer
-                        width="100%"
-                        height="100%"
-                        aspect={2.4}
-                      >
-                        <BarChart
-                          width={310}
-                          height={120}
-                          data={data.slice(timelineLength, data.length)}
-                          margin={{
-                            top: 40,
-                            right: -32,
-                            left: 10,
-                            bottom: -12,
-                          }}
-                          syncId="barchart"
-                        >
-                          <XAxis
-                            dataKey="date"
-                            tick={{ stroke: "#0992c0", strokeWidth: 0.2 }}
-                            style={{ fontSize: 8 }}
-                            tickSize={5}
-                            tickCount={8}
-                          />
-                          <YAxis
-                            domain={[
-                              0,
-                              Math.ceil(Math.max(...dailyConfirmed) / 500) *
-                                500,
-                            ]}
-                            orientation="right"
-                            tick={{ stroke: "#0992c0", strokeWidth: 0.2 }}
-                            tickFormatter={format("~s")}
-                            tickSize={5}
-                            style={{ fontSize: 8 }}
-                            tickCount={6}
-                          />
-                          <Tooltip
-                            contentStyle={{
-                              background: "rgba(255,255,255,0)",
-                              border: "none",
-                              borderRadius: "5px",
-                              fontSize: "8px",
-                              fontFamily: "notosans",
-                              textTransform: "uppercase",
-                              textAlign: "left",
-                              lineHeight: 0.8,
-                            }}
-                            active={true}
-                            cursor={{ fill: "transparent" }}
-                            position={{ x: 120, y: 15 }}
-                          />
-                          <Bar
-                            dataKey="dailyconfirmed"
-                            name="Confirmed"
-                            fill="#0992c0"
-                            radius={[3, 3, 0, 0]}
-                            onMouseEnter={() => {
-                              ReactGa.event({
-                                category: "Graph Confirmedbar",
-                                action: "Confirmedbar hover",
-                              });
-                            }}
-                          />
-                        </BarChart>
-                      </ResponsiveContainer>
-                    </section>
-                  </div>
+                  <BarPlot
+                    type="confirmed"
+                    bgColor="#e4f3fa"
+                    titleClass="text-info"
+                    data={data}
+                    date={date}
+                    timelineLength={timelineLength}
+                    daily={dailyConfirmed}
+                    divideBy={500}
+                    dataKey="dailyconfirmed"
+                    stroke="#0992c0"
+                    color1="#6ebed6"
+                    color2="#55b2ce"
+                  />
                   <div className="w-100"></div>
-                  <div className="col">
-                    <section
-                      className="graphsection"
-                      style={{
-                        alignSelf: "center",
-
-                        backgroundColor: "#f5d2d2",
-                        borderRadius: "6px",
-                        marginTop: "8px",
-                      }}
-                    >
-                      <h5
-                        style={{
-                          paddingTop: "8px",
-                          marginBottom: "-80px",
-                          textAlign: "left",
-                          marginLeft: 10,
-                          fontSize: "0.8rem",
-                          color: "#ff446a",
-                        }}
-                      >
-                        ACTIVE
-                        <h6 style={{ fontSize: "12px", color: "#f16783" }}>
-                          {date.slice(-1)[0]}
-                          <h6 style={{ fontSize: "8px" }}>
-                            {new Date(date.slice(-1)[0]).getDate() ===
-                            new Date().getDate()
-                              ? "Today"
-                              : "Yesterday"}
-                            <h5
-                              style={{ fontSize: "0.8rem", color: "#ff446a" }}
-                            >
-                              {commaSeperated(dailyActive.slice(-1)[0])}{" "}
-                              <span style={{ fontSize: 8 }}>
-                                {dailyActive.slice(-1)[0] -
-                                  dailyActive.slice(-2)[0] >
-                                0
-                                  ? `+${commaSeperated(
-                                      Math.abs(
-                                        dailyActive.slice(-2)[0] -
-                                          dailyActive.slice(-1)[0]
-                                      )
-                                    )}`
-                                  : `-${commaSeperated(
-                                      Math.abs(
-                                        dailyActive.slice(-2)[0] -
-                                          dailyActive.slice(-1)[0]
-                                      )
-                                    )}`}
-                              </span>
-                            </h5>
-                          </h6>
-                        </h6>
-                      </h5>
-
-                      <ResponsiveContainer
-                        width="100%"
-                        height="100%"
-                        aspect={2.4}
-                      >
-                        <BarChart
-                          width={310}
-                          height={120}
-                          data={dailyActiveJson.slice(
-                            timelineLength,
-                            dailyActiveJson.length
-                          )}
-                          margin={{
-                            top: 40,
-                            right: -32,
-                            left: 10,
-                            bottom: -12,
-                          }}
-                          syncId="barchart"
-                        >
-                          <XAxis
-                            dataKey="date"
-                            tick={{ stroke: "#f16783", strokeWidth: 0.2 }}
-                            style={{ fontSize: 8 }}
-                            tickSize={5}
-                            tickCount={6}
-                          />
-                          <YAxis
-                            domain={[
-                              Math.min(...dailyActive),
-                              Math.ceil(Math.max(...dailyActive) / 100) * 100,
-                            ]}
-                            orientation="right"
-                            tick={{ stroke: "#f16783", strokeWidth: 0.2 }}
-                            tickFormatter={format("~s")}
-                            tickSize={5}
-                            style={{ fontSize: 8 }}
-                            tickCount={8}
-                          />
-                          <Tooltip
-                            contentStyle={{
-                              background: "rgba(255,255,255,0)",
-                              border: "none",
-                              borderRadius: "5px",
-                              fontSize: "8px",
-                              fontFamily: "notosans",
-                              textTransform: "uppercase",
-                              textAlign: "left",
-                              lineHeight: 0.8,
-                            }}
-                            cursor={{ fill: "transparent" }}
-                            position={{ x: 120, y: 15 }}
-                          />
-
-                          <Bar
-                            dataKey="dailyactive"
-                            name="Active"
-                            fill="#f16783"
-                            radius={[3, 3, 0, 0]}
-                            onMouseEnter={() => {
-                              ReactGa.event({
-                                category: "Graph Activebar",
-                                action: "Activebar hover",
-                              });
-                            }}
-                          />
-                        </BarChart>
-                      </ResponsiveContainer>
-                    </section>
-                  </div>
+                  <BarPlot
+                    type="active"
+                    bgColor="#f5d2d2"
+                    titleClass="text-danger"
+                    data={dailyActiveJson}
+                    date={date}
+                    timelineLength={timelineLength}
+                    daily={dailyActive}
+                    divideBy={100}
+                    dataKey="dailyactive"
+                    stroke="#f16783"
+                    color1="#f16783"
+                    color2="#ff446a"
+                  />
                   <div className="w-100"></div>
-                  <div className="col">
-                    <section
-                      className="graphsection"
-                      style={{
-                        alignSelf: "center",
-                        backgroundColor: "#d5e9d5",
-                        borderRadius: "6px",
-                        marginTop: "8px",
-                      }}
-                    >
-                      <h5
-                        className="text-success"
-                        style={{
-                          paddingTop: "8px",
-                          marginBottom: "-80px",
-                          textAlign: "left",
-                          marginLeft: 10,
-                          fontSize: "0.8rem",
-                        }}
-                      >
-                        RECOVERED
-                        <h6 style={{ fontSize: "12px", color: "#7ed87e" }}>
-                          {date.slice(-1)[0]}
-                          <h6 style={{ fontSize: "8px" }}>
-                            {new Date(date.slice(-1)[0]).getDate() ===
-                            new Date().getDate()
-                              ? "Today"
-                              : "Yesterday"}
-                            <h5
-                              style={{ fontSize: "0.8rem", color: "#5cb85c" }}
-                            >
-                              {commaSeperated(dailyRecovered.slice(-1)[0])}{" "}
-                              <span style={{ fontSize: 8 }}>
-                                {dailyRecovered.slice(-1)[0] -
-                                  dailyRecovered.slice(-2)[0] >
-                                0
-                                  ? `+${commaSeperated(
-                                      Math.abs(
-                                        dailyRecovered.slice(-1)[0] -
-                                          dailyRecovered.slice(-2)[0]
-                                      )
-                                    )}`
-                                  : `-${commaSeperated(
-                                      Math.abs(
-                                        dailyRecovered.slice(-1)[0] -
-                                          dailyRecovered.slice(-2)[0]
-                                      )
-                                    )}`}
-                              </span>
-                            </h5>
-                          </h6>
-                        </h6>
-                      </h5>
-                      <ResponsiveContainer
-                        width="100%"
-                        height="100%"
-                        aspect={2.4}
-                      >
-                        <BarChart
-                          data={data.slice(timelineLength, data.length)}
-                          margin={{
-                            top: 40,
-                            right: -32,
-                            left: 10,
-                            bottom: -12,
-                          }}
-                          syncId="barchart"
-                        >
-                          <XAxis
-                            dataKey="date"
-                            tick={{ stroke: "#58bd58", strokeWidth: 0.2 }}
-                            style={{ fontSize: 8 }}
-                            tickSize={5}
-                            tickCount={6}
-                          />
-                          <YAxis
-                            domain={[
-                              0,
-                              Math.ceil(Math.max(...dailyRecovered) / 100) *
-                                100,
-                            ]}
-                            orientation="right"
-                            tick={{ stroke: "#58bd58", strokeWidth: 0.2 }}
-                            tickFormatter={format("~s")}
-                            tickSize={5}
-                            style={{ fontSize: 8 }}
-                            tickCount={8}
-                          />
-                          <Tooltip
-                            contentStyle={{
-                              background: "rgba(255,255,255,0)",
-                              border: "none",
-                              borderRadius: "5px",
-                              fontSize: "8px",
-                              fontFamily: "notosans",
-                              textTransform: "uppercase",
-                              textAlign: "left",
-                              lineHeight: 0.8,
-                            }}
-                            cursor={{ fill: "transparent" }}
-                            position={{ x: 120, y: 15 }}
-                          />
-                          <Bar
-                            dataKey="dailyrecovered"
-                            name="Recovered"
-                            fill="#58bd58"
-                            radius={[3, 3, 0, 0]}
-                            onMouseEnter={() => {
-                              ReactGa.event({
-                                category: "Graph Recoveredbar",
-                                action: "Recoveredbar hover",
-                              });
-                            }}
-                          />
-                        </BarChart>
-                      </ResponsiveContainer>
-                    </section>
-                  </div>
+                  <BarPlot
+                    type="recovered"
+                    bgColor="#d5e9d5"
+                    titleClass="text-success"
+                    data={data}
+                    date={date}
+                    timelineLength={timelineLength}
+                    daily={dailyRecovered}
+                    divideBy={100}
+                    dataKey="dailyrecovered"
+                    stroke="#58bd58"
+                    color1="#7ed87e"
+                    color2="#5cb85c"
+                  />
                   <div className="w-100"></div>
-                  <div className="col">
-                    <section
-                      className="graphsection"
-                      style={{
-                        alignSelf: "center",
-                        backgroundColor: "#f3f3f3",
-                        borderRadius: "6px",
-                        marginTop: "8px",
-                      }}
-                    >
-                      <h5
-                        style={{
-                          paddingTop: "8px",
-                          marginBottom: "-80px",
-                          textAlign: "left",
-                          marginLeft: 10,
-                          color: "#464545",
-                          fontSize: "0.8rem",
-                        }}
-                      >
-                        DECEASED
-                        <h6 style={{ fontSize: "12px", color: "#808080" }}>
-                          {date.slice(-1)[0]}
-                          <h6 style={{ fontSize: "8px" }}>
-                            {new Date(date.slice(-1)[0]).getDate() ===
-                            new Date().getDate()
-                              ? "Today"
-                              : "Yesterday"}
-                            <h5
-                              style={{ fontSize: "0.8rem", color: "#5e5a5a" }}
-                            >
-                              {commaSeperated(dailyDeceased.slice(-1)[0])}{" "}
-                              <span style={{ fontSize: 8 }}>
-                                {dailyDeceased.slice(-1)[0] -
-                                  dailyDeceased.slice(-2)[0] >
-                                0
-                                  ? `+${commaSeperated(
-                                      Math.abs(
-                                        dailyDeceased.slice(-1)[0] -
-                                          dailyDeceased.slice(-2)[0]
-                                      )
-                                    )}`
-                                  : `-${commaSeperated(
-                                      Math.abs(
-                                        dailyDeceased.slice(-1)[0] -
-                                          dailyDeceased.slice(-2)[0]
-                                      )
-                                    )}`}
-                              </span>
-                            </h5>
-                          </h6>
-                        </h6>
-                      </h5>
-                      <ResponsiveContainer
-                        width="100%"
-                        height="100%"
-                        aspect={2.4}
-                      >
-                        <BarChart
-                          data={data.slice(timelineLength, data.length)}
-                          margin={{
-                            top: 40,
-                            right: -32,
-                            left: 10,
-                            bottom: -12,
-                          }}
-                          syncId="barchart"
-                        >
-                          <XAxis
-                            dataKey="date"
-                            tick={{ stroke: "#474646", strokeWidth: 0.2 }}
-                            axisLine={{ color: "#474646" }}
-                            style={{ fontSize: 8 }}
-                            tickSize={5}
-                            tickCount={6}
-                          />
-                          <YAxis
-                            domain={[
-                              0,
-                              Math.ceil(Math.max(...dailyDeceased) / 10) * 10,
-                            ]}
-                            orientation="right"
-                            tick={{ stroke: "#474646", strokeWidth: 0.2 }}
-                            tickFormatter={format("~s")}
-                            tickSize={5}
-                            style={{ fontSize: 8 }}
-                            tickCount={8}
-                          />
-                          <Tooltip
-                            contentStyle={{
-                              background: "rgba(255,255,255,0)",
-                              border: "none",
-                              borderRadius: "5px",
-                              fontSize: "8px",
-                              fontFamily: "notosans",
-                              textTransform: "uppercase",
-                              textAlign: "left",
-                              lineHeight: 0.8,
-                            }}
-                            cursor={{ fill: "transparent" }}
-                            position={{ x: 120, y: 15 }}
-                          />
-                          <Bar
-                            dataKey="dailydeceased"
-                            name="Deceased"
-                            fill="#474646"
-                            radius={[3, 3, 0, 0]}
-                            onMouseEnter={() => {
-                              ReactGa.event({
-                                category: "Graph Deceasedbar",
-                                action: "Deceasedbar hover",
-                              });
-                            }}
-                          />
-                        </BarChart>
-                      </ResponsiveContainer>
-                    </section>
-                  </div>
+                  <BarPlot
+                    type="deceased"
+                    bgColor="#f3f3f3"
+                    data={data}
+                    date={date}
+                    timelineLength={timelineLength}
+                    daily={dailyDeceased}
+                    divideBy={100}
+                    dataKey="dailydeceased"
+                    stroke="#474646"
+                    color1="#808080"
+                    color2="#5e5a5a"
+                  />
                   <div className="w-100"></div>
                   <div className="col">
                     <section
@@ -1736,7 +907,7 @@ class Graph extends Component {
                         alignSelf: "center",
                         backgroundColor: "#e6e8f1",
                         borderRadius: "6px",
-                        marginTop: "8px",
+                        paddingTop: "5px",
                       }}
                     >
                       <h5
@@ -1752,50 +923,43 @@ class Graph extends Component {
                         TESTED
                         <h6 style={{ fontSize: "12px", color: "#3f51b5" }}>
                           {date.slice(-1)[0]}
-                          <h6 style={{ fontSize: "8px" }}>
-                            {new Date(date.slice(-1)[0]).getDate() ===
-                            new Date().getDate()
-                              ? "Today"
-                              : "Yesterday"}
-                            <h5
-                              style={{ fontSize: "0.8rem", color: "#3e4da3" }}
-                            >
-                              {commaSeperated(
+
+                          <h5 style={{ fontSize: "0.8rem", color: "#3e4da3" }}>
+                            {commaSeperated(
+                              dailyDateFormattedTests[
+                                dailyDateFormattedTests.length - 1
+                              ].dailytested
+                            )}{" "}
+                            <span style={{ fontSize: 8 }}>
+                              {dailyDateFormattedTests[
+                                dailyDateFormattedTests.length - 1
+                              ].dailytested -
                                 dailyDateFormattedTests[
-                                  dailyDateFormattedTests.length - 1
-                                ].dailytested
-                              )}{" "}
-                              <span style={{ fontSize: 8 }}>
-                                {dailyDateFormattedTests[
-                                  dailyDateFormattedTests.length - 1
-                                ].dailytested -
-                                  dailyDateFormattedTests[
-                                    dailyDateFormattedTests.length - 2
-                                  ].dailytested >
-                                0
-                                  ? `+${commaSeperated(
-                                      Math.abs(
+                                  dailyDateFormattedTests.length - 2
+                                ].dailytested >=
+                              0
+                                ? `+${commaSeperated(
+                                    Math.abs(
+                                      dailyDateFormattedTests[
+                                        dailyDateFormattedTests.length - 1
+                                      ].dailytested -
                                         dailyDateFormattedTests[
-                                          dailyDateFormattedTests.length - 1
-                                        ].dailytested -
-                                          dailyDateFormattedTests[
-                                            dailyDateFormattedTests.length - 2
-                                          ].dailytested
-                                      )
-                                    )}`
-                                  : `-${commaSeperated(
-                                      Math.abs(
+                                          dailyDateFormattedTests.length - 2
+                                        ].dailytested
+                                    )
+                                  )}`
+                                : `-${commaSeperated(
+                                    Math.abs(
+                                      dailyDateFormattedTests[
+                                        dailyDateFormattedTests.length - 1
+                                      ].dailytested -
                                         dailyDateFormattedTests[
-                                          dailyDateFormattedTests.length - 1
-                                        ].dailytested -
-                                          dailyDateFormattedTests[
-                                            dailyDateFormattedTests.length - 2
-                                          ].dailytested
-                                      )
-                                    )}`}
-                              </span>
-                            </h5>
-                          </h6>
+                                          dailyDateFormattedTests.length - 2
+                                        ].dailytested
+                                    )
+                                  )}`}
+                            </span>
+                          </h5>
                         </h6>
                       </h5>
                       <ResponsiveContainer
@@ -1825,10 +989,6 @@ class Graph extends Component {
                             tickCount={6}
                           />
                           <YAxis
-                            // domain={[
-                            //   0,
-                            //   Math.ceil(Math.max(...dailyDeceased) / 10) * 10,
-                            // ]}
                             orientation="right"
                             tick={{ stroke: "#474646", strokeWidth: 0.2 }}
                             tickFormatter={format("~s")}
@@ -1848,7 +1008,7 @@ class Graph extends Component {
                               lineHeight: 0.8,
                             }}
                             cursor={{ fill: "transparent" }}
-                            position={{ x: 120, y: 10 }}
+                            position={{ x: 120, y: 16 }}
                           />
                           <Bar
                             dataKey="dailytested"

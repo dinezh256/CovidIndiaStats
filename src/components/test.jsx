@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { Cards, Chart, CountryPicker } from "./TEST/index";
-import styles from "./Test.module.css";
 import { fetchTotal, fetchDailyData, fetchChAusCan } from "./API/index";
+import { Helmet } from "react-helmet";
+import styles from "./Test.module.css";
 import Footer from "./footer";
 
 class Test extends Component {
@@ -185,6 +186,13 @@ class Test extends Component {
     return (
       <React.Fragment>
         <div className={styles.container}>
+          <Helmet>
+            <title>Covid India Stats - World Dashboard</title>
+            <meta
+              name="description"
+              content="Track the spread of Coronavirus (COVID-19) in the World"
+            />
+          </Helmet>
           <Cards data={data} />
           <CountryPicker handleCountryChange={this.handleCountryChange} />
           <Chart data={data2} country={country} />

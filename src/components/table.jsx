@@ -4,7 +4,7 @@ import CountUp from "react-countup";
 import Updates from "./updates";
 import InfoTwoToneIcon from "@material-ui/icons/InfoTwoTone";
 import Tooltip, { TooltipProps } from "@material-ui/core/Tooltip";
-import { withStyles, Theme, makeStyles } from "@material-ui/core/styles";
+import { Theme, makeStyles } from "@material-ui/core/styles";
 import Zoom from "@material-ui/core/Zoom";
 import {
   LineChart,
@@ -16,6 +16,7 @@ import {
 } from "recharts";
 import PropTypes from "prop-types";
 import parse from "html-react-parser";
+import { commaSeperated } from "../utils/common-functions";
 import StateTable from "./stateTable";
 
 let CreateReactClass = require("create-react-class");
@@ -29,7 +30,37 @@ class Table extends Component {
       total: [],
       delta: [],
       data: [],
+      sortConfirmed: true,
+      sortActive: false,
+      sortRecovered: false,
+      sortDeceased: false,
+      sortOrder: true,
     };
+    this.onSortConfirmed = this.onSortConfirmed.bind(this);
+    this.onSortActive = this.onSortActive.bind(this);
+    this.onSortRecovered = this.onSortRecovered.bind(this);
+    this.onSortDeceased = this.onSortDeceased.bind(this);
+    this.handleSortOrder = this.handleSortOrder.bind(this);
+  }
+
+  onSortConfirmed({ sortConfirmed }) {
+    this.setState({ sortConfirmed });
+  }
+
+  onSortActive({ sortActive }) {
+    this.setState({ sortActive });
+  }
+
+  onSortRecovered({ sortRecovered }) {
+    this.setState({ sortRecovered });
+  }
+
+  onSortDeceased({ sortDeceased }) {
+    this.setState({ sortDeceased });
+  }
+
+  handleSortOrder({ sortOrder }) {
+    this.setState({ sortOrder });
   }
 
   componentDidMount() {
@@ -73,7 +104,18 @@ class Table extends Component {
       },
     });
 
-    const { isLoaded, items, total, delta, data } = this.state;
+    const {
+      isLoaded,
+      items,
+      total,
+      delta,
+      data,
+      sortConfirmed,
+      sortActive,
+      sortRecovered,
+      sortDeceased,
+      sortOrder,
+    } = this.state;
 
     const dailyConfirmed = [];
     data.map((item) => dailyConfirmed.push(Number(item.dailyconfirmed)));
@@ -93,9 +135,34 @@ class Table extends Component {
     const dailyDeceased = [];
     data.map((item) => dailyDeceased.push(Number(item.dailydeceased)));
 
-    items.sort(function (x, y) {
-      return Number(y.confirmed) - Number(x.confirmed);
-    });
+    if (sortConfirmed) {
+      items.sort(function (x, y) {
+        return sortOrder
+          ? Number(y.confirmed) - Number(x.confirmed)
+          : Number(x.confirmed) - Number(y.confirmed);
+      });
+    }
+    if (sortActive) {
+      items.sort(function (x, y) {
+        return !sortOrder
+          ? Number(y.active) - Number(x.active)
+          : Number(x.active) - Number(y.active);
+      });
+    }
+    if (sortRecovered) {
+      items.sort(function (x, y) {
+        return !sortOrder
+          ? Number(y.recovered) - Number(x.recovered)
+          : Number(x.recovered) - Number(y.recovered);
+      });
+    }
+    if (sortDeceased) {
+      items.sort(function (x, y) {
+        return !sortOrder
+          ? Number(y.deaths) - Number(x.deaths)
+          : Number(x.deaths) - Number(y.deaths);
+      });
+    }
 
     const useStylesBootstrap = makeStyles((theme: Theme) => ({
       arrow: {
@@ -157,15 +224,6 @@ class Table extends Component {
       .slice(data.length - 20, data.length)
       .map((item) => sparklinedeceased.push(Number(item.dailydeceased)));
 
-    function commaSeperated(x) {
-      x = x.toString();
-      let lastThree = x.substring(x.length - 3);
-      let otherNumbers = x.substring(0, x.length - 3);
-      if (otherNumbers !== "") lastThree = "," + lastThree;
-      let res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
-      return res;
-    }
-
     if (isLoaded) {
       return (
         <React.Fragment>
@@ -173,7 +231,7 @@ class Table extends Component {
             <div
               className="row no gutter fadeInUp"
               id="line1"
-              style={{ marginBottom: "-5px", animationDelay: "0.7s" }}
+              style={{ marginBottom: "-5px", animationDelay: "0.5s" }}
             >
               <table
                 className="table table-sm table-striped table-borderless"
@@ -223,19 +281,19 @@ class Table extends Component {
                     <h6 className="text-info delta" style={{ fontSize: 12 }}>
                       +{commaSeperated(delta[0].deltaconfirmed)}
                     </h6>
-                    <h4 className="text-info delta">
+                    <h5 className="text-info" style={{ textAlign: "center" }}>
                       <CountUp
                         start={0}
                         end={Number(total[0].confirmed)}
-                        duration={2.5}
+                        duration={2}
                         separator=","
                       />
-                    </h4>
+                    </h5>
                     <section tyle={{ justifyContent: "center" }}>
                       <ResponsiveContainer
                         width={75}
                         height="100%"
-                        aspect={2.35}
+                        aspect={2.15}
                       >
                         <LineChart data={sparklinedata} syncId="line1">
                           <YAxis
@@ -258,14 +316,14 @@ class Table extends Component {
                             type="monotone"
                             dataKey="confirmed"
                             stroke="#42b3f4"
-                            strokeWidth={2.3}
+                            strokeWidth={2.1}
                             dot={false}
                             animationDuration={2000}
                           />
                           <ReferenceDot
                             x={sparklineconfirmed.length - 1}
                             y={Number(sparklineconfirmed.slice(-1))}
-                            r={2.5}
+                            r={2}
                             fill="#42b3f4"
                             stroke="rgba(66, 179, 244, 0.7)"
                             isFront={true}
@@ -285,19 +343,19 @@ class Table extends Component {
                       )}
                       %
                     </h6>
-                    <h4 className="delta" style={{ color: "#ff446a" }}>
+                    <h5 style={{ color: "#ff446a", textAlign: "center" }}>
                       <CountUp
                         start={0}
                         end={Number(total[0].active)}
-                        duration={2.5}
+                        duration={2}
                         separator=","
                       />
-                    </h4>
+                    </h5>
                     <section style={{ justifyContent: "center" }}>
                       <ResponsiveContainer
                         width={75}
                         height="100%"
-                        aspect={2.35}
+                        aspect={2.15}
                       >
                         <LineChart data={sparklinedata} syncId="line1">
                           <YAxis
@@ -320,14 +378,14 @@ class Table extends Component {
                             type="monotone"
                             dataKey="active"
                             stroke="#ff446a"
-                            strokeWidth={2.3}
+                            strokeWidth={2.1}
                             dot={false}
                             animationDuration={2000}
                           />
                           <ReferenceDot
                             x={sparklineactive.length - 1}
                             y={Number(sparklineactive.slice(-1))}
-                            r={2.5}
+                            r={2}
                             fill="#ff446a"
                             stroke="rgba(255, 68, 106, 0.7)"
                           />
@@ -340,11 +398,14 @@ class Table extends Component {
                     <h5 className="text-success delta" style={{ fontSize: 12 }}>
                       +{commaSeperated(delta[0].deltarecovered)}
                     </h5>
-                    <h5 className="text-success delta">
+                    <h5
+                      className="text-success"
+                      style={{ textAlign: "center" }}
+                    >
                       <CountUp
                         start={0}
                         end={Number(total[0].recovered)}
-                        duration={2.5}
+                        duration={2}
                         separator=","
                       />
                     </h5>
@@ -352,7 +413,7 @@ class Table extends Component {
                       <ResponsiveContainer
                         width={75}
                         height="100%"
-                        aspect={2.35}
+                        aspect={2.15}
                       >
                         <LineChart data={sparklinedata} syncId="line1">
                           <YAxis
@@ -375,14 +436,14 @@ class Table extends Component {
                             type="monotone"
                             dataKey="recovered"
                             stroke="#58bd58"
-                            strokeWidth={2.3}
+                            strokeWidth={2.1}
                             dot={false}
                             animationDuration={2000}
                           />
                           <ReferenceDot
                             x={sparklinerecovered.length - 1}
                             y={Number(sparklinerecovered.slice(-1))}
-                            r={2.5}
+                            r={2}
                             fill="#58bd58"
                             stroke="rgba(88, 189, 88, 0.7)"
                           />
@@ -398,11 +459,14 @@ class Table extends Component {
                     >
                       +{delta[0].deltadeaths}
                     </h6>
-                    <h5 className="text-secondary delta">
+                    <h5
+                      className="text-secondary"
+                      style={{ textAlign: "center" }}
+                    >
                       <CountUp
                         start={0}
                         end={Number(total[0].deaths)}
-                        duration={2.5}
+                        duration={2}
                         separator=","
                       />
                     </h5>
@@ -413,7 +477,7 @@ class Table extends Component {
                       <ResponsiveContainer
                         width={75}
                         height="100%"
-                        aspect={2.35}
+                        aspect={2.15}
                       >
                         <LineChart data={sparklinedata} syncId="line1">
                           <YAxis
@@ -436,14 +500,14 @@ class Table extends Component {
                             type="monotone"
                             dataKey="deceased"
                             stroke="#5c5756"
-                            strokeWidth={2.3}
+                            strokeWidth={2.1}
                             dot={false}
                             animationDuration={2000}
                           />
                           <ReferenceDot
                             x={sparklinedeceased.length - 1}
                             y={Number(sparklinedeceased.slice(-1))}
-                            r={2.5}
+                            r={2}
                             fill="#5c5756"
                             stroke="rgba(92, 87, 86, 0.7)"
                           />
@@ -460,7 +524,7 @@ class Table extends Component {
               style={{
                 marginTop: 15,
                 marginBottom: "-5px",
-                animationDelay: "0.7s",
+                animationDelay: "0.5s",
               }}
             >
               <table
@@ -511,19 +575,19 @@ class Table extends Component {
                     <h6 className="text-info delta" style={{ fontSize: 12 }}>
                       +{commaSeperated(delta[0].deltaconfirmed)}
                     </h6>
-                    <h4 className="text-info delta">
+                    <h5 className="text-info" style={{ textAlign: "center" }}>
                       <CountUp
                         start={0}
                         end={Number(total[0].confirmed)}
-                        duration={2.5}
+                        duration={2}
                         separator=","
                       />
-                    </h4>
+                    </h5>
                     <section style={{ alignContent: "center" }}>
                       <ResponsiveContainer
                         width="95%"
                         height="100%"
-                        aspect={2.35}
+                        aspect={2.15}
                       >
                         <LineChart data={sparklinedata} syncId="line2">
                           <YAxis
@@ -547,7 +611,7 @@ class Table extends Component {
                             type="monotone"
                             dataKey="confirmed"
                             stroke="#42b3f4"
-                            strokeWidth={2.3}
+                            strokeWidth={2.1}
                             dot={false}
                             animationDuration={2000}
                           />
@@ -574,11 +638,11 @@ class Table extends Component {
                       )}
                       %
                     </h6>
-                    <h5 className="delta" style={{ color: "#ff446a" }}>
+                    <h5 style={{ color: "#ff446a", textAlign: "center" }}>
                       <CountUp
                         start={0}
                         end={Number(total[0].active)}
-                        duration={2.5}
+                        duration={2}
                         separator=","
                       />
                     </h5>
@@ -586,7 +650,7 @@ class Table extends Component {
                       <ResponsiveContainer
                         width="95%"
                         height="100%"
-                        aspect={2.35}
+                        aspect={2.15}
                       >
                         <LineChart data={sparklinedata} syncId="line2">
                           <YAxis
@@ -609,7 +673,7 @@ class Table extends Component {
                             type="monotone"
                             dataKey="active"
                             stroke="#ff446a"
-                            strokeWidth={2.3}
+                            strokeWidth={2.1}
                             dot={false}
                             animationDuration={2000}
                           />
@@ -629,11 +693,14 @@ class Table extends Component {
                     <h6 className="text-success delta" style={{ fontSize: 12 }}>
                       +{commaSeperated(delta[0].deltarecovered)}
                     </h6>
-                    <h5 className="text-success delta">
+                    <h5
+                      className="text-success"
+                      style={{ textAlign: "center" }}
+                    >
                       <CountUp
                         start={0}
                         end={Number(total[0].recovered)}
-                        duration={2.5}
+                        duration={2}
                         separator=","
                       />
                     </h5>
@@ -641,7 +708,7 @@ class Table extends Component {
                       <ResponsiveContainer
                         width="95%"
                         height="100%"
-                        aspect={2.35}
+                        aspect={2.15}
                       >
                         <LineChart data={sparklinedata} syncId="line2">
                           <YAxis
@@ -664,7 +731,7 @@ class Table extends Component {
                             type="monotone"
                             dataKey="recovered"
                             stroke="#58bd58"
-                            strokeWidth={2.3}
+                            strokeWidth={2.1}
                             dot={false}
                             animationDuration={2000}
                           />
@@ -687,11 +754,14 @@ class Table extends Component {
                     >
                       +{delta[0].deltadeaths}
                     </h6>
-                    <h5 className="text-secondary delta">
+                    <h5
+                      className="text-secondary"
+                      style={{ textAlign: "center" }}
+                    >
                       <CountUp
                         start={0}
                         end={Number(total[0].deaths)}
-                        duration={2.5}
+                        duration={2}
                         separator=","
                       />
                     </h5>
@@ -699,7 +769,7 @@ class Table extends Component {
                       <ResponsiveContainer
                         width="95%"
                         height="100%"
-                        aspect={2.35}
+                        aspect={2.15}
                       >
                         <LineChart data={sparklinedata} syncId="line2">
                           <YAxis
@@ -722,7 +792,7 @@ class Table extends Component {
                             type="monotone"
                             dataKey="deceased"
                             stroke="#5c5756"
-                            strokeWidth={2.3}
+                            strokeWidth={2.1}
                             dot={false}
                             animationDuration={2000}
                           />
@@ -746,7 +816,7 @@ class Table extends Component {
                 className="row"
                 id="line2"
                 style={{
-                  animationDelay: "0.7s",
+                  animationDelay: "0.9s",
                 }}
               >
                 <Updates />
@@ -758,17 +828,50 @@ class Table extends Component {
               className="row"
               id="line1"
               style={{
-                animationDelay: "0.7s",
+                animationDelay: "0s",
               }}
             >
               <Updates />
+            </div>
+            <div className="w-100"></div>
+            <div
+              className="row fadeInUp"
+              style={{
+                textAlign: "center",
+                animationDelay: "1.8s",
+                marginTop: "-20px",
+              }}
+            >
+              <h5 style={{ color: "#3e4da3" }}>INDIA - DISTRICTWISE</h5>
+            </div>
+            <div className="w-100"></div>
+            <div
+              id="line1"
+              style={{
+                alignContent: "center",
+                marginBottom: "20px",
+                marginTop: "-15px",
+              }}
+            >
+              <StateTable />
+            </div>
+            <div
+              className="container"
+              style={{
+                width: "93.7%",
+                marginBottom: "20px",
+                marginTop: "-15px",
+              }}
+              id="line2"
+            >
+              <StateTable />
             </div>
             <div className="w-100"></div>
             <div className="row" id="line1">
               <table
                 className="table table-striped table-sm fadeInUp table-borderless"
                 style={{
-                  animationDelay: "0.9s",
+                  animationDelay: "1.9s",
                   marginTop: "-15px",
                   marginBottom: "-10px",
                   fontFamily: "notosans",
@@ -778,12 +881,63 @@ class Table extends Component {
                 <thead className="thead-dark">
                   <tr>
                     <th className="th sticky-top">State/UT</th>
-                    <th className="th text-info sticky-top">CONFIRMED</th>
-                    <th className="th sticky-top" style={{ color: "#ff446a" }}>
+                    <th
+                      className="th text-info sticky-top"
+                      onClick={() =>
+                        this.setState({
+                          sortConfirmed: true,
+                          sortActive: false,
+                          sortRecovered: false,
+                          sortDeceased: false,
+                          sortOrder: !sortOrder,
+                        })
+                      }
+                    >
+                      CONFIRMED
+                    </th>
+                    <th
+                      className="th sticky-top"
+                      style={{ color: "#ff446a" }}
+                      onClick={() =>
+                        this.setState({
+                          sortConfirmed: false,
+                          sortActive: true,
+                          sortRecovered: false,
+                          sortDeceased: false,
+                          sortOrder: !sortOrder,
+                        })
+                      }
+                    >
                       ACTIVE
                     </th>
-                    <th className="th text-success sticky-top">Recovered</th>
-                    <th className="th text-secondary sticky-top">DEATHS</th>
+                    <th
+                      className="th text-success sticky-top"
+                      onClick={() =>
+                        this.setState({
+                          sortConfirmed: false,
+                          sortActive: false,
+                          sortRecovered: true,
+                          sortDeceased: false,
+                          sortOrder: !sortOrder,
+                        })
+                      }
+                    >
+                      Recovered
+                    </th>
+                    <th
+                      className="th text-secondary sticky-top"
+                      onClick={() =>
+                        this.setState({
+                          sortConfirmed: false,
+                          sortActive: false,
+                          sortRecovered: false,
+                          sortDeceased: true,
+                          sortOrder: !sortOrder,
+                        })
+                      }
+                    >
+                      DEATHS
+                    </th>
                   </tr>
                 </thead>
 
@@ -791,7 +945,7 @@ class Table extends Component {
                   {items.map((item) => (
                     <tr className="tr" key={item.statecode}>
                       <td
-                        className="text-secondary tdleft"
+                        className="text-secondary tdleft align-middle"
                         style={{ borderStyle: "solid", borderLeftWidth: "5px" }}
                       >
                         {item.state}
@@ -802,7 +956,7 @@ class Table extends Component {
                           >
                             <span style={{ verticalAlign: "0.05rem" }}>
                               <InfoTwoToneIcon
-                                color="disabled"
+                                color="active"
                                 fontSize="inherit"
                               />
                             </span>
@@ -885,7 +1039,11 @@ class Table extends Component {
                       </td>
                     </tr>
                   ))}
-                  <tr className="tr" key={total[0].statecode}>
+                  <tr
+                    className="tr"
+                    key={total[0].statecode}
+                    style={{ background: "rgba(165, 173, 165, 0.3)" }}
+                  >
                     <td
                       className="text-secondary tdleft align-middle"
                       style={{ borderStyle: "solid", borderLeftWidth: "5px" }}
@@ -895,7 +1053,7 @@ class Table extends Component {
                         <BootstrapTooltip title={parse(total[0].statenotes)}>
                           <span style={{ verticalAlign: "0.05rem" }}>
                             <InfoTwoToneIcon
-                              color="inherit"
+                              color="primary"
                               fontSize="inherit"
                             />
                           </span>
@@ -991,37 +1149,73 @@ class Table extends Component {
               <table
                 className="table table-sm table-striped fadeInUp table-borderless"
                 style={{
-                  animationDelay: "0.9s",
+                  animationDelay: "1.9s",
                   marginTop: "-15px",
                 }}
                 align="center"
               >
                 <thead className="thead-dark">
                   <tr>
-                    <th className="th-md sticky-top" style={{ width: "195px" }}>
+                    <th className="th-md sticky-top" style={{ width: "185px" }}>
                       State/UT
                     </th>
                     <th
                       className="th-md text-info sticky-top"
                       style={{ textAlign: "center" }}
+                      onClick={() =>
+                        this.setState({
+                          sortConfirmed: true,
+                          sortActive: false,
+                          sortRecovered: false,
+                          sortDeceased: false,
+                          sortOrder: !sortOrder,
+                        })
+                      }
                     >
                       Confirmed
                     </th>
                     <th
                       className="th-md sticky-top"
                       style={{ color: "#ff446a", textAlign: "center" }}
+                      onClick={() =>
+                        this.setState({
+                          sortConfirmed: false,
+                          sortActive: true,
+                          sortRecovered: false,
+                          sortDeceased: false,
+                          sortOrder: !sortOrder,
+                        })
+                      }
                     >
                       Active
                     </th>
                     <th
                       className="th-md text-success sticky-top"
                       style={{ textAlign: "center" }}
+                      onClick={() =>
+                        this.setState({
+                          sortConfirmed: false,
+                          sortActive: false,
+                          sortRecovered: true,
+                          sortDeceased: false,
+                          sortOrder: !sortOrder,
+                        })
+                      }
                     >
                       RECOVERED
                     </th>
                     <th
                       className="th-md text-secondary sticky-top"
                       style={{ textAlign: "center" }}
+                      onClick={() =>
+                        this.setState({
+                          sortConfirmed: false,
+                          sortActive: false,
+                          sortRecovered: false,
+                          sortDeceased: true,
+                          sortOrder: !sortOrder,
+                        })
+                      }
                     >
                       Deceased
                     </th>
@@ -1043,7 +1237,7 @@ class Table extends Component {
                           >
                             <span style={{ verticalAlign: "0.05rem" }}>
                               <InfoTwoToneIcon
-                                color="inherit"
+                                color="primary"
                                 fontSize="inherit"
                               />
                             </span>
@@ -1125,7 +1319,11 @@ class Table extends Component {
                       </td>
                     </tr>
                   ))}
-                  <tr className="tr" key={total[0].statecode}>
+                  <tr
+                    className="tr"
+                    key={total[0].statecode}
+                    style={{ background: "rgba(165, 173, 165, 0.3)" }}
+                  >
                     <td
                       className="text-secondary tdleft align-middle"
                       style={{ borderStyle: "solid", borderLeftWidth: "5px" }}
@@ -1214,24 +1412,6 @@ class Table extends Component {
                   </tr>
                 </tbody>
               </table>
-            </div>
-            <div className="w-100"></div>
-            <div
-              className="row fadeInup"
-              style={{
-                textAlign: "center",
-                transitionDelay: "1.1s",
-                marginBottom: "0px",
-              }}
-            >
-              <h5 style={{ color: "#3e4da3" }}>INDIA - DISTRICTWISE</h5>
-            </div>
-            <div className="w-100"></div>
-            <div id="line1" style={{ alignContent: "center" }}>
-              <StateTable />
-            </div>
-            <div className="container" style={{ width: "93.7%" }} id="line2">
-              <StateTable />
             </div>
           </div>
         </React.Fragment>

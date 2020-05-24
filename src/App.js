@@ -9,8 +9,8 @@ import { Helmet } from "react-helmet";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import ReactGa from "react-ga";
-
 import Navbar from "./components/navbar";
+
 const Home = lazy(() => import("./components/home"));
 const StateGraph = lazy(() => import("./components/stateGraph"));
 const World = lazy(() => import("./components/world"));
@@ -25,14 +25,14 @@ const schemaMarkup = {
   "@type": "NGO",
   name: "Track the spread of Coronavirus (COVID-19) in India and World",
   alternateName: "COVID INDIA STATS",
-  url: "https://www.covidindiastats.com/",
+  url: "https://covidindiastats.com/",
 };
 
 function App() {
   const history = require("history").createBrowserHistory;
 
   useEffect(() => {
-    ReactGa.initialize("");
+    ReactGa.initialize("UA-163288419-1");
     // UA-163288419-1
     ReactGa.pageview(window.location.pathname + window.location.search);
   }, []);

@@ -77,7 +77,7 @@ const BarPlot = ({
             >
               {commaSeperated(daily.slice(-1)[0])}{" "}
               <span style={{ fontSize: 8 }}>
-                {daily.slice(-1)[0] - daily.slice(-2)[0] > 0
+                {daily.slice(-1)[0] - daily.slice(-2)[0] >= 0
                   ? `+${commaSeperated(
                       Math.abs(daily.slice(-2)[0] - daily.slice(-1)[0])
                     )}`

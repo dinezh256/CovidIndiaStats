@@ -73,7 +73,7 @@ const MiniStateSparkline = ({
             type="monotone"
             dataKey={dataKey}
             stroke={stroke}
-            strokeWidth={2.3}
+            strokeWidth={2}
             dot={false}
             animationDuration={2000}
           />

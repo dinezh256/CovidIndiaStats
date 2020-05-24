@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { indianstates } from "./API/index";
-import Typist from "react-typist";
 
 const StatePicker = ({ handleStateChange }) => {
   const [fetchedStates, setStates] = useState([]);
@@ -21,11 +20,15 @@ const StatePicker = ({ handleStateChange }) => {
         <option value="" selected disabled>
           Select a State/UT
         </option>
-        {fetchedStates.map((item, i) => (
-          <option key={i} value={item.statecode}>
-            {item.state}
-          </option>
-        ))}
+        {fetchedStates.map((item, i) =>
+          item.statecode !== "UN" ? (
+            <option key={i} value={item.statecode}>
+              {item.state}
+            </option>
+          ) : (
+            ""
+          )
+        )}
       </select>
     );
   } else return null;

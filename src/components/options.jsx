@@ -1,11 +1,16 @@
 import React from "react";
 import { Container } from "react-bootstrap";
+import { Helmet } from "react-helmet";
 import Footer from "./footer";
 
 function Options(props) {
   return (
     <div style={{ marginBottom: "20px" }}>
       <Container>
+        <Helmet>
+          <title>Helpful Links</title>
+          <meta name="description" content="Helpful Links" />
+        </Helmet>
         <div className="options fadeInUp" style={{ animationDelay: "0.3s" }}>
           <h4 className="question">
             Ministry of Health and Family Welfare, Govt. of India

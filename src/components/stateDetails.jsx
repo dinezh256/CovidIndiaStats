@@ -807,7 +807,7 @@ class StateDetails extends Component {
     const expansionPanelDataPopulation = [];
 
     for (let i = requiredStateTestData.length - 1; i >= 0; i--) {
-      if (requiredStateTestData[i].testspermillion) {
+      if (requiredStateTestData[i].totaltested) {
         expansionPanelData.push(requiredStateTestData[i]);
         break;
       }

@@ -4,10 +4,6 @@ import { Line, defaults } from "react-chartjs-2";
 import styles from "./Chart.module.css";
 
 const Charts = ({ data: { cases, recovered, deaths }, country }) => {
-  if (!cases) {
-    return null;
-  }
-
   defaults.global.tooltips.intersect = false;
   defaults.global.tooltips.mode = "nearest";
   defaults.global.tooltips.position = "average";
@@ -115,45 +111,46 @@ const Charts = ({ data: { cases, recovered, deaths }, country }) => {
     "Dec",
   ];
 
-  const lineChart = cases ? (
-    <React.Fragment>
-      <Line
-        data={{
-          labels: [
-            ...Object.keys(cases).map((item) => {
-              return `${new Date(item).getDate()} ${
-                months[new Date(item).getMonth()]
-              }`;
-            }),
-          ],
-          datasets: [
-            {
-              data: Object.values(cases),
-              label: "Infected",
-              borderColor: "#2186b4",
-              backgroundColor: "#d9ecf5",
-              fill: true,
-            },
-            {
-              data: Object.values(recovered),
-              label: "Recovered",
-              borderColor: "#24aa24",
-              backgroundColor: "#c3e0c3",
-              fill: true,
-            },
-            {
-              data: Object.values(deaths),
-              label: "Deceased",
-              borderColor: "red",
-              backgroundColor: "rgba(255, 0, 0, 0.5)",
-              fill: true,
-            },
-          ],
-        }}
-        options={chartOptions}
-      />
-    </React.Fragment>
-  ) : null;
+  const lineChart =
+    cases && recovered && deaths ? (
+      <React.Fragment>
+        <Line
+          data={{
+            labels: [
+              ...Object.keys(cases).map((item) => {
+                return `${new Date(item).getDate()} ${
+                  months[new Date(item).getMonth()]
+                }`;
+              }),
+            ],
+            datasets: [
+              {
+                data: Object.values(cases),
+                label: "Infected",
+                borderColor: "#2186b4",
+                backgroundColor: "#d9ecf5",
+                fill: true,
+              },
+              {
+                data: Object.values(recovered),
+                label: "Recovered",
+                borderColor: "#24aa24",
+                backgroundColor: "#c3e0c3",
+                fill: true,
+              },
+              {
+                data: Object.values(deaths),
+                label: "Deceased",
+                borderColor: "red",
+                backgroundColor: "rgba(255, 0, 0, 0.5)",
+                fill: true,
+              },
+            ],
+          }}
+          options={chartOptions}
+        />
+      </React.Fragment>
+    ) : null;
 
   return (
     <div className={`${styles.container} fadeInUp`}>

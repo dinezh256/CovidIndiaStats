@@ -35,6 +35,7 @@ const Footer = () => {
                 fontWeight: 650,
                 fontSize: 15,
                 alignContent: "center",
+                fontFamily: "notosans",
               }}
             >
               <Icon.GitHub />
@@ -44,7 +45,7 @@ const Footer = () => {
         </div>
         <div align="center" className="col">
           <a
-            href="https://api.covid19india.org/"
+            href="https://facebook.com/covidindiastats"
             className="button"
             target="_blank"
             rel="noopener noreferrer"
@@ -53,17 +54,18 @@ const Footer = () => {
               className="btn"
               style={{
                 textAlign: "center",
-                color: "#28a745",
-                backgroundColor: "#c3e0c3",
+                color: "rgb(59, 89, 152)",
+                backgroundColor: "rgba(59, 89, 152, 0.4)",
                 marginTop: 7.5,
                 width: 250,
-                fontWeight: 650,
+                fontWeight: 800,
                 fontSize: 15,
                 alignContent: "center",
+                fontFamily: "notosans",
               }}
             >
-              <Icon.Database />
-              &ensp; PATIENT DATABASE
+              <Icon.Facebook />
+              &ensp; LIKE OUR PAGE
             </button>
           </a>
         </div>
@@ -80,11 +82,12 @@ const Footer = () => {
                 textAlign: "center",
                 color: "#4ea2be",
                 backgroundColor: "#d9ecf5",
-                marginTop: 10,
+                marginTop: 8,
                 width: 250,
-                fontWeight: 650,
+                fontWeight: 700,
                 fontSize: 15,
                 alignContent: "center",
+                fontFamily: "notosans",
               }}
             >
               <Icon.Twitter />

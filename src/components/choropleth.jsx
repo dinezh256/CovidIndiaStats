@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { ComposableMap, Geographies, Geography } from "react-simple-maps";
 import { scaleLog } from "d3-scale";
 import ReactTooltip from "react-tooltip";
+import { commaSeperated } from "../utils/common-functions";
 
 const INDIA_TOPO_JSON = require("../india.topo.json");
 
@@ -10,38 +11,26 @@ const PROJECTION_CONFIG = {
   center: [82.8, 22.5937], // always in [East Latitude, North Longitude]
 };
 
-const COLOR_RANGE = ["rgba(173, 28, 57, 1)", "rgba(173, 28, 57, 0.9)"];
+const Choropleth = ({ data, colorLow, colorHigh, fill, type }) => {
+  const COLOR_RANGE = [colorHigh, colorLow];
 
-const DEFAULT_COLOR = "#ffffff";
-
-const geographyStyle = {
-  default: {
-    outline: "#b13f2b",
-  },
-  hover: {
-    fill: "rgb(228, 116, 138)",
-    outline: "#ffffff",
-    transition: "all 250ms",
-  },
-  pressed: {
-    outline: "#b13f2b",
-  },
-};
-
-function commaSeperated(x) {
-  x = x.toString();
-  let lastThree = x.substring(x.length - 3);
-  let otherNumbers = x.substring(0, x.length - 3);
-  if (otherNumbers !== "") lastThree = "," + lastThree;
-  let res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
-  return res;
-}
-
-const Choropleth = ({ data: statesdata }) => {
+  const geographyStyle = {
+    default: {
+      outline: "#b13f2b",
+    },
+    hover: {
+      fill: fill,
+      outline: "#ffffff",
+      transition: "all 250ms",
+    },
+    pressed: {
+      outline: "#b13f2b",
+    },
+  };
   const [tooltipContent, setTooltipContent] = useState("");
 
   const colorScale = scaleLog()
-    .domain(statesdata.map((d) => d.value))
+    .domain(data.map((d) => d.value))
     .range(COLOR_RANGE);
 
   const onMouseEnter = (geo, current = { value: "0" }) => {
@@ -49,7 +38,7 @@ const Choropleth = ({ data: statesdata }) => {
       setTooltipContent(
         `${geo.properties.st_nm}: ${commaSeperated(
           Number(current.value)
-        )} infected`
+        )} ${type}`
       );
     };
   };
@@ -59,7 +48,7 @@ const Choropleth = ({ data: statesdata }) => {
   };
 
   return (
-    <div className="container">
+    <div className="container choropleth">
       <ReactTooltip multiline={true}>{tooltipContent}</ReactTooltip>
       <ComposableMap
         projectionConfig={PROJECTION_CONFIG}
@@ -71,7 +60,7 @@ const Choropleth = ({ data: statesdata }) => {
         <Geographies geography={INDIA_TOPO_JSON}>
           {({ geographies }) =>
             geographies.map((geo) => {
-              const current = statesdata.find((s) => s.id === geo.id);
+              const current = data.find((s) => s.id === geo.id);
               return (
                 <Geography
                   key={geo.rsmKey}
