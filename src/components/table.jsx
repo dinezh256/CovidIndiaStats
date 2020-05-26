@@ -842,7 +842,20 @@ class Table extends Component {
                 marginTop: "-20px",
               }}
             >
-              <h5 style={{ color: "#3e4da3" }}>INDIA - DISTRICTWISE</h5>
+              <h5 style={{ color: "#3e4da3" }}>
+                INDIA - STATEWISE{" "}
+                <BootstrapTooltip
+                  title={"Data tallied with State bulletins and MoHFW"}
+                >
+                  <span>
+                    <InfoTwoToneIcon
+                      color="inherit"
+                      fontSize="small"
+                      style={{ verticalAlign: "-0.15rem" }}
+                    />
+                  </span>
+                </BootstrapTooltip>
+              </h5>
             </div>
             <div className="w-100"></div>
             <div

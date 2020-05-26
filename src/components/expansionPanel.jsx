@@ -5,6 +5,7 @@ import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import * as Icon from "react-feather";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -42,9 +43,37 @@ function ControlledExpansionPanels({ data, stateData, state, population }) {
 
   return (
     <div className={classes.root}>
-      <h6>
-        Population of {state}: {commaSeperated(population)}
-      </h6>
+      <div className="row" style={{ marginBottom: "-15px" }}>
+        <div className="col-9">
+          <h6 style={{ fontSize: 12, color: "rgb(74, 79, 83)" }}>
+            Population
+            <h5 style={{ color: "rgb(74, 79, 83)" }}>
+              {commaSeperated(population)}
+            </h5>
+          </h6>
+        </div>
+        <div className="col-3">
+          <h6
+            style={{
+              fontSize: 10,
+              textAlign: "right",
+              color: "rgb(74, 79, 83)",
+            }}
+          >
+            {" "}
+            Based on 2019 NCP{" "}
+            <a
+              style={{ color: "#3e4da3", textDecoration: "none" }}
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://nhm.gov.in/New_Updates_2018/Report_Population_Projection_2019.pdf"
+            >
+              Report <Icon.Link size={9} color="#3e4da3" strokeWidth={3} />
+            </a>
+          </h6>
+        </div>
+      </div>
+
       <br />
       <ExpansionPanel
         expanded={expanded === "panel1"}
@@ -316,7 +345,7 @@ function ControlledExpansionPanels({ data, stateData, state, population }) {
               fontSize: 11,
             }}
           >
-            ≈
+            ≈{" "}
             {data[0] !== undefined
               ? commaSeperated(
                   Math.round(
@@ -338,7 +367,7 @@ function ControlledExpansionPanels({ data, stateData, state, population }) {
               fontSize: 12,
             }}
           >
-            ≈
+            ≈{" "}
             {data[0] !== undefined
               ? commaSeperated(
                   Math.round(

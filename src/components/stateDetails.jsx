@@ -35,6 +35,7 @@ import ControlledExpansionPanels from "./expansionPanel";
 // import DistrictPicker from "./districtPicker";
 import MiniBarPlot from "./miniBarPlot";
 import MiniStateSparkline from "./miniSateSparkline";
+import NotFound from "./notFound";
 
 class StateDetails extends Component {
   constructor(props) {
@@ -176,12 +177,54 @@ class StateDetails extends Component {
   };
 
   async componentDidMount() {
+    const stateID = [
+      "AP",
+      "AN",
+      "AR",
+      "AS",
+      "BR",
+      "CH",
+      "CT",
+      "DN",
+      "DL",
+      "GA",
+      "GJ",
+      "HP",
+      "HR",
+      "JH",
+      "JK",
+      "KA",
+      "KL",
+      "LA",
+      "LD",
+      "MH",
+      "ML",
+      "MN",
+      "MP",
+      "MZ",
+      "NL",
+      "OR",
+      "PB",
+      "PY",
+      "RJ",
+      "SK",
+      "TG",
+      "TN",
+      "TR",
+      "UP",
+      "UT",
+      "WB",
+      "UN",
+    ];
     const fetchedStates = await indianstates();
     this.setState({ stateData: fetchedStates, isLoaded: true });
 
     const requiredData = [];
     fetchedStates.map((item) => {
-      if (this.props.match.params.stateid.toUpperCase() === item.statecode)
+      if (
+        this.props.match.params.stateid.toUpperCase() === item.statecode &&
+        stateID.includes(this.props.match.params.stateid.toUpperCase())
+      )
         requiredData.push(item.districtData);
     });
     this.setState({ requiredData });
@@ -305,6 +348,46 @@ class StateDetails extends Component {
       "Dec",
     ];
 
+    const stateID = [
+      "AP",
+      "AN",
+      "AR",
+      "AS",
+      "BR",
+      "CH",
+      "CT",
+      "DN",
+      "DL",
+      "GA",
+      "GJ",
+      "HP",
+      "HR",
+      "JH",
+      "JK",
+      "KA",
+      "KL",
+      "LA",
+      "LD",
+      "MH",
+      "ML",
+      "MN",
+      "MP",
+      "MZ",
+      "NL",
+      "OR",
+      "PB",
+      "PY",
+      "RJ",
+      "SK",
+      "TG",
+      "TN",
+      "TR",
+      "UP",
+      "UT",
+      "WB",
+      "UN",
+    ];
+
     if (requiredDistrictData) {
       for (let i = 0; i < requiredDistrictData.length; i++) {
         requiredDistrictData[i].newDate =
@@ -315,7 +398,10 @@ class StateDetails extends Component {
     }
 
     const requiredDistricts = [];
-    if (districtsDailyLoaded) {
+    if (
+      districtsDailyLoaded &&
+      stateID.includes(this.props.match.params.stateid.toUpperCase())
+    ) {
       requiredDistricts.push(
         Object.keys(
           districtsDaily[
@@ -326,28 +412,40 @@ class StateDetails extends Component {
     }
 
     if (requiredData) {
-      if (sortConfirmed) {
+      if (
+        sortConfirmed &&
+        stateID.includes(this.props.match.params.stateid.toUpperCase())
+      ) {
         requiredData[0].sort(function (x, y) {
           return sortOrder
             ? Number(y.confirmed) - Number(x.confirmed)
             : Number(x.confirmed) - Number(y.confirmed);
         });
       }
-      if (sortActive) {
+      if (
+        sortActive &&
+        stateID.includes(this.props.match.params.stateid.toUpperCase())
+      ) {
         requiredData[0].sort(function (x, y) {
           return !sortOrder
             ? Number(y.active) - Number(x.active)
             : Number(x.active) - Number(y.active);
         });
       }
-      if (sortRecovered) {
+      if (
+        sortRecovered &&
+        stateID.includes(this.props.match.params.stateid.toUpperCase())
+      ) {
         requiredData[0].sort(function (x, y) {
           return !sortOrder
             ? Number(y.recovered) - Number(x.recovered)
             : Number(x.recovered) - Number(y.recovered);
         });
       }
-      if (sortDeceased) {
+      if (
+        sortDeceased &&
+        stateID.includes(this.props.match.params.stateid.toUpperCase())
+      ) {
         requiredData[0].sort(function (x, y) {
           return !sortOrder
             ? Number(y.deceased) - Number(x.deceased)
@@ -365,17 +463,27 @@ class StateDetails extends Component {
 
     const confirmedTopDistricts = [];
     stateData.map((item) => {
-      if (this.props.match.params.stateid.toUpperCase() === item.statecode)
+      if (
+        this.props.match.params.stateid.toUpperCase() === item.statecode &&
+        stateID.includes(this.props.match.params.stateid.toUpperCase())
+      )
         confirmedTopDistricts.push(item.districtData);
     });
-    if (isLoaded && toggleConfirmed) {
+    if (
+      isLoaded &&
+      toggleConfirmed &&
+      stateID.includes(this.props.match.params.stateid.toUpperCase())
+    ) {
       confirmedTopDistricts[0].sort(function (x, y) {
         return Number(y.confirmed) - Number(x.confirmed);
       });
     }
     const activeTopDistricts = [];
     stateData.map((item) => {
-      if (this.props.match.params.stateid.toUpperCase() === item.statecode)
+      if (
+        this.props.match.params.stateid.toUpperCase() === item.statecode &&
+        stateID.includes(this.props.match.params.stateid.toUpperCase())
+      )
         activeTopDistricts.push(item.districtData);
     });
     if (isLoaded && toggleActive) {
@@ -386,7 +494,10 @@ class StateDetails extends Component {
 
     const recoveredTopDistricts = [];
     stateData.map((item) => {
-      if (this.props.match.params.stateid.toUpperCase() === item.statecode)
+      if (
+        this.props.match.params.stateid.toUpperCase() === item.statecode &&
+        stateID.includes(this.props.match.params.stateid.toUpperCase())
+      )
         recoveredTopDistricts.push(item.districtData);
     });
     if (isLoaded && toggleRecovered) {
@@ -397,7 +508,10 @@ class StateDetails extends Component {
 
     const deceasedTopDistricts = [];
     stateData.map((item) => {
-      if (this.props.match.params.stateid.toUpperCase() === item.statecode)
+      if (
+        this.props.match.params.stateid.toUpperCase() === item.statecode &&
+        stateID.includes(this.props.match.params.stateid.toUpperCase())
+      )
         deceasedTopDistricts.push(item.districtData);
     });
     if (isLoaded && toggleDeceased) {
@@ -462,7 +576,10 @@ class StateDetails extends Component {
 
     if (statesDailyDataLoaded) {
       statesDailyData.map((item) => {
-        if (item.status === "Confirmed")
+        if (
+          item.status === "Confirmed" &&
+          stateID.includes(this.props.match.params.stateid.toUpperCase())
+        )
           barDailyConfirmedData.push({
             stateid: Number(
               item[this.props.match.params.stateid.toLowerCase()]
@@ -536,7 +653,10 @@ class StateDetails extends Component {
     const sparklineDailyRecoveredData = [];
     if (statesDailyDataLoaded) {
       statesDailyData.map((item) => {
-        if (item.status === "Recovered")
+        if (
+          item.status === "Recovered" &&
+          stateID.includes(this.props.match.params.stateid.toUpperCase())
+        )
           sparklineDailyRecoveredData.push(
             Number(item[this.props.match.params.stateid.toLowerCase()])
           );
@@ -546,7 +666,10 @@ class StateDetails extends Component {
     const barDailyRecoveredData = [];
     if (statesDailyDataLoaded) {
       statesDailyData.map((item) => {
-        if (item.status === "Recovered")
+        if (
+          item.status === "Recovered" &&
+          stateID.includes(this.props.match.params.stateid.toUpperCase())
+        )
           barDailyRecoveredData.push({
             stateid: Number(
               item[this.props.match.params.stateid.toLowerCase()]
@@ -599,7 +722,10 @@ class StateDetails extends Component {
     const lineTotalRecoveredData = [];
     if (statesDailyDataLoaded) {
       statesDailyData.map((item) => {
-        if (item.status === "Recovered")
+        if (
+          item.status === "Recovered" &&
+          stateID.includes(this.props.match.params.stateid.toUpperCase())
+        )
           lineTotalRecoveredData.push({
             stateid: Number(
               item[this.props.match.params.stateid.toLowerCase()]
@@ -617,7 +743,10 @@ class StateDetails extends Component {
     const sparklineDailyDeceasedData = [];
     if (statesDailyDataLoaded) {
       statesDailyData.map((item) => {
-        if (item.status === "Deceased")
+        if (
+          item.status === "Deceased" &&
+          stateID.includes(this.props.match.params.stateid.toUpperCase())
+        )
           sparklineDailyDeceasedData.push(
             Number(item[this.props.match.params.stateid.toLowerCase()])
           );
@@ -641,7 +770,10 @@ class StateDetails extends Component {
     const barDailyDeceasedData = [];
     if (statesDailyDataLoaded) {
       statesDailyData.map((item) => {
-        if (item.status === "Deceased")
+        if (
+          item.status === "Deceased" &&
+          stateID.includes(this.props.match.params.stateid.toUpperCase())
+        )
           barDailyDeceasedData.push({
             stateid: Number(
               item[this.props.match.params.stateid.toLowerCase()]
@@ -698,7 +830,10 @@ class StateDetails extends Component {
     const lineTotalDeceasedData = [];
     if (statesDailyDataLoaded) {
       statesDailyData.map((item) => {
-        if (item.status === "Deceased")
+        if (
+          item.status === "Deceased" &&
+          stateID.includes(this.props.match.params.stateid.toUpperCase())
+        )
           lineTotalDeceasedData.push({
             stateid: Number(
               item[this.props.match.params.stateid.toLowerCase()]
@@ -791,7 +926,8 @@ class StateDetails extends Component {
       if (
         item.state ===
           stateFullName[this.props.match.params.stateid.toUpperCase()] &&
-        this.props.match.params.stateid.toUpperCase() !== "LD"
+        this.props.match.params.stateid.toUpperCase() !== "LD" &&
+        stateID.includes(this.props.match.params.stateid.toUpperCase())
       )
         requiredStateTestData.push(item);
     });
@@ -968,7 +1104,8 @@ class StateDetails extends Component {
       zonesLoaded &&
       totalStateDataLoaded &&
       statesDailyDataLoaded &&
-      testDataLoaded
+      testDataLoaded &&
+      stateID.includes(this.props.match.params.stateid.toUpperCase())
     ) {
       return (
         <React.Fragment>
@@ -996,6 +1133,17 @@ class StateDetails extends Component {
                   }}
                 >
                   {stateFullName[this.props.match.params.stateid.toUpperCase()]}
+                  <BootstrapTooltip
+                    title={"Data tallied with State bulletins and MoHFW"}
+                  >
+                    <span style={{ verticalAlign: "0.05rem" }}>
+                      <InfoTwoToneIcon
+                        color="inherit"
+                        fontSize="small"
+                        style={{ verticalAlign: "-0.15rem" }}
+                      />
+                    </span>
+                  </BootstrapTooltip>
                 </h5>
               </div>
               <div className="col-5" style={{ marginTop: 12 }}>
@@ -1294,12 +1442,12 @@ class StateDetails extends Component {
                                 &nbsp;
                                 <span
                                   style={{
-                                    color: "rgba(66, 179, 244, 0.6)",
+                                    color: "rgba(66, 179, 244, 0.9)",
                                     fontSize: 11,
                                   }}
                                 >
                                   {district.delta.confirmed ? (
-                                    <Icon.ArrowUp size={12} />
+                                    <Icon.ArrowUp size={11} strokeWidth={3} />
                                   ) : (
                                     ""
                                   )}
@@ -1374,7 +1522,7 @@ class StateDetails extends Component {
                                   }}
                                 >
                                   {district.delta.recovered ? (
-                                    <Icon.ArrowUp size={12} />
+                                    <Icon.ArrowUp size={11} strokeWidth={3} />
                                   ) : (
                                     ""
                                   )}
@@ -1419,7 +1567,7 @@ class StateDetails extends Component {
                                   }}
                                 >
                                   {district.delta.deceased ? (
-                                    <Icon.ArrowUp size={12} />
+                                    <Icon.ArrowUp size={11} strokeWidth={3} />
                                   ) : (
                                     ""
                                   )}
@@ -1441,7 +1589,7 @@ class StateDetails extends Component {
                       <MiniBarPlot
                         barDailyData={barDailyConfirmedData}
                         type="confirmed"
-                        fill="rgb(10, 111, 145)"
+                        fill="rgb(16, 133, 172)"
                       />
                     )}
 
@@ -2470,18 +2618,21 @@ class StateDetails extends Component {
           </div>
         </React.Fragment>
       );
-    } else
-      return (
-        <div className="containerHome">
-          <div
-            className="spinner-grow"
-            role="status"
-            style={{ alignContent: "center" }}
-          >
-            <span className="sr-only">Loading...</span>
+    } else {
+      if (stateID.includes(this.props.match.params.stateid.toUpperCase())) {
+        return (
+          <div className="containerHome">
+            <div
+              className="spinner-grow"
+              role="status"
+              style={{ alignContent: "center" }}
+            >
+              <span className="sr-only">Loading...</span>
+            </div>
           </div>
-        </div>
-      );
+        );
+      } else return <NotFound />;
+    }
   }
 }
 
