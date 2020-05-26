@@ -1134,9 +1134,9 @@ class StateDetails extends Component {
                 >
                   {stateFullName[this.props.match.params.stateid.toUpperCase()]}
                   <BootstrapTooltip
-                    title={"Data tallied with State bulletins and MoHFW"}
+                    title={"Data tallied with State bulletins, MoHFW and ICMR"}
                   >
-                    <span style={{ verticalAlign: "0.05rem" }}>
+                    <span>
                       <InfoTwoToneIcon
                         color="inherit"
                         fontSize="small"
