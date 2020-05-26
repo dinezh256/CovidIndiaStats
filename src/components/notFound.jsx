@@ -8,7 +8,10 @@ const NotFound = () => {
       <h1>Oops..</h1>
       <h6>
         The page you are looking for isn't available, please head back to{" "}
-        <Link to="/">Home</Link>
+        <Link to="/" style={{ color: "#3e4da3" }}>
+          Home
+        </Link>
+        .
       </h6>
     </Container>
   );
