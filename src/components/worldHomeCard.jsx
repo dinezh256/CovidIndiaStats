@@ -121,15 +121,22 @@ class WorldHomeCard extends Component {
                     color: "rgba(23, 162, 184, 0.7)",
                   }}
                 >
-                  +{commaSeperated(Number(todayCases))}
+                  +
+                  {todayCases !== undefined
+                    ? commaSeperated(Number(todayCases))
+                    : ""}
                 </h6>
                 <h5 className="text-info" style={{ textAlign: "center" }}>
-                  <CountUp
-                    start={0}
-                    end={Number(cases)}
-                    duration={2}
-                    separator=","
-                  />
+                  {cases !== undefined ? (
+                    <CountUp
+                      start={0}
+                      end={Number(cases)}
+                      duration={2}
+                      separator=","
+                    />
+                  ) : (
+                    ""
+                  )}
                 </h5>
               </td>
 
@@ -141,15 +148,22 @@ class WorldHomeCard extends Component {
                     fontSize: 12,
                   }}
                 >
-                  {((Number(active) / Number(cases)) * 100).toFixed(1)}%
+                  {cases !== undefined
+                    ? ((Number(active) / Number(cases)) * 100).toFixed(1)
+                    : ""}
+                  %
                 </h6>
                 <h5 style={{ color: "#ff446a", textAlign: "center" }}>
-                  <CountUp
-                    start={0}
-                    end={Number(active)}
-                    duration={2}
-                    separator=","
-                  />
+                  {active !== undefined ? (
+                    <CountUp
+                      start={0}
+                      end={Number(active)}
+                      duration={2}
+                      separator=","
+                    />
+                  ) : (
+                    ""
+                  )}
                 </h5>
               </td>
 
@@ -161,15 +175,22 @@ class WorldHomeCard extends Component {
                     color: "rgba(40, 167, 69, 0.7)",
                   }}
                 >
-                  {((Number(recovered) / Number(cases)) * 100).toFixed(1)}%
+                  {cases !== undefined
+                    ? ((Number(recovered) / Number(cases)) * 100).toFixed(1)
+                    : ""}
+                  %
                 </h5>
                 <h5 className="text-success" style={{ textAlign: "center" }}>
-                  <CountUp
-                    start={0}
-                    end={Number(recovered)}
-                    duration={2}
-                    separator=","
-                  />
+                  {recovered !== undefined ? (
+                    <CountUp
+                      start={0}
+                      end={Number(recovered)}
+                      duration={2}
+                      separator=","
+                    />
+                  ) : (
+                    ""
+                  )}
                 </h5>
               </td>
 
@@ -181,15 +202,22 @@ class WorldHomeCard extends Component {
                     color: "rgba(108, 117, 125, 0.7)",
                   }}
                 >
-                  +{commaSeperated(Number(todayDeaths))}
+                  +
+                  {todayDeaths !== undefined
+                    ? commaSeperated(Number(todayDeaths))
+                    : ""}
                 </h6>
                 <h5 className="text-secondary" style={{ textAlign: "center" }}>
-                  <CountUp
-                    start={0}
-                    end={Number(deaths)}
-                    duration={2}
-                    separator=","
-                  />
+                  {deaths !== undefined ? (
+                    <CountUp
+                      start={0}
+                      end={Number(deaths)}
+                      duration={2}
+                      separator=","
+                    />
+                  ) : (
+                    ""
+                  )}
                 </h5>
               </td>
             </tbody>
