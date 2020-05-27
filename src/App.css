@@ -760,23 +760,6 @@ span.MuiBadge-colorSecondary {
   }
 }
 
-.test {
-  color: rgb(64, 145, 64);
-  color: rgb(228, 116, 138);
-  color: rgb(62, 77, 163);
-  color: rgb(18, 167, 190);
-  color: rgb(226, 42, 79);
-  color: rgb(185, 193, 201);
-  color: rgb(74, 79, 83);
-  color: rgb(255, 68, 106);
-  color: rgb(255, 153, 0);
-  color: rgb(66, 179, 244);
-  color: rgb(10, 111, 145);
-  /* fb */
-  color: rgb(59, 89, 152);
-  color: rgb(23, 162, 184);
-  color: rgb(40, 167, 69);
-}
 
 @media only screen and (min-width: 576px) {
   #line1 {
