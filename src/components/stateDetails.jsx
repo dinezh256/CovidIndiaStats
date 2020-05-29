@@ -65,6 +65,9 @@ class StateDetails extends Component {
       sortRecovered: false,
       sortDeceased: false,
       sortOrder: true,
+      beginning: true,
+      twoWeeks: false,
+      oneMonth: false,
     };
     this.onSwitch = this.onSwitch.bind(this);
     this.onClickConfirmed = this.onClickConfirmed.bind(this);
@@ -78,6 +81,9 @@ class StateDetails extends Component {
     this.onSortRecovered = this.onSortRecovered.bind(this);
     this.onSortDeceased = this.onSortDeceased.bind(this);
     this.handleSortOrder = this.handleSortOrder.bind(this);
+    this.handleBeginning = this.handleBeginning.bind(this);
+    this.handleTwoWeeks = this.handleTwoWeeks.bind(this);
+    this.handleOneMonth = this.handleOneMonth.bind(this);
   }
 
   onSwitch(toggleSwitch) {
@@ -123,6 +129,16 @@ class StateDetails extends Component {
 
   handleSortOrder({ sortOrder }) {
     this.setState({ sortOrder });
+  }
+
+  handleBeginning({ beginning }) {
+    this.setState({ beginning });
+  }
+  handleTwoWeeks({ twoWeeks }) {
+    this.setState({ twoWeeks });
+  }
+  handleOneMonth({ oneMonth }) {
+    this.setState({ oneMonth });
   }
 
   handleDistrictChange = async (district) => {
@@ -290,6 +306,9 @@ class StateDetails extends Component {
       sortRecovered,
       sortDeceased,
       sortOrder,
+      beginning,
+      twoWeeks,
+      oneMonth,
     } = this.state;
 
     const stateFullName = {
@@ -460,6 +479,8 @@ class StateDetails extends Component {
         " " +
         statesDailyData[i].date.split(/\-/)[1];
     }
+
+    console.log(stateData);
 
     const confirmedTopDistricts = [];
     stateData.map((item) => {
@@ -977,9 +998,10 @@ class StateDetails extends Component {
           });
         } else
           dateFormattedTestData.push({
+            totaltested: "-",
             date: date[i],
           });
-      } else dateFormattedTestData.push({ date: date[i] });
+      } else dateFormattedTestData.push({ totaltested: "-", date: date[i] });
     }
 
     const formattedTestData = [];
@@ -1099,6 +1121,21 @@ class StateDetails extends Component {
         return "rgb(40, 167, 69)";
       } else return "rgb(150, 150, 150)";
     }
+
+    let timelineLength = 0;
+
+    if (isLoaded) {
+      if (beginning) {
+        timelineLength = 0;
+      }
+      if (twoWeeks) {
+        timelineLength = lineTotalConfirmedData.length - 15;
+      }
+      if (oneMonth) {
+        timelineLength = lineTotalConfirmedData.length - 30;
+      }
+    }
+
     if (
       isLoaded &&
       zonesLoaded &&
@@ -1180,22 +1217,18 @@ class StateDetails extends Component {
                 style={{ alignContent: "center", animationDelay: "0.6s" }}
               >
                 <div className="row" style={{ marginBottom: -5 }}>
-                  <div className="col" style={{ textAlign: "left" }}>
-                    <h6
-                      style={{ fontSize: 9, marginLeft: 5, color: "#3e4da3" }}
-                    >
+                  <div className="col-7" style={{ textAlign: "left" }}>
+                    <h6 style={{ fontSize: 10, color: "#3e4da3" }}>
                       Total samples tested:{" "}
-                      {lastTotalTestedData[0] === undefined
+                      {expansionPanelData[0] === undefined
                         ? "0"
-                        : commaSeperated(lastTotalTestedData[0].totaltested)}
+                        : commaSeperated(expansionPanelData[0].totaltested)}
                     </h6>
                   </div>
-                  <div className="col" style={{ textAlign: "right" }}>
-                    <h6
-                      style={{ fontSize: 9, marginRight: 5, color: "#3e4da3" }}
-                    >
-                      {lastTotalTestedData[0] !== undefined
-                        ? `as of ${lastTotalTestedData[0].date}`
+                  <div className="col-5" style={{ textAlign: "right" }}>
+                    <h6 style={{ fontSize: 9, color: "#3e4da3" }}>
+                      {expansionPanelData[0] !== undefined
+                        ? `as of ${expansionPanelData[0].date}`
                         : ""}
                     </h6>
                   </div>
@@ -2059,7 +2092,12 @@ class StateDetails extends Component {
               </div>
 
               <div className="col-sm">
-                <div className="row">
+                <div
+                  className="row"
+                  style={{
+                    marginBottom: "0px",
+                  }}
+                >
                   <div
                     className="col fadeInUp"
                     style={{
@@ -2074,23 +2112,13 @@ class StateDetails extends Component {
                         color: "#ff446a",
                         wordBreak: "keep-all",
                         wordWrap: "normal",
+                        fontSize: "1.2rem",
                       }}
                     >
-                      SPREAD TRENDS{" "}
-                      <h6>
-                        <span
-                          className="text-secondary"
-                          style={{
-                            fontSize: 10,
-                            background: "#ece7e7",
-                            borderRadius: "3px",
-                          }}
-                        >
-                          {!toggleSwitch ? `CUMULATIVE` : `EVERYDAY`}
-                        </span>
-                      </h6>
+                      SPREAD TRENDS
                     </h6>
                   </div>
+
                   <div
                     className="col fadeInUp"
                     style={{ animationDelay: "1.3s", alignItems: "right" }}
@@ -2098,7 +2126,7 @@ class StateDetails extends Component {
                     <div
                       className="home-toggle float-right"
                       style={{
-                        marginTop: "10px",
+                        marginTop: "5px",
                       }}
                     >
                       <Switch
@@ -2117,25 +2145,111 @@ class StateDetails extends Component {
                       ></Switch>
                     </div>
                   </div>
+                  <div className="w-100"></div>
+                  <div
+                    className="col fadeInUp"
+                    style={{ animationDelay: "1.4s" }}
+                  >
+                    <h6 style={{ color: "rgb(226, 42, 79)" }}>
+                      {
+                        stateFullName[
+                          this.props.match.params.stateid.toUpperCase()
+                        ]
+                      }
+                    </h6>
+                  </div>
+                  <div
+                    className="col fadeInUp"
+                    style={{ animationDelay: "1.4s" }}
+                  >
+                    <h6 style={{ textAlign: "right" }}>
+                      <span
+                        className="text-secondary"
+                        style={{
+                          fontSize: 10,
+                          background: "#ece7e7",
+                          borderRadius: "3px",
+                        }}
+                      >
+                        {!toggleSwitch ? `CUMULATIVE` : `EVERYDAY`}
+                      </span>
+                    </h6>
+                  </div>
+                </div>
+
+                <div className="w-100"></div>
+                <div className="row">
+                  <div
+                    className="col fadeInUp"
+                    style={{ animationDelay: "1.5s" }}
+                  >
+                    <h6
+                      className="timelineButton"
+                      onClick={() =>
+                        this.setState({
+                          beginning: true,
+                          twoWeeks: false,
+                          oneMonth: false,
+                        })
+                      }
+                    >
+                      &nbsp;Beginning{" "}
+                      {beginning && (
+                        <Icon.CheckCircle size={10} strokeWidth={3} />
+                      )}
+                    </h6>
+                  </div>
+
+                  <div
+                    className="col fadeInUp"
+                    style={{ animationDelay: "1.6s" }}
+                  >
+                    <h6
+                      className="timelineButton"
+                      onClick={() =>
+                        this.setState({
+                          beginning: false,
+                          twoWeeks: false,
+                          oneMonth: true,
+                        })
+                      }
+                    >
+                      &nbsp;1 Month{" "}
+                      {oneMonth && (
+                        <Icon.CheckCircle size={10} strokeWidth={3} />
+                      )}
+                    </h6>
+                  </div>
+
+                  <div
+                    className="col fadeInUp"
+                    style={{ animationDelay: "1.7s" }}
+                  >
+                    <h6
+                      className="timelineButton"
+                      onClick={() =>
+                        this.setState({
+                          beginning: false,
+                          twoWeeks: true,
+                          oneMonth: false,
+                        })
+                      }
+                    >
+                      &nbsp;15 Days{" "}
+                      {twoWeeks && (
+                        <Icon.CheckCircle size={10} strokeWidth={3} />
+                      )}
+                    </h6>
+                  </div>
                 </div>
 
                 <div className="w-100"></div>
                 <div
                   className="row fadeInUp"
-                  style={{ animationDelay: "1.3s", marginTop: "-8px" }}
+                  style={{ animationDelay: "1.8s", marginTop: "-25px" }}
                 >
                   {!toggleSwitch && (
                     <React.Fragment>
-                      <div className="col">
-                        <h6 style={{ color: "rgb(226, 42, 79)" }}>
-                          {
-                            stateFullName[
-                              this.props.match.params.stateid.toUpperCase()
-                            ]
-                          }
-                        </h6>
-                      </div>
-                      <div className="w-100"></div>
                       <StateLinePlot
                         stateName={
                           stateFullName[
@@ -2146,13 +2260,25 @@ class StateDetails extends Component {
                         titleClass="text-info"
                         type="confirmed"
                         date={date}
-                        total={lineTotalConfirmedData}
+                        total={lineTotalConfirmedData.slice(
+                          timelineLength,
+                          lineTotalConfirmedData.length
+                        )}
                         daily={dailyConfirmed[0]}
                         stroke="#0992c0"
                         lineStroke="#35aad1"
                         color1="#6ebed6"
                         color2="#55b2ce"
-                        divideBy={100}
+                        divideBy={
+                          Math.max.apply(
+                            Math,
+                            lineTotalConfirmedData.map(function (item) {
+                              return Number(item.stateid);
+                            })
+                          ) >= 100
+                            ? 100
+                            : 10
+                        }
                       />
                       <div className="w-100"></div>
                       <StateLinePlot
@@ -2165,7 +2291,10 @@ class StateDetails extends Component {
                         titleClass="text-danger"
                         type="active"
                         date={date}
-                        total={lineTotalActiveData}
+                        total={lineTotalActiveData.slice(
+                          timelineLength,
+                          lineTotalActiveData.length
+                        )}
                         daily={
                           dailyConfirmed[0] -
                           dailyRecovered[0] -
@@ -2175,7 +2304,16 @@ class StateDetails extends Component {
                         lineStroke="#ec7d93"
                         color1="#f16783"
                         color2="#ff446a"
-                        divideBy={100}
+                        divideBy={
+                          Math.max.apply(
+                            Math,
+                            lineTotalConfirmedData.map(function (item) {
+                              return Number(item.stateid);
+                            })
+                          ) >= 100
+                            ? 100
+                            : 10
+                        }
                       />
                       <div className="w-100"></div>
                       <StateLinePlot
@@ -2188,13 +2326,25 @@ class StateDetails extends Component {
                         titleClass="text-success"
                         type="recovered"
                         date={date}
-                        total={lineTotalRecoveredData}
+                        total={lineTotalRecoveredData.slice(
+                          timelineLength,
+                          lineTotalRecoveredData.length
+                        )}
                         daily={dailyRecovered[0]}
                         stroke="#469246"
                         lineStroke="#78b978"
                         color1="#5cb85c"
                         color2="#5cb85c"
-                        divideBy={10}
+                        divideBy={
+                          Math.max.apply(
+                            Math,
+                            lineTotalRecoveredData.map(function (item) {
+                              return Number(item.stateid);
+                            })
+                          ) >= 100
+                            ? 100
+                            : 10
+                        }
                       />
                       <div className="w-100"></div>
                       <StateLinePlot
@@ -2207,13 +2357,25 @@ class StateDetails extends Component {
                         titleClass="text-secondary"
                         type="deceased"
                         date={date}
-                        total={lineTotalDeceasedData}
+                        total={lineTotalDeceasedData.slice(
+                          timelineLength,
+                          lineTotalDeceasedData.length
+                        )}
                         daily={dailyDeceased[0]}
                         stroke="#2e2d2d"
                         lineStroke="#666565"
                         color1="#808080"
                         color2="#5e5a5a"
-                        divideBy={10}
+                        divideBy={
+                          Math.max.apply(
+                            Math,
+                            lineTotalDeceasedData.map(function (item) {
+                              return Number(item.stateid);
+                            })
+                          ) >= 10
+                            ? 100
+                            : 10
+                        }
                       />
                       <div className="w-100"></div>
                       <div className="w-100"></div>
@@ -2234,12 +2396,12 @@ class StateDetails extends Component {
                               marginBottom: "-80px",
                               textAlign: "left",
                               marginLeft: 10,
-                              fontSize: 16,
+                              fontSize: "0.8rem",
                               color: "#3e4da3",
                             }}
                           >
                             TESTED
-                            <h6 style={{ fontSize: "12px", color: "#3f51b5" }}>
+                            <h6 style={{ fontSize: "10px", color: "#3f51b5" }}>
                               {
                                 dateFormattedTestData[
                                   dateFormattedTestData.length - 1
@@ -2255,20 +2417,24 @@ class StateDetails extends Component {
                                 <span style={{ fontSize: 9 }}>
                                   {dateFormattedTestData[
                                     dateFormattedTestData.length - 1
-                                  ].totaltested &&
-                                  dateFormattedTestData[
-                                    dateFormattedTestData.length - 2
-                                  ].totaltested
-                                    ? "+" +
-                                      commaSeperated(
-                                        dateFormattedTestData[
-                                          dateFormattedTestData.length - 1
-                                        ].totaltested -
+                                  ].totaltested !== "-"
+                                    ? dateFormattedTestData[
+                                        dateFormattedTestData.length - 1
+                                      ].totaltested &&
+                                      dateFormattedTestData[
+                                        dateFormattedTestData.length - 2
+                                      ].totaltested
+                                      ? "+" +
+                                        commaSeperated(
                                           dateFormattedTestData[
-                                            dateFormattedTestData.length - 2
-                                          ].totaltested
-                                      )
-                                    : ""}
+                                            dateFormattedTestData.length - 1
+                                          ].totaltested -
+                                            dateFormattedTestData[
+                                              dateFormattedTestData.length - 2
+                                            ].totaltested
+                                        )
+                                      : ""
+                                    : "-"}
                                 </span>
                               </h5>
                             </h6>
@@ -2276,12 +2442,15 @@ class StateDetails extends Component {
                           <ResponsiveContainer
                             width="100%"
                             height="100%"
-                            aspect={2.6}
+                            aspect={2.4}
                           >
                             <LineChart
-                              data={dateFormattedTestData}
+                              data={dateFormattedTestData.slice(
+                                timelineLength,
+                                dateFormattedTestData.length
+                              )}
                               margin={{
-                                top: 35,
+                                top: 40,
                                 right: -30,
                                 left: 10,
                                 bottom: -12,
@@ -2321,7 +2490,7 @@ class StateDetails extends Component {
                                   lineHeight: 0.8,
                                 }}
                                 cursor={false}
-                                position={{ x: 120, y: 16 }}
+                                position={{ x: 120, y: 22 }}
                               />
                               <Line
                                 type="monotone"
@@ -2352,16 +2521,6 @@ class StateDetails extends Component {
                   )}
                   {toggleSwitch && (
                     <React.Fragment>
-                      <div className="col">
-                        <h6 style={{ color: "rgb(226, 42, 79)" }}>
-                          {
-                            stateFullName[
-                              this.props.match.params.stateid.toUpperCase()
-                            ]
-                          }
-                        </h6>
-                      </div>
-                      <div className="w-100"></div>
                       <StateBarPlot
                         stateName={
                           stateFullName[
@@ -2371,12 +2530,24 @@ class StateDetails extends Component {
                         type="confirmed"
                         bgColor="#e4f3fa"
                         titleClass="text-info"
-                        data={barDailyConfirmedData}
+                        data={barDailyConfirmedData.slice(
+                          timelineLength,
+                          barDailyConfirmedData.length
+                        )}
                         date={date}
                         daily={dailyConfirmed[0]}
                         dailyDelta={dailyDeltaConfirmed[0]}
                         sparkline={sparklineTotalConfirmedData}
-                        divideBy={100}
+                        divideBy={
+                          Math.max.apply(
+                            Math,
+                            barDailyConfirmedData.map(function (item) {
+                              return Number(item.stateid);
+                            })
+                          ) >= 100
+                            ? 100
+                            : 10
+                        }
                         stroke="#0992c0"
                         color1="#6ebed6"
                         color2="#55b2ce"
@@ -2391,7 +2562,10 @@ class StateDetails extends Component {
                         type="active"
                         bgColor="#f5d2d2"
                         titleClass="text-danger"
-                        data={barDailyActiveData}
+                        data={barDailyActiveData.slice(
+                          timelineLength,
+                          barDailyActiveData.length
+                        )}
                         date={date}
                         daily={
                           dailyConfirmed[0] -
@@ -2404,7 +2578,16 @@ class StateDetails extends Component {
                           dailyDeltaDeceased[0]
                         }
                         sparkline={sparklineDailyActiveData}
-                        divideBy={100}
+                        divideBy={
+                          Math.max.apply(
+                            Math,
+                            barDailyConfirmedData.map(function (item) {
+                              return Number(item.stateid);
+                            })
+                          ) >= 100
+                            ? 100
+                            : 10
+                        }
                         stroke="#f16783"
                         color1="#f16783"
                         color2="#ff446a"
@@ -2419,12 +2602,24 @@ class StateDetails extends Component {
                         type="recovered"
                         bgColor="#d5e9d5"
                         titleClass="text-success"
-                        data={barDailyRecoveredData}
+                        data={barDailyRecoveredData.slice(
+                          timelineLength,
+                          barDailyRecoveredData.length
+                        )}
                         date={date}
                         daily={dailyRecovered[0]}
                         dailyDelta={dailyDeltaRecovered[0]}
                         sparkline={sparklineDailyRecoveredData}
-                        divideBy={50}
+                        divideBy={
+                          Math.max.apply(
+                            Math,
+                            barDailyRecoveredData.map(function (item) {
+                              return Number(item.stateid);
+                            })
+                          ) >= 50
+                            ? 50
+                            : 10
+                        }
                         stroke="#58bd58"
                         color1="#7ed87e"
                         color2="#5cb85c"
@@ -2439,12 +2634,24 @@ class StateDetails extends Component {
                         type="deceased"
                         bgColor="#f3f3f3"
                         titleClass="text-secondary"
-                        data={barDailyDeceasedData}
+                        data={barDailyDeceasedData.slice(
+                          timelineLength,
+                          barDailyDeceasedData.length
+                        )}
                         date={date}
                         daily={dailyDeceased[0]}
                         dailyDelta={dailyDeltaDeceased[0]}
                         sparkline={sparklineDailyDeceasedData}
-                        divideBy={10}
+                        divideBy={
+                          Math.max.apply(
+                            Math,
+                            barDailyDeceasedData.map(function (item) {
+                              return Number(item.stateid);
+                            })
+                          ) >= 50
+                            ? 50
+                            : 5
+                        }
                         stroke="#474646"
                         color1="#808080"
                         color2="#5e5a5a"
@@ -2463,16 +2670,22 @@ class StateDetails extends Component {
                         >
                           <h5
                             style={{
-                              paddingTop: "8px",
+                              paddingTop: "10px",
                               marginBottom: "-80px",
                               textAlign: "left",
                               marginLeft: 10,
                               color: "#3e4da3",
-                              fontSize: 16,
+                              fontSize: "0.8rem",
                             }}
                           >
                             TESTED
-                            <h6 style={{ fontSize: "12px", color: "#3f51b5" }}>
+                            <h6
+                              style={{
+                                fontSize: "10px",
+                                color: "#3f51b5",
+                                textTransform: "capitalize",
+                              }}
+                            >
                               {
                                 dailyFormattedTestData[
                                   dailyFormattedTestData.length - 1
@@ -2529,12 +2742,15 @@ class StateDetails extends Component {
                           <ResponsiveContainer
                             width="100%"
                             height="100%"
-                            aspect={2.6}
+                            aspect={2.4}
                           >
                             <BarChart
-                              data={dailyFormattedTestData}
+                              data={dailyFormattedTestData.slice(
+                                timelineLength,
+                                dailyFormattedTestData.length
+                              )}
                               margin={{
-                                top: 35,
+                                top: 40,
                                 right: -30,
                                 left: 10,
                                 bottom: -12,
@@ -2591,7 +2807,7 @@ class StateDetails extends Component {
                                   lineHeight: 0.8,
                                 }}
                                 cursor={{ fill: "transparent" }}
-                                position={{ x: 120, y: 16 }}
+                                position={{ x: 120, y: 22 }}
                               />
                               <Bar
                                 dataKey="dailytested"

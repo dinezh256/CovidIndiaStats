@@ -50,16 +50,22 @@ const StateBarPlot = ({
         <h5
           className={titleClass}
           style={{
-            paddingTop: "8px",
+            paddingTop: "10px",
             marginBottom: "-80px",
             textAlign: "left",
             marginLeft: 10,
-            fontSize: 16,
+            fontSize: "0.8rem",
             textTransform: "uppercase",
           }}
         >
           {type}
-          <h6 style={{ fontSize: "12px", color: `${color1}` }}>
+          <h6
+            style={{
+              fontSize: "10px",
+              color: `${color1}`,
+              textTransform: "capitalize",
+            }}
+          >
             {date[date.length - 1]}
             <h6 style={{ fontSize: "8px" }}>
               <h5 style={{ fontSize: 14, color: `${color2}` }}>
@@ -74,11 +80,11 @@ const StateBarPlot = ({
           </h6>
         </h5>
 
-        <ResponsiveContainer width="100%" height="100%" aspect={2.6}>
+        <ResponsiveContainer width="100%" height="100%" aspect={2.4}>
           <BarChart
             data={data}
             margin={{
-              top: 35,
+              top: 40,
               right: -30,
               left: 10,
               bottom: -12,
@@ -117,7 +123,7 @@ const StateBarPlot = ({
               }}
               active={true}
               cursor={{ fill: "transparent" }}
-              position={{ x: 120, y: 16 }}
+              position={{ x: 120, y: 22 }}
             />
             <Bar
               dataKey="stateid"

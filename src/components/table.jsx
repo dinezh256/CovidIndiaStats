@@ -983,7 +983,7 @@ class Table extends Component {
                         style={{ textAlign: "right" }}
                       >
                         <span className="arrowup text-info">
-                          {item.deltaconfirmed !== "0" && (
+                          {item.deltaconfirmed > "0" && (
                             <Icon.ArrowUp
                               color="#42b3f4"
                               size={9}
@@ -991,9 +991,9 @@ class Table extends Component {
                             />
                           )}
 
-                          {item.deltaconfirmed === "0"
-                            ? ""
-                            : commaSeperated(item.deltaconfirmed)}
+                          {item.deltaconfirmed > "0"
+                            ? commaSeperated(item.deltaconfirmed)
+                            : ""}
                         </span>
                         &nbsp;
                         {commaSeperated(item.confirmed)}
@@ -1011,7 +1011,7 @@ class Table extends Component {
                         style={{ textAlign: "right" }}
                       >
                         <span className="arrowup" style={{ color: "#28a745" }}>
-                          {item.deltarecovered !== "0" && (
+                          {item.deltarecovered > "0" && (
                             <Icon.ArrowUp
                               color="#28a745"
                               size={9}
@@ -1019,9 +1019,9 @@ class Table extends Component {
                             />
                           )}
 
-                          {item.deltarecovered === "0"
-                            ? ""
-                            : commaSeperated(item.deltarecovered)}
+                          {item.deltarecovered > "0"
+                            ? commaSeperated(item.deltarecovered)
+                            : ""}
                         </span>
                         &nbsp;
                         {item.recovered === "0"
@@ -1033,7 +1033,7 @@ class Table extends Component {
                         style={{ textAlign: "right" }}
                       >
                         <span className="arrowup" style={{ color: "#6c757d" }}>
-                          {item.deltadeaths !== "0" && (
+                          {item.deltadeaths > "0" && (
                             <Icon.ArrowUp
                               color="#6c757d"
                               size={9}
@@ -1041,9 +1041,9 @@ class Table extends Component {
                             />
                           )}
 
-                          {item.deltadeaths === "0"
-                            ? ""
-                            : commaSeperated(item.deltadeaths)}
+                          {item.deltadeaths > "0"
+                            ? commaSeperated(item.deltadeaths)
+                            : ""}
                         </span>
                         &nbsp;
                         {item.deaths === "0"
@@ -1264,7 +1264,7 @@ class Table extends Component {
                         style={{ textAlign: "right" }}
                       >
                         <span className="arrowup text-info">
-                          {item.deltaconfirmed !== "0" && (
+                          {item.deltaconfirmed > "0" && (
                             <Icon.ArrowUp
                               color="#42b3f4"
                               size={9}
@@ -1272,9 +1272,9 @@ class Table extends Component {
                             />
                           )}
 
-                          {item.deltaconfirmed === "0"
-                            ? ""
-                            : commaSeperated(item.deltaconfirmed)}
+                          {item.deltaconfirmed > "0"
+                            ? commaSeperated(item.deltaconfirmed)
+                            : ""}
                         </span>
                         &nbsp;{commaSeperated(item.confirmed)}
                       </td>
@@ -1291,7 +1291,7 @@ class Table extends Component {
                         style={{ textAlign: "right" }}
                       >
                         <span className="arrowup" style={{ color: "#28a745" }}>
-                          {item.deltarecovered !== "0" && (
+                          {item.deltarecovered > "0" && (
                             <Icon.ArrowUp
                               color="#28a745"
                               size={9}
@@ -1299,9 +1299,9 @@ class Table extends Component {
                             />
                           )}
 
-                          {item.deltarecovered === "0"
-                            ? ""
-                            : commaSeperated(item.deltarecovered)}
+                          {item.deltarecovered > "0"
+                            ? commaSeperated(item.deltarecovered)
+                            : ""}
                         </span>
                         &nbsp;
                         {item.recovered === "0"
@@ -1313,7 +1313,7 @@ class Table extends Component {
                         style={{ textAlign: "right" }}
                       >
                         <span className="arrowup" style={{ color: "#6c757d" }}>
-                          {item.deltadeaths !== "0" && (
+                          {item.deltadeaths > "0" && (
                             <Icon.ArrowUp
                               color="#6c757d"
                               size={9}
@@ -1321,9 +1321,9 @@ class Table extends Component {
                             />
                           )}
 
-                          {item.deltadeaths === "0"
-                            ? ""
-                            : commaSeperated(item.deltadeaths)}
+                          {item.deltadeaths > "0"
+                            ? commaSeperated(item.deltadeaths)
+                            : ""}
                         </span>
                         &nbsp;
                         {item.deaths === "0"

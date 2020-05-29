@@ -53,14 +53,14 @@ const StateLinePlot = ({
             marginBottom: "-80px",
             textAlign: "left",
             marginLeft: 10,
-            fontSize: "0.9rem",
+            fontSize: "0.8rem",
             textTransform: "uppercase",
           }}
         >
           {type}
           <h6
             style={{
-              fontSize: "12px",
+              fontSize: "10px",
               color: `${color1}`,
               textTransform: "capitalize",
             }}
@@ -79,11 +79,11 @@ const StateLinePlot = ({
             </h5>
           </h6>
         </h5>
-        <ResponsiveContainer width="100%" height="100%" aspect={2.6}>
+        <ResponsiveContainer width="100%" height="100%" aspect={2.4}>
           <LineChart
             data={total}
             margin={{
-              top: 35,
+              top: 40,
               right: -30,
               left: 10,
               bottom: -12,
@@ -128,7 +128,7 @@ const StateLinePlot = ({
                 lineHeight: 0.8,
               }}
               cursor={false}
-              position={{ x: 120, y: 18 }}
+              position={{ x: 120, y: 22 }}
             />
             <Line
               type="monotone"
