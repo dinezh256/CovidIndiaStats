@@ -75,7 +75,11 @@ const StateLinePlot = ({
               }}
             >
               {commaSeperated(total[total.length - 1].stateid)}{" "}
-              <span style={{ fontSize: 9 }}>+{commaSeperated(daily)}</span>
+              <span style={{ fontSize: 9 }}>
+                {daily >= 0
+                  ? "+" + commaSeperated(daily)
+                  : commaSeperated(daily)}
+              </span>
             </h5>
           </h6>
         </h5>

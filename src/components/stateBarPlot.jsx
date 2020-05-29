@@ -71,7 +71,7 @@ const StateBarPlot = ({
               <h5 style={{ fontSize: 14, color: `${color2}` }}>
                 {commaSeperated(daily)}{" "}
                 <span style={{ fontSize: 9 }}>
-                  {dailyDelta[0] >= 0
+                  {Number(dailyDelta) >= 0
                     ? `+${commaSeperated(Math.abs(dailyDelta))}`
                     : `-${commaSeperated(Math.abs(dailyDelta))}`}
                 </span>
