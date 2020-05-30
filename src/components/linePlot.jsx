@@ -76,7 +76,9 @@ const LinePlot = ({
             >
               {commaSeperated(total.slice(-1)[0])}{" "}
               <span style={{ fontSize: 8 }}>
-                +{commaSeperated(daily.slice(-1)[0])}
+                {daily.slice(-1)[0] > 0
+                  ? "+" + commaSeperated(daily.slice(-1)[0])
+                  : commaSeperated(daily.slice(-1)[0])}
               </span>
             </h6>
           </h6>
