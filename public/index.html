@@ -61,6 +61,14 @@
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="/logo32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/logo16x16.png" />
+    <link
+      rel="preload"
+      importance="low"
+      href="/fonts/NotoSans-Bold.ttf"
+      as="font"
+      type="font/ttf"
+      crossorigin="anonymous"
+    />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
@@ -133,4 +141,19 @@
       src="/__/firebase/7.14.2/firebase-firestore.js"
     ></script>
   </body>
+  <script
+    async
+    src="https://www.googletagmanager.com/gtag/js?id=UA-163288419-1"
+  ></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+    gtag("config", "UA-163288419-1", {
+      site_speed_sample_rate: 1,
+      sample_rate: 1,
+    });
+  </script>
 </html>
