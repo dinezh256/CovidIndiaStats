@@ -60,11 +60,6 @@ class StateDetails extends Component {
       toggleDeceased: false,
       viewTable: false,
       back: true,
-      sortConfirmed: true,
-      sortActive: false,
-      sortRecovered: false,
-      sortDeceased: false,
-      sortOrder: true,
       beginning: true,
       twoWeeks: false,
       oneMonth: false,
@@ -76,11 +71,6 @@ class StateDetails extends Component {
     this.onClickDeceased = this.onClickDeceased.bind(this);
     this.onViewTable = this.onViewTable.bind(this);
     this.onBack = this.onBack.bind(this);
-    this.onSortConfirmed = this.onSortConfirmed.bind(this);
-    this.onSortActive = this.onSortActive.bind(this);
-    this.onSortRecovered = this.onSortRecovered.bind(this);
-    this.onSortDeceased = this.onSortDeceased.bind(this);
-    this.handleSortOrder = this.handleSortOrder.bind(this);
     this.handleBeginning = this.handleBeginning.bind(this);
     this.handleTwoWeeks = this.handleTwoWeeks.bind(this);
     this.handleOneMonth = this.handleOneMonth.bind(this);
@@ -109,26 +99,6 @@ class StateDetails extends Component {
 
   onBack({ back }) {
     this.setState({ back });
-  }
-
-  onSortConfirmed({ sortConfirmed }) {
-    this.setState({ sortConfirmed });
-  }
-
-  onSortActive({ sortActive }) {
-    this.setState({ sortActive });
-  }
-
-  onSortRecovered({ sortRecovered }) {
-    this.setState({ sortRecovered });
-  }
-
-  onSortDeceased({ sortDeceased }) {
-    this.setState({ sortDeceased });
-  }
-
-  handleSortOrder({ sortOrder }) {
-    this.setState({ sortOrder });
   }
 
   handleBeginning({ beginning }) {
@@ -301,11 +271,6 @@ class StateDetails extends Component {
       toggleSwitch,
       viewTable,
       back,
-      sortConfirmed,
-      sortActive,
-      sortRecovered,
-      sortDeceased,
-      sortOrder,
       beginning,
       twoWeeks,
       oneMonth,
@@ -428,49 +393,6 @@ class StateDetails extends Component {
           ]
         )
       );
-    }
-
-    if (requiredData) {
-      if (
-        sortConfirmed &&
-        stateID.includes(this.props.match.params.stateid.toUpperCase())
-      ) {
-        requiredData[0].sort(function (x, y) {
-          return sortOrder
-            ? Number(y.confirmed) - Number(x.confirmed)
-            : Number(x.confirmed) - Number(y.confirmed);
-        });
-      }
-      if (
-        sortActive &&
-        stateID.includes(this.props.match.params.stateid.toUpperCase())
-      ) {
-        requiredData[0].sort(function (x, y) {
-          return !sortOrder
-            ? Number(y.active) - Number(x.active)
-            : Number(x.active) - Number(y.active);
-        });
-      }
-      if (
-        sortRecovered &&
-        stateID.includes(this.props.match.params.stateid.toUpperCase())
-      ) {
-        requiredData[0].sort(function (x, y) {
-          return !sortOrder
-            ? Number(y.recovered) - Number(x.recovered)
-            : Number(x.recovered) - Number(y.recovered);
-        });
-      }
-      if (
-        sortDeceased &&
-        stateID.includes(this.props.match.params.stateid.toUpperCase())
-      ) {
-        requiredData[0].sort(function (x, y) {
-          return !sortOrder
-            ? Number(y.deceased) - Number(x.deceased)
-            : Number(x.deceased) - Number(y.deceased);
-        });
-      }
     }
 
     for (let i = 0; i < statesDailyData.length; i++) {
@@ -1064,19 +986,6 @@ class StateDetails extends Component {
         }
       }
     }
-
-    const lastTotalTestedData = [];
-    for (let i = dateFormattedTestData.length - 1; i >= 0; i--)
-      if (
-        Number(dateFormattedTestData[i].totaltested) !== 0 &&
-        dateFormattedTestData[i].totaltested !== undefined
-      ) {
-        lastTotalTestedData.push({
-          totaltested: dateFormattedTestData[i].totaltested,
-          date: dateFormattedTestData[i].date,
-        });
-        break;
-      }
 
     const useStylesBootstrap = makeStyles((theme: Theme) => ({
       arrow: {
@@ -1748,15 +1657,6 @@ class StateDetails extends Component {
                                 className="th sticky-top text-info smallRow"
                                 style={{ textAlign: "center" }}
                                 id="line1"
-                                onClick={() =>
-                                  this.setState({
-                                    sortConfirmed: true,
-                                    sortActive: false,
-                                    sortRecovered: false,
-                                    sortDeceased: false,
-                                    sortOrder: !sortOrder,
-                                  })
-                                }
                               >
                                 CNFRMD
                               </th>
@@ -1764,15 +1664,6 @@ class StateDetails extends Component {
                                 className="th sticky-top text-info"
                                 style={{ textAlign: "center" }}
                                 id="line2"
-                                onClick={() =>
-                                  this.setState({
-                                    sortConfirmed: true,
-                                    sortActive: false,
-                                    sortRecovered: false,
-                                    sortDeceased: false,
-                                    sortOrder: !sortOrder,
-                                  })
-                                }
                               >
                                 CONFIRMED
                               </th>
@@ -1783,15 +1674,6 @@ class StateDetails extends Component {
                                   textAlign: "center",
                                 }}
                                 id="line1"
-                                onClick={() =>
-                                  this.setState({
-                                    sortConfirmed: false,
-                                    sortActive: true,
-                                    sortRecovered: false,
-                                    sortDeceased: false,
-                                    sortOrder: !sortOrder,
-                                  })
-                                }
                               >
                                 ACTIVE
                               </th>
@@ -1802,15 +1684,6 @@ class StateDetails extends Component {
                                   textAlign: "center",
                                 }}
                                 id="line2"
-                                onClick={() =>
-                                  this.setState({
-                                    sortConfirmed: false,
-                                    sortActive: true,
-                                    sortRecovered: false,
-                                    sortDeceased: false,
-                                    sortOrder: !sortOrder,
-                                  })
-                                }
                               >
                                 ACTIVE
                               </th>
@@ -1818,15 +1691,6 @@ class StateDetails extends Component {
                                 className="th sticky-top text-success smallRow"
                                 style={{ textAlign: "center" }}
                                 id="line1"
-                                onClick={() =>
-                                  this.setState({
-                                    sortConfirmed: false,
-                                    sortActive: false,
-                                    sortRecovered: true,
-                                    sortDeceased: false,
-                                    sortOrder: !sortOrder,
-                                  })
-                                }
                               >
                                 RCVRD
                               </th>
@@ -1834,15 +1698,6 @@ class StateDetails extends Component {
                                 className="th sticky-top text-success"
                                 style={{ textAlign: "center" }}
                                 id="line2"
-                                onClick={() =>
-                                  this.setState({
-                                    sortConfirmed: false,
-                                    sortActive: false,
-                                    sortRecovered: true,
-                                    sortDeceased: false,
-                                    sortOrder: !sortOrder,
-                                  })
-                                }
                               >
                                 RECOVERED
                               </th>
@@ -1850,15 +1705,6 @@ class StateDetails extends Component {
                                 className="th sticky-top text-secondary smallRow"
                                 id="line1"
                                 style={{ textAlign: "center" }}
-                                onClick={() =>
-                                  this.setState({
-                                    sortConfirmed: false,
-                                    sortActive: false,
-                                    sortRecovered: false,
-                                    sortDeceased: true,
-                                    sortOrder: !sortOrder,
-                                  })
-                                }
                               >
                                 DEATHS
                               </th>
@@ -1866,15 +1712,6 @@ class StateDetails extends Component {
                                 className="th sticky-top text-secondary"
                                 id="line2"
                                 style={{ textAlign: "center", width: "70px" }}
-                                onClick={() =>
-                                  this.setState({
-                                    sortConfirmed: false,
-                                    sortActive: false,
-                                    sortRecovered: false,
-                                    sortDeceased: true,
-                                    sortOrder: !sortOrder,
-                                  })
-                                }
                               >
                                 DECEASED
                               </th>
