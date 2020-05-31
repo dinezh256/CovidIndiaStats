@@ -224,6 +224,44 @@ class Table extends Component {
       .slice(data.length - 20, data.length)
       .map((item) => sparklinedeceased.push(Number(item.dailydeceased)));
 
+    const min = Math.min(
+      ...sparklineconfirmed.slice(
+        sparklineconfirmed.length - 20,
+        sparklineconfirmed.length
+      ),
+      ...sparklineactive.slice(
+        sparklineactive.length - 20,
+        sparklineactive.length
+      ),
+      ...sparklinerecovered.slice(
+        sparklinerecovered.length - 20,
+        sparklinerecovered.length
+      ),
+      ...sparklinedeceased.slice(
+        sparklinedeceased.length - 20,
+        sparklinedeceased.length
+      )
+    );
+
+    const max = Math.max(
+      ...sparklineconfirmed.slice(
+        sparklineconfirmed.length - 20,
+        sparklineconfirmed.length
+      ),
+      ...sparklineactive.slice(
+        sparklineactive.length - 20,
+        sparklineactive.length
+      ),
+      ...sparklinerecovered.slice(
+        sparklinerecovered.length - 20,
+        sparklinerecovered.length
+      ),
+      ...sparklinedeceased.slice(
+        sparklinedeceased.length - 20,
+        sparklinedeceased.length
+      )
+    );
+
     if (isLoaded) {
       return (
         <React.Fragment>
@@ -296,10 +334,7 @@ class Table extends Component {
                         aspect={2.15}
                       >
                         <LineChart data={sparklinedata} syncId="line1">
-                          <YAxis
-                            domain={[0, Math.max(...sparklineconfirmed)]}
-                            hide={true}
-                          />
+                          <YAxis domain={[min, max]} hide={true} />
                           <Retooltip
                             content={<CustomTooltip />}
                             contentStyle={{
@@ -358,10 +393,7 @@ class Table extends Component {
                         aspect={2.15}
                       >
                         <LineChart data={sparklinedata} syncId="line1">
-                          <YAxis
-                            domain={[0, Math.max(...sparklineconfirmed)]}
-                            hide={true}
-                          />
+                          <YAxis domain={[min, max]} hide={true} />
                           <Retooltip
                             content={<CustomTooltip />}
                             contentStyle={{
@@ -416,10 +448,7 @@ class Table extends Component {
                         aspect={2.15}
                       >
                         <LineChart data={sparklinedata} syncId="line1">
-                          <YAxis
-                            domain={[0, Math.max(...sparklineconfirmed)]}
-                            hide={true}
-                          />
+                          <YAxis domain={[min, max]} hide={true} />
                           <Retooltip
                             content={<CustomTooltip />}
                             contentStyle={{
@@ -480,10 +509,7 @@ class Table extends Component {
                         aspect={2.15}
                       >
                         <LineChart data={sparklinedata} syncId="line1">
-                          <YAxis
-                            domain={[0, Math.max(...sparklineconfirmed)]}
-                            hide={true}
-                          />
+                          <YAxis domain={[min, max]} hide={true} />
                           <Retooltip
                             content={<CustomTooltip />}
                             contentStyle={{
@@ -590,10 +616,7 @@ class Table extends Component {
                         aspect={2.15}
                       >
                         <LineChart data={sparklinedata} syncId="line2">
-                          <YAxis
-                            domain={[0, Math.max(...sparklineconfirmed)]}
-                            hide={true}
-                          />
+                          <YAxis domain={[min, max]} hide={true} />
 
                           <Retooltip
                             content={<CustomTooltip />}
@@ -653,10 +676,7 @@ class Table extends Component {
                         aspect={2.15}
                       >
                         <LineChart data={sparklinedata} syncId="line2">
-                          <YAxis
-                            domain={[0, Math.max(...sparklineconfirmed)]}
-                            hide={true}
-                          />
+                          <YAxis domain={[min, max]} hide={true} />
                           <Retooltip
                             content={<CustomTooltip />}
                             contentStyle={{
@@ -711,10 +731,7 @@ class Table extends Component {
                         aspect={2.15}
                       >
                         <LineChart data={sparklinedata} syncId="line2">
-                          <YAxis
-                            domain={[0, Math.max(...sparklineconfirmed)]}
-                            hide={true}
-                          />
+                          <YAxis domain={[min, max]} hide={true} />
                           <Retooltip
                             content={<CustomTooltip />}
                             contentStyle={{
@@ -772,10 +789,7 @@ class Table extends Component {
                         aspect={2.15}
                       >
                         <LineChart data={sparklinedata} syncId="line2">
-                          <YAxis
-                            domain={[0, Math.max(...sparklineconfirmed)]}
-                            hide={true}
-                          />
+                          <YAxis domain={[min, max]} hide={true} />
                           <Retooltip
                             content={<CustomTooltip />}
                             contentStyle={{
@@ -822,7 +836,6 @@ class Table extends Component {
                 <Updates />
               </div>
             </div>
-
             <div className="w-100"></div>
             <div
               className="row"

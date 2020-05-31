@@ -111,56 +111,56 @@ class StateDetails extends Component {
     this.setState({ oneMonth });
   }
 
-  handleDistrictChange = async (district) => {
-    const stateFullName = {
-      AP: "Andhra Pradesh",
-      AN: "Andaman and Nicobar Islands",
-      AR: "Arunachal Pradesh",
-      AS: "Assam",
-      BR: "Bihar",
-      CH: "Chandigarh",
-      CT: "Chhattisgarh",
-      DN: "Dadra and Nagar Haveli and Daman and Diu",
-      DL: "Delhi",
-      GA: "Goa",
-      GJ: "Gujarat",
-      HP: "Himachal Pradesh",
-      HR: "Haryana",
-      JH: "Jharkhand",
-      JK: "Jammu and Kashmir",
-      KA: "Karnataka",
-      KL: "Kerala",
-      LA: "Ladakh",
-      LD: "Lakshadweep",
-      MH: "Maharashtra",
-      ML: "Meghalaya",
-      MN: "Manipur",
-      MP: "Madhya Pradesh",
-      MZ: "Mizoram",
-      NL: "Nagaland",
-      OR: "Odisha",
-      PB: "Punjab",
-      PY: "Puducherry",
-      RJ: "Rajasthan",
-      SK: "Sikkim",
-      TG: "Telangana",
-      TN: "Tamil Nadu",
-      TR: "Tripura",
-      UP: "Uttar Pradesh",
-      UT: "Uttarakhand",
-      WB: "West Bengal",
-      UN: "State Unassigned",
-    };
-    const requiredDistrictData = this.state.districtsDaily[
-      stateFullName[this.props.match.params.stateid.toUpperCase()]
-    ][district];
+  // handleDistrictChange = async (district) => {
+  //   const stateFullName = {
+  //     AP: "Andhra Pradesh",
+  //     AN: "Andaman and Nicobar Islands",
+  //     AR: "Arunachal Pradesh",
+  //     AS: "Assam",
+  //     BR: "Bihar",
+  //     CH: "Chandigarh",
+  //     CT: "Chhattisgarh",
+  //     DN: "Dadra and Nagar Haveli and Daman and Diu",
+  //     DL: "Delhi",
+  //     GA: "Goa",
+  //     GJ: "Gujarat",
+  //     HP: "Himachal Pradesh",
+  //     HR: "Haryana",
+  //     JH: "Jharkhand",
+  //     JK: "Jammu and Kashmir",
+  //     KA: "Karnataka",
+  //     KL: "Kerala",
+  //     LA: "Ladakh",
+  //     LD: "Lakshadweep",
+  //     MH: "Maharashtra",
+  //     ML: "Meghalaya",
+  //     MN: "Manipur",
+  //     MP: "Madhya Pradesh",
+  //     MZ: "Mizoram",
+  //     NL: "Nagaland",
+  //     OR: "Odisha",
+  //     PB: "Punjab",
+  //     PY: "Puducherry",
+  //     RJ: "Rajasthan",
+  //     SK: "Sikkim",
+  //     TG: "Telangana",
+  //     TN: "Tamil Nadu",
+  //     TR: "Tripura",
+  //     UP: "Uttar Pradesh",
+  //     UT: "Uttarakhand",
+  //     WB: "West Bengal",
+  //     UN: "State Unassigned",
+  //   };
+  //   const requiredDistrictData = this.state.districtsDaily[
+  //     stateFullName[this.props.match.params.stateid.toUpperCase()]
+  //   ][district];
 
-    this.setState({
-      requiredDistrictData: requiredDistrictData,
-      requiredDistrict: district,
-      districtHide: true,
-    });
-  };
+  //   this.setState({
+  //     requiredDistrictData: requiredDistrictData,
+  //     requiredDistrict: district,
+  //     districtHide: true,
+  //   });
+  // };
 
   async componentDidMount() {
     const stateID = [
@@ -218,11 +218,11 @@ class StateDetails extends Component {
     const fetchedStateTestData = await statesTestData();
     this.setState({ testData: fetchedStateTestData, testDataLoaded: true });
 
-    const fetchedDistrictsDaily = await districtsDaily();
-    this.setState({
-      districtsDaily: fetchedDistrictsDaily,
-      districtsDailyLoaded: true,
-    });
+    // const fetchedDistrictsDaily = await districtsDaily();
+    // this.setState({
+    //   districtsDaily: fetchedDistrictsDaily,
+    //   districtsDailyLoaded: true,
+    // });
 
     fetch("https://api.covid19india.org/zones.json").then((res) =>
       res.json().then((json) => {
@@ -261,8 +261,8 @@ class StateDetails extends Component {
       statesDailyDataLoaded,
       testData,
       testDataLoaded,
-      districtsDaily,
-      districtsDailyLoaded,
+      // districtsDaily,
+      // districtsDailyLoaded,
       requiredDistrictData,
       toggleConfirmed,
       toggleActive,
@@ -381,19 +381,19 @@ class StateDetails extends Component {
       }
     }
 
-    const requiredDistricts = [];
-    if (
-      districtsDailyLoaded &&
-      stateID.includes(this.props.match.params.stateid.toUpperCase())
-    ) {
-      requiredDistricts.push(
-        Object.keys(
-          districtsDaily[
-            stateFullName[this.props.match.params.stateid.toUpperCase()]
-          ]
-        )
-      );
-    }
+    // const requiredDistricts = [];
+    // if (
+    //   districtsDailyLoaded &&
+    //   stateID.includes(this.props.match.params.stateid.toUpperCase())
+    // ) {
+    //   requiredDistricts.push(
+    //     Object.keys(
+    //       districtsDaily[
+    //         stateFullName[this.props.match.params.stateid.toUpperCase()]
+    //       ]
+    //     )
+    //   );
+    // }
 
     for (let i = 0; i < statesDailyData.length; i++) {
       statesDailyData[i].newdate =
@@ -404,61 +404,38 @@ class StateDetails extends Component {
 
     console.log(stateData);
 
-    const confirmedTopDistricts = [];
+    const topDistricts = [];
     stateData.map((item) => {
       if (
         this.props.match.params.stateid.toUpperCase() === item.statecode &&
         stateID.includes(this.props.match.params.stateid.toUpperCase())
       )
-        confirmedTopDistricts.push(item.districtData);
+        topDistricts.push(item.districtData);
     });
     if (
       isLoaded &&
       toggleConfirmed &&
       stateID.includes(this.props.match.params.stateid.toUpperCase())
     ) {
-      confirmedTopDistricts[0].sort(function (x, y) {
+      topDistricts[0].sort(function (x, y) {
         return Number(y.confirmed) - Number(x.confirmed);
       });
     }
-    const activeTopDistricts = [];
-    stateData.map((item) => {
-      if (
-        this.props.match.params.stateid.toUpperCase() === item.statecode &&
-        stateID.includes(this.props.match.params.stateid.toUpperCase())
-      )
-        activeTopDistricts.push(item.districtData);
-    });
+
     if (isLoaded && toggleActive) {
-      activeTopDistricts[0].sort(function (x, y) {
+      topDistricts[0].sort(function (x, y) {
         return Number(y.active) - Number(x.active);
       });
     }
 
-    const recoveredTopDistricts = [];
-    stateData.map((item) => {
-      if (
-        this.props.match.params.stateid.toUpperCase() === item.statecode &&
-        stateID.includes(this.props.match.params.stateid.toUpperCase())
-      )
-        recoveredTopDistricts.push(item.districtData);
-    });
     if (isLoaded && toggleRecovered) {
-      recoveredTopDistricts[0].sort(function (x, y) {
+      topDistricts[0].sort(function (x, y) {
         return Number(y.recovered) - Number(x.recovered);
       });
     }
 
-    const deceasedTopDistricts = [];
-    stateData.map((item) => {
-      if (
-        this.props.match.params.stateid.toUpperCase() === item.statecode &&
-        stateID.includes(this.props.match.params.stateid.toUpperCase())
-      )
-        deceasedTopDistricts.push(item.districtData);
-    });
     if (isLoaded && toggleDeceased) {
-      deceasedTopDistricts[0].sort(function (x, y) {
+      topDistricts[0].sort(function (x, y) {
         return Number(y.deceased) - Number(x.deceased);
       });
     }
@@ -811,58 +788,43 @@ class StateDetails extends Component {
         date: barDailyRecoveredData[i].date,
       });
 
-    const maxConfirmed = Math.max(
+    const min = Math.min(
       ...sparklineTotalConfirmedData.slice(
         sparklineTotalConfirmedData.length - 20,
         sparklineTotalConfirmedData.length
-      )
-    );
-    const maxActive = Math.max(
+      ),
       ...sparklineDailyActiveData.slice(
         sparklineDailyActiveData.length - 20,
         sparklineDailyActiveData.length
-      )
-    );
-    const maxRecovered = Math.max(
+      ),
       ...sparklineDailyRecoveredData.slice(
         sparklineDailyRecoveredData.length - 20,
         sparklineDailyRecoveredData.length
-      )
-    );
-    const maxDeceased = Math.max(
+      ),
       ...sparklineDailyDeceasedData.slice(
         sparklineDailyDeceasedData.length - 20,
         sparklineDailyDeceasedData.length
       )
     );
 
-    const minConfirmed = Math.min(
+    const max = Math.max(
       ...sparklineTotalConfirmedData.slice(
         sparklineTotalConfirmedData.length - 20,
         sparklineTotalConfirmedData.length
-      )
-    );
-    const minActive = Math.min(
+      ),
       ...sparklineDailyActiveData.slice(
         sparklineDailyActiveData.length - 20,
         sparklineDailyActiveData.length
-      )
-    );
-    const minRecovered = Math.min(
+      ),
       ...sparklineDailyRecoveredData.slice(
         sparklineDailyRecoveredData.length - 20,
         sparklineDailyRecoveredData.length
-      )
-    );
-    const minDeceased = Math.min(
+      ),
       ...sparklineDailyDeceasedData.slice(
         sparklineDailyDeceasedData.length - 20,
         sparklineDailyDeceasedData.length
       )
     );
-
-    const max = Math.max(maxConfirmed, maxActive, maxRecovered, maxDeceased);
-    const min = Math.min(minConfirmed, minActive, minRecovered, minDeceased);
 
     const requiredStateTestData = [];
     testData.map((item) => {
@@ -1366,7 +1328,7 @@ class StateDetails extends Component {
                           TOP DISTRICTS
                         </h6>
                         <ul>
-                          {confirmedTopDistricts.map((item) =>
+                          {topDistricts.map((item) =>
                             item.slice(0, 5).map((district) => (
                               <li
                                 key={district.district}
@@ -1411,7 +1373,7 @@ class StateDetails extends Component {
                           TOP DISTRICTS
                         </h6>
                         <ul>
-                          {activeTopDistricts.map((item) =>
+                          {topDistricts.map((item) =>
                             item.slice(0, 5).map((district) => (
                               <li
                                 key={district.district}
@@ -1441,7 +1403,7 @@ class StateDetails extends Component {
                           TOP DISTRICTS
                         </h6>
                         <ul>
-                          {recoveredTopDistricts.map((item) =>
+                          {topDistricts.map((item) =>
                             item.slice(0, 5).map((district) => (
                               <li
                                 key={district.district}
@@ -1486,7 +1448,7 @@ class StateDetails extends Component {
                           TOP DISTRICTS
                         </h6>
                         <ul>
-                          {deceasedTopDistricts.map((item) =>
+                          {topDistricts.map((item) =>
                             item.slice(0, 5).map((district) => (
                               <li
                                 key={district.district}
@@ -2664,6 +2626,48 @@ class StateDetails extends Component {
                       </div>
                     </React.Fragment>
                   )}
+                </div>
+                <div className="row fadeInup">
+                  <div
+                    className="col-6 fadeInUp"
+                    style={{ animationDelay: "1.9s" }}
+                  >
+                    <a
+                      href="https://www.icmr.gov.in/pdf/covid/labs/COVID_Testing_Labs_30052020.pdf"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="linkTestLabsBtn"
+                    >
+                      <h6 className="testLabsBtn">
+                        <Icon.Download
+                          strokeWidth={3}
+                          size={9}
+                          style={{ verticalAlign: "-0.1rem" }}
+                        />{" "}
+                        Testing Govt. & Pvt. Labs
+                      </h6>
+                    </a>
+                  </div>
+                  <div
+                    className="col-6 fadeInUp"
+                    style={{ animationDelay: "2s" }}
+                  >
+                    <a
+                      href="https://covid.icmr.org.in/index.php/testing-facilities"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="linkTestLabsBtn"
+                    >
+                      <h6 className="testLabsBtn">
+                        <Icon.MapPin
+                          strokeWidth={3}
+                          size={9}
+                          style={{ verticalAlign: "-0.1rem" }}
+                        />{" "}
+                        Laboratory Locations
+                      </h6>
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
