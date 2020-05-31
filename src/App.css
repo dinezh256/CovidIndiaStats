@@ -318,6 +318,7 @@ span.MuiBadge-colorSecondary {
   text-align: left;
   border-radius: 3px;
   font-size: 12px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.25) !important;
   transition: box-shadow 0.3s linear; /* vendorless fallback */
   -o-transition: box-shadow 0.3s linear; /* opera */
   -ms-transition: box-shadow 0.3s linear; /* IE 10 */
@@ -326,8 +327,9 @@ span.MuiBadge-colorSecondary {
 }
 
 .timelineButton:hover {
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.25) !important;
-  animation-delay: 0.2s;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5) !important;
+  animation-delay: 0.3s;
+  cursor: pointer;
 }
 
 .custom-control {
@@ -582,10 +584,13 @@ span.MuiBadge-colorSecondary {
   margin-bottom: 0px;
   margin-top: 5px !important;
   animation: fadeIn 2s;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5) !important;
+  transition-duration: 0.5s;
 }
 
 .btnViewAll:hover {
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.25) !important;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5) !important;
+  transition-duration: 0.5s;
 }
 
 .btnBackAll {
@@ -602,10 +607,13 @@ span.MuiBadge-colorSecondary {
   margin-bottom: 30px;
   margin-top: -16px !important;
   animation: fadeIn 2s;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5) !important;
+  transition-duration: 0.5s;
 }
 
 .btnBackAll:hover {
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.25) !important;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5) !important;
+  transition-duration: 0.5s;
 }
 
 @media only screen and (max-width: 768px) {
@@ -656,6 +664,29 @@ span.MuiBadge-colorSecondary {
   font-size: 0.8rem;
   text-align: center !important;
   vertical-align: middle;
+}
+
+.testLabsBtn {
+  background-color: rgb(218, 192, 243);
+  border-radius: 3px;
+  padding: 4px 4px;
+  color: rgb(128, 42, 190);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  text-align: center;
+  box-shadow: 0 0 5px rgba(0, 0, 115, 0.5) !important;
+  cursor: pointer;
+  transition-duration: 0.5s;
+}
+
+.testLabsBtn:hover {
+  box-shadow: 0 0 8px rgba(0, 0, 115, 0.5) !important;
+  transition-duration: 0.5s;
+}
+
+.linkTestLabsBtn:hover {
+  text-decoration: none;
+  color: indigo;
 }
 
 .fadeInUp {
@@ -760,6 +791,24 @@ span.MuiBadge-colorSecondary {
   }
 }
 
+.test {
+  color: rgb(64, 145, 64);
+  color: rgb(228, 116, 138);
+  color: rgb(62, 77, 163);
+  color: rgb(18, 167, 190);
+  color: rgb(226, 42, 79);
+  color: rgb(185, 193, 201);
+  color: rgb(74, 79, 83);
+  color: rgb(255, 68, 106);
+  color: rgb(255, 153, 0);
+  color: rgb(66, 179, 244);
+  color: rgb(10, 111, 145);
+  /* fb */
+  color: rgb(59, 89, 152);
+  color: rgb(23, 162, 184);
+  color: rgb(40, 167, 69);
+  color: rgb(16, 133, 172);
+}
 
 @media only screen and (min-width: 576px) {
   #line1 {
