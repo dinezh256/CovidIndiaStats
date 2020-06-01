@@ -46,40 +46,43 @@ class WorldHomeCard extends Component {
     return (
       <React.Fragment>
         <div
-          className="fadeInUp"
+          className="fadeInUp worldHomeCard"
           style={{
             marginBottom: "-5px",
             animationDelay: "1.8s",
             boxShadow: "0 0 20px rgba(0,0,0,0.25)",
-            borderRadius: "6px",
+            borderRadius: "5px",
           }}
         >
           <div
             style={{
               background: "#e6e8f1",
-              borderTopLeftRadius: "6px",
-              borderTopRightRadius: "6px",
+              borderTopLeftRadius: "4px",
+              borderTopRightRadius: "4px",
               borderSpacing: "1px",
               textAlign: "center",
             }}
           >
-            <LanguageIcon
-              size="inherit"
-              color="primary"
-              style={{ verticalAlign: "-0.25rem" }}
-            />
             <NavLink to="/dive" className="coverage">
+              <LanguageIcon
+                size="inherit"
+                color="primary"
+                style={{ verticalAlign: "-0.25rem" }}
+              />
               &nbsp; GLOBAL COVERAGE
+              <ArrowRightIcon
+                size="small"
+                color="primary"
+                style={{ verticalAlign: "-0.25rem" }}
+                className="float"
+              />
             </NavLink>
-            <ArrowRightIcon
-              size="small"
-              color="primary"
-              style={{ verticalAlign: "-0.25rem" }}
-              className="float"
-            />
           </div>
           <div className="w-100"></div>
-          <table className="table table-sm table-borderless">
+          <table
+            className="table table-sm table-borderless"
+            style={{ paddingTop: "10px" }}
+          >
             <thead>
               <tr>
                 <th className="text-info span delta" style={{ width: "25%" }}>
@@ -126,7 +129,10 @@ class WorldHomeCard extends Component {
                     ? commaSeperated(Number(todayCases))
                     : ""}
                 </h6>
-                <h5 className="text-info" style={{ textAlign: "center" }}>
+                <h5
+                  className="text-info"
+                  style={{ textAlign: "center", paddingTop: "5px" }}
+                >
                   {cases !== undefined ? (
                     <CountUp
                       start={0}
@@ -153,7 +159,13 @@ class WorldHomeCard extends Component {
                     : ""}
                   %
                 </h6>
-                <h5 style={{ color: "#ff446a", textAlign: "center" }}>
+                <h5
+                  style={{
+                    color: "#ff446a",
+                    textAlign: "center",
+                    paddingTop: "5px",
+                  }}
+                >
                   {active !== undefined ? (
                     <CountUp
                       start={0}
@@ -180,7 +192,10 @@ class WorldHomeCard extends Component {
                     : ""}
                   %
                 </h5>
-                <h5 className="text-success" style={{ textAlign: "center" }}>
+                <h5
+                  className="text-success"
+                  style={{ textAlign: "center", paddingTop: "5px" }}
+                >
                   {recovered !== undefined ? (
                     <CountUp
                       start={0}
@@ -207,7 +222,10 @@ class WorldHomeCard extends Component {
                     ? commaSeperated(Number(todayDeaths))
                     : ""}
                 </h6>
-                <h5 className="text-secondary" style={{ textAlign: "center" }}>
+                <h5
+                  className="text-secondary"
+                  style={{ textAlign: "center", paddingTop: "5px" }}
+                >
                   {deaths !== undefined ? (
                     <CountUp
                       start={0}
