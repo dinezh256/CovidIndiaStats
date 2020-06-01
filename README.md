@@ -1,6 +1,6 @@
 # Covid19 Dashboard
 A dashboard to visualise the spread of covid19 in India(state and districtwise) and around the world(countrywise).
-Dashboard live on https://covidindiastats.com
+Dashboard live on <a href="https://covidindiastats.com" >covidindiastats.com</a>
 
 Created using <a href="https://reactjs.org/" >Create-React-App</a>
 
