@@ -710,6 +710,7 @@ class StateGraph extends Component {
                         bottom: -12,
                       }}
                       syncId="barchart"
+                      stackOffset="sign"
                     >
                       <XAxis
                         dataKey="date"
@@ -719,10 +720,6 @@ class StateGraph extends Component {
                         tickCount="8"
                       />
                       <YAxis
-                        domain={[
-                          0,
-                          Math.ceil(Math.max(...dailyConfirmed) / 1000) * 1000,
-                        ]}
                         orientation="left"
                         tick={{ stroke: "#0992c0", strokeWidth: 0.2 }}
                         tickFormatter={format("~s")}
@@ -904,6 +901,7 @@ class StateGraph extends Component {
                         bottom: -12,
                       }}
                       syncId="barchart"
+                      stackOffset="sign"
                     >
                       <XAxis
                         dataKey="date"
@@ -913,10 +911,6 @@ class StateGraph extends Component {
                         tickCount="8"
                       />
                       <YAxis
-                        domain={[
-                          0,
-                          Math.ceil(Math.max(...dailyConfirmed) / 1000) * 1000,
-                        ]}
                         orientation="left"
                         tick={{ stroke: "#0992c0", strokeWidth: 0.2 }}
                         tickFormatter={format("~s")}
