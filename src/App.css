@@ -187,6 +187,16 @@ th.smallRow {
   color: #5c5656;
 }
 
+.cyclone {
+  color: rgb(128, 42, 190);
+  font-size: 1rem;
+  text-transform: uppercase;
+}
+
+.cycloneLink:hover {
+  text-decoration: none;
+}
+
 .Home {
   display: flex;
   flex-direction: row;
@@ -252,15 +262,23 @@ th.smallRow {
   font-size: 1.35rem;
   font-weight: 500;
   color: #11789b;
-  background-color: rgb(238, 242, 245);
   word-break: keep-all;
   text-decoration: none;
   transition: background 0.2s ease-in-out;
 }
 
-.options .options-link:hover {
+.options-link:hover {
+  color: #11789b;
   text-decoration: none;
-  text-decoration-style: none;
+}
+
+.options-link2 {
+  color: #11789b;
+}
+
+.options-link2:hover {
+  color: #11789b;
+  text-decoration: none;
 }
 
 span.MuiBadge-dot {
@@ -296,6 +314,12 @@ span.MuiBadge-colorSecondary {
 .coverage:hover {
   text-decoration: none;
   color: navy;
+}
+
+@media only screen and (min-width: 768px) {
+  .worldHomeCard {
+    width: 92%;
+  }
 }
 
 .graph-head {
@@ -775,7 +799,7 @@ span.MuiBadge-colorSecondary {
 
 .float {
   animation-name: floatArrow;
-  animation: floatArrow 1.1s linear infinite;
+  animation: floatArrow 1.5s linear infinite;
 }
 
 @keyframes floatArrow {
@@ -787,7 +811,7 @@ span.MuiBadge-colorSecondary {
 
   50% {
     opacity: 1;
-    transform: translateX(8px);
+    transform: translateX(6px);
   }
 }
 
