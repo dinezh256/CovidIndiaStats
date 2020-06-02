@@ -65,9 +65,6 @@ class Graph extends Component {
   handleBeginning({ beginning }) {
     this.setState({ beginning });
   }
-  handleOneWeek({ oneWeek }) {
-    this.setState({ oneWeek });
-  }
   handleTwoWeeks({ twoWeeks }) {
     this.setState({ twoWeeks });
   }
@@ -351,7 +348,7 @@ class Graph extends Component {
                   style={{
                     justifyContent: "center",
                     animationDelay: "2.2s",
-                    marginBottom: "10px",
+                    marginBottom: "30px",
                   }}
                 >
                   INDIA MAP

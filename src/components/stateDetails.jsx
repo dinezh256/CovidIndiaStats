@@ -6,6 +6,7 @@ import WhatsAppIcon from "@material-ui/icons/WhatsApp";
 import TwitterIcon from "@material-ui/icons/Twitter";
 import InfoTwoToneIcon from "@material-ui/icons/InfoTwoTone";
 import QueryBuilderTwoToneIcon from "@material-ui/icons/QueryBuilderTwoTone";
+import ColorizeRoundedIcon from "@material-ui/icons/ColorizeRounded";
 import Switch from "react-switch";
 import Tooltip, { TooltipProps } from "@material-ui/core/Tooltip";
 import { format } from "d3";
@@ -1017,7 +1018,7 @@ class StateDetails extends Component {
     ) {
       return (
         <React.Fragment>
-          <div className="container">
+          <div className="containerStates">
             <Helmet>
               <title>
                 {stateFullName[this.props.match.params.stateid.toUpperCase()]}{" "}
@@ -1054,6 +1055,7 @@ class StateDetails extends Component {
                   </BootstrapTooltip>
                 </h5>
               </div>
+
               <div className="col-5" style={{ marginTop: 12 }}>
                 <h6
                   style={{
@@ -1090,7 +1092,8 @@ class StateDetails extends Component {
                 <div className="row" style={{ marginBottom: -5 }}>
                   <div className="col-7" style={{ textAlign: "left" }}>
                     <h6 style={{ fontSize: 10, color: "#3e4da3" }}>
-                      Total samples tested:{" "}
+                      <ColorizeRoundedIcon fontSize="small" /> Total samples
+                      tested:{" "}
                       {expansionPanelData[0] === undefined
                         ? "0"
                         : commaSeperated(expansionPanelData[0].totaltested)}
@@ -1138,14 +1141,30 @@ class StateDetails extends Component {
                       </h6>
                       <h6
                         style={{
-                          fontSize: "0.8rem",
+                          fontSize: "0.9rem",
                           color: "rgba(23, 162, 184, 0.7)",
                         }}
                       >
-                        +
-                        {commaSeperated(
-                          requiredStateTotalData[0].deltaconfirmed
-                        )}
+                        {Number(requiredStateTotalData[0].deltaconfirmed) ? (
+                          <Icon.PlusCircle
+                            size={12}
+                            strokeWidth={3}
+                            fill="rgba(23, 162, 184, 0.2)"
+                            style={{ verticalAlign: "-0.1rem" }}
+                          />
+                        ) : (
+                          <Icon.Meh
+                            size={12}
+                            strokeWidth={3}
+                            fill="rgba(23, 162, 184, 0.2)"
+                            style={{ verticalAlign: "-0.1rem" }}
+                          />
+                        )}{" "}
+                        {Number(requiredStateTotalData[0].deltaconfirmed)
+                          ? commaSeperated(
+                              requiredStateTotalData[0].deltaconfirmed
+                            )
+                          : ""}
                       </h6>
                       <h5 className="text-info">
                         {commaSeperated(requiredStateTotalData[0].confirmed)}
@@ -1188,18 +1207,36 @@ class StateDetails extends Component {
                       </h6>
                       <h6
                         style={{
-                          fontSize: "0.8rem",
+                          fontSize: "0.9rem",
                           color: "rgba(255, 68, 106, 0.7)",
                         }}
                       >
-                        {Number(requiredStateTotalData[0].confirmed)
-                          ? (
-                              (requiredStateTotalData[0].active /
-                                requiredStateTotalData[0].confirmed) *
-                              100
-                            ).toFixed(2)
-                          : "0"}
-                        %
+                        {Number(requiredStateTotalData[0].deltaconfirmed) -
+                          Number(requiredStateTotalData[0].deltarecovered) -
+                          Number(requiredStateTotalData[0].deltadeaths) >
+                        0 ? (
+                          <Icon.PlusCircle
+                            size={12}
+                            strokeWidth={3}
+                            fill="rgba(255, 68, 106, 0.2)"
+                            style={{ verticalAlign: "-0.1rem" }}
+                          />
+                        ) : (
+                          <Icon.Heart
+                            size={12}
+                            strokeWidth={3}
+                            fill="rgba(255, 68, 106, 0.4)"
+                            style={{ verticalAlign: "-0.1rem" }}
+                          />
+                        )}{" "}
+                        {Number(requiredStateTotalData[0].deltaconfirmed) -
+                          Number(requiredStateTotalData[0].deltarecovered) -
+                          Number(requiredStateTotalData[0].deltadeaths) >
+                        0
+                          ? commaSeperated(
+                              requiredStateTotalData[0].deltaconfirmed
+                            )
+                          : ""}
                       </h6>
                       <h5 style={{ color: "#ff446a" }}>
                         {commaSeperated(requiredStateTotalData[0].active)}
@@ -1242,13 +1279,29 @@ class StateDetails extends Component {
                       <h6
                         style={{
                           color: "rgba(40, 167, 69, 0.7)",
-                          fontSize: "0.8rem",
+                          fontSize: "0.9rem",
                         }}
                       >
-                        +
-                        {commaSeperated(
-                          requiredStateTotalData[0].deltarecovered
-                        )}
+                        {Number(requiredStateTotalData[0].deltarecovered) ? (
+                          <Icon.PlusCircle
+                            size={12}
+                            strokeWidth={3}
+                            fill="rgba(40, 167, 69, 0.2)"
+                            style={{ verticalAlign: "-0.1rem" }}
+                          />
+                        ) : (
+                          <Icon.Smile
+                            size={12}
+                            strokeWidth={3}
+                            fill="rgba(40, 167, 69, 0.2)"
+                            style={{ verticalAlign: "-0.1rem" }}
+                          />
+                        )}{" "}
+                        {Number(requiredStateTotalData[0].deltarecovered)
+                          ? commaSeperated(
+                              requiredStateTotalData[0].deltarecovered
+                            )
+                          : ""}
                       </h6>
                       <h5 className="text-success">
                         {commaSeperated(requiredStateTotalData[0].recovered)}
@@ -1288,11 +1341,30 @@ class StateDetails extends Component {
                       </h6>
                       <h6
                         style={{
-                          fontSize: "0.8rem",
+                          fontSize: "0.9rem",
                           color: "rgba(108, 117, 125, 0.7)",
                         }}
                       >
-                        +{commaSeperated(requiredStateTotalData[0].deltadeaths)}
+                        {Number(requiredStateTotalData[0].deltadeaths) ? (
+                          <Icon.PlusCircle
+                            size={12}
+                            strokeWidth={3}
+                            fill="rgba(108, 117, 125, 0.2)"
+                            style={{ verticalAlign: "-0.1rem" }}
+                          />
+                        ) : (
+                          <Icon.Meh
+                            size={12}
+                            strokeWidth={3}
+                            fill="rgba(108, 117, 125, 0.2)"
+                            style={{ verticalAlign: "-0.1rem" }}
+                          />
+                        )}{" "}
+                        {Number(requiredStateTotalData[0].deltadeaths)
+                          ? commaSeperated(
+                              requiredStateTotalData[0].deltadeaths
+                            )
+                          : ""}
                       </h6>
                       <h5 className="text-secondary">
                         {commaSeperated(requiredStateTotalData[0].deaths)}
@@ -1560,7 +1632,8 @@ class StateDetails extends Component {
                       >
                         VIEW ALL DISTRICTS{" "}
                         <Icon.ArrowDownCircle
-                          size={12}
+                          size={11}
+                          style={{ verticalAlign: "-0.1rem" }}
                           style={{ verticalAlign: "-0.1rem" }}
                         />
                       </h6>
@@ -1580,7 +1653,8 @@ class StateDetails extends Component {
                         >
                           HIDE ALL DISTRICTS{" "}
                           <Icon.ArrowUpCircle
-                            size={12}
+                            size={11}
+                            style={{ verticalAlign: "-0.1rem" }}
                             style={{ verticalAlign: "-0.1rem" }}
                           />
                         </h6>

@@ -555,8 +555,8 @@ class Table extends Component {
                   style={{
                     borderSpacing: "1px",
                     textAlign: "center",
-                    marginTop: "-15px",
-                    marginBottom: "-7px",
+                    marginTop: "-18px",
+                    marginBottom: "-5px",
                   }}
                 >
                   <NavLink
@@ -574,8 +574,8 @@ class Table extends Component {
                         size={15}
                         style={{ verticalAlign: "-0.1rem" }}
                         fill="rgba(128, 42, 190, 0.8)"
-                      />{" "}
-                      Cyclone Nisarga Helpline
+                      />
+                      &nbsp; &nbsp; Cyclone Nisarga Helpline &nbsp;
                       <ArrowRightIcon
                         size="inherit"
                         color="inherit"
