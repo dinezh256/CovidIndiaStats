@@ -187,16 +187,6 @@ th.smallRow {
   color: #5c5656;
 }
 
-.cyclone {
-  color: rgb(128, 42, 190);
-  font-size: 1rem;
-  text-transform: uppercase;
-}
-
-.cycloneLink:hover {
-  text-decoration: none;
-}
-
 .Home {
   display: flex;
   flex-direction: row;
@@ -251,7 +241,7 @@ th.smallRow {
   display: flex;
   flex-direction: column;
   width: 100%;
-  margin-top: 30px;
+  margin-top: 20px;
   font-family: notosans;
 }
 
@@ -259,7 +249,7 @@ th.smallRow {
   margin-left: 5%;
   margin-right: 5%;
   border-radius: 5px;
-  font-size: 1.35rem;
+  font-size: 1.15rem;
   font-weight: 500;
   color: #11789b;
   word-break: keep-all;
@@ -275,10 +265,26 @@ th.smallRow {
 .options-link2 {
   color: #11789b;
 }
-
 .options-link2:hover {
   color: #11789b;
   text-decoration: none;
+}
+
+.cyclone {
+  color: rgb(128, 42, 190);
+  font-size: 1rem;
+  text-transform: uppercase;
+}
+
+.cycloneLink:hover {
+  text-decoration: none;
+}
+
+.cycloneDetails {
+  text-transform: none;
+  font-size: 0.77rem;
+  color: #5c5858;
+  margin-top: 5px;
 }
 
 span.MuiBadge-dot {
