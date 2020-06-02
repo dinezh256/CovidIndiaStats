@@ -561,6 +561,20 @@ span.MuiBadge-colorSecondary {
   cursor: pointer;
 }
 
+.containerStates {
+  padding-right: 2.5px;
+  padding-left: 2.5px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+@media (min-width: 1200px) {
+  .containerStates {
+    padding-right: 30px;
+    padding-left: 30px;
+  }
+}
+
 .liDistrict li {
   font-weight: 600;
   text-transform: "uppercase";
