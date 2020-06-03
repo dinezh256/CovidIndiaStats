@@ -145,7 +145,7 @@ class World extends Component {
               <title>Global COVID19 Update</title>
             </Helmet>
             <div
-              className="col-12 fadeInUp worldchoropleth"
+              className="col fadeInUp worldchoropleth"
               style={{ alignContent: "center" }}
             >
               <WorldChoropleth
@@ -363,7 +363,6 @@ class World extends Component {
                           style={{
                             width: 22.5,
                             height: 13.5,
-                            verticalAlign: "-0.06rem",
                             borderRadius: "2px",
                           }}
                         />{" "}

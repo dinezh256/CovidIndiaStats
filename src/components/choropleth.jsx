@@ -3,6 +3,7 @@ import { ComposableMap, Geographies, Geography } from "react-simple-maps";
 import { scaleLog } from "d3-scale";
 import ReactTooltip from "react-tooltip";
 import { commaSeperated } from "../utils/common-functions";
+import LinearGradient from "./linearGragient";
 
 const INDIA_TOPO_JSON = require("../india.topo.json");
 
@@ -28,6 +29,19 @@ const Choropleth = ({ data, colorLow, colorHigh, fill, type }) => {
     },
   };
   const [tooltipContent, setTooltipContent] = useState("");
+
+  const gradientData = {
+    fromColor: "rgb(240,240,240)",
+    toColor: COLOR_RANGE[0],
+    min: 0,
+    max:
+      String(
+        Math.ceil(
+          data.reduce((max, item) => (item.value > max ? item.value : max), 0) /
+            100
+        ) / 10
+      ) + "K",
+  };
 
   const colorScale = scaleLog()
     .domain(data.map((d) => d.value))
@@ -77,6 +91,7 @@ const Choropleth = ({ data, colorLow, colorHigh, fill, type }) => {
           }
         </Geographies>
       </ComposableMap>
+      <LinearGradient data={gradientData} />
     </div>
   );
 };

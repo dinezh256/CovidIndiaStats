@@ -348,7 +348,7 @@ class Graph extends Component {
                   style={{
                     justifyContent: "center",
                     animationDelay: "2.2s",
-                    marginBottom: "30px",
+                    marginBottom: "25px",
                   }}
                 >
                   INDIA MAP
@@ -365,7 +365,7 @@ class Graph extends Component {
                 className="container fadeInUp toggle-map"
                 style={{ animationDelay: "2.3s" }}
               >
-                <div className="row row-cols-4" style={{ paddingLeft: "6px" }}>
+                <div className="row row-cols-4">
                   <div
                     className="col"
                     onClick={() => {
@@ -379,7 +379,14 @@ class Graph extends Component {
                   >
                     <h6
                       className="text-info pad"
-                      style={{ cursor: "pointer", background: "#d9ecf5" }}
+                      style={{
+                        cursor: "pointer",
+                        background: `${
+                          clickConfirmedMap
+                            ? "rgb(189, 216, 228)"
+                            : "rgba(189, 216, 228, 0.3)"
+                        }`,
+                      }}
                     >
                       CONFIRMED
                     </h6>
@@ -400,7 +407,11 @@ class Graph extends Component {
                       style={{
                         color: "rgb(255, 68, 106)",
                         cursor: "pointer",
-                        background: "#f5d2d2",
+                        background: `${
+                          clickActiveMap
+                            ? "rgba(247, 177, 177, 0.9)"
+                            : "rgba(247, 177, 177, 0.3)"
+                        }`,
                       }}
                     >
                       ACTIVE
@@ -419,7 +430,14 @@ class Graph extends Component {
                   >
                     <h6
                       className="text-success pad"
-                      style={{ cursor: "pointer", background: "#d5e9d5" }}
+                      style={{
+                        cursor: "pointer",
+                        background: `${
+                          clickRecoveredMap
+                            ? "rgb(182, 229, 182)"
+                            : "rgba(182, 229, 182, 0.3)"
+                        }`,
+                      }}
                     >
                       RECOVERED
                     </h6>
@@ -437,7 +455,14 @@ class Graph extends Component {
                   >
                     <h6
                       className="text-secondary pad"
-                      style={{ background: "#ece7e7", cursor: "pointer" }}
+                      style={{
+                        background: `${
+                          clickDeceasedMap
+                            ? "rgb(179, 173, 173)"
+                            : "rgba(179, 173, 173, 0.3)"
+                        }`,
+                        cursor: "pointer",
+                      }}
                     >
                       DECEASED
                     </h6>
@@ -459,7 +484,7 @@ class Graph extends Component {
                       1,
                       confirmedStatesData.length - 1
                     )}
-                    colorLow="rgba(29, 141, 158, 0.9)"
+                    colorLow="rgba(29, 141, 158, 0.85)"
                     colorHigh="rgba(29, 141, 158, 1)"
                     fill="rgb(18, 167, 190)"
                     type="infected"
@@ -475,7 +500,7 @@ class Graph extends Component {
                       1,
                       activeStatesData.length - 1
                     )}
-                    colorLow="rgba(173, 28, 57, 0.9)"
+                    colorLow="rgba(173, 28, 57, 0.85)"
                     colorHigh="rgba(173, 28, 57, 1)"
                     fill="rgb(228, 116, 138)"
                     type="active"
@@ -491,7 +516,7 @@ class Graph extends Component {
                       1,
                       recoveredStatesData.length - 1
                     )}
-                    colorLow="rgba(40, 167, 69, 0.9)"
+                    colorLow="rgba(40, 167, 69, 0.85)"
                     colorHigh="rgba(40, 167, 69, 1)"
                     fill="rgb(30, 209, 72)"
                     type="recovered"
@@ -519,18 +544,6 @@ class Graph extends Component {
                 )}
               </div>
               <div className="w-100"></div>
-
-              <div className="col fadeInUp" style={{ animationDelay: "2.4s" }}>
-                <h6
-                  style={{ fontSize: 10, color: "grey", fontWeight: "lighter" }}
-                >
-                  <span style={{ color: "#3e4da3" }}> Pro tip:</span> Tap on the
-                  buttons above to toggle view
-                </h6>
-              </div>
-
-              <div className="w-100"></div>
-              <br />
               <div
                 className="col fadeInUp"
                 style={{
