@@ -12,6 +12,10 @@ body {
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  padding-right: 8px !important;
+  padding-left: 8px !important;
+  margin-right: auto;
+  margin-left: auto;
 }
 
 .containerWorld {
@@ -196,7 +200,7 @@ th.smallRow {
 }
 
 .home-title {
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   font-weight: 500;
 }
 .home-toggle {
@@ -338,6 +342,20 @@ span.MuiBadge-colorSecondary {
 
 .graphsection {
   height: max-content;
+}
+
+.home {
+  padding-right: 1px !important;
+  padding-left: 1px !important;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+@media (min-width: 1200px) {
+  .home {
+    padding-right: 30px;
+    padding-left: 30px;
+  }
 }
 
 .timelineButton {
@@ -556,8 +574,8 @@ span.MuiBadge-colorSecondary {
 
 .stateTable h6 {
   border-radius: 5px;
-  padding-top: 6px;
-  padding-bottom: 6px;
+  padding-top: 4px;
+  padding-bottom: 4px;
   cursor: pointer;
 }
 
