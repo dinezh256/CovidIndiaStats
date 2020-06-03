@@ -25,6 +25,13 @@ body {
   flex-direction: column;
 }
 
+@media only screen and (max-width: 576px) {
+  .containerWorld {
+    margin-left: -22px !important;
+    margin-right: -22px !important;
+  }
+}
+
 .loader {
   display: flex;
   align-items: center;
@@ -250,8 +257,8 @@ th.smallRow {
 }
 
 .options-link {
-  margin-left: 5%;
-  margin-right: 5%;
+  margin-left: 2px;
+  margin-right: 2px;
   border-radius: 5px;
   font-size: 1.15rem;
   font-weight: 500;
@@ -443,8 +450,8 @@ span.MuiBadge-colorSecondary {
 }
 
 .question {
-  margin-left: 5%;
-  margin-right: 5%;
+  margin-left: 2px;
+  margin-right: 2px;
   font-weight: 500;
   font-family: notosans;
 }
@@ -480,34 +487,24 @@ span.MuiBadge-colorSecondary {
 .toggle-map {
   text-align: center;
   justify-content: center;
-  font-size: 1rem !important;
+  font-size: 0.8rem !important;
   font-family: notosans;
-  margin-left: 2.8% !important;
+  margin-left: 2.5% !important;
 }
 
 @media only screen and (max-width: 576px) {
   .toggle-map {
-    margin-left: -2.5% !important;
+    margin-left: -1.7% !important;
   }
 }
 
 .pad {
-  padding-top: 5%;
-  padding-bottom: 5%;
+  padding-top: 3%;
+  padding-bottom: 3%;
   border-radius: 5px;
   border: solid 0.5px;
   width: 6.5rem;
   position: sticky;
-  transition: background-color 0.3s linear; /* vendorless fallback */
-  -o-transition: background-color 0.3s linear; /* opera */
-  -ms-transition: background-color 0.3s linear; /* IE 10 */
-  -moz-transition: background-color 0.3s linear; /* Firefox */
-  -webkit-transition: background-color 0.3s linear; /*safari and chrome */
-}
-
-.pad:hover {
-  background-color: rgb(248, 248, 248) !important;
-  transition: all 0.3s linear;
 }
 
 @media only screen and (max-width: 360px) {
@@ -534,13 +531,72 @@ span.MuiBadge-colorSecondary {
   }
 }
 
+.display-flex {
+  display: flex;
+  font-family: notosans;
+  font-size: 0.9rem;
+  padding-bottom: 10px;
+}
+
+.fill {
+  flex: 1;
+}
+
+.mt16 {
+  margin-top: 5px;
+}
+
 .worldchoropleth {
   height: 100%;
   width: 100%;
-  margin-bottom: -7rem;
+  margin-bottom: 0rem;
   margin-top: -2rem;
   align-self: center;
   align-items: center;
+}
+
+@media (min-width: 767px) {
+  .worldchoropleth {
+    margin-bottom: 15rem;
+    margin-top: -3rem;
+  }
+  .worldLinearGradient {
+    margin-top: -15rem !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .worldchoropleth {
+    margin-bottom: 15rem;
+    margin-top: -3rem;
+  }
+  .worldLinearGradient {
+    margin-top: -20rem !important;
+  }
+}
+
+.worldLinearGradient {
+  margin-top: -7.5rem;
+}
+
+.showUp {
+  animation: rotateDown 0.5s;
+}
+
+@keyframes rotateDown {
+  0% {
+    transform: rotate(-180deg);
+  }
+}
+
+.showDown {
+  animation: rotateUp 0.5s;
+}
+
+@keyframes rotateUp {
+  0% {
+    transform: rotate(180deg);
+  }
 }
 
 .hoveralert {
@@ -869,7 +925,6 @@ span.MuiBadge-colorSecondary {
   color: rgb(59, 89, 152);
   color: rgb(23, 162, 184);
   color: rgb(40, 167, 69);
-  color: rgb(16, 133, 172);
 }
 
 @media only screen and (min-width: 576px) {
