@@ -1033,7 +1033,7 @@ class StateDetails extends Component {
             </Helmet>
             <div className="row fadeInUp" style={{ animationDelay: "0.4s" }}>
               <div className="col-7" style={{ marginTop: 12 }}>
-                <h5
+                <h6
                   style={{
                     fontFamily: "notosans",
                     textTransform: "uppercase",
@@ -1048,12 +1048,12 @@ class StateDetails extends Component {
                     <span>
                       <InfoTwoToneIcon
                         color="inherit"
-                        fontSize="small"
+                        fontSize="inherit"
                         style={{ verticalAlign: "-0.15rem" }}
                       />
                     </span>
                   </BootstrapTooltip>
-                </h5>
+                </h6>
               </div>
 
               <div className="col-5" style={{ marginTop: 12 }}>

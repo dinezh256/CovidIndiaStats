@@ -9,7 +9,7 @@ class Home extends Component {
   render() {
     return (
       <React.Fragment>
-        <div className="container">
+        <div className="home">
           <Helmet>
             <title>Covid India Stats</title>
             <meta

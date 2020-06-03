@@ -365,7 +365,7 @@ class Graph extends Component {
                 className="container fadeInUp toggle-map"
                 style={{ animationDelay: "2.3s" }}
               >
-                <div className="row row-cols-4">
+                <div className="row row-cols-4" style={{ paddingLeft: "6px" }}>
                   <div
                     className="col"
                     onClick={() => {
