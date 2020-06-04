@@ -1234,7 +1234,11 @@ class StateDetails extends Component {
                           Number(requiredStateTotalData[0].deltadeaths) >
                         0
                           ? commaSeperated(
-                              requiredStateTotalData[0].deltaconfirmed
+                              Number(requiredStateTotalData[0].deltaconfirmed) -
+                                Number(
+                                  requiredStateTotalData[0].deltarecovered
+                                ) -
+                                Number(requiredStateTotalData[0].deltadeaths)
                             )
                           : ""}
                       </h6>
@@ -2718,7 +2722,7 @@ class StateDetails extends Component {
                           size={9}
                           style={{ verticalAlign: "-0.1rem" }}
                         />{" "}
-                        Testing Govt. & Pvt. Labs
+                        Testing Labs
                       </h6>
                     </a>
                   </div>
