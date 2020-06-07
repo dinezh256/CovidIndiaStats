@@ -1,120 +1,67 @@
-import React, { useState, useRef } from "react";
-import { NavLink } from "react-router-dom";
-import TableChartRoundedIcon from "@material-ui/icons/TableChartRounded";
-import PublicRoundedIcon from "@material-ui/icons/PublicRounded";
-import GraphicEqRoundedIcon from "@material-ui/icons/GraphicEqRounded";
-import LinkRoundedIcon from "@material-ui/icons/LinkRounded";
-import QuestionAnswerRoundedIcon from "@material-ui/icons/QuestionAnswerRounded";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
-import { CSSTransition } from "react-transition-group";
-import useOnclickOutside from "react-cool-onclickoutside";
-import mainLogo from "../logo.png";
+import React, { Component } from "react";
+import { NavLink, withRouter } from "react-router-dom";
+import SwipeableTemporaryDrawer from "./drawer";
+import * as Icon from "react-feather";
+import ForumRoundedIcon from "@material-ui/icons/ForumRounded";
+import { stateFullName } from "./../utils/common-functions";
 import ReactGa from "react-ga";
 
-function Navbar(props) {
-  return (
-    <nav className="myNavbar">
-      <ul className="myNavbar-nav">
-        <NavBrand />
-        <ul style={{ flex: 1 }}></ul>
-        <NavItem to="/indepth" icon={<GraphicEqRoundedIcon />}></NavItem>
-        <NavItem to="/global" icon={<PublicRoundedIcon />}></NavItem>
-        <NavItem to="/dive" icon={<TableChartRoundedIcon />}></NavItem>
-        <NavItem to="#" icon={<MoreVertIcon />}>
-          <DropdownMenu />
-        </NavItem>
-      </ul>
-    </nav>
-  );
-}
-
-function NavItem(props) {
-  const [open, setOpen] = useState(false);
-  const ref = useRef();
-
-  useOnclickOutside(ref, () => {
-    setOpen(false);
-  });
-
-  const handleClick = () => {
-    setOpen(!open);
-  };
-
-  return (
-    <li className="mynav-item">
-      <NavLink
-        to={props.to}
-        className="icon-button fadeInRight"
-        onClick={handleClick}
-      >
-        {props.icon}
-      </NavLink>
-      {open ? <div ref={ref}> {props.children} </div> : null}
-    </li>
-  );
-}
-
-function NavBrand() {
-  return (
-    <li className="mybrand-item fadeInLeft">
-      <NavLink to="/" className="fadeInLeft">
-        <div>
-          <img alt="COVID19" src={mainLogo} className="imgAlign" />
-          &ensp;
-          <span
-            className="title"
-            style={{
-              fontWeight: 600,
-              fontSize: "1.5rem",
-              color: "#8e99d8",
-              fontFamily: "notosans",
-            }}
-          >
-            INDIA
-          </span>
-        </div>
-      </NavLink>
-    </li>
-  );
-}
-
-function DropdownMenu() {
-  const [activeMenu, setActiveMenu] = useState("main");
-  function DropdownItem(props) {
-    return (
-      <NavLink
-        to={props.to}
-        className="menu-item"
-        onClick={ReactGa.event({
-          category: "Dropdownmenu",
-          action: "Dropdown clicked",
-        })}
-      >
-        <span className="icon-button">{props.leftIcon}</span>
-        {props.children}
-      </NavLink>
-    );
+class Navbar extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      title: stateFullName[window.location.pathname].toUpperCase(),
+    };
   }
 
-  return (
-    <div className="myDropdown">
-      <CSSTransition
-        in={activeMenu === "main"}
-        unmountOnExit
-        timeout={500}
-        classNames="menu-primary"
-      >
-        <div className="menu">
-          <DropdownItem to="/links" leftIcon={<LinkRoundedIcon />}>
-            &nbsp; LINKS
-          </DropdownItem>
-          <DropdownItem to="/faq" leftIcon={<QuestionAnswerRoundedIcon />}>
-            &nbsp; FAQs
-          </DropdownItem>
-        </div>
-      </CSSTransition>
-    </div>
-  );
+  changeTitle = (newTitle) => {
+    this.setState({
+      title: newTitle,
+    });
+  };
+
+  componentDidMount() {
+    this.props.history.listen(() => {
+      this.changeTitle(stateFullName[window.location.pathname].toUpperCase());
+    });
+  }
+
+  render() {
+    return (
+      <nav className="myNavbar">
+        <ul className="myNavbar-nav">
+          <SwipeableTemporaryDrawer />
+          <ul style={{ flex: 0.55 }} id="line1"></ul>
+          <NavLink to="/" className="fadeInLeft">
+            <div>
+              <span className="title">{this.state.title}</span>
+            </div>
+          </NavLink>
+          <ul style={{ flex: 0.45 }}></ul>
+          <ul style={{ flex: 0.55 }} id="line2"></ul>
+
+          <NavLink to="/notifications" id="line1">
+            <span className="about">
+              <Icon.Bell size={24} />
+            </span>
+          </NavLink>
+          <NavLink to="/faq" id="line2">
+            <span
+              className="about"
+              onClick={() =>
+                ReactGa.event({
+                  category: "Notification",
+                  action: "Bell clicked",
+                })
+              }
+            >
+              <ForumRoundedIcon fontSize="large" />
+            </span>
+          </NavLink>
+        </ul>
+      </nav>
+    );
+  }
 }
 
-export default Navbar;
+export default withRouter(Navbar);

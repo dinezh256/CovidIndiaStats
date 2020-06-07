@@ -5,7 +5,7 @@ const Footer = () => {
   return (
     <div
       className="fadeInUp"
-      style={{ animationDelay: "1s", marginTop: "50px" }}
+      style={{ animationDelay: "3s", marginTop: "50px" }}
     >
       <h6
         style={{

@@ -44,8 +44,7 @@ class StateDetails extends Component {
     this.state = {
       stateData: [],
       isLoaded: false,
-      zones: null,
-      zonesLoaded: false,
+
       totalStateData: [],
       totalStateDataLoaded: false,
       statesDailyData: [],
@@ -225,12 +224,6 @@ class StateDetails extends Component {
     //   districtsDailyLoaded: true,
     // });
 
-    fetch("https://api.covid19india.org/zones.json").then((res) =>
-      res.json().then((json) => {
-        this.setState({ zones: json.zones, zonesLoaded: true });
-      })
-    );
-
     fetch("https://api.covid19india.org/data.json").then((res) =>
       res.json().then((json) => {
         this.setState({
@@ -253,8 +246,6 @@ class StateDetails extends Component {
     const {
       stateData,
       isLoaded,
-      zones,
-      zonesLoaded,
       totalStateData,
       totalStateDataLoaded,
       requiredData,
@@ -967,33 +958,6 @@ class StateDetails extends Component {
       );
     }
 
-    function districtZone(district) {
-      const redZone = [];
-      const orangeZone = [];
-      const greenZone = [];
-      if (zonesLoaded) {
-        zones.map((item) => {
-          if (item.zone === "Red") redZone.push(item.district);
-        });
-        zones.map((item) => {
-          if (item.zone === "Orange") orangeZone.push(item.district);
-        });
-        zones.map((item) => {
-          if (item.zone === "Green") greenZone.push(item.district);
-        });
-      }
-
-      if (redZone.includes(district)) {
-        return "#ff446a";
-      }
-      if (orangeZone.includes(district)) {
-        return "rgb(255, 153, 0)";
-      }
-      if (greenZone.includes(district)) {
-        return "rgb(40, 167, 69)";
-      } else return "rgb(150, 150, 150)";
-    }
-
     let timelineLength = 0;
 
     if (isLoaded) {
@@ -1010,7 +974,6 @@ class StateDetails extends Component {
 
     if (
       isLoaded &&
-      zonesLoaded &&
       totalStateDataLoaded &&
       statesDailyDataLoaded &&
       testDataLoaded &&
@@ -1409,7 +1372,7 @@ class StateDetails extends Component {
                               <li
                                 key={district.district}
                                 style={{
-                                  color: `${districtZone(district.district)}`,
+                                  color: "grey",
                                   fontWeight: 600,
                                   fontSize: 12,
                                   fontFamily: "notosans",
@@ -1454,7 +1417,7 @@ class StateDetails extends Component {
                               <li
                                 key={district.district}
                                 style={{
-                                  color: `${districtZone(district.district)}`,
+                                  color: "grey",
                                   fontWeight: 600,
                                   fontSize: 12,
                                   fontFamily: "notosans",
@@ -1484,7 +1447,7 @@ class StateDetails extends Component {
                               <li
                                 key={district.district}
                                 style={{
-                                  color: `${districtZone(district.district)}`,
+                                  color: "grey",
                                   fontWeight: 600,
                                   fontSize: 12,
                                   fontFamily: "notosans",
@@ -1529,7 +1492,7 @@ class StateDetails extends Component {
                               <li
                                 key={district.district}
                                 style={{
-                                  color: `${districtZone(district.district)}`,
+                                  color: "grey",
                                   fontWeight: 600,
                                   fontFamily: "notosans",
                                   fontSize: 12,
@@ -1764,9 +1727,7 @@ class StateDetails extends Component {
                                   <td
                                     className="tdleft align-middle"
                                     style={{
-                                      color: `${districtZone(
-                                        district.district
-                                      )}`,
+                                      color: "grey",
                                       borderLeftWidth: "5px",
                                       borderStyle: "solid",
                                     }}
@@ -1895,7 +1856,7 @@ class StateDetails extends Component {
                             title="Provide us your valuable feedback"
                             style={{ color: "rgb(59, 89, 152)" }}
                           >
-                            <Icon.FileText size={19} />{" "}
+                            <Icon.FileText size={30} />{" "}
                           </a>
                         </h6>
                         <h6 className="feedbackBtn">Feedback</h6>
@@ -1918,7 +1879,7 @@ class StateDetails extends Component {
                             title="Share COVID INDIA STATS on Facebook"
                             style={{ color: "rgb(59, 89, 152)" }}
                           >
-                            <FacebookIcon size="inherit" />
+                            <FacebookIcon fontSize="large" />
                           </a>
                           <a
                             href={`whatsapp://send?text=covidindiastats.com/${this.props.match.params.stateid.toUpperCase()}`}
@@ -1933,7 +1894,7 @@ class StateDetails extends Component {
                             title="Share COVID INDIA STATS on Whatsapp"
                             style={{ color: "#25D366" }}
                           >
-                            <WhatsAppIcon size="inherit" />
+                            <WhatsAppIcon fontSize="large" />
                           </a>
                           <a
                             href={`https://twitter.com/share?url=covidindiastats.com/${this.props.match.params.stateid.toUpperCase()}`}
@@ -1948,7 +1909,7 @@ class StateDetails extends Component {
                             title="Share COVID INDIA STATS on Twitter"
                             style={{ color: "#00ACEE" }}
                           >
-                            <TwitterIcon size="inherit" />
+                            <TwitterIcon fontSize="large" />
                           </a>
                           <h6 className="likeShare">Like it, Share</h6>
                         </div>

@@ -12,12 +12,12 @@ import {
 import Switch from "react-switch";
 import { format } from "d3";
 import Choropleth from "./choropleth";
-import ReactGa from "react-ga";
 import * as Icon from "react-feather";
 import WorldHomeCard from "./worldHomeCard";
 import LinePlot from "./linePlot";
 import BarPlot from "./barPlot";
-import { commaSeperated } from "../utils/common-functions";
+import { commaSeperated, timeSince } from "../utils/common-functions";
+import ReactGa from "react-ga";
 
 class Graph extends Component {
   constructor(props) {
@@ -191,6 +191,15 @@ class Graph extends Component {
         value: Number(item.deaths),
       })
     );
+
+    const grandTotal = [];
+
+    data2.map((item) => {
+      if (item.statecode === "TT") {
+        grandTotal.push(item);
+      }
+    });
+
     const months2 = [
       "January",
       "February",
@@ -327,6 +336,15 @@ class Graph extends Component {
     }
 
     if (isLoaded) {
+      const lastUpdatedTime = timeSince(
+        new Date(
+          [
+            grandTotal[0].lastupdatedtime.split(/\//)[1],
+            grandTotal[0].lastupdatedtime.split(/\//)[0],
+            grandTotal[0].lastupdatedtime.split(/\//)[2],
+          ].join("/")
+        ).getTime()
+      );
       return (
         <React.Fragment>
           <div className={graphClass}>
@@ -341,28 +359,59 @@ class Graph extends Component {
               <WorldHomeCard />
             </div>
             <div className="w-100"></div>
+
             <div className="row">
-              <div className="col">
+              <div className="col-8">
                 <h4
                   className="fadeInUp"
                   style={{
-                    justifyContent: "center",
+                    justifyContent: "left",
+                    textAlign: "left",
                     animationDelay: "2.2s",
-                    marginBottom: "25px",
+                    marginBottom: "15px",
                   }}
                 >
                   INDIA MAP
                   <h6 id="line1" style={{ fontSize: 8, color: "grey" }}>
-                    TAP OVER A STATE/UT
+                    Tap on a State/UT
                   </h6>
                   <h6 id="line2" style={{ fontSize: 8, color: "grey" }}>
-                    HOVER OVER A STATE/UT
+                    Hover Over a State/UT
                   </h6>
                 </h4>
               </div>
+
+              <div
+                className="col-4 fadeInUp"
+                style={{
+                  animationDelay: "2.2s",
+                }}
+              >
+                <h6 className="testpad">
+                  SAMPLES TESTED
+                  <h6 style={{ fontSize: 14 }}>
+                    {commaSeperated(
+                      totalSamplesTested[totalSamplesTested.length - 1]
+                    )}
+                    <h6 style={{ fontSize: 10 }}>
+                      <Icon.PlusCircle
+                        size={9}
+                        strokeWidth={3}
+                        fill="rgba(106, 68, 255, 0.2)"
+                        style={{ verticalAlign: -1 }}
+                      />{" "}
+                      {commaSeperated(
+                        totalSamplesTested[totalSamplesTested.length - 1] -
+                          totalSamplesTested[totalSamplesTested.length - 2]
+                      )}
+                    </h6>
+                  </h6>
+                </h6>
+              </div>
+
               <div className="w-100"></div>
               <div
-                className="container fadeInUp toggle-map"
+                className="fadeInUp toggle-map container"
                 style={{ animationDelay: "2.3s" }}
               >
                 <div className="row row-cols-4">
@@ -380,15 +429,37 @@ class Graph extends Component {
                     <h6
                       className="text-info pad"
                       style={{
-                        cursor: "pointer",
                         background: `${
                           clickConfirmedMap
                             ? "rgb(189, 216, 228)"
-                            : "rgba(189, 216, 228, 0.3)"
+                            : "rgba(189, 216, 228, 0.2)"
                         }`,
                       }}
                     >
                       CONFIRMED
+                      <h6 style={{ fontSize: 14 }}>
+                        {commaSeperated(grandTotal[0].confirmed)}
+                        <h6 style={{ fontSize: 10 }}>
+                          {grandTotal[0].deltaconfirmed ? (
+                            <Icon.PlusCircle
+                              size={9}
+                              strokeWidth={3}
+                              fill="rgba(23, 162, 184, 0.2)"
+                              style={{ verticalAlign: -1 }}
+                            />
+                          ) : (
+                            <Icon.Meh
+                              size={9}
+                              strokeWidth={3}
+                              fill="rgba(23, 162, 184, 0.2)"
+                              style={{ verticalAlign: -1 }}
+                            />
+                          )}
+                          {grandTotal[0].deltaconfirmed
+                            ? " " + commaSeperated(grandTotal[0].deltaconfirmed)
+                            : ""}
+                        </h6>
+                      </h6>
                     </h6>
                   </div>
                   <div
@@ -406,15 +477,49 @@ class Graph extends Component {
                       className="pad"
                       style={{
                         color: "rgb(255, 68, 106)",
-                        cursor: "pointer",
+
                         background: `${
                           clickActiveMap
                             ? "rgba(247, 177, 177, 0.9)"
-                            : "rgba(247, 177, 177, 0.3)"
+                            : "rgba(247, 177, 177, 0.2)"
                         }`,
                       }}
                     >
                       ACTIVE
+                      <h6 style={{ fontSize: 14 }}>
+                        {commaSeperated(grandTotal[0].active)}
+                        <h6 style={{ fontSize: 10 }}>
+                          {Number(grandTotal[0].deltaconfirmed) -
+                            Number(grandTotal[0].deltarecovered) -
+                            Number(grandTotal[0].deltadeaths) >
+                          0 ? (
+                            <Icon.PlusCircle
+                              size={9}
+                              strokeWidth={3}
+                              fill="rgba(255, 68, 106, 0.2)"
+                              style={{ verticalAlign: -1 }}
+                            />
+                          ) : (
+                            <Icon.Heart
+                              size={9}
+                              strokeWidth={3}
+                              fill="rgba(255, 68, 106, 0.4)"
+                              style={{ verticalAlign: -1 }}
+                            />
+                          )}{" "}
+                          {Number(grandTotal[0].deltaconfirmed) -
+                            Number(grandTotal[0].deltarecovered) -
+                            Number(grandTotal[0].deltadeaths) >
+                          0
+                            ? " " +
+                              commaSeperated(
+                                Number(grandTotal[0].deltaconfirmed) -
+                                  Number(grandTotal[0].deltarecovered) -
+                                  Number(grandTotal[0].deltadeaths)
+                              )
+                            : ""}
+                        </h6>
+                      </h6>
                     </h6>
                   </div>
                   <div
@@ -431,15 +536,37 @@ class Graph extends Component {
                     <h6
                       className="text-success pad"
                       style={{
-                        cursor: "pointer",
                         background: `${
                           clickRecoveredMap
                             ? "rgb(182, 229, 182)"
-                            : "rgba(182, 229, 182, 0.3)"
+                            : "rgba(182, 229, 182, 0.2)"
                         }`,
                       }}
                     >
                       RECOVERED
+                      <h6 style={{ fontSize: 14 }}>
+                        {commaSeperated(grandTotal[0].recovered)}
+                        <h6 style={{ fontSize: 10 }}>
+                          {grandTotal[0].deltarecovered ? (
+                            <Icon.PlusCircle
+                              size={9}
+                              strokeWidth={3}
+                              fill="rgba(23, 162, 184, 0.2)"
+                              style={{ verticalAlign: -1 }}
+                            />
+                          ) : (
+                            <Icon.Smile
+                              size={9}
+                              strokeWidth={3}
+                              fill="rgba(23, 162, 184, 0.2)"
+                              style={{ verticalAlign: -1 }}
+                            />
+                          )}
+                          {grandTotal[0].deltarecovered
+                            ? " " + commaSeperated(grandTotal[0].deltarecovered)
+                            : ""}
+                        </h6>
+                      </h6>
                     </h6>
                   </div>
                   <div
@@ -459,12 +586,35 @@ class Graph extends Component {
                         background: `${
                           clickDeceasedMap
                             ? "rgb(179, 173, 173)"
-                            : "rgba(179, 173, 173, 0.3)"
+                            : "rgba(179, 173, 173, 0.2)"
                         }`,
                         cursor: "pointer",
                       }}
                     >
                       DECEASED
+                      <h6 style={{ fontSize: 14 }}>
+                        {commaSeperated(grandTotal[0].deaths)}
+                        <h6 style={{ fontSize: 10 }}>
+                          {Number(grandTotal[0].deltadeaths) ? (
+                            <Icon.PlusCircle
+                              size={9}
+                              strokeWidth={3}
+                              fill="rgba(40, 167, 69, 0.2)"
+                              style={{ verticalAlign: -1 }}
+                            />
+                          ) : (
+                            <Icon.Meh
+                              size={9}
+                              strokeWidth={3}
+                              fill="rgba(40, 167, 69, 0.2)"
+                              style={{ verticalAlign: -1 }}
+                            />
+                          )}{" "}
+                          {Number(grandTotal[0].deltadeaths)
+                            ? " " + commaSeperated(grandTotal[0].deltadeaths)
+                            : ""}
+                        </h6>
+                      </h6>
                     </h6>
                   </div>
                 </div>
@@ -478,6 +628,10 @@ class Graph extends Component {
                   animationDelay: "2.35s",
                 }}
               >
+                <h6 className="lastUpdatedIndiaMap">
+                  Last Updated
+                  <h6>{lastUpdatedTime}</h6>
+                </h6>
                 {clickConfirmedMap && (
                   <Choropleth
                     data={confirmedStatesData.slice(

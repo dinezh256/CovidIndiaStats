@@ -270,10 +270,10 @@ class Table extends Component {
         <React.Fragment>
           <div className="containerHome">
             <div
-              className="no gutter fadeInUp"
+              className="fadeInUp"
               id="line1"
               style={{
-                marginBottom: "10px",
+                marginBottom: "8px",
                 animationDelay: "0.5s",
                 boxShadow: "0 0 20px rgba(0,0,0,0.25)",
                 borderRadius: "6px",
@@ -283,15 +283,14 @@ class Table extends Component {
                 <thead>
                   <tr>
                     <th
-                      className="text-info span delta sticky-top"
-                      style={{ width: "25%", background: "#d9ecf5" }}
+                      className="text-info span delta sticky-top graphWidth"
+                      style={{ background: "#d9ecf5" }}
                     >
                       CONFIRMED
                     </th>
                     <th
-                      className="delta span sticky-top"
+                      className="delta span sticky-top graphWidth"
                       style={{
-                        width: "25%",
                         background: "#f5d2d2",
                         color: "#ff446a",
                       }}
@@ -299,17 +298,16 @@ class Table extends Component {
                       ACTIVE
                     </th>
                     <th
-                      className="text-success delta span sticky-top"
-                      style={{ width: "25%", background: "#d5e9d5" }}
+                      className="text-success delta span sticky-top graphWidth"
+                      style={{ background: "#d5e9d5" }}
                     >
                       Recovered
                     </th>
                     <th
-                      className="text-secondary delta span sticky-top"
+                      className="text-secondary delta span sticky-top graphWidth"
                       style={{
                         background: "#ece7e7",
                         fontWeight: 600,
-                        width: "25%",
                       }}
                     >
                       DECEASED
@@ -332,7 +330,7 @@ class Table extends Component {
                       </h5>
                       <section tyle={{ justifyContent: "center" }}>
                         <ResponsiveContainer
-                          width={75}
+                          width={76}
                           height="100%"
                           aspect={2.25}
                         >
@@ -391,7 +389,7 @@ class Table extends Component {
                       </h5>
                       <section style={{ justifyContent: "center" }}>
                         <ResponsiveContainer
-                          width={75}
+                          width={76}
                           height="100%"
                           aspect={2.25}
                         >
@@ -449,7 +447,7 @@ class Table extends Component {
                       </h5>
                       <section tyle={{ justifyContent: "center" }}>
                         <ResponsiveContainer
-                          width={75}
+                          width={76}
                           height="100%"
                           aspect={2.25}
                         >
@@ -510,7 +508,7 @@ class Table extends Component {
                         style={{ justifyContent: "center" }}
                       >
                         <ResponsiveContainer
-                          width={75}
+                          width={76}
                           height="100%"
                           aspect={2.25}
                         >
@@ -592,12 +590,11 @@ class Table extends Component {
               id="line2"
               style={{
                 marginTop: 14,
-                marginBottom: "-5px",
                 animationDelay: "0.5s",
                 boxShadow: "0 0 30px rgba(0,0,0,0.25)",
                 borderRadius: "6px",
                 width: "95%",
-                marginBottom: 5,
+                marginBottom: 6,
               }}
             >
               <table className="table table-sm table-striped table-borderless">
@@ -901,24 +898,12 @@ class Table extends Component {
             </div>
             <div className="w-100"></div>
             <div className="container">
-              <div
-                className="row"
-                id="line2"
-                style={{
-                  animationDelay: "0.9s",
-                }}
-              >
+              <div className="row" id="line2">
                 <Updates />
               </div>
             </div>
             <div className="w-100"></div>
-            <div
-              className="row"
-              id="line1"
-              style={{
-                animationDelay: "0s",
-              }}
-            >
+            <div className="row" id="line1">
               <Updates />
             </div>
             <div className="w-100"></div>

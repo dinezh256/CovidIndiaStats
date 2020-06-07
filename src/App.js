@@ -17,6 +17,7 @@ const World = lazy(() => import("./components/world"));
 const Options = lazy(() => import("./components/options"));
 const FAQ = lazy(() => import("./components/faq"));
 const NotFound = lazy(() => import("./components/notFound"));
+const Notifications = lazy(() => import("./components/notifications"));
 const Test = lazy(() => import("./components/test"));
 const StateDetails = lazy(() => import("./components/stateDetails"));
 
@@ -55,6 +56,7 @@ function App() {
               <Route path="/faq" component={FAQ} />
               <Route path="/indepth" component={StateGraph} />
               <Route path="/not-found" component={NotFound} />
+              <Route path="/notifications" component={Notifications} />
               <Route exact path="/" component={Home} />
               <Route path="/:stateid?" component={StateDetails} />
               <Redirect to="/not-found" />

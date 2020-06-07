@@ -16,8 +16,6 @@ class StateTable extends Component {
       stateData: [],
       requiredData: [],
       requiredState: "",
-      zones: null,
-      zonesLoaded: false,
       back: false,
       sortConfirmed: true,
       sortActive: false,
@@ -58,12 +56,6 @@ class StateTable extends Component {
   }
 
   async componentDidMount() {
-    fetch("https://api.covid19india.org/zones.json").then((res) =>
-      res.json().then((json) => {
-        this.setState({ zones: json.zones, zonesLoaded: true });
-      })
-    );
-
     const fetchedStates = await indianstates();
     this.setState({ stateData: fetchedStates });
   }
@@ -85,8 +77,6 @@ class StateTable extends Component {
     const {
       requiredData,
       requiredState,
-      zonesLoaded,
-      zones,
       back,
       sortConfirmed,
       sortActive,
@@ -152,32 +142,6 @@ class StateTable extends Component {
       return res;
     }
 
-    function districtZone(district) {
-      const redZone = [];
-      const orangeZone = [];
-      const greenZone = [];
-      if (zonesLoaded) {
-        zones.map((item) => {
-          if (item.zone === "Red") redZone.push(item.district);
-        });
-        zones.map((item) => {
-          if (item.zone === "Orange") orangeZone.push(item.district);
-        });
-        zones.map((item) => {
-          if (item.zone === "Green") greenZone.push(item.district);
-        });
-      }
-      if (redZone.includes(district)) {
-        return "#ff446a";
-      }
-      if (orangeZone.includes(district)) {
-        return "rgb(255, 153, 0)";
-      }
-      if (greenZone.includes(district)) {
-        return "rgb(40, 167, 69)";
-      } else return "rgb(150, 150, 150)";
-    }
-
     const stateFullName = {
       AP: "Andhra Pradesh",
       AN: "A & N Islands",
@@ -231,32 +195,6 @@ class StateTable extends Component {
           <StatePicker handleStateChange={this.handleStateChange} />
         </div>
         <div className="w-100"></div>
-        {requiredData.length && back ? (
-          <React.Fragment>
-            <div className="row fadeInUp" style={{ animationDelay: "0.1s" }}>
-              <h6
-                style={{
-                  fontSize: 9,
-                  color: "grey",
-                  textAlign: "left",
-                  marginBottom: -35,
-                  marginLeft: 5,
-                }}
-              >
-                District not mentioned? Might be in the GreenZone{" "}
-                <a
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  href="https://www.indiatoday.in/india/story/red-orange-green-zones-full-current-update-list-districts-states-india-coronavirus-1673358-2020-05-01"
-                >
-                  <Icon.Link size={12} color="#3e4da3" strokeWidth={3} />
-                </a>
-              </h6>
-            </div>
-          </React.Fragment>
-        ) : (
-          ""
-        )}
         <div className="w-100"></div>
         {requiredData.length && back ? (
           <div className="row">
@@ -411,7 +349,7 @@ class StateTable extends Component {
                       <td
                         className="tdleft align-middle"
                         style={{
-                          color: `${districtZone(district.district)}`,
+                          color: "grey",
                           borderLeftWidth: "5px",
                           borderStyle: "solid",
                         }}

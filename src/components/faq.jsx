@@ -23,14 +23,20 @@ class FAQ extends Component {
           </h2>
           <br />
           <Container>
-            <div className="FAQ" style={{ animationDelay: "1s" }}>
-              <h4 className="question fadeOutDown">
+            <div className="FAQ">
+              <h4
+                className="question fadeInUp"
+                style={{ animationDelay: "1.8s" }}
+              >
                 <span className="faqicon">
                   <Icon.Feather size={20} />{" "}
                 </span>{" "}
                 What are your Sources?
               </h4>
-              <h5 className="answer fadeInUp">
+              <h5
+                className="answer fadeInUp"
+                style={{ animationDelay: "1.8s" }}
+              >
                 <span className="faqicon">
                   <Icon.Clipboard size={20} />{" "}
                 </span>{" "}
@@ -39,13 +45,19 @@ class FAQ extends Component {
                 India, Indian and State Government media briefs.
               </h5>
 
-              <h4 className="question fadeOutDown">
+              <h4
+                className="question fadeInUp"
+                style={{ animationDelay: "1.8s" }}
+              >
                 <span className="faqicon">
                   <Icon.Feather size={20} />{" "}
                 </span>{" "}
                 Which APIs have been used to fetch Data?
               </h4>
-              <h5 className="answer fadeInUp">
+              <h5
+                className="answer fadeInUp"
+                style={{ animationDelay: "1.8s" }}
+              >
                 <span className="faqicon">
                   <Icon.Clipboard size={20} />{" "}
                 </span>{" "}
@@ -62,13 +74,19 @@ class FAQ extends Component {
                 </span>
               </h5>
 
-              <h4 className="question fadeOutDown">
+              <h4
+                className="question fadeInUp"
+                style={{ animationDelay: "1.8s" }}
+              >
                 <span className="faqicon">
                   <Icon.Feather size={20} />{" "}
                 </span>{" "}
                 How can we help fight this pandemic?
               </h4>
-              <h5 className="answer fadeInUp">
+              <h5
+                className="answer fadeInUp"
+                style={{ animationDelay: "1.8s" }}
+              >
                 <span className="faqicon">
                   <Icon.Clipboard size={20} />{" "}
                 </span>{" "}
@@ -86,7 +104,11 @@ class FAQ extends Component {
             <br id="line2" />
             <br id="line2" />
             <br id="line1" />
-            <div align="center" className="col">
+            <div
+              align="center"
+              className="col fadeInUp"
+              style={{ animationDelay: "2.2s" }}
+            >
               <a
                 href="https://forms.gle/N6V7VTgcmBtxkU4Q9"
                 className="button"

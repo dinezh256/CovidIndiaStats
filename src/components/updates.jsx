@@ -1,6 +1,11 @@
 import React, { Component } from "react";
 import ReactGa from "react-ga";
-import { formatDate, formatDateAbsolute } from "../utils/common-functions";
+import {
+  formatDate,
+  formatDateAbsolute,
+  toTimestamp,
+  timeSince,
+} from "../utils/common-functions";
 import FiberNewOutlinedIcon from "@material-ui/icons/FiberNewOutlined";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import NotificationsOffIcon from "@material-ui/icons/NotificationsOff";
@@ -68,49 +73,6 @@ class Updates extends Component {
       wasSeen,
     } = this.state;
 
-    function toTimestamp(strDate) {
-      var datum = Date.parse(strDate);
-      return datum / 1000;
-    }
-
-    function timeSince(timeStamp) {
-      var now = new Date(),
-        secondsPast = (now.getTime() - timeStamp) / 1000;
-
-      if (secondsPast < 60) {
-        return (
-          parseInt(secondsPast) +
-          ` second${parseInt(secondsPast) > 1 ? "s" : ""} ago`
-        );
-      }
-
-      if (secondsPast < 3600) {
-        return (
-          parseInt(secondsPast / 60) +
-          ` minute${parseInt(secondsPast / 60) > 1 ? "s" : ""} ago`
-        );
-      }
-
-      if (secondsPast <= 86400) {
-        return (
-          parseInt(secondsPast / 3600) +
-          ` hour${parseInt(secondsPast / 3600) > 1 ? "s" : ""} ago `
-        );
-      }
-      if (secondsPast > 86400) {
-        let day = timeStamp.getDate();
-        var month = timeStamp
-          .toDateString()
-          .match(/ [a-zA-Z]*/)[0]
-          .replace(" ", "");
-        var year =
-          timeStamp.getFullYear() === now.getFullYear()
-            ? ""
-            : " " + timeStamp.getFullYear();
-        return day + " " + month + year;
-      }
-    }
-
     let totalDeltaConfirmed = 0;
     data.map((item) => (totalDeltaConfirmed += Number(item.deltaconfirmed)));
     let totalDeltaRecovered = 0;
@@ -141,7 +103,7 @@ class Updates extends Component {
             }}
           >
             <span className="font-weight-bold" style={{ color: "#3f51b5" }}>
-              <h4 className="total">
+              <h4 className="updates">
                 <span style={{ verticalAlign: "0.1rem", cursor: "pointer" }}>
                   <QueryBuilderTwoToneIcon color="primary" fontSize="small" />
                 </span>
@@ -151,8 +113,9 @@ class Updates extends Component {
                     ? ""
                     : formatDateAbsolute(lastUpdated)}
                 </span>
-                &nbsp;|&nbsp;
+                <span>&nbsp;|&nbsp;</span>
                 <span
+                  id="line2"
                   onClick={() => {
                     ReactGa.event({
                       category: "Icon",
@@ -180,7 +143,7 @@ class Updates extends Component {
                     <NotificationsOffIcon color="disabled" />
                   )}
                 </span>
-                &nbsp;|&nbsp;
+                <span id="line2">&nbsp;|&nbsp;</span>
                 <span style={{ color: "red" }}>{items.length - 1}</span>
                 <span style={{ color: "#3f51b5" }}>
                   {" "}
