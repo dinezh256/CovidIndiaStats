@@ -939,7 +939,7 @@ class Table extends Component {
               </h5>
               <div
                 className="col fadeInUp"
-                style={{ animationDelay: "2.45s", alignItems: "right" }}
+                style={{ animationDelay: "1.8s", alignItems: "right" }}
               >
                 <div
                   className="home-toggle float-left"
@@ -967,13 +967,13 @@ class Table extends Component {
                   ></Switch>
                 </div>
                 <span
-                    style={{
-                      color: "#3e4da3",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    &nbsp;%age
-                  </span>
+                  style={{
+                    color: "#3e4da3",
+                    fontWeight: "bold",
+                  }}
+                >
+                  &nbsp;%age
+                </span>
               </div>
             </div>
             <div className="w-100"></div>
@@ -1077,7 +1077,7 @@ class Table extends Component {
                   {items.map((item) => (
                     <tr className="tr" key={item.statecode}>
                       <td
-                        className="text-secondary tdleft align-middle"
+                        className="text-secondary td-md-left align-middle"
                         style={{ borderStyle: "solid", borderLeftWidth: "5px" }}
                       >
                         {item.state}
@@ -1088,7 +1088,7 @@ class Table extends Component {
                           >
                             <span style={{ verticalAlign: "0.05rem" }}>
                               <InfoTwoToneIcon
-                                color="active"
+                                color="primary"
                                 fontSize="inherit"
                               />
                             </span>
@@ -1098,7 +1098,7 @@ class Table extends Component {
                         )}
                       </td>
                       <td
-                        className="delta td text-secondary align-middle"
+                        className="delta td-md text-secondary align-middle"
                         style={{ textAlign: "right" }}
                       >
                         <span className="arrowup text-info">
@@ -1114,19 +1114,21 @@ class Table extends Component {
                             ? commaSeperated(item.deltaconfirmed)
                             : ""}
                         </span>
-                        &nbsp;
-                        {commaSeperated(item.confirmed)}
+                        &nbsp;{commaSeperated(item.confirmed)}
                       </td>
                       <td
-                        className="delta td text-secondary align-middle"
+                        className="delta td-md text-secondary align-middle"
                         style={{ textAlign: "right" }}
                       >
-                        {item.active === "0"
+                        {percentageToggleActive
+                          ? ((item.active * 100) / item.confirmed).toFixed(1) +
+                            "%"
+                          : item.active === "0"
                           ? "-"
                           : commaSeperated(item.active)}
                       </td>
                       <td
-                        className="delta td text-secondary align-middle"
+                        className="delta td-md text-secondary align-middle"
                         style={{ textAlign: "right" }}
                       >
                         <span className="arrowup" style={{ color: "#28a745" }}>
@@ -1143,12 +1145,16 @@ class Table extends Component {
                             : ""}
                         </span>
                         &nbsp;
-                        {item.recovered === "0"
+                        {percentageToggleActive
+                          ? ((item.recovered * 100) / item.confirmed).toFixed(
+                              1
+                            ) + "%"
+                          : item.recovered === "0"
                           ? "-"
                           : commaSeperated(item.recovered)}
                       </td>
                       <td
-                        className="delta td text-secondary align-middle"
+                        className="delta td-md text-secondary align-middle"
                         style={{ textAlign: "right" }}
                       >
                         <span className="arrowup" style={{ color: "#6c757d" }}>
@@ -1165,7 +1171,10 @@ class Table extends Component {
                             : ""}
                         </span>
                         &nbsp;
-                        {item.deaths === "0"
+                        {percentageToggleActive
+                          ? ((item.deaths * 100) / item.confirmed).toFixed(1) +
+                            "%"
+                          : item.deaths === "0"
                           ? "-"
                           : commaSeperated(item.deaths)}
                       </td>
@@ -1185,7 +1194,7 @@ class Table extends Component {
                         <BootstrapTooltip title={parse(total[0].statenotes)}>
                           <span style={{ verticalAlign: "0.05rem" }}>
                             <InfoTwoToneIcon
-                              color="primary"
+                              color="disabled"
                               fontSize="inherit"
                             />
                           </span>
@@ -1206,7 +1215,6 @@ class Table extends Component {
                             strokeWidth={3.5}
                           />
                         )}
-
                         {total[0].deltaconfirmed === "0"
                           ? ""
                           : commaSeperated(total[0].deltaconfirmed)}
@@ -1225,17 +1233,14 @@ class Table extends Component {
                       className="delta td text-secondary align-middle"
                       style={{ textAlign: "right" }}
                     >
-                      <span
-                        className="arrowup"
-                        style={{ color: "#28a745", wordBreak: "keep-all" }}
-                      >
+                      <span className="arrowup" style={{ color: "#28a745" }}>
                         {total[0].deltarecovered !== "0" && (
                           <Icon.ArrowUp
                             color="#28a745"
                             size={9}
                             strokeWidth={3.5}
                           />
-                        )}
+                        )}{" "}
                         {total[0].deltarecovered === "0"
                           ? ""
                           : commaSeperated(total[0].deltarecovered)}
@@ -1249,12 +1254,7 @@ class Table extends Component {
                       className="delta td text-secondary align-middle"
                       style={{ textAlign: "right" }}
                     >
-                      <span
-                        className="arrowup"
-                        style={{
-                          color: "#6c757d",
-                        }}
-                      >
+                      <span className="arrowup" style={{ color: "#6c757d" }}>
                         {total[0].deltadeaths !== "0" && (
                           <Icon.ArrowUp
                             color="#6c757d"
@@ -1262,16 +1262,13 @@ class Table extends Component {
                             strokeWidth={3.5}
                           />
                         )}
+
                         {total[0].deltadeaths === "0"
                           ? ""
                           : commaSeperated(total[0].deltadeaths)}
                       </span>
                       &nbsp;
-                      <span>
-                        {total[0].deaths === "0"
-                          ? "-"
-                          : commaSeperated(total[0].deaths)}
-                      </span>
+                      {commaSeperated(total[0].deaths)}
                     </td>
                   </tr>
                 </tbody>
