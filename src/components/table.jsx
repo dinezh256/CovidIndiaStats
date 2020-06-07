@@ -987,7 +987,7 @@ class Table extends Component {
                       fontWeight: "bold",
                     }}
                   >
-                    &nbsp;%age;
+                    &nbsp;%age
                   </span>
               </div>
             </div>
