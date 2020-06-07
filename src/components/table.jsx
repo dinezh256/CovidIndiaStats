@@ -21,6 +21,7 @@ import parse from "html-react-parser";
 import { commaSeperated } from "../utils/common-functions";
 import StateTable from "./stateTable";
 import ReactGa from "react-ga";
+import Switch from "react-switch";
 
 let CreateReactClass = require("create-react-class");
 
@@ -38,12 +39,18 @@ class Table extends Component {
       sortRecovered: false,
       sortDeceased: false,
       sortOrder: true,
+      percentageToggleActive: false,
     };
+    this.onPercentageToggle = this.onPercentageToggle.bind(this);
     this.onSortConfirmed = this.onSortConfirmed.bind(this);
     this.onSortActive = this.onSortActive.bind(this);
     this.onSortRecovered = this.onSortRecovered.bind(this);
     this.onSortDeceased = this.onSortDeceased.bind(this);
     this.handleSortOrder = this.handleSortOrder.bind(this);
+  }
+
+  onPercentageToggle(percentageToggleActive) {
+    this.setState({ percentageToggleActive });
   }
 
   onSortConfirmed({ sortConfirmed }) {
@@ -118,6 +125,7 @@ class Table extends Component {
       sortRecovered,
       sortDeceased,
       sortOrder,
+      percentageToggleActive,
     } = this.state;
 
     const dailyConfirmed = [];
@@ -929,6 +937,44 @@ class Table extends Component {
                   </span>
                 </BootstrapTooltip>
               </h5>
+              <div
+                className="col fadeInUp"
+                style={{ animationDelay: "2.45s", alignItems: "right" }}
+              >
+                <div
+                  className="home-toggle float-left"
+                  style={{
+                    marginTop: "2px",
+                  }}
+                >
+                  <Switch
+                    className="react-switch"
+                    onChange={this.onPercentageToggle}
+                    onClick={ReactGa.event({
+                      category: "Switch",
+                      action: "Switch clicked",
+                    })}
+                    checked={percentageToggleActive}
+                    onColor="#86d3ff"
+                    onHandleColor="#2693e6"
+                    handleDiameter={11}
+                    uncheckedIcon={false}
+                    checkedIcon={false}
+                    boxShadow="0 0 5px rgba(0,0,0,0.2)"
+                    activeBoxShadow="0 0 2px rgba(0,0,0,0.25)"
+                    height={16}
+                    width={35}
+                  ></Switch>
+                </div>
+                <span
+                    style={{
+                      color: "#3e4da3",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    &nbsp;%age
+                  </span>
+              </div>
             </div>
             <div className="w-100"></div>
             <div
@@ -1355,7 +1401,10 @@ class Table extends Component {
                         className="delta td-md text-secondary align-middle"
                         style={{ textAlign: "right" }}
                       >
-                        {item.active === "0"
+                        {percentageToggleActive
+                          ? ((item.active * 100) / item.confirmed).toFixed(1) +
+                            "%"
+                          : item.active === "0"
                           ? "-"
                           : commaSeperated(item.active)}
                       </td>
@@ -1377,7 +1426,11 @@ class Table extends Component {
                             : ""}
                         </span>
                         &nbsp;
-                        {item.recovered === "0"
+                        {percentageToggleActive
+                          ? ((item.recovered * 100) / item.confirmed).toFixed(
+                              1
+                            ) + "%"
+                          : item.recovered === "0"
                           ? "-"
                           : commaSeperated(item.recovered)}
                       </td>
@@ -1399,7 +1452,10 @@ class Table extends Component {
                             : ""}
                         </span>
                         &nbsp;
-                        {item.deaths === "0"
+                        {percentageToggleActive
+                          ? ((item.deaths * 100) / item.confirmed).toFixed(1) +
+                            "%"
+                          : item.deaths === "0"
                           ? "-"
                           : commaSeperated(item.deaths)}
                       </td>
