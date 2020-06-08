@@ -440,7 +440,7 @@ class Graph extends Component {
                       <h6 style={{ fontSize: 14 }}>
                         {commaSeperated(grandTotal[0].confirmed)}
                         <h6 style={{ fontSize: 10 }}>
-                          {grandTotal[0].deltaconfirmed ? (
+                          {Number(grandTotal[0].deltaconfirmed) > 0 ? (
                             <Icon.PlusCircle
                               size={9}
                               strokeWidth={3}
@@ -455,7 +455,7 @@ class Graph extends Component {
                               style={{ verticalAlign: -1 }}
                             />
                           )}
-                          {grandTotal[0].deltaconfirmed
+                          {Number(grandTotal[0].deltaconfirmed) > 0
                             ? " " + commaSeperated(grandTotal[0].deltaconfirmed)
                             : ""}
                         </h6>
@@ -547,7 +547,7 @@ class Graph extends Component {
                       <h6 style={{ fontSize: 14 }}>
                         {commaSeperated(grandTotal[0].recovered)}
                         <h6 style={{ fontSize: 10 }}>
-                          {grandTotal[0].deltarecovered ? (
+                          {Number(grandTotal[0].deltarecovered) > 0 ? (
                             <Icon.PlusCircle
                               size={9}
                               strokeWidth={3}
@@ -562,7 +562,7 @@ class Graph extends Component {
                               style={{ verticalAlign: -1 }}
                             />
                           )}
-                          {grandTotal[0].deltarecovered
+                          {Number(grandTotal[0].deltarecovered) > 0
                             ? " " + commaSeperated(grandTotal[0].deltarecovered)
                             : ""}
                         </h6>
@@ -595,7 +595,7 @@ class Graph extends Component {
                       <h6 style={{ fontSize: 14 }}>
                         {commaSeperated(grandTotal[0].deaths)}
                         <h6 style={{ fontSize: 10 }}>
-                          {Number(grandTotal[0].deltadeaths) ? (
+                          {Number(grandTotal[0].deltadeaths) > 0 ? (
                             <Icon.PlusCircle
                               size={9}
                               strokeWidth={3}
@@ -610,7 +610,7 @@ class Graph extends Component {
                               style={{ verticalAlign: -1 }}
                             />
                           )}{" "}
-                          {Number(grandTotal[0].deltadeaths)
+                          {Number(grandTotal[0].deltadeaths) > 0
                             ? " " + commaSeperated(grandTotal[0].deltadeaths)
                             : ""}
                         </h6>
