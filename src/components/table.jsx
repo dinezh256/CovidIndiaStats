@@ -326,24 +326,19 @@ class Table extends Component {
                   <tr>
                     <td>
                       <h6 className="text-info delta" style={{ fontSize: 12 }}>
-                        {delta[0].deltaconfirmed > 0 ? (
-                          <Icon.PlusCircle
-                            size={10}
-                            strokeWidth={3}
-                            fill="rgba(23, 162, 184, 0.2)"
-                            style={{ verticalAlign: 0.5 }}
-                          />
+                        {Number(delta[0].deltaconfirmed) > 0 ? (
+                          ""
                         ) : (
                           <Icon.Meh
-                            size={10}
+                            size={12}
                             strokeWidth={3}
                             fill="rgba(23, 162, 184, 0.2)"
                             style={{ verticalAlign: 1 }}
                           />
                         )}
 
-                        {delta[0].deltaconfirmed > 0
-                          ? " " + commaSeperated(delta[0].deltaconfirmed)
+                        {Number(delta[0].deltaconfirmed) > 0
+                          ? "+" + commaSeperated(delta[0].deltaconfirmed)
                           : ""}
                       </h6>
                       <h5 className="text-info" style={{ textAlign: "center" }}>
@@ -458,23 +453,18 @@ class Table extends Component {
                         className="text-success delta"
                         style={{ fontSize: 12 }}
                       >
-                        {delta[0].deltarecovered ? (
-                          <Icon.PlusCircle
-                            size={10}
-                            strokeWidth={3}
-                            fill="rgba(23, 162, 184, 0.2)"
-                            style={{ verticalAlign: 0.5 }}
-                          />
+                        {Number(delta[0].deltarecovered) > 0 ? (
+                          ""
                         ) : (
                           <Icon.Smile
-                            size={10}
+                            size={12}
                             strokeWidth={3}
                             fill="rgba(23, 162, 184, 0.2)"
                             style={{ verticalAlign: 0.5 }}
                           />
                         )}
-                        {delta[0].deltarecovered
-                          ? " " + commaSeperated(delta[0].deltarecovered)
+                        {Number(delta[0].deltarecovered) > 0
+                          ? "+" + commaSeperated(delta[0].deltarecovered)
                           : ""}
                       </h5>
                       <h5
@@ -533,23 +523,18 @@ class Table extends Component {
                         className="text-secondary delta"
                         style={{ fontSize: 12 }}
                       >
-                        {Number(delta[0].deltadeaths) ? (
-                          <Icon.PlusCircle
-                            size={10}
-                            strokeWidth={3}
-                            fill="rgba(40, 167, 69, 0.2)"
-                            style={{ verticalAlign: 0.5 }}
-                          />
+                        {Number(delta[0].deltadeaths) > 0 ? (
+                          ""
                         ) : (
                           <Icon.Meh
-                            size={10}
+                            size={12}
                             strokeWidth={3}
                             fill="rgba(40, 167, 69, 0.2)"
                             style={{ verticalAlign: 0.5 }}
                           />
-                        )}{" "}
+                        )}
                         {Number(delta[0].deltadeaths)
-                          ? " " + commaSeperated(delta[0].deltadeaths)
+                          ? "+" + commaSeperated(delta[0].deltadeaths)
                           : ""}
                       </h6>
                       <h5
@@ -698,15 +683,10 @@ class Table extends Component {
                   <td>
                     <h6 className="text-info delta" style={{ fontSize: 12 }}>
                       {delta[0].deltaconfirmed > 0 ? (
-                        <Icon.PlusCircle
-                          size={10}
-                          strokeWidth={3}
-                          fill="rgba(23, 162, 184, 0.2)"
-                          style={{ verticalAlign: -0.25 }}
-                        />
+                        ""
                       ) : (
                         <Icon.Meh
-                          size={10}
+                          size={12}
                           strokeWidth={3}
                           fill="rgba(23, 162, 184, 0.2)"
                           style={{ verticalAlign: -0.25 }}
@@ -714,7 +694,7 @@ class Table extends Component {
                       )}
 
                       {delta[0].deltaconfirmed > 0
-                        ? " " + commaSeperated(delta[0].deltaconfirmed)
+                        ? "+" + commaSeperated(delta[0].deltaconfirmed)
                         : ""}
                     </h6>
                     <h5 className="text-info" style={{ textAlign: "center" }}>
@@ -828,22 +808,17 @@ class Table extends Component {
                   <td>
                     <h6 className="text-success delta" style={{ fontSize: 12 }}>
                       {delta[0].deltarecovered ? (
-                        <Icon.PlusCircle
-                          size={10}
-                          strokeWidth={3}
-                          fill="rgba(23, 162, 184, 0.2)"
-                          style={{ verticalAlign: -0.5 }}
-                        />
+                        ""
                       ) : (
                         <Icon.Smile
-                          size={10}
+                          size={12}
                           strokeWidth={3}
                           fill="rgba(23, 162, 184, 0.2)"
                           style={{ verticalAlign: -0.5 }}
                         />
                       )}
-                      {delta[0].deltarecovered
-                        ? " " + commaSeperated(delta[0].deltarecovered)
+                      {delta[0].deltarecovered > 0
+                        ? "+" + commaSeperated(delta[0].deltarecovered)
                         : ""}
                     </h6>
                     <h5
@@ -902,23 +877,18 @@ class Table extends Component {
                       className="text-secondary delta"
                       style={{ fontSize: 12 }}
                     >
-                      {Number(delta[0].deltadeaths) ? (
-                        <Icon.PlusCircle
-                          size={10}
-                          strokeWidth={3}
-                          fill="rgba(40, 167, 69, 0.2)"
-                          style={{ verticalAlign: -0.5 }}
-                        />
+                      {Number(delta[0].deltadeaths) > 0 ? (
+                        ""
                       ) : (
                         <Icon.Meh
-                          size={10}
+                          size={12}
                           strokeWidth={3}
                           fill="rgba(40, 167, 69, 0.2)"
                           style={{ verticalAlign: -0.5 }}
                         />
                       )}{" "}
-                      {Number(delta[0].deltadeaths)
-                        ? " " + commaSeperated(delta[0].deltadeaths)
+                      {Number(delta[0].deltadeaths) > 0
+                        ? "+" + commaSeperated(delta[0].deltadeaths)
                         : ""}
                     </h6>
                     <h5
