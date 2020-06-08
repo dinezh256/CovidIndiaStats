@@ -328,22 +328,22 @@ class Table extends Component {
                       <h6 className="text-info delta" style={{ fontSize: 12 }}>
                         {delta[0].deltaconfirmed > 0 ? (
                           <Icon.PlusCircle
-                            size={9}
+                            size={10}
                             strokeWidth={3}
                             fill="rgba(23, 162, 184, 0.2)"
-                            style={{ verticalAlign: -1 }}
+                            style={{ verticalAlign: 0.5 }}
                           />
                         ) : (
                           <Icon.Meh
-                            size={9}
+                            size={10}
                             strokeWidth={3}
                             fill="rgba(23, 162, 184, 0.2)"
-                            style={{ verticalAlign: -1 }}
+                            style={{ verticalAlign: 1 }}
                           />
                         )}
 
                         {delta[0].deltaconfirmed > 0
-                          ? commaSeperated(delta[0].deltaconfirmed)
+                          ? " " + commaSeperated(delta[0].deltaconfirmed)
                           : ""}
                       </h6>
                       <h5 className="text-info" style={{ textAlign: "center" }}>
@@ -460,17 +460,17 @@ class Table extends Component {
                       >
                         {delta[0].deltarecovered ? (
                           <Icon.PlusCircle
-                            size={9}
+                            size={10}
                             strokeWidth={3}
                             fill="rgba(23, 162, 184, 0.2)"
-                            style={{ verticalAlign: -1 }}
+                            style={{ verticalAlign: 0.5 }}
                           />
                         ) : (
                           <Icon.Smile
-                            size={9}
+                            size={10}
                             strokeWidth={3}
                             fill="rgba(23, 162, 184, 0.2)"
-                            style={{ verticalAlign: -1 }}
+                            style={{ verticalAlign: 0.5 }}
                           />
                         )}
                         {delta[0].deltarecovered
@@ -535,17 +535,17 @@ class Table extends Component {
                       >
                         {Number(delta[0].deltadeaths) ? (
                           <Icon.PlusCircle
-                            size={9}
+                            size={10}
                             strokeWidth={3}
                             fill="rgba(40, 167, 69, 0.2)"
-                            style={{ verticalAlign: -1 }}
+                            style={{ verticalAlign: 0.5 }}
                           />
                         ) : (
                           <Icon.Meh
-                            size={9}
+                            size={10}
                             strokeWidth={3}
                             fill="rgba(40, 167, 69, 0.2)"
-                            style={{ verticalAlign: -1 }}
+                            style={{ verticalAlign: 0.5 }}
                           />
                         )}{" "}
                         {Number(delta[0].deltadeaths)
@@ -699,22 +699,22 @@ class Table extends Component {
                     <h6 className="text-info delta" style={{ fontSize: 12 }}>
                       {delta[0].deltaconfirmed > 0 ? (
                         <Icon.PlusCircle
-                          size={9}
+                          size={10}
                           strokeWidth={3}
                           fill="rgba(23, 162, 184, 0.2)"
-                          style={{ verticalAlign: -1 }}
+                          style={{ verticalAlign: -0.25 }}
                         />
                       ) : (
                         <Icon.Meh
-                          size={9}
+                          size={10}
                           strokeWidth={3}
                           fill="rgba(23, 162, 184, 0.2)"
-                          style={{ verticalAlign: -1 }}
+                          style={{ verticalAlign: -0.25 }}
                         />
                       )}
 
                       {delta[0].deltaconfirmed > 0
-                        ? commaSeperated(delta[0].deltaconfirmed)
+                        ? " " + commaSeperated(delta[0].deltaconfirmed)
                         : ""}
                     </h6>
                     <h5 className="text-info" style={{ textAlign: "center" }}>
@@ -829,17 +829,17 @@ class Table extends Component {
                     <h6 className="text-success delta" style={{ fontSize: 12 }}>
                       {delta[0].deltarecovered ? (
                         <Icon.PlusCircle
-                          size={9}
+                          size={10}
                           strokeWidth={3}
                           fill="rgba(23, 162, 184, 0.2)"
-                          style={{ verticalAlign: -1 }}
+                          style={{ verticalAlign: -0.5 }}
                         />
                       ) : (
                         <Icon.Smile
-                          size={9}
+                          size={10}
                           strokeWidth={3}
                           fill="rgba(23, 162, 184, 0.2)"
-                          style={{ verticalAlign: -1 }}
+                          style={{ verticalAlign: -0.5 }}
                         />
                       )}
                       {delta[0].deltarecovered
@@ -904,17 +904,17 @@ class Table extends Component {
                     >
                       {Number(delta[0].deltadeaths) ? (
                         <Icon.PlusCircle
-                          size={9}
+                          size={10}
                           strokeWidth={3}
                           fill="rgba(40, 167, 69, 0.2)"
-                          style={{ verticalAlign: -1 }}
+                          style={{ verticalAlign: -0.5 }}
                         />
                       ) : (
                         <Icon.Meh
-                          size={9}
+                          size={10}
                           strokeWidth={3}
                           fill="rgba(40, 167, 69, 0.2)"
-                          style={{ verticalAlign: -1 }}
+                          style={{ verticalAlign: -0.5 }}
                         />
                       )}{" "}
                       {Number(delta[0].deltadeaths)
@@ -1208,8 +1208,9 @@ class Table extends Component {
                         <span className="arrowup text-info">
                           {item.deltaconfirmed > "0" && (
                             <Icon.ArrowUp
+                              style={{ verticalAlign: -1 }}
                               color="#42b3f4"
-                              size={9}
+                              size={10}
                               strokeWidth={3.5}
                             />
                           )}
@@ -1238,8 +1239,9 @@ class Table extends Component {
                         <span className="arrowup" style={{ color: "#28a745" }}>
                           {item.deltarecovered > "0" && (
                             <Icon.ArrowUp
+                              style={{ verticalAlign: -1 }}
                               color="#28a745"
-                              size={9}
+                              size={10}
                               strokeWidth={3.5}
                             />
                           )}
@@ -1264,8 +1266,9 @@ class Table extends Component {
                         <span className="arrowup" style={{ color: "#6c757d" }}>
                           {item.deltadeaths > "0" && (
                             <Icon.ArrowUp
+                              style={{ verticalAlign: -1 }}
                               color="#6c757d"
-                              size={9}
+                              size={10}
                               strokeWidth={3.5}
                             />
                           )}
@@ -1314,8 +1317,9 @@ class Table extends Component {
                       <span className="arrowup text-info">
                         {Number(total[0].deltaconfirmed) > 0 && (
                           <Icon.ArrowUp
+                            style={{ verticalAlign: -1 }}
                             color="#42b3f4"
-                            size={9}
+                            size={10}
                             strokeWidth={3.5}
                           />
                         )}
@@ -1340,8 +1344,9 @@ class Table extends Component {
                       <span className="arrowup" style={{ color: "#28a745" }}>
                         {Number(total[0].deltarecovered) > 0 && (
                           <Icon.ArrowUp
+                            style={{ verticalAlign: -1 }}
                             color="#28a745"
-                            size={9}
+                            size={10}
                             strokeWidth={3.5}
                           />
                         )}{" "}
@@ -1361,8 +1366,9 @@ class Table extends Component {
                       <span className="arrowup" style={{ color: "#6c757d" }}>
                         {Number(total[0].deltadeaths) > 0 && (
                           <Icon.ArrowUp
+                            style={{ verticalAlign: -1 }}
                             color="#6c757d"
-                            size={9}
+                            size={10}
                             strokeWidth={3.5}
                           />
                         )}
@@ -1486,8 +1492,9 @@ class Table extends Component {
                         <span className="arrowup text-info">
                           {item.deltaconfirmed > "0" && (
                             <Icon.ArrowUp
+                              style={{ verticalAlign: -1 }}
                               color="#42b3f4"
-                              size={9}
+                              size={10}
                               strokeWidth={3.5}
                             />
                           )}
@@ -1516,8 +1523,9 @@ class Table extends Component {
                         <span className="arrowup" style={{ color: "#28a745" }}>
                           {item.deltarecovered > "0" && (
                             <Icon.ArrowUp
+                              style={{ verticalAlign: -1 }}
                               color="#28a745"
-                              size={9}
+                              size={10}
                               strokeWidth={3.5}
                             />
                           )}
@@ -1542,8 +1550,9 @@ class Table extends Component {
                         <span className="arrowup" style={{ color: "#6c757d" }}>
                           {item.deltadeaths > "0" && (
                             <Icon.ArrowUp
+                              style={{ verticalAlign: -1 }}
                               color="#6c757d"
-                              size={9}
+                              size={10}
                               strokeWidth={3.5}
                             />
                           )}
@@ -1592,8 +1601,9 @@ class Table extends Component {
                       <span className="arrowup text-info">
                         {Number(total[0].deltaconfirmed) > 0 && (
                           <Icon.ArrowUp
+                            style={{ verticalAlign: -1 }}
                             color="#42b3f4"
-                            size={9}
+                            size={10}
                             strokeWidth={3.5}
                           />
                         )}
@@ -1618,8 +1628,9 @@ class Table extends Component {
                       <span className="arrowup" style={{ color: "#28a745" }}>
                         {Number(total[0].deltarecovered) > 0 && (
                           <Icon.ArrowUp
+                            style={{ verticalAlign: -1 }}
                             color="#28a745"
-                            size={9}
+                            size={10}
                             strokeWidth={3.5}
                           />
                         )}{" "}
@@ -1639,8 +1650,9 @@ class Table extends Component {
                       <span className="arrowup" style={{ color: "#6c757d" }}>
                         {Number(total[0].deltadeaths) > 0 && (
                           <Icon.ArrowUp
+                            style={{ verticalAlign: -1 }}
                             color="#6c757d"
-                            size={9}
+                            size={10}
                             strokeWidth={3.5}
                           />
                         )}
