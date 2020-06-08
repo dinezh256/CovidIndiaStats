@@ -15,12 +15,12 @@ const months = {
 
 export const stateFullName = {
   "/": "COVID INDIA STATS",
-  "/indepth": "INDEPTH",
-  "/global": "Global",
-  "/dive": "DIVE",
-  "/links": "Helpful links",
-  "/faq": "faqs",
-  "/notifications": "notifications",
+  "/INDEPTH": "INDEPTH",
+  "/GLOBAL": "Global",
+  "/DIVE": "DIVE",
+  "/LINKS": "Helpful links",
+  "/FAQ": "faqs",
+  "/NOTIFICATIONS": "notifications",
   "/AP": "COVID INDIA STATS",
   "/AN": "COVID INDIA STATS",
   "/AR": "COVID INDIA STATS",

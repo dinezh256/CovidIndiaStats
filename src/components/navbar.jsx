@@ -10,7 +10,9 @@ class Navbar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      title: stateFullName[window.location.pathname].toUpperCase(),
+      title: stateFullName[
+        window.location.pathname.toUpperCase()
+      ].toUpperCase(),
     };
   }
 
@@ -22,7 +24,9 @@ class Navbar extends Component {
 
   componentDidMount() {
     this.props.history.listen(() => {
-      this.changeTitle(stateFullName[window.location.pathname].toUpperCase());
+      this.changeTitle(
+        stateFullName[window.location.pathname.toUpperCase()].toUpperCase()
+      );
     });
   }
 
