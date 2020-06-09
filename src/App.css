@@ -102,10 +102,29 @@ a {
 
 .menuIcon {
   cursor: pointer;
-  margin-left: 10px;
+  margin-left: 14px;
   background-color: #242526;
   border: none;
   color: white;
+  vertical-align: -0.1rem !important;
+}
+
+.about {
+  padding-right: 1px;
+  color: white;
+}
+
+.about:hover {
+  color: white;
+}
+
+@media (max-width: 460px) {
+  .menuIcon {
+    vertical-align: -0.1rem !important;
+  }
+  .about {
+    vertical-align: 0.1rem !important;
+  }
 }
 
 .sideBarItem {
@@ -123,15 +142,6 @@ a {
 
 .MuiListItemText-primary {
   font-size: 1.3rem !important;
-}
-
-.about {
-  padding-right: 1px;
-  color: white;
-}
-
-.about:hover {
-  color: white;
 }
 
 .containerHome {

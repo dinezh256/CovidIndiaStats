@@ -35,14 +35,14 @@ class Navbar extends Component {
       <nav className="myNavbar">
         <ul className="myNavbar-nav">
           <SwipeableTemporaryDrawer />
-          <ul style={{ flex: 0.55 }} id="line1"></ul>
+          <ul style={{ flex: 0.54 }} id="line1"></ul>
           <NavLink to="/" className="fadeInLeft">
             <div>
               <span className="title">{this.state.title}</span>
             </div>
           </NavLink>
-          <ul style={{ flex: 0.45 }}></ul>
-          <ul style={{ flex: 0.55 }} id="line2"></ul>
+          <ul style={{ flex: 0.46 }}></ul>
+          <ul style={{ flex: 0.54 }} id="line2"></ul>
 
           <NavLink to="/notifications" id="line1">
             <span className="about">
