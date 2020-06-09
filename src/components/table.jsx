@@ -1029,8 +1029,8 @@ class Table extends Component {
                       action: "Switch clicked",
                     })}
                     checked={percentageToggleActive}
-                    onColor="#86d3ff"
-                    onHandleColor="#2693e6"
+                    onColor="#e6e8f1"
+                    onHandleColor="#3e4da3"
                     handleDiameter={11}
                     uncheckedIcon={false}
                     checkedIcon={false}
