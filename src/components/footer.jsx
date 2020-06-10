@@ -71,7 +71,7 @@ const Footer = () => {
         </div>
         <div align="center" className="col">
           <a
-            href="https://twitter.com/ncovind"
+            href="https://twitter.com/covidindiastats"
             className="button"
             target="_blank"
             rel="noopener noreferrer"
