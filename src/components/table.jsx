@@ -287,7 +287,10 @@ class Table extends Component {
                 borderRadius: "6px",
               }}
             >
-              <table className="table table-sm table-borderless">
+              <table
+                className="table table-sm table-borderless"
+                style={{ marginBottom: "-1px" }}
+              >
                 <thead>
                   <tr>
                     <th
@@ -323,318 +326,313 @@ class Table extends Component {
                   </tr>
                 </thead>
                 <tbody className="tbody">
-                  <tr>
-                    <td>
-                      <h6 className="text-info delta" style={{ fontSize: 12 }}>
-                        {Number(delta[0].deltaconfirmed) > 0 ? (
-                          ""
-                        ) : (
-                          <Icon.Meh
-                            size={12}
-                            strokeWidth={3}
-                            fill="rgba(23, 162, 184, 0.2)"
-                            style={{ verticalAlign: 1 }}
-                          />
-                        )}
+                  <td>
+                    <h6 className="text-info delta" style={{ fontSize: 12 }}>
+                      {Number(delta[0].deltaconfirmed) > 0 ? (
+                        ""
+                      ) : (
+                        <Icon.Meh
+                          size={12}
+                          strokeWidth={3}
+                          fill="rgba(23, 162, 184, 0.2)"
+                          style={{ verticalAlign: 1 }}
+                        />
+                      )}
 
-                        {Number(delta[0].deltaconfirmed) > 0
-                          ? "+" + commaSeperated(delta[0].deltaconfirmed)
-                          : ""}
-                      </h6>
-                      <h5 className="text-info" style={{ textAlign: "center" }}>
+                      {Number(delta[0].deltaconfirmed) > 0
+                        ? "+" + commaSeperated(delta[0].deltaconfirmed)
+                        : ""}
+                    </h6>
+                    <h5 className="text-info" style={{ textAlign: "center" }}>
+                      <CountUp
+                        start={0}
+                        end={Number(total[0].confirmed)}
+                        duration={2}
+                        separator=","
+                      />
+                    </h5>
+                    <section
+                      tyle={{
+                        justifyContent: "center",
+                        paddingBottom: "-10px",
+                      }}
+                    >
+                      <ResponsiveContainer
+                        width={76}
+                        height="100%"
+                        aspect={2.25}
+                      >
+                        <LineChart data={sparklinedata} syncId="line1">
+                          <YAxis domain={[min, max]} hide={true} />
+                          <Retooltip
+                            content={<CustomTooltip />}
+                            contentStyle={{
+                              background: "rgba(255,255,255,0)",
+                              border: "none",
+                              textAlign: "left",
+                            }}
+                            active={true}
+                            cursor={false}
+                            position={{ x: 0, y: 0 }}
+                            offset={5}
+                          />
+                          <Line
+                            type="monotone"
+                            dataKey="confirmed"
+                            stroke="#42b3f4"
+                            strokeWidth={2.2}
+                            dot={false}
+                            animationDuration={2000}
+                          />
+                          <ReferenceDot
+                            x={sparklineconfirmed.length - 1}
+                            y={Number(sparklineconfirmed.slice(-1))}
+                            r={3}
+                            fill="#42b3f4"
+                            stroke="rgba(66, 179, 244, 0.7)"
+                            isFront={true}
+                          />
+                        </LineChart>
+                      </ResponsiveContainer>
+                    </section>
+                  </td>
+
+                  <td>
+                    <h6
+                      className="delta"
+                      style={{ color: "#ff446a", fontSize: 12 }}
+                    >
+                      <Icon.Heart
+                        size={12}
+                        strokeWidth={3}
+                        fill="rgba(255, 68, 106, 0.4)"
+                        style={{ verticalAlign: -0.5 }}
+                      />
+                    </h6>
+                    <h5 style={{ color: "#ff446a", textAlign: "center" }}>
+                      {!percentageToggleActive ? (
                         <CountUp
                           start={0}
-                          end={Number(total[0].confirmed)}
+                          end={Number(total[0].active)}
                           duration={2}
                           separator=","
                         />
-                      </h5>
-                      <section
-                        tyle={{
-                          justifyContent: "center",
-                          paddingBottom: "-10px",
-                        }}
+                      ) : (
+                        (
+                          (Number(total[0].active) /
+                            Number(total[0].confirmed)) *
+                          100
+                        ).toFixed(1) + "%"
+                      )}
+                    </h5>
+                    <section
+                      style={{
+                        justifyContent: "center",
+                        paddingBottom: "-10px",
+                      }}
+                    >
+                      <ResponsiveContainer
+                        width={76}
+                        height="100%"
+                        aspect={2.25}
                       >
-                        <ResponsiveContainer
-                          width={76}
-                          height="100%"
-                          aspect={2.25}
-                        >
-                          <LineChart data={sparklinedata} syncId="line1">
-                            <YAxis domain={[min, max]} hide={true} />
-                            <Retooltip
-                              content={<CustomTooltip />}
-                              contentStyle={{
-                                background: "rgba(255,255,255,0)",
-                                border: "none",
-                                textAlign: "left",
-                              }}
-                              active={true}
-                              cursor={false}
-                              position={{ x: 0, y: 0 }}
-                              offset={5}
-                            />
-                            <Line
-                              type="monotone"
-                              dataKey="confirmed"
-                              stroke="#42b3f4"
-                              strokeWidth={2.2}
-                              dot={false}
-                              animationDuration={2000}
-                            />
-                            <ReferenceDot
-                              x={sparklineconfirmed.length - 1}
-                              y={Number(sparklineconfirmed.slice(-1))}
-                              r={3}
-                              fill="#42b3f4"
-                              stroke="rgba(66, 179, 244, 0.7)"
-                              isFront={true}
-                            />
-                          </LineChart>
-                        </ResponsiveContainer>
-                      </section>
-                    </td>
+                        <LineChart data={sparklinedata} syncId="line1">
+                          <YAxis domain={[min, max]} hide={true} />
+                          <Retooltip
+                            content={<CustomTooltip />}
+                            contentStyle={{
+                              background: "rgba(255,255,255,0)",
+                              border: "none",
+                              textAlign: "left",
+                            }}
+                            active={true}
+                            cursor={false}
+                            position={{ x: 0, y: 0 }}
+                            offset={5}
+                          />
+                          <Line
+                            type="monotone"
+                            dataKey="active"
+                            stroke="#ff446a"
+                            strokeWidth={2.2}
+                            dot={false}
+                            animationDuration={2000}
+                          />
+                          <ReferenceDot
+                            x={sparklineactive.length - 1}
+                            y={Number(sparklineactive.slice(-1))}
+                            r={3}
+                            fill="#ff446a"
+                            stroke="rgba(255, 68, 106, 0.7)"
+                          />
+                        </LineChart>
+                      </ResponsiveContainer>
+                    </section>
+                  </td>
 
-                    <td>
-                      <h6
-                        className="delta"
-                        style={{ color: "#ff446a", fontSize: 12 }}
-                      >
-                        <Icon.Heart
+                  <td>
+                    <h5 className="text-success delta" style={{ fontSize: 12 }}>
+                      {Number(delta[0].deltarecovered) > 0 ? (
+                        ""
+                      ) : (
+                        <Icon.Smile
                           size={12}
                           strokeWidth={3}
-                          fill="rgba(255, 68, 106, 0.4)"
-                          style={{ verticalAlign: -0.5 }}
+                          fill="rgba(23, 162, 184, 0.2)"
+                          style={{ verticalAlign: 0.5 }}
                         />
-                      </h6>
-                      <h5 style={{ color: "#ff446a", textAlign: "center" }}>
-                        {!percentageToggleActive ? (
-                          <CountUp
-                            start={0}
-                            end={Number(total[0].active)}
-                            duration={2}
-                            separator=","
-                          />
-                        ) : (
-                          (
-                            (Number(total[0].active) /
-                              Number(total[0].confirmed)) *
-                            100
-                          ).toFixed(1) + "%"
-                        )}
-                      </h5>
-                      <section
-                        style={{
-                          justifyContent: "center",
-                          paddingBottom: "-10px",
-                        }}
+                      )}
+                      {Number(delta[0].deltarecovered) > 0
+                        ? "+" + commaSeperated(delta[0].deltarecovered)
+                        : ""}
+                    </h5>
+                    <h5
+                      className="text-success"
+                      style={{ textAlign: "center" }}
+                    >
+                      {!percentageToggleActive ? (
+                        <CountUp
+                          start={0}
+                          end={Number(total[0].recovered)}
+                          duration={2}
+                          separator=","
+                        />
+                      ) : (
+                        (
+                          (Number(total[0].recovered) /
+                            Number(total[0].confirmed)) *
+                          100
+                        ).toFixed(1) + "%"
+                      )}
+                    </h5>
+                    <section
+                      tyle={{
+                        justifyContent: "center",
+                        paddingBottom: "-10px",
+                      }}
+                    >
+                      <ResponsiveContainer
+                        width={76}
+                        height="100%"
+                        aspect={2.25}
                       >
-                        <ResponsiveContainer
-                          width={76}
-                          height="100%"
-                          aspect={2.25}
-                        >
-                          <LineChart data={sparklinedata} syncId="line1">
-                            <YAxis domain={[min, max]} hide={true} />
-                            <Retooltip
-                              content={<CustomTooltip />}
-                              contentStyle={{
-                                background: "rgba(255,255,255,0)",
-                                border: "none",
-                                textAlign: "left",
-                              }}
-                              active={true}
-                              cursor={false}
-                              position={{ x: 0, y: 0 }}
-                              offset={5}
-                            />
-                            <Line
-                              type="monotone"
-                              dataKey="active"
-                              stroke="#ff446a"
-                              strokeWidth={2.2}
-                              dot={false}
-                              animationDuration={2000}
-                            />
-                            <ReferenceDot
-                              x={sparklineactive.length - 1}
-                              y={Number(sparklineactive.slice(-1))}
-                              r={3}
-                              fill="#ff446a"
-                              stroke="rgba(255, 68, 106, 0.7)"
-                            />
-                          </LineChart>
-                        </ResponsiveContainer>
-                      </section>
-                    </td>
+                        <LineChart data={sparklinedata} syncId="line1">
+                          <YAxis domain={[min, max]} hide={true} />
+                          <Retooltip
+                            content={<CustomTooltip />}
+                            contentStyle={{
+                              background: "rgba(255,255,255,0)",
+                              border: "none",
+                              textAlign: "left",
+                            }}
+                            active={true}
+                            cursor={false}
+                            position={{ x: 0, y: 0 }}
+                            offset={5}
+                          />
+                          <Line
+                            type="monotone"
+                            dataKey="recovered"
+                            stroke="#58bd58"
+                            strokeWidth={2.2}
+                            dot={false}
+                            animationDuration={2000}
+                          />
+                          <ReferenceDot
+                            x={sparklinerecovered.length - 1}
+                            y={Number(sparklinerecovered.slice(-1))}
+                            r={3}
+                            fill="#58bd58"
+                            stroke="rgba(88, 189, 88, 0.7)"
+                          />
+                        </LineChart>
+                      </ResponsiveContainer>
+                    </section>
+                  </td>
 
-                    <td>
-                      <h5
-                        className="text-success delta"
-                        style={{ fontSize: 12 }}
+                  <td>
+                    <h6
+                      className="text-secondary delta"
+                      style={{ fontSize: 12 }}
+                    >
+                      {Number(delta[0].deltadeaths) > 0 ? (
+                        ""
+                      ) : (
+                        <Icon.Meh
+                          size={12}
+                          strokeWidth={3}
+                          fill="rgba(40, 167, 69, 0.2)"
+                          style={{ verticalAlign: 0.5 }}
+                        />
+                      )}
+                      {Number(delta[0].deltadeaths)
+                        ? "+" + commaSeperated(delta[0].deltadeaths)
+                        : ""}
+                    </h6>
+                    <h5
+                      className="text-secondary"
+                      style={{ textAlign: "center" }}
+                    >
+                      {!percentageToggleActive ? (
+                        <CountUp
+                          start={0}
+                          end={Number(total[0].deaths)}
+                          duration={2}
+                          separator=","
+                        />
+                      ) : (
+                        (
+                          (Number(total[0].deaths) /
+                            Number(total[0].confirmed)) *
+                          100
+                        ).toFixed(1) + "%"
+                      )}
+                    </h5>
+                    <section
+                      className="text-secondary"
+                      style={{
+                        justifyContent: "center",
+                        paddingBottom: "-10px",
+                      }}
+                    >
+                      <ResponsiveContainer
+                        width={76}
+                        height="100%"
+                        aspect={2.25}
                       >
-                        {Number(delta[0].deltarecovered) > 0 ? (
-                          ""
-                        ) : (
-                          <Icon.Smile
-                            size={12}
-                            strokeWidth={3}
-                            fill="rgba(23, 162, 184, 0.2)"
-                            style={{ verticalAlign: 0.5 }}
+                        <LineChart data={sparklinedata} syncId="line1">
+                          <YAxis domain={[min, max]} hide={true} />
+                          <Retooltip
+                            content={<CustomTooltip />}
+                            contentStyle={{
+                              background: "rgba(255,255,255,0)",
+                              border: "none",
+                              textAlign: "left",
+                            }}
+                            active={true}
+                            cursor={false}
+                            position={{ x: 0, y: 0 }}
+                            offset={5}
                           />
-                        )}
-                        {Number(delta[0].deltarecovered) > 0
-                          ? "+" + commaSeperated(delta[0].deltarecovered)
-                          : ""}
-                      </h5>
-                      <h5
-                        className="text-success"
-                        style={{ textAlign: "center" }}
-                      >
-                        {!percentageToggleActive ? (
-                          <CountUp
-                            start={0}
-                            end={Number(total[0].recovered)}
-                            duration={2}
-                            separator=","
+                          <Line
+                            type="monotone"
+                            dataKey="deceased"
+                            stroke="#5c5756"
+                            strokeWidth={2.2}
+                            dot={false}
+                            animationDuration={2000}
                           />
-                        ) : (
-                          (
-                            (Number(total[0].recovered) /
-                              Number(total[0].confirmed)) *
-                            100
-                          ).toFixed(1) + "%"
-                        )}
-                      </h5>
-                      <section
-                        tyle={{
-                          justifyContent: "center",
-                          paddingBottom: "-10px",
-                        }}
-                      >
-                        <ResponsiveContainer
-                          width={76}
-                          height="100%"
-                          aspect={2.25}
-                        >
-                          <LineChart data={sparklinedata} syncId="line1">
-                            <YAxis domain={[min, max]} hide={true} />
-                            <Retooltip
-                              content={<CustomTooltip />}
-                              contentStyle={{
-                                background: "rgba(255,255,255,0)",
-                                border: "none",
-                                textAlign: "left",
-                              }}
-                              active={true}
-                              cursor={false}
-                              position={{ x: 0, y: 0 }}
-                              offset={5}
-                            />
-                            <Line
-                              type="monotone"
-                              dataKey="recovered"
-                              stroke="#58bd58"
-                              strokeWidth={2.2}
-                              dot={false}
-                              animationDuration={2000}
-                            />
-                            <ReferenceDot
-                              x={sparklinerecovered.length - 1}
-                              y={Number(sparklinerecovered.slice(-1))}
-                              r={3}
-                              fill="#58bd58"
-                              stroke="rgba(88, 189, 88, 0.7)"
-                            />
-                          </LineChart>
-                        </ResponsiveContainer>
-                      </section>
-                    </td>
-
-                    <td>
-                      <h6
-                        className="text-secondary delta"
-                        style={{ fontSize: 12 }}
-                      >
-                        {Number(delta[0].deltadeaths) > 0 ? (
-                          ""
-                        ) : (
-                          <Icon.Meh
-                            size={12}
-                            strokeWidth={3}
-                            fill="rgba(40, 167, 69, 0.2)"
-                            style={{ verticalAlign: 0.5 }}
+                          <ReferenceDot
+                            x={sparklinedeceased.length - 1}
+                            y={Number(sparklinedeceased.slice(-1))}
+                            r={3}
+                            fill="#5c5756"
+                            stroke="rgba(92, 87, 86, 0.7)"
                           />
-                        )}
-                        {Number(delta[0].deltadeaths)
-                          ? "+" + commaSeperated(delta[0].deltadeaths)
-                          : ""}
-                      </h6>
-                      <h5
-                        className="text-secondary"
-                        style={{ textAlign: "center" }}
-                      >
-                        {!percentageToggleActive ? (
-                          <CountUp
-                            start={0}
-                            end={Number(total[0].deaths)}
-                            duration={2}
-                            separator=","
-                          />
-                        ) : (
-                          (
-                            (Number(total[0].deaths) /
-                              Number(total[0].confirmed)) *
-                            100
-                          ).toFixed(1) + "%"
-                        )}
-                      </h5>
-                      <section
-                        className="text-secondary"
-                        style={{
-                          justifyContent: "center",
-                          paddingBottom: "-10px",
-                        }}
-                      >
-                        <ResponsiveContainer
-                          width={76}
-                          height="100%"
-                          aspect={2.25}
-                        >
-                          <LineChart data={sparklinedata} syncId="line1">
-                            <YAxis domain={[min, max]} hide={true} />
-                            <Retooltip
-                              content={<CustomTooltip />}
-                              contentStyle={{
-                                background: "rgba(255,255,255,0)",
-                                border: "none",
-                                textAlign: "left",
-                              }}
-                              active={true}
-                              cursor={false}
-                              position={{ x: 0, y: 0 }}
-                              offset={5}
-                            />
-                            <Line
-                              type="monotone"
-                              dataKey="deceased"
-                              stroke="#5c5756"
-                              strokeWidth={2.2}
-                              dot={false}
-                              animationDuration={2000}
-                            />
-                            <ReferenceDot
-                              x={sparklinedeceased.length - 1}
-                              y={Number(sparklinedeceased.slice(-1))}
-                              r={3}
-                              fill="#5c5756"
-                              stroke="rgba(92, 87, 86, 0.7)"
-                            />
-                          </LineChart>
-                        </ResponsiveContainer>
-                      </section>
-                    </td>
-                  </tr>
+                        </LineChart>
+                      </ResponsiveContainer>
+                    </section>
+                  </td>
                 </tbody>
               </table>
             </div>
@@ -650,7 +648,10 @@ class Table extends Component {
                 marginBottom: 10,
               }}
             >
-              <table className="table table-sm table-striped table-borderless">
+              <table
+                className="table table-sm table-striped table-borderless"
+                style={{ marginBottom: "-1px" }}
+              >
                 <thead>
                   <tr>
                     <th
