@@ -12,15 +12,28 @@ const Footer = () => {
         style={{
           textAlign: "center",
           marginBottom: 25,
-          fontFamily: "notosans",
         }}
       >
         Salute to the ones fighting on the frontlines
+        <a
+          href="https://twitter.com/covidindiastats"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <h6
+            style={{
+              textAlign: "center",
+              marginBottom: 25,
+            }}
+          >
+            <span className="hashTag">#DistancedButNotAlone</span>
+          </h6>
+        </a>
       </h6>
       <div className="row">
         <div align="center" className="col">
           <a
-            href="https://github.com/dinezh256/Covid19Dashboard"
+            href="https://t.me/covidindiastats"
             className="button"
             target="_blank"
             rel="noopener noreferrer"
@@ -30,7 +43,7 @@ const Footer = () => {
               style={{
                 textAlign: "center",
                 color: "white",
-                backgroundColor: "rgba(0,0,0,0.9)",
+                backgroundColor: "rgb(0, 136, 204)",
                 marginTop: 7.5,
                 width: 250,
                 fontWeight: 650,
@@ -40,13 +53,13 @@ const Footer = () => {
               }}
               onClick={() =>
                 ReactGa.event({
-                  category: "Github Clicked",
-                  action: "Github",
+                  category: "Telegram Clicked",
+                  action: "Telegram",
                 })
               }
             >
-              <Icon.GitHub />
-              &ensp; GitHub Source
+              <Icon.Inbox />
+              &ensp; JOIN US ON TELEGRAM
             </button>
           </a>
         </div>

@@ -958,6 +958,20 @@ span.MuiBadge-colorSecondary {
   width: 150px;
 }
 
+.hashTag {
+  color: navy !important;
+  background-color: rgb(156, 156, 202);
+  border-radius: 3px;
+  padding-bottom: 1px;
+  padding-left: 2px;
+  padding-right: 2px;
+}
+
+.hashTag:hover {
+  text-decoration: none;
+  background-color: rgb(156, 156, 202);
+}
+
 .testLabsBtn {
   background-color: rgb(218, 192, 243);
   border-radius: 3px;
