@@ -1177,17 +1177,30 @@ class Table extends Component {
                         style={{ textAlign: "right" }}
                       >
                         <span className="arrowup text-info">
-                          {item.deltaconfirmed > "0" && (
+                          {Number(item.deltaconfirmed) > 0 ? (
                             <Icon.ArrowUp
                               style={{ verticalAlign: -1 }}
                               color="#42b3f4"
                               size={10}
                               strokeWidth={3.5}
                             />
+                          ) : Number(item.deltaconfirmed) < 0 ? (
+                            <Icon.ArrowDown
+                              style={{ verticalAlign: -1 }}
+                              color="#42b3f4"
+                              size={10}
+                              strokeWidth={3.5}
+                            />
+                          ) : (
+                            ""
                           )}
 
-                          {item.deltaconfirmed > "0"
-                            ? commaSeperated(item.deltaconfirmed)
+                          {Number(item.deltaconfirmed) > 0
+                            ? commaSeperated(Number(item.deltaconfirmed))
+                            : Number(item.deltaconfirmed) < 0
+                            ? commaSeperated(
+                                Number(Math.abs(item.deltaconfirmed))
+                              )
                             : ""}
                         </span>
                         &nbsp;{commaSeperated(item.confirmed)}
@@ -1208,17 +1221,30 @@ class Table extends Component {
                         style={{ textAlign: "right" }}
                       >
                         <span className="arrowup" style={{ color: "#28a745" }}>
-                          {item.deltarecovered > "0" && (
+                          {Number(item.deltarecovered) > 0 ? (
                             <Icon.ArrowUp
                               style={{ verticalAlign: -1 }}
                               color="#28a745"
                               size={10}
                               strokeWidth={3.5}
                             />
+                          ) : Number(item.deltarecovered) < 0 ? (
+                            <Icon.ArrowDown
+                              style={{ verticalAlign: -1 }}
+                              color="#28a745"
+                              size={10}
+                              strokeWidth={3.5}
+                            />
+                          ) : (
+                            ""
                           )}
 
-                          {item.deltarecovered > "0"
-                            ? commaSeperated(item.deltarecovered)
+                          {Number(item.deltarecovered) > 0
+                            ? commaSeperated(Number(item.deltarecovered))
+                            : Number(item.deltarecovered) < 0
+                            ? commaSeperated(
+                                Number(Math.abs(item.deltarecovered))
+                              )
                             : ""}
                         </span>
                         &nbsp;
@@ -1235,17 +1261,28 @@ class Table extends Component {
                         style={{ textAlign: "right" }}
                       >
                         <span className="arrowup" style={{ color: "#6c757d" }}>
-                          {item.deltadeaths > "0" && (
+                          {Number(item.deltadeaths) > 0 ? (
                             <Icon.ArrowUp
                               style={{ verticalAlign: -1 }}
                               color="#6c757d"
                               size={10}
                               strokeWidth={3.5}
                             />
+                          ) : Number(item.deltadeaths) < 0 ? (
+                            <Icon.ArrowDown
+                              style={{ verticalAlign: -1 }}
+                              color="#6c757d"
+                              size={10}
+                              strokeWidth={3.5}
+                            />
+                          ) : (
+                            ""
                           )}
 
-                          {item.deltadeaths > "0"
-                            ? commaSeperated(item.deltadeaths)
+                          {Number(item.deltadeaths) > 0
+                            ? commaSeperated(Number(item.deltadeaths))
+                            : Number(item.deltadeaths) < 0
+                            ? commaSeperated(Number(Math.abs(item.deltadeaths)))
                             : ""}
                         </span>
                         &nbsp;
@@ -1286,16 +1323,30 @@ class Table extends Component {
                       style={{ textAlign: "right" }}
                     >
                       <span className="arrowup text-info">
-                        {Number(total[0].deltaconfirmed) > 0 && (
+                        {Number(total[0].deltaconfirmed) > 0 ? (
                           <Icon.ArrowUp
                             style={{ verticalAlign: -1 }}
                             color="#42b3f4"
                             size={10}
                             strokeWidth={3.5}
                           />
+                        ) : Number(total[0].deltaconfirmed) < 0 ? (
+                          <Icon.ArrowDown
+                            style={{ verticalAlign: -1 }}
+                            color="#42b3f4"
+                            size={10}
+                            strokeWidth={3.5}
+                          />
+                        ) : (
+                          ""
                         )}
+
                         {Number(total[0].deltaconfirmed) > 0
-                          ? commaSeperated(total[0].deltaconfirmed)
+                          ? commaSeperated(Number(total[0].deltaconfirmed))
+                          : Number(total[0].deltaconfirmed) < 0
+                          ? commaSeperated(
+                              Number(Math.abs(total[0].deltaconfirmed))
+                            )
                           : ""}
                       </span>
                       &nbsp;{commaSeperated(total[0].confirmed)}
@@ -1313,16 +1364,30 @@ class Table extends Component {
                       style={{ textAlign: "right" }}
                     >
                       <span className="arrowup" style={{ color: "#28a745" }}>
-                        {Number(total[0].deltarecovered) > 0 && (
+                        {Number(total[0].deltarecovered) > 0 ? (
                           <Icon.ArrowUp
                             style={{ verticalAlign: -1 }}
                             color="#28a745"
                             size={10}
                             strokeWidth={3.5}
                           />
-                        )}{" "}
+                        ) : Number(total[0].deltarecovered) < 0 ? (
+                          <Icon.ArrowDown
+                            style={{ verticalAlign: -1 }}
+                            color="#28a745"
+                            size={10}
+                            strokeWidth={3.5}
+                          />
+                        ) : (
+                          ""
+                        )}
+
                         {Number(total[0].deltarecovered) > 0
-                          ? commaSeperated(total[0].deltarecovered)
+                          ? commaSeperated(Number(total[0].deltarecovered))
+                          : Number(total[0].deltarecovered) < 0
+                          ? commaSeperated(
+                              Number(Math.abs(total[0].deltarecovered))
+                            )
                           : ""}
                       </span>
                       &nbsp;
@@ -1335,17 +1400,30 @@ class Table extends Component {
                       style={{ textAlign: "right" }}
                     >
                       <span className="arrowup" style={{ color: "#6c757d" }}>
-                        {Number(total[0].deltadeaths) > 0 && (
+                        {Number(total[0].deltadeaths) > 0 ? (
                           <Icon.ArrowUp
                             style={{ verticalAlign: -1 }}
                             color="#6c757d"
                             size={10}
                             strokeWidth={3.5}
                           />
+                        ) : Number(total[0].deltadeaths) < 0 ? (
+                          <Icon.ArrowDown
+                            style={{ verticalAlign: -1 }}
+                            color="#6c757d"
+                            size={10}
+                            strokeWidth={3.5}
+                          />
+                        ) : (
+                          ""
                         )}
 
                         {Number(total[0].deltadeaths) > 0
-                          ? commaSeperated(total[0].deltadeaths)
+                          ? commaSeperated(Number(total[0].deltadeaths))
+                          : Number(total[0].deltadeaths) < 0
+                          ? commaSeperated(
+                              Number(Math.abs(total[0].deltadeaths))
+                            )
                           : ""}
                       </span>
                       &nbsp;
@@ -1461,17 +1539,30 @@ class Table extends Component {
                         style={{ textAlign: "right" }}
                       >
                         <span className="arrowup text-info">
-                          {item.deltaconfirmed > "0" && (
+                          {Number(item.deltaconfirmed) > 0 ? (
                             <Icon.ArrowUp
                               style={{ verticalAlign: -1 }}
                               color="#42b3f4"
                               size={10}
                               strokeWidth={3.5}
                             />
+                          ) : Number(item.deltaconfirmed) < 0 ? (
+                            <Icon.ArrowDown
+                              style={{ verticalAlign: -1 }}
+                              color="#42b3f4"
+                              size={10}
+                              strokeWidth={3.5}
+                            />
+                          ) : (
+                            ""
                           )}
 
-                          {item.deltaconfirmed > "0"
-                            ? commaSeperated(item.deltaconfirmed)
+                          {Number(item.deltaconfirmed) > 0
+                            ? commaSeperated(Number(item.deltaconfirmed))
+                            : Number(item.deltaconfirmed) < 0
+                            ? commaSeperated(
+                                Number(Math.abs(item.deltaconfirmed))
+                              )
                             : ""}
                         </span>
                         &nbsp;{commaSeperated(item.confirmed)}
@@ -1492,17 +1583,30 @@ class Table extends Component {
                         style={{ textAlign: "right" }}
                       >
                         <span className="arrowup" style={{ color: "#28a745" }}>
-                          {item.deltarecovered > "0" && (
+                          {Number(item.deltarecovered) > 0 ? (
                             <Icon.ArrowUp
                               style={{ verticalAlign: -1 }}
                               color="#28a745"
                               size={10}
                               strokeWidth={3.5}
                             />
+                          ) : Number(item.deltarecovered) < 0 ? (
+                            <Icon.ArrowDown
+                              style={{ verticalAlign: -1 }}
+                              color="#28a745"
+                              size={10}
+                              strokeWidth={3.5}
+                            />
+                          ) : (
+                            ""
                           )}
 
-                          {item.deltarecovered > "0"
-                            ? commaSeperated(item.deltarecovered)
+                          {Number(item.deltarecovered) > 0
+                            ? commaSeperated(Number(item.deltarecovered))
+                            : Number(item.deltarecovered) < 0
+                            ? commaSeperated(
+                                Number(Math.abs(item.deltarecovered))
+                              )
                             : ""}
                         </span>
                         &nbsp;
@@ -1519,17 +1623,28 @@ class Table extends Component {
                         style={{ textAlign: "right" }}
                       >
                         <span className="arrowup" style={{ color: "#6c757d" }}>
-                          {item.deltadeaths > "0" && (
+                          {Number(item.deltadeaths) > 0 ? (
                             <Icon.ArrowUp
                               style={{ verticalAlign: -1 }}
                               color="#6c757d"
                               size={10}
                               strokeWidth={3.5}
                             />
+                          ) : Number(item.deltadeaths) < 0 ? (
+                            <Icon.ArrowDown
+                              style={{ verticalAlign: -1 }}
+                              color="#6c757d"
+                              size={10}
+                              strokeWidth={3.5}
+                            />
+                          ) : (
+                            ""
                           )}
 
-                          {item.deltadeaths > "0"
-                            ? commaSeperated(item.deltadeaths)
+                          {Number(item.deltadeaths) > 0
+                            ? commaSeperated(Number(item.deltadeaths))
+                            : Number(item.deltadeaths) < 0
+                            ? commaSeperated(Number(Math.abs(item.deltadeaths)))
                             : ""}
                         </span>
                         &nbsp;
@@ -1570,16 +1685,29 @@ class Table extends Component {
                       style={{ textAlign: "right" }}
                     >
                       <span className="arrowup text-info">
-                        {Number(total[0].deltaconfirmed) > 0 && (
+                        {Number(total[0].deltaconfirmed) > 0 ? (
                           <Icon.ArrowUp
                             style={{ verticalAlign: -1 }}
                             color="#42b3f4"
                             size={10}
                             strokeWidth={3.5}
                           />
+                        ) : Number(total[0].deltaconfirmed) < 0 ? (
+                          <Icon.ArrowDown
+                            style={{ verticalAlign: -1 }}
+                            color="#42b3f4"
+                            size={10}
+                            strokeWidth={3.5}
+                          />
+                        ) : (
+                          ""
                         )}
                         {Number(total[0].deltaconfirmed) > 0
-                          ? commaSeperated(total[0].deltaconfirmed)
+                          ? commaSeperated(Number(total[0].deltaconfirmed))
+                          : Number(total[0].deltaconfirmed) < 0
+                          ? commaSeperated(
+                              Number(Math.abs(total[0].deltaconfirmed))
+                            )
                           : ""}
                       </span>
                       &nbsp;{commaSeperated(total[0].confirmed)}
@@ -1597,16 +1725,30 @@ class Table extends Component {
                       style={{ textAlign: "right" }}
                     >
                       <span className="arrowup" style={{ color: "#28a745" }}>
-                        {Number(total[0].deltarecovered) > 0 && (
+                        {Number(total[0].deltarecovered) > 0 ? (
                           <Icon.ArrowUp
                             style={{ verticalAlign: -1 }}
                             color="#28a745"
                             size={10}
                             strokeWidth={3.5}
                           />
-                        )}{" "}
+                        ) : Number(total[0].deltarecovered) < 0 ? (
+                          <Icon.ArrowDown
+                            style={{ verticalAlign: -1 }}
+                            color="#28a745"
+                            size={10}
+                            strokeWidth={3.5}
+                          />
+                        ) : (
+                          ""
+                        )}
+
                         {Number(total[0].deltarecovered) > 0
-                          ? commaSeperated(total[0].deltarecovered)
+                          ? commaSeperated(Number(total[0].deltarecovered))
+                          : Number(total[0].deltarecovered) < 0
+                          ? commaSeperated(
+                              Number(Math.abs(total[0].deltarecovered))
+                            )
                           : ""}
                       </span>
                       &nbsp;
@@ -1619,17 +1761,30 @@ class Table extends Component {
                       style={{ textAlign: "right" }}
                     >
                       <span className="arrowup" style={{ color: "#6c757d" }}>
-                        {Number(total[0].deltadeaths) > 0 && (
+                        {Number(total[0].deltadeaths) > 0 ? (
                           <Icon.ArrowUp
                             style={{ verticalAlign: -1 }}
                             color="#6c757d"
                             size={10}
                             strokeWidth={3.5}
                           />
+                        ) : Number(total[0].deltadeaths) < 0 ? (
+                          <Icon.ArrowDown
+                            style={{ verticalAlign: -1 }}
+                            color="#6c757d"
+                            size={10}
+                            strokeWidth={3.5}
+                          />
+                        ) : (
+                          ""
                         )}
 
                         {Number(total[0].deltadeaths) > 0
-                          ? commaSeperated(total[0].deltadeaths)
+                          ? commaSeperated(Number(total[0].deltadeaths))
+                          : Number(total[0].deltadeaths) < 0
+                          ? commaSeperated(
+                              Number(Math.abs(total[0].deltadeaths))
+                            )
                           : ""}
                       </span>
                       &nbsp;
