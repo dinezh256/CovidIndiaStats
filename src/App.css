@@ -907,47 +907,17 @@ span.MuiBadge-colorSecondary {
   transition-duration: 0.5s;
 }
 
-.btnBackAll {
-  text-align: center;
-  margin-left: -18px !important;
-  width: 11rem;
-  background-color: peru;
-  color: rgb(235, 224, 209);
-  border-radius: 4px;
-  padding-top: 7px;
-  padding-bottom: 7px;
-  cursor: pointer;
-  font-size: 12px;
-  margin-bottom: 30px;
-  margin-top: -16px !important;
-  animation: fadeIn 2s;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5) !important;
-  transition-duration: 0.5s;
-}
-
-.btnBackAll:hover {
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5) !important;
-  transition-duration: 0.5s;
-}
-
-@media only screen and (max-width: 768px) {
-  .btnBackAll {
-    margin-top: -16px !important;
-    margin-left: -17px !important;
-  }
-}
-
 .shareBtn {
   text-align: center;
   align-content: center;
-  width: 100px;
+  width: 150px;
   color: rgb(235, 224, 209);
   cursor: pointer;
   color: rgb(59, 89, 152);
   text-decoration: none;
   margin-bottom: 6px;
   margin-top: -2px;
-  margin-left: 2px !important;
+  margin-left: 15px !important;
 }
 
 @media only screen and (max-width: 360px) {
@@ -965,19 +935,27 @@ span.MuiBadge-colorSecondary {
 }
 
 .likeShare {
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   text-align: center !important;
   vertical-align: middle;
   margin-top: 4px !important;
   color: black !important;
   cursor: text;
-  margin-left: 5px;
+  margin-left: -2rem;
+  width: 150px;
 }
 
 .feedbackBtn {
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   text-align: center !important;
+  margin-top: -2px !important;
   vertical-align: middle;
+  justify-content: center;
+  color: black !important;
+  cursor: text;
+  padding-left: 1rem;
+  margin-left: 1rem;
+  width: 150px;
 }
 
 .testLabsBtn {

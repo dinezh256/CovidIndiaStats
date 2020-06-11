@@ -59,7 +59,6 @@ class StateDetails extends Component {
       toggleRecovered: false,
       toggleDeceased: false,
       viewTable: false,
-      back: true,
       beginning: true,
       twoWeeks: false,
       oneMonth: false,
@@ -70,7 +69,6 @@ class StateDetails extends Component {
     this.onClickRecovered = this.onClickRecovered.bind(this);
     this.onClickDeceased = this.onClickDeceased.bind(this);
     this.onViewTable = this.onViewTable.bind(this);
-    this.onBack = this.onBack.bind(this);
     this.handleBeginning = this.handleBeginning.bind(this);
     this.handleTwoWeeks = this.handleTwoWeeks.bind(this);
     this.handleOneMonth = this.handleOneMonth.bind(this);
@@ -95,10 +93,6 @@ class StateDetails extends Component {
 
   onViewTable(viewTable) {
     this.setState({ viewTable });
-  }
-
-  onBack({ back }) {
-    this.setState({ back });
   }
 
   handleBeginning({ beginning }) {
@@ -262,7 +256,6 @@ class StateDetails extends Component {
       toggleDeceased,
       toggleSwitch,
       viewTable,
-      back,
       beginning,
       twoWeeks,
       oneMonth,
@@ -1586,46 +1579,39 @@ class StateDetails extends Component {
                 <div className="w-100"></div>
                 <div className="row fadeInUp" style={{ animationDelay: "1s" }}>
                   <div className="col">
-                    {back && (
+                    {
                       <h6
                         className="btnViewAll"
                         onClick={() => {
-                          this.setState({ viewTable: true, back: false });
+                          this.setState({ viewTable: !viewTable });
                           ReactGa.event({
                             category: "View Button",
                             action: "View Button Clicked",
                           });
                         }}
                       >
-                        VIEW ALL DISTRICTS{" "}
-                        <Icon.ArrowDownCircle
-                          size={11}
-                          style={{ verticalAlign: "-0.1rem" }}
-                          style={{ verticalAlign: "-0.1rem" }}
-                        />
+                        {!viewTable
+                          ? "VIEW ALL DISTRICTS"
+                          : "HIDE ALL DISTRICTS"}{" "}
+                        {!viewTable ? (
+                          <Icon.ArrowDownCircle
+                            size={11}
+                            style={{ verticalAlign: "-0.1rem" }}
+                          />
+                        ) : (
+                          <Icon.ArrowUpCircle
+                            size={11}
+                            style={{ verticalAlign: "-0.1rem" }}
+                          />
+                        )}
                       </h6>
-                    )}
+                    }
                   </div>
                 </div>
                 <div className="w-100"></div>
                 <div className="col">
                   {requiredData.length && viewTable ? (
                     <React.Fragment>
-                      <div className="col">
-                        <h6
-                          className="btnBackAll"
-                          onClick={() => {
-                            this.setState({ viewTable: false, back: true });
-                          }}
-                        >
-                          HIDE ALL DISTRICTS{" "}
-                          <Icon.ArrowUpCircle
-                            size={11}
-                            style={{ verticalAlign: "-0.1rem" }}
-                            style={{ verticalAlign: "-0.1rem" }}
-                          />
-                        </h6>
-                      </div>
                       <div className="w-100"></div>
                       <div
                         className="row fadeInUp"
@@ -1845,7 +1831,7 @@ class StateDetails extends Component {
                     <div className="row" style={{ alignContent: "center" }}>
                       <div
                         align="center"
-                        className="col-7 fadeInUp"
+                        className="col fadeInUp"
                         style={{ animationDelay: "0.1s" }}
                       >
                         <h6 className="feedbackBtn">
@@ -1859,10 +1845,12 @@ class StateDetails extends Component {
                             <Icon.FileText size={30} />{" "}
                           </a>
                         </h6>
-                        <h6 className="feedbackBtn">Feedback</h6>
+                        <h6 className="feedbackBtn">
+                          Provide your valuable feedback to us
+                        </h6>
                       </div>
                       <div
-                        className="col-5 fadeInUp"
+                        className="col fadeInUp"
                         style={{ animationDelay: "0.1s" }}
                       >
                         <div className="row shareBtn">
@@ -1882,7 +1870,7 @@ class StateDetails extends Component {
                             <FacebookIcon fontSize="large" />
                           </a>
                           <a
-                            href={`whatsapp://send?text=covidindiastats.com/${this.props.match.params.stateid.toUpperCase()}`}
+                            href={`whatsapp://send?text=Track the spread of Covid19 from State to district level covidindiastats.com/${this.props.match.params.stateid.toUpperCase()}`}
                             onClick={() => {
                               ReactGa.event({
                                 category: "WA Share",
@@ -1897,7 +1885,7 @@ class StateDetails extends Component {
                             <WhatsAppIcon fontSize="large" />
                           </a>
                           <a
-                            href={`https://twitter.com/share?url=covidindiastats.com/${this.props.match.params.stateid.toUpperCase()}`}
+                            href={`http://twitter.com/share?text=@covidindiastats Track the spread of Covid19 from State to District level.&url=covidindiastats.com/${this.props.match.params.stateid.toUpperCase()}`}
                             onClick={() => {
                               ReactGa.event({
                                 category: "Twitter Share",
@@ -1911,7 +1899,9 @@ class StateDetails extends Component {
                           >
                             <TwitterIcon fontSize="large" />
                           </a>
-                          <h6 className="likeShare">Like it, Share</h6>
+                          <h6 className="likeShare">
+                            Help this information reach your dear ones
+                          </h6>
                         </div>
                       </div>
                     </div>

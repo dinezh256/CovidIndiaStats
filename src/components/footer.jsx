@@ -1,5 +1,6 @@
 import React from "react";
 import * as Icon from "react-feather";
+import ReactGa from "react-ga";
 
 const Footer = () => {
   return (
@@ -37,6 +38,12 @@ const Footer = () => {
                 alignContent: "center",
                 fontFamily: "notosans",
               }}
+              onClick={() =>
+                ReactGa.event({
+                  category: "Github Clicked",
+                  action: "Github",
+                })
+              }
             >
               <Icon.GitHub />
               &ensp; GitHub Source
@@ -63,9 +70,15 @@ const Footer = () => {
                 alignContent: "center",
                 fontFamily: "notosans",
               }}
+              onClick={() =>
+                ReactGa.event({
+                  category: "Facebook button Clicked",
+                  action: "Facebook",
+                })
+              }
             >
               <Icon.Facebook />
-              &ensp; LIKE OUR PAGE
+              &ensp; LIKE ON FACEBOOK
             </button>
           </a>
         </div>
@@ -89,6 +102,12 @@ const Footer = () => {
                 alignContent: "center",
                 fontFamily: "notosans",
               }}
+              onClick={() =>
+                ReactGa.event({
+                  category: "Twitter button Clicked",
+                  action: "Twitter",
+                })
+              }
             >
               <Icon.Twitter />
               &ensp; UPDATES ON TWITTER
