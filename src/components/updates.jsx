@@ -162,7 +162,7 @@ class Updates extends Component {
           </div>
           <div className="w-100"></div>
           <div style={{ marginTop: "20px", marginBottom: "20px" }}>
-            {toggleActive && (
+            {/* {toggleActive && (
               <div
                 className="alert hoveralert"
                 role="alert"
@@ -186,16 +186,16 @@ class Updates extends Component {
                   State/UT
                 </h6>
               </div>
-            )}
+            )} */}
             {toggleActive &&
               (totalDeltaConfirmed ||
               totalDeltaRecovered ||
               totalDeltaDeaths ? (
                 data.slice(0, 9).map(
-                  (item) =>
+                  (item, index) =>
                     Number(item.deltaconfirmed) !== 0 && (
                       <div
-                        className="alert hoveralert"
+                        className="alert hoveralert fadeInUp"
                         role="alert"
                         style={{
                           marginBottom: "5px",
@@ -204,6 +204,7 @@ class Updates extends Component {
                           boxShadow: "0 0 2px rgba(0,0,0,0.1)",
                           marginTop: "10px",
                           cursor: "pointer",
+                          animationDelay: `${0.1 * index}s`,
                         }}
                       >
                         <h6 style={{ fontSize: 10, color: "grey" }}>

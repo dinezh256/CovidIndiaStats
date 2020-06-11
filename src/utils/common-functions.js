@@ -16,8 +16,8 @@ const months = {
 export const stateFullName = {
   "/": "COVID INDIA STATS",
   "/INDEPTH": "INDEPTH",
-  "/GLOBAL": "Global",
-  "/DIVE": "DIVE",
+  "/GLOBAL": "Global PLOTS",
+  "/DIVE": "COVID GLOBAL STATS",
   "/LINKS": "Helpful links",
   "/FAQ": "faqs",
   "/NOTIFICATIONS": "notifications",

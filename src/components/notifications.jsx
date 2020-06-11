@@ -99,10 +99,10 @@ class Updates extends Component {
           <div style={{ marginTop: "20px", marginBottom: "20px" }}>
             {totalDeltaConfirmed || totalDeltaRecovered || totalDeltaDeaths ? (
               data.slice(0, 25).map(
-                (item) =>
+                (item, index) =>
                   Number(item.deltaconfirmed) !== 0 && (
                     <div
-                      className="alert hoveralert"
+                      className="alert hoveralert fadeInUp"
                       role="alert"
                       style={{
                         marginBottom: "5px",
@@ -111,6 +111,7 @@ class Updates extends Component {
                         boxShadow: "0 0 2px rgba(0,0,0,0.1)",
                         marginTop: "10px",
                         cursor: "pointer",
+                        animationDelay: `${0.1 * index}s`,
                       }}
                     >
                       <h6 style={{ fontSize: 10, color: "grey" }}>

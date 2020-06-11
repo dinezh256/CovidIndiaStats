@@ -10,9 +10,11 @@ class Navbar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      title: stateFullName[
+      title: stateFullName.hasOwnProperty(
         window.location.pathname.toUpperCase()
-      ].toUpperCase(),
+      )
+        ? stateFullName[window.location.pathname.toUpperCase()].toUpperCase()
+        : "COVID INDIA STATS".toUpperCase(),
     };
   }
 
@@ -24,9 +26,15 @@ class Navbar extends Component {
 
   componentDidMount() {
     this.props.history.listen(() => {
-      this.changeTitle(
-        stateFullName[window.location.pathname.toUpperCase()].toUpperCase()
-      );
+      {
+        stateFullName.hasOwnProperty(window.location.pathname.toUpperCase())
+          ? this.changeTitle(
+              stateFullName[
+                window.location.pathname.toUpperCase()
+              ].toUpperCase()
+            )
+          : this.changeTitle("COVID INDIA STATS");
+      }
     });
   }
 

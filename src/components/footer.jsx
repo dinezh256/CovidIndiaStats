@@ -23,7 +23,7 @@ const Footer = () => {
           <h6
             style={{
               textAlign: "center",
-              marginBottom: 25,
+              marginTop: 5,
             }}
           >
             <span className="hashTag">#DistancedButNotAlone</span>
