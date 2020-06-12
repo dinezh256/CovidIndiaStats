@@ -948,10 +948,22 @@ class Graph extends Component {
                         >
                           <XAxis
                             dataKey="date"
-                            tick={{ stroke: "#6471b3", strokeWidth: 0.2 }}
-                            style={{ fontSize: 8 }}
+                            tick={{
+                              stroke: "#6471b3",
+                              fill: "#6471b3",
+                              strokeWidth: 0.2,
+                            }}
+                            style={{ fontSize: 8, fontFamily: "notosans" }}
                             tickSize={5}
                             tickCount={8}
+                            axisLine={{
+                              stroke: "#6471b3",
+                              strokeWidth: "1.5px",
+                            }}
+                            tickLine={{
+                              stroke: "#6471b3",
+                              strokeWidth: "1.5px",
+                            }}
                           />
                           <YAxis
                             domain={[
@@ -961,11 +973,23 @@ class Graph extends Component {
                               ) * 100000,
                             ]}
                             orientation="right"
-                            tick={{ stroke: "#6471b3", strokeWidth: 0.2 }}
+                            tick={{
+                              stroke: "#6471b3",
+                              fill: "#6471b3",
+                              strokeWidth: 0.2,
+                            }}
                             tickFormatter={format("~s")}
                             tickSize={5}
-                            style={{ fontSize: 8 }}
+                            style={{ fontSize: 8, fontFamily: "notosans" }}
                             tickCount={8}
+                            axisLine={{
+                              stroke: "#6471b3",
+                              strokeWidth: "1.5px",
+                            }}
+                            tickLine={{
+                              stroke: "#6471b3",
+                              strokeWidth: "1.5px",
+                            }}
                           />
                           <Tooltip
                             contentStyle={{
@@ -1030,7 +1054,7 @@ class Graph extends Component {
                     daily={dailyActive}
                     divideBy={100}
                     dataKey="dailyactive"
-                    stroke="#f16783"
+                    stroke="#dc3545"
                     color1="#f16783"
                     color2="#ff446a"
                   />
@@ -1045,7 +1069,7 @@ class Graph extends Component {
                     daily={dailyRecovered}
                     divideBy={100}
                     dataKey="dailyrecovered"
-                    stroke="#58bd58"
+                    stroke="#28a745"
                     color1="#7ed87e"
                     color2="#5cb85c"
                   />
@@ -1146,19 +1170,42 @@ class Graph extends Component {
                         >
                           <XAxis
                             dataKey="date"
-                            tick={{ stroke: "#474646", strokeWidth: 0.2 }}
-                            axisLine={{ color: "#474646" }}
-                            style={{ fontSize: 8 }}
+                            tick={{
+                              stroke: "#6471b3",
+                              fill: "#6471b3",
+                              strokeWidth: 0.2,
+                            }}
+                            style={{ fontSize: 8, fontFamily: "notosans" }}
                             tickSize={5}
-                            tickCount={6}
+                            tickCount={8}
+                            axisLine={{
+                              stroke: "#6471b3",
+                              strokeWidth: "1.5px",
+                            }}
+                            tickLine={{
+                              stroke: "#6471b3",
+                              strokeWidth: "1.5px",
+                            }}
                           />
                           <YAxis
                             orientation="right"
-                            tick={{ stroke: "#474646", strokeWidth: 0.2 }}
+                            tick={{
+                              stroke: "#6471b3",
+                              fill: "#6471b3",
+                              strokeWidth: 0.2,
+                            }}
                             tickFormatter={format("~s")}
                             tickSize={5}
-                            style={{ fontSize: 8 }}
+                            style={{ fontSize: 8, fontFamily: "notosans" }}
                             tickCount={8}
+                            axisLine={{
+                              stroke: "#6471b3",
+                              strokeWidth: "1.5px",
+                            }}
+                            tickLine={{
+                              stroke: "#6471b3",
+                              strokeWidth: "1.5px",
+                            }}
                           />
                           <Tooltip
                             contentStyle={{
@@ -1179,6 +1226,7 @@ class Graph extends Component {
                             name="Daily Tested Samples"
                             fill="#3e4da3"
                             radius={[3, 3, 0, 0]}
+                            barSize={20}
                             onMouseEnter={() => {
                               ReactGa.event({
                                 category: "Graph Testedbar",

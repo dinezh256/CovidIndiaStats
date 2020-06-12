@@ -104,10 +104,12 @@ const BarPlot = ({
           >
             <XAxis
               dataKey="date"
-              tick={{ stroke: `${stroke}`, strokeWidth: 0.2 }}
-              style={{ fontSize: 8 }}
+              tick={{ stroke: stroke, strokeWidth: 0.2, fill: stroke }}
+              style={{ fontSize: 8, fontFamily: "notosans" }}
               tickSize={5}
+              tickLine={{ stroke: stroke }}
               tickCount={8}
+              axisLine={{ stroke: stroke, strokeWidth: "1.5px" }}
             />
             <YAxis
               domain={[
@@ -115,11 +117,13 @@ const BarPlot = ({
                 Math.ceil(Math.max(...daily) / divideBy) * divideBy,
               ]}
               orientation="right"
-              tick={{ stroke: `${stroke}`, strokeWidth: 0.2 }}
+              tick={{ stroke: stroke, strokeWidth: 0.2, fill: stroke }}
               tickFormatter={format("~s")}
               tickSize={5}
-              style={{ fontSize: 8 }}
-              tickCount={6}
+              style={{ fontSize: 8, fontFamily: "notosans" }}
+              tickLine={{ stroke: stroke }}
+              tickCount={8}
+              axisLine={{ stroke: stroke, strokeWidth: "1.5px" }}
             />
             <Tooltip
               contentStyle={{
@@ -141,6 +145,7 @@ const BarPlot = ({
               name={type}
               fill={stroke}
               radius={[3, 3, 0, 0]}
+              barSize={20}
               onMouseEnter={() => {
                 ReactGa.event({
                   category: `Graph ${type}bar`,

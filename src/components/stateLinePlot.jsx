@@ -96,10 +96,12 @@ const StateLinePlot = ({
           >
             <XAxis
               dataKey="date"
-              tick={{ stroke: `${stroke}`, strokeWidth: 0.2 }}
-              style={{ fontSize: 8 }}
+              tick={{ stroke: stroke, strokeWidth: 0.2, fill: stroke }}
+              style={{ fontSize: 8, fontFamily: "notosans" }}
               tickSize={5}
+              tickLine={{ stroke: stroke }}
               tickCount={8}
+              axisLine={{ stroke: lineStroke, strokeWidth: "1.5px" }}
             />
             <YAxis
               domain={[
@@ -114,11 +116,13 @@ const StateLinePlot = ({
                 ) * divideBy,
               ]}
               orientation="right"
-              tick={{ stroke: `${stroke}`, strokeWidth: 0.2 }}
+              tick={{ stroke: stroke, strokeWidth: 0.2, fill: stroke }}
               tickFormatter={format("~s")}
               tickSize={5}
-              style={{ fontSize: 8 }}
+              style={{ fontSize: 8, fontFamily: "notosans" }}
+              tickLine={{ stroke: stroke }}
               tickCount={8}
+              axisLine={{ stroke: lineStroke, strokeWidth: "1.5px" }}
             />
             <Tooltip
               contentStyle={{

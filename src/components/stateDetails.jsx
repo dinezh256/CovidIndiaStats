@@ -2287,10 +2287,19 @@ class StateDetails extends Component {
                             >
                               <XAxis
                                 dataKey="date"
-                                tick={{ stroke: "#6471b3", strokeWidth: 0.2 }}
-                                style={{ fontSize: 8 }}
+                                tick={{
+                                  stroke: "#6471b3",
+                                  fill: "#6471b3",
+                                  strokeWidth: 0.2,
+                                }}
+                                style={{ fontSize: 8, fontFamily: "notosans" }}
                                 tickSize={5}
                                 tickCount={8}
+                                tickLine={{ stroke: "#6471b3" }}
+                                axisLine={{
+                                  stroke: "#6471b3",
+                                  strokeWidth: "1.5px",
+                                }}
                               />
                               <YAxis
                                 domain={[
@@ -2300,11 +2309,20 @@ class StateDetails extends Component {
                                   ) * 1000,
                                 ]}
                                 orientation="right"
-                                tick={{ stroke: "#6471b3", strokeWidth: 0.2 }}
+                                tick={{
+                                  stroke: "#6471b3",
+                                  fill: "#6471b3",
+                                  strokeWidth: 0.2,
+                                }}
                                 tickFormatter={format("~s")}
                                 tickSize={5}
-                                style={{ fontSize: 8 }}
+                                style={{ fontSize: 8, fontFamily: "notosans" }}
                                 tickCount={8}
+                                tickLine={{ stroke: "#6471b3" }}
+                                axisLine={{
+                                  stroke: "#6471b3",
+                                  strokeWidth: "1.5px",
+                                }}
                               />
                               <Retooltip
                                 contentStyle={{
@@ -2448,7 +2466,7 @@ class StateDetails extends Component {
                             ? 50
                             : 10
                         }
-                        stroke="#58bd58"
+                        stroke="#28a745"
                         color1="#7ed87e"
                         color2="#5cb85c"
                       />
@@ -2587,11 +2605,20 @@ class StateDetails extends Component {
                             >
                               <XAxis
                                 dataKey="date"
-                                tick={{ stroke: "#6471b3", strokeWidth: 0.2 }}
+                                tick={{
+                                  stroke: "#6471b3",
+                                  fill: "#6471b3",
+                                  strokeWidth: 0.2,
+                                }}
                                 axisLine={{ color: "#6471b3" }}
-                                style={{ fontSize: 8 }}
+                                style={{ fontSize: 8, fontFamily: "notosans" }}
                                 tickSize={5}
-                                tickCount={6}
+                                tickLine={{ stroke: "#6471b3" }}
+                                tickCount={8}
+                                axisLine={{
+                                  stroke: "#6471b3",
+                                  strokeWidth: "1.5px",
+                                }}
                               />
                               <YAxis
                                 domain={[
@@ -2617,11 +2644,20 @@ class StateDetails extends Component {
                                   ) * 1000,
                                 ]}
                                 orientation="right"
-                                tick={{ stroke: "#6471b3", strokeWidth: 0.2 }}
+                                tick={{
+                                  stroke: "#6471b3",
+                                  fill: "#6471b3",
+                                  strokeWidth: 0.2,
+                                }}
                                 tickFormatter={format("~s")}
+                                style={{ fontSize: 8, fontFamily: "notosans" }}
                                 tickSize={5}
-                                style={{ fontSize: 8 }}
+                                tickLine={{ stroke: "#6471b3" }}
                                 tickCount={8}
+                                axisLine={{
+                                  stroke: "#6471b3",
+                                  strokeWidth: "1.5px",
+                                }}
                               />
                               <Retooltip
                                 contentStyle={{
