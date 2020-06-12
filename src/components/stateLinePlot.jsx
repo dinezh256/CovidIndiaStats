@@ -78,7 +78,7 @@ const StateLinePlot = ({
               <span style={{ fontSize: 9 }}>
                 {daily >= 0
                   ? "+" + commaSeperated(daily)
-                  : commaSeperated(daily)}
+                  : "-" + commaSeperated(Math.abs(daily))}
               </span>
             </h5>
           </h6>

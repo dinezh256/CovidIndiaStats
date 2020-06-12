@@ -1101,8 +1101,17 @@ class StateDetails extends Component {
                           color: "rgba(23, 162, 184, 0.7)",
                         }}
                       >
-                        {Number(requiredStateTotalData[0].deltaconfirmed) ? (
+                        {Number(requiredStateTotalData[0].deltaconfirmed) >
+                        0 ? (
                           <Icon.PlusCircle
+                            size={12}
+                            strokeWidth={3}
+                            fill="rgba(23, 162, 184, 0.2)"
+                            style={{ verticalAlign: "-0.1rem" }}
+                          />
+                        ) : Number(requiredStateTotalData[0].deltaconfirmed) <
+                          0 ? (
+                          <Icon.MinusCircle
                             size={12}
                             strokeWidth={3}
                             fill="rgba(23, 162, 184, 0.2)"
@@ -1116,9 +1125,13 @@ class StateDetails extends Component {
                             style={{ verticalAlign: "-0.1rem" }}
                           />
                         )}{" "}
-                        {Number(requiredStateTotalData[0].deltaconfirmed)
+                        {Number(requiredStateTotalData[0].deltaconfirmed) > 0
                           ? commaSeperated(
                               requiredStateTotalData[0].deltaconfirmed
+                            )
+                          : Number(requiredStateTotalData[0].deltaconfirmed) < 0
+                          ? commaSeperated(
+                              Math.abs(requiredStateTotalData[0].deltaconfirmed)
                             )
                           : ""}
                       </h6>
@@ -1242,24 +1255,37 @@ class StateDetails extends Component {
                           fontSize: "0.9rem",
                         }}
                       >
-                        {Number(requiredStateTotalData[0].deltarecovered) ? (
+                        {Number(requiredStateTotalData[0].deltarecovered) >
+                        0 ? (
                           <Icon.PlusCircle
+                            size={12}
+                            strokeWidth={3}
+                            fill="rgba(23, 162, 184, 0.2)"
+                            style={{ verticalAlign: "-0.1rem" }}
+                          />
+                        ) : Number(requiredStateTotalData[0].deltarecovered) <
+                          0 ? (
+                          <Icon.MinusCircle
                             size={12}
                             strokeWidth={3}
                             fill="rgba(40, 167, 69, 0.2)"
                             style={{ verticalAlign: "-0.1rem" }}
                           />
                         ) : (
-                          <Icon.Smile
+                          <Icon.Meh
                             size={12}
                             strokeWidth={3}
                             fill="rgba(40, 167, 69, 0.2)"
                             style={{ verticalAlign: "-0.1rem" }}
                           />
                         )}{" "}
-                        {Number(requiredStateTotalData[0].deltarecovered)
+                        {Number(requiredStateTotalData[0].deltarecovered) > 0
                           ? commaSeperated(
                               requiredStateTotalData[0].deltarecovered
+                            )
+                          : Number(requiredStateTotalData[0].deltarecovered) < 0
+                          ? commaSeperated(
+                              Math.abs(requiredStateTotalData[0].deltarecovered)
                             )
                           : ""}
                       </h6>
@@ -1305,8 +1331,16 @@ class StateDetails extends Component {
                           color: "rgba(108, 117, 125, 0.7)",
                         }}
                       >
-                        {Number(requiredStateTotalData[0].deltadeaths) ? (
+                        {Number(requiredStateTotalData[0].deltadeaths) > 0 ? (
                           <Icon.PlusCircle
+                            size={12}
+                            strokeWidth={3}
+                            fill="rgba(23, 162, 184, 0.2)"
+                            style={{ verticalAlign: "-0.1rem" }}
+                          />
+                        ) : Number(requiredStateTotalData[0].deltadeaths) <
+                          0 ? (
+                          <Icon.MinusCircle
                             size={12}
                             strokeWidth={3}
                             fill="rgba(108, 117, 125, 0.2)"
@@ -1320,9 +1354,13 @@ class StateDetails extends Component {
                             style={{ verticalAlign: "-0.1rem" }}
                           />
                         )}{" "}
-                        {Number(requiredStateTotalData[0].deltadeaths)
+                        {Number(requiredStateTotalData[0].deltadeaths) > 0
                           ? commaSeperated(
                               requiredStateTotalData[0].deltadeaths
+                            )
+                          : Number(requiredStateTotalData[0].deltadeaths) < 0
+                          ? commaSeperated(
+                              Math.abs(requiredStateTotalData[0].deltadeaths)
                             )
                           : ""}
                       </h6>
@@ -1382,13 +1420,19 @@ class StateDetails extends Component {
                                     fontSize: 11,
                                   }}
                                 >
-                                  {district.delta.confirmed ? (
+                                  {district.delta.confirmed > 0 ? (
                                     <Icon.ArrowUp size={11} strokeWidth={3} />
+                                  ) : district.delta.confirmed < 0 ? (
+                                    <Icon.ArrowDown size={11} strokeWidth={3} />
                                   ) : (
                                     ""
                                   )}
-                                  {district.delta.confirmed
-                                    ? district.delta.confirmed
+                                  {district.delta.confirmed > 0
+                                    ? commaSeperated(district.delta.confirmed)
+                                    : district.delta.confirmed < 0
+                                    ? commaSeperated(
+                                        Math.abs(district.delta.confirmed)
+                                      )
                                     : ""}
                                 </span>
                               </li>
@@ -1457,13 +1501,19 @@ class StateDetails extends Component {
                                     fontSize: 11,
                                   }}
                                 >
-                                  {district.delta.recovered ? (
+                                  {district.delta.recovered > 0 ? (
                                     <Icon.ArrowUp size={11} strokeWidth={3} />
+                                  ) : district.delta.recovered < 0 ? (
+                                    <Icon.ArrowDown size={11} strokeWidth={3} />
                                   ) : (
                                     ""
                                   )}
-                                  {district.delta.recovered
-                                    ? district.delta.recovered
+                                  {district.delta.recovered > 0
+                                    ? commaSeperated(district.delta.recovered)
+                                    : district.delta.recovered < 0
+                                    ? commaSeperated(
+                                        Math.abs(district.delta.recovered)
+                                      )
                                     : ""}
                                 </span>
                               </li>
@@ -1502,13 +1552,19 @@ class StateDetails extends Component {
                                     fontSize: 11,
                                   }}
                                 >
-                                  {district.delta.deceased ? (
+                                  {district.delta.deceased > 0 ? (
                                     <Icon.ArrowUp size={11} strokeWidth={3} />
+                                  ) : district.delta.deceased < 0 ? (
+                                    <Icon.ArrowDown size={11} strokeWidth={3} />
                                   ) : (
                                     ""
                                   )}
-                                  {district.delta.deceased
-                                    ? district.delta.deceased
+                                  {district.delta.deceased > 0
+                                    ? commaSeperated(district.delta.deceased)
+                                    : district.delta.deceased < 0
+                                    ? commaSeperated(
+                                        Math.abs(district.delta.deceased)
+                                      )
                                     : ""}
                                 </span>
                               </li>
@@ -1741,20 +1797,32 @@ class StateDetails extends Component {
                                     style={{ textAlign: "right" }}
                                   >
                                     <span className="arrowup text-info">
-                                      {Number(district.delta.confirmed) !==
-                                        0 && (
+                                      {Number(district.delta.confirmed) > 0 ? (
                                         <Icon.ArrowUp
                                           color="#42b3f4"
                                           size={9}
                                           strokeWidth={3.5}
                                         />
+                                      ) : Number(district.delta.confirmed) <
+                                        0 ? (
+                                        <Icon.ArrowDown
+                                          color="#42b3f4"
+                                          size={9}
+                                          strokeWidth={3.5}
+                                        />
+                                      ) : (
+                                        ""
                                       )}
                                       <b className="deltainc-md text-info">
-                                        {Number(district.delta.confirmed) === 0
-                                          ? ""
-                                          : commaSeperated(
+                                        {Number(district.delta.confirmed) > 0
+                                          ? commaSeperated(
                                               district.delta.confirmed
-                                            )}
+                                            )
+                                          : Number(district.delta.confirmed) < 0
+                                          ? commaSeperated(
+                                              Math.abs(district.delta.confirmed)
+                                            )
+                                          : ""}
                                       </b>
                                     </span>
                                     &nbsp;&nbsp;
@@ -1773,23 +1841,35 @@ class StateDetails extends Component {
                                     style={{ textAlign: "right" }}
                                   >
                                     <span className="arrowup text-success">
-                                      {Number(district.delta.recovered) !==
-                                        0 && (
+                                      {Number(district.delta.recovered) > 0 ? (
                                         <Icon.ArrowUp
                                           color="#28a745"
                                           size={9}
                                           strokeWidth={3.5}
                                         />
+                                      ) : Number(district.delta.recovered) <
+                                        0 ? (
+                                        <Icon.ArrowDown
+                                          color="#28a745"
+                                          size={9}
+                                          strokeWidth={3.5}
+                                        />
+                                      ) : (
+                                        ""
                                       )}
-                                      <b className="deltainc-md text-success align-middle">
-                                        {Number(district.delta.recovered) === 0
-                                          ? ""
-                                          : commaSeperated(
+                                      <b className="deltainc-md text-success">
+                                        {Number(district.delta.recovered) > 0
+                                          ? commaSeperated(
                                               district.delta.recovered
-                                            )}
+                                            )
+                                          : Number(district.delta.recovered) < 0
+                                          ? commaSeperated(
+                                              Math.abs(district.delta.recovered)
+                                            )
+                                          : ""}
                                       </b>
                                     </span>
-                                    &nbsp;&nbsp;
+                                    &nbsp;
                                     {Number(district.recovered)
                                       ? commaSeperated(district.recovered)
                                       : "-"}
@@ -1799,20 +1879,32 @@ class StateDetails extends Component {
                                     style={{ textAlign: "right" }}
                                   >
                                     <span className="arrowup text-secondary">
-                                      {Number(district.delta.deceased) !==
-                                        0 && (
+                                      {Number(district.delta.deceased) > 0 ? (
                                         <Icon.ArrowUp
+                                          color="#28a745"
+                                          size={9}
+                                          strokeWidth={3.5}
+                                        />
+                                      ) : Number(district.delta.deceased) <
+                                        0 ? (
+                                        <Icon.ArrowDown
                                           color="#6c757d"
                                           size={9}
                                           strokeWidth={3.5}
                                         />
+                                      ) : (
+                                        ""
                                       )}
-                                      <b className="deltainc-md text-secondary align-middle">
-                                        {Number(district.delta.deceased) === 0
-                                          ? ""
-                                          : commaSeperated(
+                                      <b className="deltainc-md text-secondary">
+                                        {Number(district.delta.deceased) > 0
+                                          ? commaSeperated(
                                               district.delta.deceased
-                                            )}
+                                            )
+                                          : Number(district.delta.recovered) < 0
+                                          ? commaSeperated(
+                                              Math.abs(district.delta.deceased)
+                                            )
+                                          : ""}
                                       </b>
                                     </span>
                                     &nbsp;&nbsp;
