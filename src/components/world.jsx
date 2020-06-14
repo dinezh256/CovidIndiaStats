@@ -399,7 +399,12 @@ class World extends Component {
                           textAlign: "right",
                           background: "rgba(195, 224, 195, 0.7)",
                         }}
-                      >
+                      ><span className="text-success">
+                          {Number(country.todayRecovered) === 0
+                            ? ""
+                            : "+" + commaSeperated(country.todayRecovered)}
+                        </span>
+                        &nbsp;
                         {Number(country.recovered) === 0
                           ? "-"
                           : commaSeperated(country.recovered)}
