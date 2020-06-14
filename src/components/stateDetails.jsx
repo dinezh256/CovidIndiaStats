@@ -1754,8 +1754,6 @@ class StateDetails extends Component {
                           className="table table-sm table-striped table-borderless"
                           style={{
                             minWidth: "290px",
-                            tableLayout: "fixed",
-                            width: "100%",
                           }}
                           align="center"
                         >
