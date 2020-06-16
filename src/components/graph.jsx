@@ -336,15 +336,7 @@ class Graph extends Component {
     }
 
     if (isLoaded) {
-      const lastUpdatedTime = timeSince(
-        new Date(
-          [
-            grandTotal[0].lastupdatedtime.split(/\//)[1],
-            grandTotal[0].lastupdatedtime.split(/\//)[0],
-            grandTotal[0].lastupdatedtime.split(/\//)[2],
-          ].join("/")
-        ).getTime()
-      );
+      const lastUpdatedTime = timeSince(grandTotal[0].lastupdatedtime, "DD/MM/YYYY");
       return (
         <React.Fragment>
           <div className={graphClass}>
