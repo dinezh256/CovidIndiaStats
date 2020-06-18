@@ -336,7 +336,10 @@ class Graph extends Component {
     }
 
     if (isLoaded) {
-      const lastUpdatedTime = timeSince(grandTotal[0].lastupdatedtime, "DD/MM/YYYY");
+      const lastUpdatedTime = timeSince(
+        grandTotal[0].lastupdatedtime,
+        "DD/MM/YYYY"
+      );
       return (
         <React.Fragment>
           <div className={graphClass}>
@@ -988,14 +991,14 @@ class Graph extends Component {
                               background: "rgba(255,255,255,0)",
                               border: "none",
                               borderRadius: "5px",
-                              fontSize: "8px",
+                              fontSize: "0.7rem",
                               fontFamily: "notosans",
                               textTransform: "uppercase",
                               textAlign: "left",
                               lineHeight: 0.8,
                             }}
                             cursor={false}
-                            position={{ x: 100, y: 12 }}
+                            position={{ x: 120, y: 15 }}
                           />
                           <Line
                             type="monotone"
@@ -1003,7 +1006,7 @@ class Graph extends Component {
                             stroke="#6471b3"
                             strokeWidth="3"
                             strokeLinecap="round"
-                            name="Total samples tested"
+                            name="Tested"
                             isAnimationActive={true}
                             connectNulls={true}
                             dot={{
@@ -1204,18 +1207,18 @@ class Graph extends Component {
                               background: "rgba(255,255,255,0)",
                               border: "none",
                               borderRadius: "5px",
-                              fontSize: "8px",
+                              fontSize: "0.7rem",
                               fontFamily: "notosans",
                               textTransform: "uppercase",
                               textAlign: "left",
                               lineHeight: 0.8,
                             }}
                             cursor={{ fill: "transparent" }}
-                            position={{ x: 120, y: 16 }}
+                            position={{ x: 120, y: 15 }}
                           />
                           <Bar
                             dataKey="dailytested"
-                            name="Daily Tested Samples"
+                            name="Tested"
                             fill="#3e4da3"
                             radius={[3, 3, 0, 0]}
                             barSize={20}
