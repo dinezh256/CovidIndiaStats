@@ -996,14 +996,14 @@ class Graph extends Component {
                               background: "rgba(255,255,255,0)",
                               border: "none",
                               borderRadius: "5px",
-                              fontSize: "0.7rem",
+                              fontSize: "8px",
                               fontFamily: "notosans",
                               textTransform: "uppercase",
                               textAlign: "left",
                               lineHeight: 0.8,
                             }}
                             cursor={false}
-                            position={{ x: 120, y: 15 }}
+                            position={{ x: 100, y: 12 }}
                           />
                           <Line
                             type="monotone"
@@ -1011,7 +1011,7 @@ class Graph extends Component {
                             stroke="#6471b3"
                             strokeWidth="3"
                             strokeLinecap="round"
-                            name="Tested"
+                            name="Total samples tested"
                             isAnimationActive={true}
                             connectNulls={true}
                             dot={{
@@ -1212,18 +1212,18 @@ class Graph extends Component {
                               background: "rgba(255,255,255,0)",
                               border: "none",
                               borderRadius: "5px",
-                              fontSize: "0.7rem",
+                              fontSize: "8px",
                               fontFamily: "notosans",
                               textTransform: "uppercase",
                               textAlign: "left",
                               lineHeight: 0.8,
                             }}
                             cursor={{ fill: "transparent" }}
-                            position={{ x: 120, y: 15 }}
+                            position={{ x: 120, y: 16 }}
                           />
                           <Bar
                             dataKey="dailytested"
-                            name="Tested"
+                            name="Daily Tested Samples"
                             fill="#3e4da3"
                             radius={[3, 3, 0, 0]}
                             barSize={20}

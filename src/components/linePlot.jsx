@@ -119,7 +119,7 @@ const LinePlot = ({
                 background: "rgba(255,255,255,0)",
                 border: "none",
                 borderRadius: "5px",
-                fontSize: "0.7rem",
+                fontSize: "8px",
                 fontFamily: "notosans",
                 textTransform: "uppercase",
                 textAlign: "left",
