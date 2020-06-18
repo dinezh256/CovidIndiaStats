@@ -1,4 +1,3 @@
-import moment from "moment";
 const months = {
   "01": "Jan",
   "02": "Feb",
@@ -92,6 +91,40 @@ export function toTimestamp(strDate) {
   return datum / 1000;
 }
 
-export function timeSince(timeStamp, dateFormat) {
-  return moment(timeStamp, dateFormat).fromNow();
+export function timeSince(timeStamp) {
+  var now = new Date(),
+    secondsPast = (now.getTime() - timeStamp) / 1000;
+
+  if (secondsPast < 60) {
+    return (
+      parseInt(secondsPast) +
+      ` second${parseInt(secondsPast) > 1 ? "s" : ""} ago`
+    );
+  }
+
+  if (secondsPast < 3600) {
+    return (
+      parseInt(secondsPast / 60) +
+      ` minute${parseInt(secondsPast / 60) > 1 ? "s" : ""} ago`
+    );
+  }
+
+  if (secondsPast <= 86400) {
+    return (
+      parseInt(secondsPast / 3600) +
+      ` hour${parseInt(secondsPast / 3600) > 1 ? "s" : ""} ago `
+    );
+  }
+  if (secondsPast > 86400) {
+    let day = timeStamp.getDate();
+    var month = timeStamp
+      .toDateString()
+      .match(/ [a-zA-Z]*/)[0]
+      .replace(" ", "");
+    var year =
+      timeStamp.getFullYear() === now.getFullYear()
+        ? ""
+        : " " + timeStamp.getFullYear();
+    return day + " " + month + year;
+  }
 }

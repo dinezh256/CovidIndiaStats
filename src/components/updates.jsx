@@ -209,7 +209,15 @@ class Updates extends Component {
                       >
                         <h6 style={{ fontSize: 10, color: "grey" }}>
                           {"about " +
-                            timeSince(item.lastupdatedtime, "DD/MM/YYYY") +
+                            timeSince(
+                              new Date(
+                                [
+                                  item.lastupdatedtime.split(/\//)[1],
+                                  item.lastupdatedtime.split(/\//)[0],
+                                  item.lastupdatedtime.split(/\//)[2],
+                                ].join("/")
+                              ).getTime()
+                            ) +
                             "  "}
                           <span
                             style={{ verticalAlign: "0.09rem", fontSize: 7 }}
