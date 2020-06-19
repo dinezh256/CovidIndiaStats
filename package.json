@@ -31,7 +31,7 @@
     "materialize-css": "^1.0.0-rc.2",
     "moment": "^2.24.0",
     "nivo": "^0.31.0",
-    "node-sass": "^4.13.1",
+    "node-sass": "^4.14.1",
     "npm": "^6.14.4",
     "react": "^16.13.1",
     "react-bootstrap": "^1.0.0",
@@ -53,7 +53,7 @@
     "react-typist": "^2.0.5",
     "recharts": "^1.8.5",
     "sass-lint": "^1.13.1",
-    "serve": "^11.3.0",
+    "serve": "^11.3.2",
     "topojson": "^3.0.2"
   },
   "scripts": {
