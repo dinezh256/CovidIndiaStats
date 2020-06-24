@@ -862,6 +862,10 @@ span.MuiBadge-colorSecondary {
   text-underline-position: unset;
 }
 
+.visitState:hover {
+  text-decoration: none !important;
+}
+
 .backButton {
   text-align: center;
   margin-right: -10px !important;

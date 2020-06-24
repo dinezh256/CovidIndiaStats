@@ -100,7 +100,7 @@ class Updates extends Component {
             {totalDeltaConfirmed || totalDeltaRecovered || totalDeltaDeaths ? (
               data.slice(0, 25).map(
                 (item, index) =>
-                  Number(item.deltaconfirmed) !== 0 && (
+                  Number(item.deltaconfirmed) > 0 && (
                     <div
                       className="alert hoveralert fadeInUp"
                       role="alert"
@@ -188,7 +188,7 @@ class Updates extends Component {
               >
                 <h6 style={{ fontSize: 12, color: "#3a3838" }}>
                   {" "}
-                  No new updates!
+                  No new updates till now!
                 </h6>
               </div>
             )}

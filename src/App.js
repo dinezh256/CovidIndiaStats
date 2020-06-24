@@ -25,7 +25,7 @@ const schemaMarkup = {
   "@context": "http://schema.org/",
   "@type": "NGO",
   name:
-    "Track the spread of Coronavirus (COVID-19) in India (district level to state level) and World",
+    "Track the spread of Coronavirus (COVID-19) in India from state level to district level and around the world",
   alternateName: "COVID INDIA STATS",
   url: "https://covidindiastats.com/",
 };

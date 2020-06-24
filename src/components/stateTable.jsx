@@ -214,7 +214,11 @@ class StateTable extends Component {
                   marginTop: -15,
                 }}
               >
-                <Link key={requiredState} to={`/${requiredState}`}>
+                <Link
+                  className="visitState"
+                  key={requiredState}
+                  to={`/${requiredState}`}
+                >
                   <span className="viewState">
                     VISIT {stateFullName[requiredState]} MAIN PAGE
                   </span>
@@ -393,8 +397,10 @@ class StateTable extends Component {
                         className="delta td text-secondary narrowRow align-middle"
                         style={{ textAlign: "right" }}
                       >
-                        {Number(district.active)
+                        {Number(district.active) > 0
                           ? commaSeperated(district.active)
+                          : Number(district.active) < 0
+                          ? "-" + commaSeperated(Math.abs(district.active))
                           : "-"}
                       </td>
                       <td

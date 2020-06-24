@@ -6,7 +6,6 @@ import {
   toTimestamp,
   timeSince,
 } from "../utils/common-functions";
-import FiberNewOutlinedIcon from "@material-ui/icons/FiberNewOutlined";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import NotificationsOffIcon from "@material-ui/icons/NotificationsOff";
 import LaunchRoundedIcon from "@material-ui/icons/LaunchRounded";
@@ -162,38 +161,13 @@ class Updates extends Component {
           </div>
           <div className="w-100"></div>
           <div style={{ marginTop: "20px", marginBottom: "20px" }}>
-            {/* {toggleActive && (
-              <div
-                className="alert hoveralert"
-                role="alert"
-                style={{
-                  marginBottom: "5px",
-                  border: "none",
-                  background: "rgba(108,117,125,.0627451)",
-                  boxShadow: "0 0 2px rgba(0,0,0,0.1)",
-                  marginTop: "10px",
-                  cursor: "pointer",
-                }}
-              >
-                <h6>
-                  <FiberNewOutlinedIcon
-                    color="primary"
-                    style={{ fontSize: 20 }}
-                  />
-                </h6>
-                <h6 style={{ fontSize: 12, color: "#3a3838" }}>
-                  Tap on the icon of the updates below to visit your own
-                  State/UT
-                </h6>
-              </div>
-            )} */}
             {toggleActive &&
               (totalDeltaConfirmed ||
               totalDeltaRecovered ||
               totalDeltaDeaths ? (
                 data.slice(0, 9).map(
                   (item, index) =>
-                    Number(item.deltaconfirmed) !== 0 && (
+                    Number(item.deltaconfirmed) > 0 && (
                       <div
                         className="alert hoveralert fadeInUp"
                         role="alert"

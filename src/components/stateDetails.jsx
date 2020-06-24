@@ -1668,7 +1668,6 @@ class StateDetails extends Component {
                 <div className="col">
                   {requiredData.length && viewTable ? (
                     <React.Fragment>
-                      <div className="w-100"></div>
                       <div
                         className="row fadeInUp"
                         style={{ animationDelay: "0.1s" }}
@@ -1676,7 +1675,7 @@ class StateDetails extends Component {
                         <table
                           className="table table-sm table-striped table-borderless"
                           style={{
-                            minWidth: "290px",
+                            minWidth: "300px",
                             tableLayout: "fixed",
                             width: "100%",
                           }}
@@ -1832,8 +1831,13 @@ class StateDetails extends Component {
                                     className="delta td text-secondary narrowRow align-middle"
                                     style={{ textAlign: "right" }}
                                   >
-                                    {Number(district.active)
+                                    {Number(district.active) > 0
                                       ? commaSeperated(district.active)
+                                      : Number(district.active) < 0
+                                      ? "-" +
+                                        commaSeperated(
+                                          Math.abs(district.active)
+                                        )
                                       : "-"}
                                   </td>
                                   <td
