@@ -1667,262 +1667,254 @@ class StateDetails extends Component {
                 <div className="w-100"></div>
                 <div className="col">
                   {requiredData.length && viewTable ? (
-                    <React.Fragment>
-                      <div
-                        className="row fadeInUp"
-                        style={{ animationDelay: "0.1s" }}
+                    <div
+                      className="row fadeInUp"
+                      style={{ animationDelay: "0.1s" }}
+                    >
+                      <table
+                        className="table table-sm table-striped table-borderless"
+                        style={{
+                          minWidth: "300px",
+                          width: "100%",
+                        }}
+                        align="center"
                       >
-                        <table
-                          className="table table-sm table-striped table-borderless"
-                          style={{
-                            minWidth: "300px",
-                            tableLayout: "fixed",
-                            width: "100%",
-                          }}
-                          align="center"
-                        >
-                          <thead className="thead-dark">
-                            <tr>
-                              <th
-                                className="th wideRow sticky-top"
-                                id="line1"
-                                style={{ width: "57px" }}
-                              >
-                                DISTRICT
-                              </th>
-                              <th
-                                className="th sticky-top"
-                                id="line2"
-                                style={{ width: "175px" }}
-                              >
-                                DISTRICT
-                              </th>
-                              <th
-                                className="th sticky-top text-info smallRow"
-                                style={{ textAlign: "center" }}
-                                id="line1"
-                              >
-                                CNFRMD
-                              </th>
-                              <th
-                                className="th sticky-top text-info"
-                                style={{ textAlign: "center" }}
-                                id="line2"
-                              >
-                                CONFIRMED
-                              </th>
-                              <th
-                                className="th sticky-top smallRow"
-                                style={{
-                                  color: "rgb(255, 68, 106)",
-                                  textAlign: "center",
-                                }}
-                                id="line1"
-                              >
-                                ACTIVE
-                              </th>
-                              <th
-                                className="th sticky-top narrowRow"
-                                style={{
-                                  color: "rgb(255, 68, 106)",
-                                  textAlign: "center",
-                                }}
-                                id="line2"
-                              >
-                                ACTIVE
-                              </th>
-                              <th
-                                className="th sticky-top text-success smallRow"
-                                style={{ textAlign: "center" }}
-                                id="line1"
-                              >
-                                RCVRD
-                              </th>
-                              <th
-                                className="th sticky-top text-success"
-                                style={{ textAlign: "center" }}
-                                id="line2"
-                              >
-                                RECOVERED
-                              </th>
-                              <th
-                                className="th sticky-top text-secondary smallRow"
-                                id="line1"
-                                style={{ textAlign: "center" }}
-                              >
-                                DEATHS
-                              </th>
-                              <th
-                                className="th sticky-top text-secondary"
-                                id="line2"
-                                style={{ textAlign: "center", width: "70px" }}
-                              >
-                                DECEASED
-                              </th>
-                            </tr>
-                          </thead>
-                          <tbody className="tbody">
-                            {requiredData.map((item) =>
-                              item.map((district) => (
-                                <tr className="tr">
-                                  <td
-                                    className="tdleft align-middle"
-                                    style={{
-                                      color: "grey",
-                                      borderLeftWidth: "5px",
-                                      borderStyle: "solid",
-                                    }}
-                                  >
-                                    {district.district}
-                                    {district.notes ? (
-                                      <BootstrapTooltip
-                                        title={parse(district.notes)}
+                        <thead className="thead-dark">
+                          <tr>
+                            <th
+                              className="th wideRow sticky-top"
+                              id="line1"
+                              style={{ width: "57px" }}
+                            >
+                              DISTRICT
+                            </th>
+                            <th
+                              className="th sticky-top"
+                              id="line2"
+                              style={{ width: "175px" }}
+                            >
+                              DISTRICT
+                            </th>
+                            <th
+                              className="th sticky-top text-info smallRow"
+                              style={{ textAlign: "center" }}
+                              id="line1"
+                            >
+                              CNFRMD
+                            </th>
+                            <th
+                              className="th sticky-top text-info"
+                              style={{ textAlign: "center" }}
+                              id="line2"
+                            >
+                              CONFIRMED
+                            </th>
+                            <th
+                              className="th sticky-top smallRow"
+                              style={{
+                                color: "rgb(255, 68, 106)",
+                                textAlign: "center",
+                              }}
+                              id="line1"
+                            >
+                              ACTIVE
+                            </th>
+                            <th
+                              className="th sticky-top narrowRow"
+                              style={{
+                                color: "rgb(255, 68, 106)",
+                                textAlign: "center",
+                              }}
+                              id="line2"
+                            >
+                              ACTIVE
+                            </th>
+                            <th
+                              className="th sticky-top text-success smallRow"
+                              style={{ textAlign: "center" }}
+                              id="line1"
+                            >
+                              RCVRD
+                            </th>
+                            <th
+                              className="th sticky-top text-success"
+                              style={{ textAlign: "center" }}
+                              id="line2"
+                            >
+                              RECOVERED
+                            </th>
+                            <th
+                              className="th sticky-top text-secondary smallRow"
+                              id="line1"
+                              style={{ textAlign: "center" }}
+                            >
+                              DEATHS
+                            </th>
+                            <th
+                              className="th sticky-top text-secondary"
+                              id="line2"
+                              style={{ textAlign: "center", width: "70px" }}
+                            >
+                              DECEASED
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody className="tbody">
+                          {requiredData.map((item) =>
+                            item.map((district) => (
+                              <tr className="tr">
+                                <td
+                                  className="tdleft align-middle"
+                                  style={{
+                                    color: "grey",
+                                    borderLeftWidth: "5px",
+                                    borderStyle: "solid",
+                                  }}
+                                >
+                                  {district.district}
+                                  {district.notes ? (
+                                    <BootstrapTooltip
+                                      title={parse(district.notes)}
+                                    >
+                                      <span
+                                        style={{ verticalAlign: "0.05rem" }}
                                       >
-                                        <span
-                                          style={{ verticalAlign: "0.05rem" }}
-                                        >
-                                          <InfoTwoToneIcon
-                                            color="inherit"
-                                            fontSize="inherit"
-                                          />
-                                        </span>
-                                      </BootstrapTooltip>
+                                        <InfoTwoToneIcon
+                                          color="inherit"
+                                          fontSize="inherit"
+                                        />
+                                      </span>
+                                    </BootstrapTooltip>
+                                  ) : (
+                                    ""
+                                  )}
+                                </td>
+                                <td
+                                  className="delta td text-secondary align-middle"
+                                  style={{ textAlign: "right" }}
+                                >
+                                  <span className="arrowup text-info">
+                                    {Number(district.delta.confirmed) > 0 ? (
+                                      <Icon.ArrowUp
+                                        color="#42b3f4"
+                                        size={9}
+                                        strokeWidth={3.5}
+                                      />
+                                    ) : Number(district.delta.confirmed) < 0 ? (
+                                      <Icon.ArrowDown
+                                        color="#42b3f4"
+                                        size={9}
+                                        strokeWidth={3.5}
+                                      />
                                     ) : (
                                       ""
                                     )}
-                                  </td>
-                                  <td
-                                    className="delta td text-secondary align-middle"
-                                    style={{ textAlign: "right" }}
-                                  >
-                                    <span className="arrowup text-info">
-                                      {Number(district.delta.confirmed) > 0 ? (
-                                        <Icon.ArrowUp
-                                          color="#42b3f4"
-                                          size={9}
-                                          strokeWidth={3.5}
-                                        />
-                                      ) : Number(district.delta.confirmed) <
-                                        0 ? (
-                                        <Icon.ArrowDown
-                                          color="#42b3f4"
-                                          size={9}
-                                          strokeWidth={3.5}
-                                        />
-                                      ) : (
-                                        ""
-                                      )}
-                                      <b className="deltainc-md text-info">
-                                        {Number(district.delta.confirmed) > 0
-                                          ? commaSeperated(
-                                              district.delta.confirmed
-                                            )
-                                          : Number(district.delta.confirmed) < 0
-                                          ? commaSeperated(
-                                              Math.abs(district.delta.confirmed)
-                                            )
-                                          : ""}
-                                      </b>
-                                    </span>
-                                    &nbsp;&nbsp;
-                                    {commaSeperated(district.confirmed)}
-                                  </td>
-                                  <td
-                                    className="delta td text-secondary narrowRow align-middle"
-                                    style={{ textAlign: "right" }}
-                                  >
-                                    {Number(district.active) > 0
-                                      ? commaSeperated(district.active)
-                                      : Number(district.active) < 0
-                                      ? "-" +
-                                        commaSeperated(
-                                          Math.abs(district.active)
-                                        )
-                                      : "-"}
-                                  </td>
-                                  <td
-                                    className="delta td text-secondary align-middle"
-                                    style={{ textAlign: "right" }}
-                                  >
-                                    <span className="arrowup text-success">
-                                      {Number(district.delta.recovered) > 0 ? (
-                                        <Icon.ArrowUp
-                                          color="#28a745"
-                                          size={9}
-                                          strokeWidth={3.5}
-                                        />
-                                      ) : Number(district.delta.recovered) <
-                                        0 ? (
-                                        <Icon.ArrowDown
-                                          color="#28a745"
-                                          size={9}
-                                          strokeWidth={3.5}
-                                        />
-                                      ) : (
-                                        ""
-                                      )}
-                                      <b className="deltainc-md text-success">
-                                        {Number(district.delta.recovered) > 0
-                                          ? commaSeperated(
-                                              district.delta.recovered
-                                            )
-                                          : Number(district.delta.recovered) < 0
-                                          ? commaSeperated(
-                                              Math.abs(district.delta.recovered)
-                                            )
-                                          : ""}
-                                      </b>
-                                    </span>
-                                    &nbsp;
-                                    {Number(district.recovered)
-                                      ? commaSeperated(district.recovered)
-                                      : "-"}
-                                  </td>
-                                  <td
-                                    className="delta td text-secondary narrowRow align-middle"
-                                    style={{ textAlign: "right" }}
-                                  >
-                                    <span className="arrowup text-secondary">
-                                      {Number(district.delta.deceased) > 0 ? (
-                                        <Icon.ArrowUp
-                                          color="#28a745"
-                                          size={9}
-                                          strokeWidth={3.5}
-                                        />
-                                      ) : Number(district.delta.deceased) <
-                                        0 ? (
-                                        <Icon.ArrowDown
-                                          color="#6c757d"
-                                          size={9}
-                                          strokeWidth={3.5}
-                                        />
-                                      ) : (
-                                        ""
-                                      )}
-                                      <b className="deltainc-md text-secondary">
-                                        {Number(district.delta.deceased) > 0
-                                          ? commaSeperated(
-                                              district.delta.deceased
-                                            )
-                                          : Number(district.delta.recovered) < 0
-                                          ? commaSeperated(
-                                              Math.abs(district.delta.deceased)
-                                            )
-                                          : ""}
-                                      </b>
-                                    </span>
-                                    &nbsp;&nbsp;
-                                    {Number(district.deceased)
-                                      ? commaSeperated(district.deceased)
-                                      : "-"}
-                                  </td>
-                                </tr>
-                              ))
-                            )}
-                          </tbody>
-                        </table>
-                      </div>
-                    </React.Fragment>
+                                    <b className="deltainc-md text-info">
+                                      {Number(district.delta.confirmed) > 0
+                                        ? commaSeperated(
+                                            district.delta.confirmed
+                                          )
+                                        : Number(district.delta.confirmed) < 0
+                                        ? commaSeperated(
+                                            Math.abs(district.delta.confirmed)
+                                          )
+                                        : ""}
+                                    </b>
+                                  </span>
+                                  &nbsp;&nbsp;
+                                  {commaSeperated(district.confirmed)}
+                                </td>
+                                <td
+                                  className="delta td text-secondary narrowRow align-middle"
+                                  style={{ textAlign: "right" }}
+                                >
+                                  {Number(district.active) > 0
+                                    ? commaSeperated(district.active)
+                                    : Number(district.active) < 0
+                                    ? "-" +
+                                      commaSeperated(Math.abs(district.active))
+                                    : "-"}
+                                </td>
+                                <td
+                                  className="delta td text-secondary align-middle"
+                                  style={{ textAlign: "right" }}
+                                >
+                                  <span className="arrowup text-success">
+                                    {Number(district.delta.recovered) > 0 ? (
+                                      <Icon.ArrowUp
+                                        color="#28a745"
+                                        size={9}
+                                        strokeWidth={3.5}
+                                      />
+                                    ) : Number(district.delta.recovered) < 0 ? (
+                                      <Icon.ArrowDown
+                                        color="#28a745"
+                                        size={9}
+                                        strokeWidth={3.5}
+                                      />
+                                    ) : (
+                                      ""
+                                    )}
+                                    <b className="deltainc-md text-success">
+                                      {Number(district.delta.recovered) > 0
+                                        ? commaSeperated(
+                                            district.delta.recovered
+                                          )
+                                        : Number(district.delta.recovered) < 0
+                                        ? commaSeperated(
+                                            Math.abs(district.delta.recovered)
+                                          )
+                                        : ""}
+                                    </b>
+                                  </span>
+                                  &nbsp;
+                                  {Number(district.recovered)
+                                    ? commaSeperated(district.recovered)
+                                    : "-"}
+                                </td>
+                                <td
+                                  className="delta td text-secondary narrowRow align-middle"
+                                  style={{ textAlign: "right" }}
+                                >
+                                  <span className="arrowup text-secondary">
+                                    {Number(district.delta.deceased) > 0 ? (
+                                      <Icon.ArrowUp
+                                        color="#28a745"
+                                        size={9}
+                                        strokeWidth={3.5}
+                                      />
+                                    ) : Number(district.delta.deceased) < 0 ? (
+                                      <Icon.ArrowDown
+                                        color="#6c757d"
+                                        size={9}
+                                        strokeWidth={3.5}
+                                      />
+                                    ) : (
+                                      ""
+                                    )}
+                                    <b className="deltainc-md text-secondary">
+                                      {Number(district.delta.deceased) > 0
+                                        ? commaSeperated(
+                                            district.delta.deceased
+                                          )
+                                        : Number(district.delta.recovered) < 0
+                                        ? commaSeperated(
+                                            Math.abs(district.delta.deceased)
+                                          )
+                                        : ""}
+                                    </b>
+                                  </span>
+                                  &nbsp;&nbsp;
+                                  {Number(district.deceased)
+                                    ? commaSeperated(district.deceased)
+                                    : "-"}
+                                </td>
+                              </tr>
+                            ))
+                          )}
+                        </tbody>
+                      </table>
+                    </div>
                   ) : (
                     <div className="row" style={{ alignContent: "center" }}>
                       <div
