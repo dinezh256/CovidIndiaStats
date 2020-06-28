@@ -328,7 +328,7 @@ class World extends Component {
             </div>
 
             <div className="w-100"></div>
-            <div className="col-12">
+            <div className="col">
               <table
                 className="tableworld table-sm fadeInUp table-responsive table-hover table-bordered"
                 align="center"

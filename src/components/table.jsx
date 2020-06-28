@@ -1,29 +1,21 @@
 import React, { Component } from "react";
-import { NavLink } from "react-router-dom";
 import * as Icon from "react-feather";
 import CountUp from "react-countup";
 import Updates from "./updates";
 import InfoTwoToneIcon from "@material-ui/icons/InfoTwoTone";
-import ArrowRightIcon from "@material-ui/icons/ArrowRight";
 import Tooltip, { TooltipProps } from "@material-ui/core/Tooltip";
 import { Theme, makeStyles } from "@material-ui/core/styles";
 import Zoom from "@material-ui/core/Zoom";
-import {
-  LineChart,
-  Line,
-  YAxis,
-  ResponsiveContainer,
-  Tooltip as Retooltip,
-  ReferenceDot,
-} from "recharts";
-import PropTypes from "prop-types";
 import parse from "html-react-parser";
-import { commaSeperated } from "../utils/common-functions";
-import StateTable from "./stateTable";
-import ReactGa from "react-ga";
 import Switch from "react-switch";
-
-let CreateReactClass = require("create-react-class");
+import MiniSparkline from "./miniSparkline";
+import ReactGa from "react-ga";
+import {
+  commaSeperated,
+  DeltaArrow,
+  DeltaValue,
+} from "../utils/common-functions";
+import StateTable from "./stateTable";
 
 class Table extends Component {
   constructor(props) {
@@ -90,30 +82,6 @@ class Table extends Component {
   }
 
   render() {
-    const CustomTooltip = CreateReactClass({
-      propTypes: {
-        type: PropTypes.string,
-        payload: PropTypes.array,
-        label: PropTypes.string,
-      },
-
-      render() {
-        const { active } = this.props;
-
-        if (active) {
-          const { payload } = this.props;
-          return (
-            <div>
-              <p style={{ fontSize: 8, fontFamily: "notosans" }}>
-                {commaSeperated(payload[0].value)}
-              </p>
-            </div>
-          );
-        }
-        return null;
-      },
-    });
-
     const {
       isLoaded,
       items,
@@ -357,43 +325,16 @@ class Table extends Component {
                         paddingBottom: "-10px",
                       }}
                     >
-                      <ResponsiveContainer
+                      <MiniSparkline
+                        sparklinedata={sparklinedata}
+                        datakey={0}
+                        min={min}
+                        max={max}
+                        type={sparklineconfirmed}
+                        fill="#42b3f4"
+                        stroke="rgba(66, 179, 244, 0.7)"
                         width={76}
-                        height="100%"
-                        aspect={2.25}
-                      >
-                        <LineChart data={sparklinedata} syncId="line1">
-                          <YAxis domain={[min, max]} hide={true} />
-                          <Retooltip
-                            content={<CustomTooltip />}
-                            contentStyle={{
-                              background: "rgba(255,255,255,0)",
-                              border: "none",
-                              textAlign: "left",
-                            }}
-                            active={true}
-                            cursor={false}
-                            position={{ x: 0, y: 0 }}
-                            offset={5}
-                          />
-                          <Line
-                            type="monotone"
-                            dataKey="confirmed"
-                            stroke="#42b3f4"
-                            strokeWidth={2.2}
-                            dot={false}
-                            animationDuration={2000}
-                          />
-                          <ReferenceDot
-                            x={sparklineconfirmed.length - 1}
-                            y={Number(sparklineconfirmed.slice(-1))}
-                            r={3}
-                            fill="#42b3f4"
-                            stroke="rgba(66, 179, 244, 0.7)"
-                            isFront={true}
-                          />
-                        </LineChart>
-                      </ResponsiveContainer>
+                      />
                     </section>
                   </td>
 
@@ -431,42 +372,16 @@ class Table extends Component {
                         paddingBottom: "-10px",
                       }}
                     >
-                      <ResponsiveContainer
+                      <MiniSparkline
+                        sparklinedata={sparklinedata}
+                        datakey={1}
+                        min={min}
+                        max={max}
+                        type={sparklineactive}
+                        fill="#ff446a"
+                        stroke="rgba(255, 68, 106, 0.7)"
                         width={76}
-                        height="100%"
-                        aspect={2.25}
-                      >
-                        <LineChart data={sparklinedata} syncId="line1">
-                          <YAxis domain={[min, max]} hide={true} />
-                          <Retooltip
-                            content={<CustomTooltip />}
-                            contentStyle={{
-                              background: "rgba(255,255,255,0)",
-                              border: "none",
-                              textAlign: "left",
-                            }}
-                            active={true}
-                            cursor={false}
-                            position={{ x: 0, y: 0 }}
-                            offset={5}
-                          />
-                          <Line
-                            type="monotone"
-                            dataKey="active"
-                            stroke="#ff446a"
-                            strokeWidth={2.2}
-                            dot={false}
-                            animationDuration={2000}
-                          />
-                          <ReferenceDot
-                            x={sparklineactive.length - 1}
-                            y={Number(sparklineactive.slice(-1))}
-                            r={3}
-                            fill="#ff446a"
-                            stroke="rgba(255, 68, 106, 0.7)"
-                          />
-                        </LineChart>
-                      </ResponsiveContainer>
+                      />
                     </section>
                   </td>
 
@@ -511,42 +426,16 @@ class Table extends Component {
                         paddingBottom: "-10px",
                       }}
                     >
-                      <ResponsiveContainer
+                      <MiniSparkline
+                        sparklinedata={sparklinedata}
+                        datakey={2}
+                        min={min}
+                        max={max}
+                        type={sparklinerecovered}
+                        fill="#58bd58"
+                        stroke="rgba(88, 189, 88, 0.7)"
                         width={76}
-                        height="100%"
-                        aspect={2.25}
-                      >
-                        <LineChart data={sparklinedata} syncId="line1">
-                          <YAxis domain={[min, max]} hide={true} />
-                          <Retooltip
-                            content={<CustomTooltip />}
-                            contentStyle={{
-                              background: "rgba(255,255,255,0)",
-                              border: "none",
-                              textAlign: "left",
-                            }}
-                            active={true}
-                            cursor={false}
-                            position={{ x: 0, y: 0 }}
-                            offset={5}
-                          />
-                          <Line
-                            type="monotone"
-                            dataKey="recovered"
-                            stroke="#58bd58"
-                            strokeWidth={2.2}
-                            dot={false}
-                            animationDuration={2000}
-                          />
-                          <ReferenceDot
-                            x={sparklinerecovered.length - 1}
-                            y={Number(sparklinerecovered.slice(-1))}
-                            r={3}
-                            fill="#58bd58"
-                            stroke="rgba(88, 189, 88, 0.7)"
-                          />
-                        </LineChart>
-                      </ResponsiveContainer>
+                      />
                     </section>
                   </td>
 
@@ -595,42 +484,16 @@ class Table extends Component {
                         paddingBottom: "-10px",
                       }}
                     >
-                      <ResponsiveContainer
+                      <MiniSparkline
+                        sparklinedata={sparklinedata}
+                        datakey={3}
+                        min={min}
+                        max={max}
+                        type={sparklinedeceased}
+                        fill="#5c5756"
+                        stroke="rgba(92, 87, 86, 0.7)"
                         width={76}
-                        height="100%"
-                        aspect={2.25}
-                      >
-                        <LineChart data={sparklinedata} syncId="line1">
-                          <YAxis domain={[min, max]} hide={true} />
-                          <Retooltip
-                            content={<CustomTooltip />}
-                            contentStyle={{
-                              background: "rgba(255,255,255,0)",
-                              border: "none",
-                              textAlign: "left",
-                            }}
-                            active={true}
-                            cursor={false}
-                            position={{ x: 0, y: 0 }}
-                            offset={5}
-                          />
-                          <Line
-                            type="monotone"
-                            dataKey="deceased"
-                            stroke="#5c5756"
-                            strokeWidth={2.2}
-                            dot={false}
-                            animationDuration={2000}
-                          />
-                          <ReferenceDot
-                            x={sparklinedeceased.length - 1}
-                            y={Number(sparklinedeceased.slice(-1))}
-                            r={3}
-                            fill="#5c5756"
-                            stroke="rgba(92, 87, 86, 0.7)"
-                          />
-                        </LineChart>
-                      </ResponsiveContainer>
+                      />
                     </section>
                   </td>
                 </tbody>
@@ -715,44 +578,15 @@ class Table extends Component {
                       />
                     </h5>
                     <section style={{ alignContent: "center" }}>
-                      <ResponsiveContainer
-                        width="95%"
-                        height="100%"
-                        aspect={2.25}
-                      >
-                        <LineChart data={sparklinedata} syncId="line2">
-                          <YAxis domain={[min, max]} hide={true} />
-
-                          <Retooltip
-                            content={<CustomTooltip />}
-                            contentStyle={{
-                              background: "rgba(255,255,255,0)",
-                              border: "none",
-                              textAlign: "left",
-                            }}
-                            active={true}
-                            cursor={false}
-                            position={{ x: 0, y: 0 }}
-                            offset={5}
-                          />
-                          <Line
-                            type="monotone"
-                            dataKey="confirmed"
-                            stroke="#42b3f4"
-                            strokeWidth={2.2}
-                            dot={false}
-                            animationDuration={2000}
-                          />
-                          <ReferenceDot
-                            x={sparklineconfirmed.length - 1}
-                            y={Number(sparklineconfirmed.slice(-1))}
-                            r={3}
-                            fill="#42b3f4"
-                            stroke="rgba(66, 179, 244, 0.7)"
-                            isAbove={true}
-                          />
-                        </LineChart>
-                      </ResponsiveContainer>
+                      <MiniSparkline
+                        sparklinedata={sparklinedata}
+                        datakey={0}
+                        min={min}
+                        max={max}
+                        type={sparklineconfirmed}
+                        fill="#42b3f4"
+                        stroke="rgba(66, 179, 244, 0.7)"
+                      />
                     </section>
                   </td>
 
@@ -785,42 +619,15 @@ class Table extends Component {
                       )}
                     </h5>
                     <section style={{ alignContent: "center" }}>
-                      <ResponsiveContainer
-                        width="95%"
-                        height="100%"
-                        aspect={2.25}
-                      >
-                        <LineChart data={sparklinedata} syncId="line2">
-                          <YAxis domain={[min, max]} hide={true} />
-                          <Retooltip
-                            content={<CustomTooltip />}
-                            contentStyle={{
-                              background: "rgba(255,255,255,0)",
-                              border: "none",
-                              textAlign: "left",
-                            }}
-                            active={true}
-                            cursor={false}
-                            position={{ x: 0, y: 0 }}
-                            offset={5}
-                          />
-                          <Line
-                            type="monotone"
-                            dataKey="active"
-                            stroke="#ff446a"
-                            strokeWidth={2.2}
-                            dot={false}
-                            animationDuration={2000}
-                          />
-                          <ReferenceDot
-                            x={sparklineactive.length - 1}
-                            y={Number(sparklineactive.slice(-1))}
-                            r={3}
-                            fill="#ff446a"
-                            stroke="rgba(255, 68, 106, 0.7)"
-                          />
-                        </LineChart>
-                      </ResponsiveContainer>
+                      <MiniSparkline
+                        sparklinedata={sparklinedata}
+                        datakey={1}
+                        min={min}
+                        max={max}
+                        type={sparklineactive}
+                        fill="#ff446a"
+                        stroke="rgba(255, 68, 106, 0.7)"
+                      />
                     </section>
                   </td>
 
@@ -860,42 +667,15 @@ class Table extends Component {
                       )}
                     </h5>
                     <section style={{ alignContent: "center" }}>
-                      <ResponsiveContainer
-                        width="95%"
-                        height="100%"
-                        aspect={2.25}
-                      >
-                        <LineChart data={sparklinedata} syncId="line2">
-                          <YAxis domain={[min, max]} hide={true} />
-                          <Retooltip
-                            content={<CustomTooltip />}
-                            contentStyle={{
-                              background: "rgba(255,255,255,0)",
-                              border: "none",
-                              textAlign: "left",
-                            }}
-                            active={true}
-                            cursor={false}
-                            position={{ x: 0, y: 0 }}
-                            offset={5}
-                          />
-                          <Line
-                            type="monotone"
-                            dataKey="recovered"
-                            stroke="#58bd58"
-                            strokeWidth={2.2}
-                            dot={false}
-                            animationDuration={2000}
-                          />
-                          <ReferenceDot
-                            x={sparklinerecovered.length - 1}
-                            y={Number(sparklinerecovered.slice(-1))}
-                            r={3}
-                            fill="#58bd58"
-                            stroke="rgba(88, 189, 88, 0.7)"
-                          />
-                        </LineChart>
-                      </ResponsiveContainer>
+                      <MiniSparkline
+                        sparklinedata={sparklinedata}
+                        datakey={2}
+                        min={min}
+                        max={max}
+                        type={sparklinerecovered}
+                        fill="#58bd58"
+                        stroke="rgba(88, 189, 88, 0.7)"
+                      />
                     </section>
                   </td>
 
@@ -938,42 +718,15 @@ class Table extends Component {
                       )}
                     </h5>
                     <section style={{ alignContent: "center" }}>
-                      <ResponsiveContainer
-                        width="95%"
-                        height="100%"
-                        aspect={2.25}
-                      >
-                        <LineChart data={sparklinedata} syncId="line2">
-                          <YAxis domain={[min, max]} hide={true} />
-                          <Retooltip
-                            content={<CustomTooltip />}
-                            contentStyle={{
-                              background: "rgba(255,255,255,0)",
-                              border: "none",
-                              textAlign: "left",
-                            }}
-                            active={true}
-                            cursor={false}
-                            position={{ x: 0, y: 0 }}
-                            offset={5}
-                          />
-                          <Line
-                            type="monotone"
-                            dataKey="deceased"
-                            stroke="#5c5756"
-                            strokeWidth={2.2}
-                            dot={false}
-                            animationDuration={2000}
-                          />
-                          <ReferenceDot
-                            x={sparklinedeceased.length - 1}
-                            y={Number(sparklinedeceased.slice(-1))}
-                            r={3}
-                            fill="#5c5756"
-                            stroke="rgba(92, 87, 86, 0.7)"
-                          />
-                        </LineChart>
-                      </ResponsiveContainer>
+                      <MiniSparkline
+                        sparklinedata={sparklinedata}
+                        datakey={3}
+                        min={min}
+                        max={max}
+                        type={sparklinedeceased}
+                        fill="#5c5756"
+                        stroke="rgba(92, 87, 86, 0.7)"
+                      />
                     </section>
                   </td>
                 </tbody>
@@ -1177,31 +930,11 @@ class Table extends Component {
                         style={{ textAlign: "right" }}
                       >
                         <span className="arrowup text-info">
-                          {Number(item.deltaconfirmed) > 0 ? (
-                            <Icon.ArrowUp
-                              style={{ verticalAlign: -1 }}
-                              color="#42b3f4"
-                              size={10}
-                              strokeWidth={3.5}
-                            />
-                          ) : Number(item.deltaconfirmed) < 0 ? (
-                            <Icon.ArrowDown
-                              style={{ verticalAlign: -1 }}
-                              color="#42b3f4"
-                              size={10}
-                              strokeWidth={3.5}
-                            />
-                          ) : (
-                            ""
-                          )}
-
-                          {Number(item.deltaconfirmed) > 0
-                            ? commaSeperated(Number(item.deltaconfirmed))
-                            : Number(item.deltaconfirmed) < 0
-                            ? commaSeperated(
-                                Number(Math.abs(item.deltaconfirmed))
-                              )
-                            : ""}
+                          <DeltaArrow
+                            deltaType={item.deltaconfirmed}
+                            color={"#42b3f4"}
+                          />
+                          <DeltaValue deltaType={item.deltaconfirmed} />
                         </span>
                         &nbsp;{commaSeperated(item.confirmed)}
                       </td>
@@ -1221,31 +954,11 @@ class Table extends Component {
                         style={{ textAlign: "right" }}
                       >
                         <span className="arrowup" style={{ color: "#28a745" }}>
-                          {Number(item.deltarecovered) > 0 ? (
-                            <Icon.ArrowUp
-                              style={{ verticalAlign: -1 }}
-                              color="#28a745"
-                              size={10}
-                              strokeWidth={3.5}
-                            />
-                          ) : Number(item.deltarecovered) < 0 ? (
-                            <Icon.ArrowDown
-                              style={{ verticalAlign: -1 }}
-                              color="#28a745"
-                              size={10}
-                              strokeWidth={3.5}
-                            />
-                          ) : (
-                            ""
-                          )}
-
-                          {Number(item.deltarecovered) > 0
-                            ? commaSeperated(Number(item.deltarecovered))
-                            : Number(item.deltarecovered) < 0
-                            ? commaSeperated(
-                                Number(Math.abs(item.deltarecovered))
-                              )
-                            : ""}
+                          <DeltaArrow
+                            deltaType={item.deltarecovered}
+                            color={"#28a745"}
+                          />
+                          <DeltaValue deltaType={item.deltarecovered} />
                         </span>
                         &nbsp;
                         {percentageToggleActive
@@ -1261,29 +974,11 @@ class Table extends Component {
                         style={{ textAlign: "right" }}
                       >
                         <span className="arrowup" style={{ color: "#6c757d" }}>
-                          {Number(item.deltadeaths) > 0 ? (
-                            <Icon.ArrowUp
-                              style={{ verticalAlign: -1 }}
-                              color="#6c757d"
-                              size={10}
-                              strokeWidth={3.5}
-                            />
-                          ) : Number(item.deltadeaths) < 0 ? (
-                            <Icon.ArrowDown
-                              style={{ verticalAlign: -1 }}
-                              color="#6c757d"
-                              size={10}
-                              strokeWidth={3.5}
-                            />
-                          ) : (
-                            ""
-                          )}
-
-                          {Number(item.deltadeaths) > 0
-                            ? commaSeperated(Number(item.deltadeaths))
-                            : Number(item.deltadeaths) < 0
-                            ? commaSeperated(Number(Math.abs(item.deltadeaths)))
-                            : ""}
+                          <DeltaArrow
+                            deltaType={item.deltadeaths}
+                            color={"#6c757d"}
+                          />
+                          <DeltaValue deltaType={item.deltadeaths} />
                         </span>
                         &nbsp;
                         {percentageToggleActive
@@ -1323,31 +1018,11 @@ class Table extends Component {
                       style={{ textAlign: "right" }}
                     >
                       <span className="arrowup text-info">
-                        {Number(total[0].deltaconfirmed) > 0 ? (
-                          <Icon.ArrowUp
-                            style={{ verticalAlign: -1 }}
-                            color="#42b3f4"
-                            size={10}
-                            strokeWidth={3.5}
-                          />
-                        ) : Number(total[0].deltaconfirmed) < 0 ? (
-                          <Icon.ArrowDown
-                            style={{ verticalAlign: -1 }}
-                            color="#42b3f4"
-                            size={10}
-                            strokeWidth={3.5}
-                          />
-                        ) : (
-                          ""
-                        )}
-
-                        {Number(total[0].deltaconfirmed) > 0
-                          ? commaSeperated(Number(total[0].deltaconfirmed))
-                          : Number(total[0].deltaconfirmed) < 0
-                          ? commaSeperated(
-                              Number(Math.abs(total[0].deltaconfirmed))
-                            )
-                          : ""}
+                        <DeltaArrow
+                          deltaType={total[0].deltaconfirmed}
+                          color={"#42b3f4"}
+                        />
+                        <DeltaValue deltaType={total[0].deltaconfirmed} />
                       </span>
                       &nbsp;{commaSeperated(total[0].confirmed)}
                     </td>
@@ -1364,31 +1039,11 @@ class Table extends Component {
                       style={{ textAlign: "right" }}
                     >
                       <span className="arrowup" style={{ color: "#28a745" }}>
-                        {Number(total[0].deltarecovered) > 0 ? (
-                          <Icon.ArrowUp
-                            style={{ verticalAlign: -1 }}
-                            color="#28a745"
-                            size={10}
-                            strokeWidth={3.5}
-                          />
-                        ) : Number(total[0].deltarecovered) < 0 ? (
-                          <Icon.ArrowDown
-                            style={{ verticalAlign: -1 }}
-                            color="#28a745"
-                            size={10}
-                            strokeWidth={3.5}
-                          />
-                        ) : (
-                          ""
-                        )}
-
-                        {Number(total[0].deltarecovered) > 0
-                          ? commaSeperated(Number(total[0].deltarecovered))
-                          : Number(total[0].deltarecovered) < 0
-                          ? commaSeperated(
-                              Number(Math.abs(total[0].deltarecovered))
-                            )
-                          : ""}
+                        <DeltaArrow
+                          deltaType={total[0].deltarecovered}
+                          color={"#28a745"}
+                        />
+                        <DeltaValue deltaType={total[0].deltarecovered} />
                       </span>
                       &nbsp;
                       {total[0].recovered === "0"
@@ -1400,31 +1055,11 @@ class Table extends Component {
                       style={{ textAlign: "right" }}
                     >
                       <span className="arrowup" style={{ color: "#6c757d" }}>
-                        {Number(total[0].deltadeaths) > 0 ? (
-                          <Icon.ArrowUp
-                            style={{ verticalAlign: -1 }}
-                            color="#6c757d"
-                            size={10}
-                            strokeWidth={3.5}
-                          />
-                        ) : Number(total[0].deltadeaths) < 0 ? (
-                          <Icon.ArrowDown
-                            style={{ verticalAlign: -1 }}
-                            color="#6c757d"
-                            size={10}
-                            strokeWidth={3.5}
-                          />
-                        ) : (
-                          ""
-                        )}
-
-                        {Number(total[0].deltadeaths) > 0
-                          ? commaSeperated(Number(total[0].deltadeaths))
-                          : Number(total[0].deltadeaths) < 0
-                          ? commaSeperated(
-                              Number(Math.abs(total[0].deltadeaths))
-                            )
-                          : ""}
+                        <DeltaArrow
+                          deltaType={total[0].deltadeaths}
+                          color={"#6c757d"}
+                        />
+                        <DeltaValue deltaType={total[0].deltadeaths} />
                       </span>
                       &nbsp;
                       {commaSeperated(total[0].deaths)}
@@ -1539,31 +1174,11 @@ class Table extends Component {
                         style={{ textAlign: "right" }}
                       >
                         <span className="arrowup text-info">
-                          {Number(item.deltaconfirmed) > 0 ? (
-                            <Icon.ArrowUp
-                              style={{ verticalAlign: -1 }}
-                              color="#42b3f4"
-                              size={10}
-                              strokeWidth={3.5}
-                            />
-                          ) : Number(item.deltaconfirmed) < 0 ? (
-                            <Icon.ArrowDown
-                              style={{ verticalAlign: -1 }}
-                              color="#42b3f4"
-                              size={10}
-                              strokeWidth={3.5}
-                            />
-                          ) : (
-                            ""
-                          )}
-
-                          {Number(item.deltaconfirmed) > 0
-                            ? commaSeperated(Number(item.deltaconfirmed))
-                            : Number(item.deltaconfirmed) < 0
-                            ? commaSeperated(
-                                Number(Math.abs(item.deltaconfirmed))
-                              )
-                            : ""}
+                          <DeltaArrow
+                            deltaType={item.deltaconfirmed}
+                            color={"#42b3f4"}
+                          />
+                          <DeltaValue deltaType={item.deltaconfirmed} />
                         </span>
                         &nbsp;{commaSeperated(item.confirmed)}
                       </td>
@@ -1583,31 +1198,11 @@ class Table extends Component {
                         style={{ textAlign: "right" }}
                       >
                         <span className="arrowup" style={{ color: "#28a745" }}>
-                          {Number(item.deltarecovered) > 0 ? (
-                            <Icon.ArrowUp
-                              style={{ verticalAlign: -1 }}
-                              color="#28a745"
-                              size={10}
-                              strokeWidth={3.5}
-                            />
-                          ) : Number(item.deltarecovered) < 0 ? (
-                            <Icon.ArrowDown
-                              style={{ verticalAlign: -1 }}
-                              color="#28a745"
-                              size={10}
-                              strokeWidth={3.5}
-                            />
-                          ) : (
-                            ""
-                          )}
-
-                          {Number(item.deltarecovered) > 0
-                            ? commaSeperated(Number(item.deltarecovered))
-                            : Number(item.deltarecovered) < 0
-                            ? commaSeperated(
-                                Number(Math.abs(item.deltarecovered))
-                              )
-                            : ""}
+                          <DeltaArrow
+                            deltaType={item.deltarecovered}
+                            color={"#28a745"}
+                          />
+                          <DeltaValue deltaType={item.deltarecovered} />
                         </span>
                         &nbsp;
                         {percentageToggleActive
@@ -1623,29 +1218,11 @@ class Table extends Component {
                         style={{ textAlign: "right" }}
                       >
                         <span className="arrowup" style={{ color: "#6c757d" }}>
-                          {Number(item.deltadeaths) > 0 ? (
-                            <Icon.ArrowUp
-                              style={{ verticalAlign: -1 }}
-                              color="#6c757d"
-                              size={10}
-                              strokeWidth={3.5}
-                            />
-                          ) : Number(item.deltadeaths) < 0 ? (
-                            <Icon.ArrowDown
-                              style={{ verticalAlign: -1 }}
-                              color="#6c757d"
-                              size={10}
-                              strokeWidth={3.5}
-                            />
-                          ) : (
-                            ""
-                          )}
-
-                          {Number(item.deltadeaths) > 0
-                            ? commaSeperated(Number(item.deltadeaths))
-                            : Number(item.deltadeaths) < 0
-                            ? commaSeperated(Number(Math.abs(item.deltadeaths)))
-                            : ""}
+                          <DeltaArrow
+                            deltaType={item.deltadeaths}
+                            color={"#6c757d"}
+                          />
+                          <DeltaValue deltaType={item.deltadeaths} />
                         </span>
                         &nbsp;
                         {percentageToggleActive
@@ -1685,30 +1262,11 @@ class Table extends Component {
                       style={{ textAlign: "right" }}
                     >
                       <span className="arrowup text-info">
-                        {Number(total[0].deltaconfirmed) > 0 ? (
-                          <Icon.ArrowUp
-                            style={{ verticalAlign: -1 }}
-                            color="#42b3f4"
-                            size={10}
-                            strokeWidth={3.5}
-                          />
-                        ) : Number(total[0].deltaconfirmed) < 0 ? (
-                          <Icon.ArrowDown
-                            style={{ verticalAlign: -1 }}
-                            color="#42b3f4"
-                            size={10}
-                            strokeWidth={3.5}
-                          />
-                        ) : (
-                          ""
-                        )}
-                        {Number(total[0].deltaconfirmed) > 0
-                          ? commaSeperated(Number(total[0].deltaconfirmed))
-                          : Number(total[0].deltaconfirmed) < 0
-                          ? commaSeperated(
-                              Number(Math.abs(total[0].deltaconfirmed))
-                            )
-                          : ""}
+                        <DeltaArrow
+                          deltaType={total[0].deltaconfirmed}
+                          color={"#42b3f4"}
+                        />
+                        <DeltaValue deltaType={total[0].deltaconfirmed} />
                       </span>
                       &nbsp;{commaSeperated(total[0].confirmed)}
                     </td>
@@ -1725,31 +1283,11 @@ class Table extends Component {
                       style={{ textAlign: "right" }}
                     >
                       <span className="arrowup" style={{ color: "#28a745" }}>
-                        {Number(total[0].deltarecovered) > 0 ? (
-                          <Icon.ArrowUp
-                            style={{ verticalAlign: -1 }}
-                            color="#28a745"
-                            size={10}
-                            strokeWidth={3.5}
-                          />
-                        ) : Number(total[0].deltarecovered) < 0 ? (
-                          <Icon.ArrowDown
-                            style={{ verticalAlign: -1 }}
-                            color="#28a745"
-                            size={10}
-                            strokeWidth={3.5}
-                          />
-                        ) : (
-                          ""
-                        )}
-
-                        {Number(total[0].deltarecovered) > 0
-                          ? commaSeperated(Number(total[0].deltarecovered))
-                          : Number(total[0].deltarecovered) < 0
-                          ? commaSeperated(
-                              Number(Math.abs(total[0].deltarecovered))
-                            )
-                          : ""}
+                        <DeltaArrow
+                          deltaType={total[0].deltarecovered}
+                          color={"#28a745"}
+                        />
+                        <DeltaValue deltaType={total[0].deltarecovered} />
                       </span>
                       &nbsp;
                       {total[0].recovered === "0"
@@ -1761,31 +1299,11 @@ class Table extends Component {
                       style={{ textAlign: "right" }}
                     >
                       <span className="arrowup" style={{ color: "#6c757d" }}>
-                        {Number(total[0].deltadeaths) > 0 ? (
-                          <Icon.ArrowUp
-                            style={{ verticalAlign: -1 }}
-                            color="#6c757d"
-                            size={10}
-                            strokeWidth={3.5}
-                          />
-                        ) : Number(total[0].deltadeaths) < 0 ? (
-                          <Icon.ArrowDown
-                            style={{ verticalAlign: -1 }}
-                            color="#6c757d"
-                            size={10}
-                            strokeWidth={3.5}
-                          />
-                        ) : (
-                          ""
-                        )}
-
-                        {Number(total[0].deltadeaths) > 0
-                          ? commaSeperated(Number(total[0].deltadeaths))
-                          : Number(total[0].deltadeaths) < 0
-                          ? commaSeperated(
-                              Number(Math.abs(total[0].deltadeaths))
-                            )
-                          : ""}
+                        <DeltaArrow
+                          deltaType={total[0].deltadeaths}
+                          color={"#6c757d"}
+                        />
+                        <DeltaValue deltaType={total[0].deltadeaths} />
                       </span>
                       &nbsp;
                       {commaSeperated(total[0].deaths)}

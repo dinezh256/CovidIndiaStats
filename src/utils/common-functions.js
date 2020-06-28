@@ -1,3 +1,6 @@
+import * as Icon from "react-feather";
+import React from "react";
+
 const months = {
   "01": "Jan",
   "02": "Feb",
@@ -128,3 +131,71 @@ export function timeSince(timeStamp) {
     return day + " " + month + year;
   }
 }
+
+export function DeltaArrow({ deltaType, color }) {
+  return Number(deltaType) > 0 ? (
+    <Icon.ArrowUp
+      style={{ verticalAlign: -1 }}
+      color={color}
+      size={10}
+      strokeWidth={3.5}
+    />
+  ) : Number(deltaType) < 0 ? (
+    <Icon.ArrowDown
+      style={{ verticalAlign: -1 }}
+      color={color}
+      size={10}
+      strokeWidth={3.5}
+    />
+  ) : (
+    ""
+  );
+}
+
+export function DeltaValue({ deltaType }) {
+  return Number(deltaType) > 0
+    ? commaSeperated(Number(deltaType))
+    : Number(deltaType) < 0
+    ? commaSeperated(Number(Math.abs(deltaType)))
+    : "";
+}
+
+export const stateID = [
+  "AP",
+  "AN",
+  "AR",
+  "AS",
+  "BR",
+  "CH",
+  "CT",
+  "DN",
+  "DL",
+  "GA",
+  "GJ",
+  "HP",
+  "HR",
+  "JH",
+  "JK",
+  "KA",
+  "KL",
+  "LA",
+  "LD",
+  "MH",
+  "ML",
+  "MN",
+  "MP",
+  "MZ",
+  "NL",
+  "OR",
+  "PB",
+  "PY",
+  "RJ",
+  "SK",
+  "TG",
+  "TN",
+  "TR",
+  "UP",
+  "UT",
+  "WB",
+  "UN",
+];

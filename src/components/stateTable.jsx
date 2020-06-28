@@ -7,6 +7,11 @@ import { Theme, makeStyles } from "@material-ui/core/styles";
 import InfoTwoToneIcon from "@material-ui/icons/InfoTwoTone";
 import parse from "html-react-parser";
 import { Link } from "react-router-dom";
+import {
+  commaSeperated,
+  DeltaArrow,
+  DeltaValue,
+} from "../utils/common-functions";
 
 class StateTable extends Component {
   constructor(props) {
@@ -131,15 +136,6 @@ class StateTable extends Component {
       return (
         <Tooltip disableTouchListener arrow classes={classes} {...props} />
       );
-    }
-
-    function commaSeperated(x) {
-      x = x.toString();
-      let lastThree = x.substring(x.length - 3);
-      let otherNumbers = x.substring(0, x.length - 3);
-      if (otherNumbers !== "") lastThree = "," + lastThree;
-      let res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
-      return res;
     }
 
     const stateFullName = {
@@ -377,18 +373,11 @@ class StateTable extends Component {
                         style={{ textAlign: "right" }}
                       >
                         <span className="arrowup text-info">
-                          {Number(district.delta.confirmed) !== 0 && (
-                            <Icon.ArrowUp
-                              color="#42b3f4"
-                              size={9}
-                              strokeWidth={3.5}
-                            />
-                          )}
-                          <b className="deltainc-md text-info">
-                            {Number(district.delta.confirmed) === 0
-                              ? ""
-                              : commaSeperated(district.delta.confirmed)}
-                          </b>
+                          <DeltaArrow
+                            deltaType={district.delta.confirmed}
+                            color={"#42b3f4"}
+                          />
+                          <DeltaValue deltaType={district.delta.confirmed} />
                         </span>
                         &nbsp;&nbsp;
                         {commaSeperated(district.confirmed)}
@@ -408,18 +397,11 @@ class StateTable extends Component {
                         style={{ textAlign: "right" }}
                       >
                         <span className="arrowup text-success">
-                          {Number(district.delta.recovered) !== 0 && (
-                            <Icon.ArrowUp
-                              color="#28a745"
-                              size={9}
-                              strokeWidth={3.5}
-                            />
-                          )}
-                          <b className="deltainc-md text-success align-middle">
-                            {Number(district.delta.recovered) === 0
-                              ? ""
-                              : commaSeperated(district.delta.recovered)}
-                          </b>
+                          <DeltaArrow
+                            deltaType={district.delta.recovered}
+                            color={"#28a745"}
+                          />
+                          <DeltaValue deltaType={district.delta.recovered} />
                         </span>
                         &nbsp;&nbsp;
                         {Number(district.recovered)
@@ -431,18 +413,11 @@ class StateTable extends Component {
                         style={{ textAlign: "right" }}
                       >
                         <span className="arrowup text-secondary">
-                          {Number(district.delta.deceased) !== 0 && (
-                            <Icon.ArrowUp
-                              color="#6c757d"
-                              size={9}
-                              strokeWidth={3.5}
-                            />
-                          )}
-                          <b className="deltainc-md text-secondary align-middle">
-                            {Number(district.delta.deceased) === 0
-                              ? ""
-                              : commaSeperated(district.delta.deceased)}
-                          </b>
+                          <DeltaArrow
+                            deltaType={district.delta.deceased}
+                            color={"#6c757d"}
+                          />
+                          <DeltaValue deltaType={district.delta.deceased} />
                         </span>
                         &nbsp;&nbsp;
                         {Number(district.deceased)

@@ -15,6 +15,9 @@ import {
   formatDate,
   formatDateAbsolute,
   commaSeperated,
+  DeltaArrow,
+  DeltaValue,
+  stateID,
 } from "../utils/common-functions";
 import parse from "html-react-parser";
 import {
@@ -33,9 +36,8 @@ import ReactGa from "react-ga";
 import { Helmet } from "react-helmet";
 import Footer from "./footer";
 import ControlledExpansionPanels from "./expansionPanel";
-// import DistrictPicker from "./districtPicker";
 import MiniBarPlot from "./miniBarPlot";
-import MiniStateSparkline from "./miniSateSparkline";
+import MiniStateSparkline from "./miniStateSparkline";
 import NotFound from "./notFound";
 
 class StateDetails extends Component {
@@ -44,7 +46,6 @@ class StateDetails extends Component {
     this.state = {
       stateData: [],
       isLoaded: false,
-
       totalStateData: [],
       totalStateDataLoaded: false,
       statesDailyData: [],
@@ -105,97 +106,7 @@ class StateDetails extends Component {
     this.setState({ oneMonth });
   }
 
-  // handleDistrictChange = async (district) => {
-  //   const stateFullName = {
-  //     AP: "Andhra Pradesh",
-  //     AN: "Andaman and Nicobar Islands",
-  //     AR: "Arunachal Pradesh",
-  //     AS: "Assam",
-  //     BR: "Bihar",
-  //     CH: "Chandigarh",
-  //     CT: "Chhattisgarh",
-  //     DN: "Dadra and Nagar Haveli and Daman and Diu",
-  //     DL: "Delhi",
-  //     GA: "Goa",
-  //     GJ: "Gujarat",
-  //     HP: "Himachal Pradesh",
-  //     HR: "Haryana",
-  //     JH: "Jharkhand",
-  //     JK: "Jammu and Kashmir",
-  //     KA: "Karnataka",
-  //     KL: "Kerala",
-  //     LA: "Ladakh",
-  //     LD: "Lakshadweep",
-  //     MH: "Maharashtra",
-  //     ML: "Meghalaya",
-  //     MN: "Manipur",
-  //     MP: "Madhya Pradesh",
-  //     MZ: "Mizoram",
-  //     NL: "Nagaland",
-  //     OR: "Odisha",
-  //     PB: "Punjab",
-  //     PY: "Puducherry",
-  //     RJ: "Rajasthan",
-  //     SK: "Sikkim",
-  //     TG: "Telangana",
-  //     TN: "Tamil Nadu",
-  //     TR: "Tripura",
-  //     UP: "Uttar Pradesh",
-  //     UT: "Uttarakhand",
-  //     WB: "West Bengal",
-  //     UN: "State Unassigned",
-  //   };
-  //   const requiredDistrictData = this.state.districtsDaily[
-  //     stateFullName[this.props.match.params.stateid.toUpperCase()]
-  //   ][district];
-
-  //   this.setState({
-  //     requiredDistrictData: requiredDistrictData,
-  //     requiredDistrict: district,
-  //     districtHide: true,
-  //   });
-  // };
-
   async componentDidMount() {
-    const stateID = [
-      "AP",
-      "AN",
-      "AR",
-      "AS",
-      "BR",
-      "CH",
-      "CT",
-      "DN",
-      "DL",
-      "GA",
-      "GJ",
-      "HP",
-      "HR",
-      "JH",
-      "JK",
-      "KA",
-      "KL",
-      "LA",
-      "LD",
-      "MH",
-      "ML",
-      "MN",
-      "MP",
-      "MZ",
-      "NL",
-      "OR",
-      "PB",
-      "PY",
-      "RJ",
-      "SK",
-      "TG",
-      "TN",
-      "TR",
-      "UP",
-      "UT",
-      "WB",
-      "UN",
-    ];
     const fetchedStates = await indianstates();
     this.setState({ stateData: fetchedStates, isLoaded: true });
 
@@ -211,12 +122,6 @@ class StateDetails extends Component {
 
     const fetchedStateTestData = await statesTestData();
     this.setState({ testData: fetchedStateTestData, testDataLoaded: true });
-
-    // const fetchedDistrictsDaily = await districtsDaily();
-    // this.setState({
-    //   districtsDaily: fetchedDistrictsDaily,
-    //   districtsDailyLoaded: true,
-    // });
 
     fetch("https://api.covid19india.org/data.json").then((res) =>
       res.json().then((json) => {
@@ -247,8 +152,6 @@ class StateDetails extends Component {
       statesDailyDataLoaded,
       testData,
       testDataLoaded,
-      // districtsDaily,
-      // districtsDailyLoaded,
       requiredDistrictData,
       toggleConfirmed,
       toggleActive,
@@ -317,46 +220,6 @@ class StateDetails extends Component {
       "Dec",
     ];
 
-    const stateID = [
-      "AP",
-      "AN",
-      "AR",
-      "AS",
-      "BR",
-      "CH",
-      "CT",
-      "DN",
-      "DL",
-      "GA",
-      "GJ",
-      "HP",
-      "HR",
-      "JH",
-      "JK",
-      "KA",
-      "KL",
-      "LA",
-      "LD",
-      "MH",
-      "ML",
-      "MN",
-      "MP",
-      "MZ",
-      "NL",
-      "OR",
-      "PB",
-      "PY",
-      "RJ",
-      "SK",
-      "TG",
-      "TN",
-      "TR",
-      "UP",
-      "UT",
-      "WB",
-      "UN",
-    ];
-
     if (requiredDistrictData) {
       for (let i = 0; i < requiredDistrictData.length; i++) {
         requiredDistrictData[i].newDate =
@@ -366,28 +229,12 @@ class StateDetails extends Component {
       }
     }
 
-    // const requiredDistricts = [];
-    // if (
-    //   districtsDailyLoaded &&
-    //   stateID.includes(this.props.match.params.stateid.toUpperCase())
-    // ) {
-    //   requiredDistricts.push(
-    //     Object.keys(
-    //       districtsDaily[
-    //         stateFullName[this.props.match.params.stateid.toUpperCase()]
-    //       ]
-    //     )
-    //   );
-    // }
-
     for (let i = 0; i < statesDailyData.length; i++) {
       statesDailyData[i].newdate =
         statesDailyData[i].date.split(/\-/)[0] +
         " " +
         statesDailyData[i].date.split(/\-/)[1];
     }
-
-    console.log(stateData);
 
     const topDistricts = [];
     stateData.map((item) => {
@@ -1794,32 +1641,13 @@ class StateDetails extends Component {
                                   style={{ textAlign: "right" }}
                                 >
                                   <span className="arrowup text-info">
-                                    {Number(district.delta.confirmed) > 0 ? (
-                                      <Icon.ArrowUp
-                                        color="#42b3f4"
-                                        size={9}
-                                        strokeWidth={3.5}
-                                      />
-                                    ) : Number(district.delta.confirmed) < 0 ? (
-                                      <Icon.ArrowDown
-                                        color="#42b3f4"
-                                        size={9}
-                                        strokeWidth={3.5}
-                                      />
-                                    ) : (
-                                      ""
-                                    )}
-                                    <b className="deltainc-md text-info">
-                                      {Number(district.delta.confirmed) > 0
-                                        ? commaSeperated(
-                                            district.delta.confirmed
-                                          )
-                                        : Number(district.delta.confirmed) < 0
-                                        ? commaSeperated(
-                                            Math.abs(district.delta.confirmed)
-                                          )
-                                        : ""}
-                                    </b>
+                                    <DeltaArrow
+                                      deltaType={district.delta.confirmed}
+                                      color={"#42b3f4"}
+                                    />
+                                    <DeltaValue
+                                      deltaType={district.delta.confirmed}
+                                    />
                                   </span>
                                   &nbsp;&nbsp;
                                   {commaSeperated(district.confirmed)}
@@ -1840,32 +1668,13 @@ class StateDetails extends Component {
                                   style={{ textAlign: "right" }}
                                 >
                                   <span className="arrowup text-success">
-                                    {Number(district.delta.recovered) > 0 ? (
-                                      <Icon.ArrowUp
-                                        color="#28a745"
-                                        size={9}
-                                        strokeWidth={3.5}
-                                      />
-                                    ) : Number(district.delta.recovered) < 0 ? (
-                                      <Icon.ArrowDown
-                                        color="#28a745"
-                                        size={9}
-                                        strokeWidth={3.5}
-                                      />
-                                    ) : (
-                                      ""
-                                    )}
-                                    <b className="deltainc-md text-success">
-                                      {Number(district.delta.recovered) > 0
-                                        ? commaSeperated(
-                                            district.delta.recovered
-                                          )
-                                        : Number(district.delta.recovered) < 0
-                                        ? commaSeperated(
-                                            Math.abs(district.delta.recovered)
-                                          )
-                                        : ""}
-                                    </b>
+                                    <DeltaArrow
+                                      deltaType={district.delta.recovered}
+                                      color={"#28a745"}
+                                    />
+                                    <DeltaValue
+                                      deltaType={district.delta.recovered}
+                                    />
                                   </span>
                                   &nbsp;
                                   {Number(district.recovered)
@@ -1877,32 +1686,13 @@ class StateDetails extends Component {
                                   style={{ textAlign: "right" }}
                                 >
                                   <span className="arrowup text-secondary">
-                                    {Number(district.delta.deceased) > 0 ? (
-                                      <Icon.ArrowUp
-                                        color="#28a745"
-                                        size={9}
-                                        strokeWidth={3.5}
-                                      />
-                                    ) : Number(district.delta.deceased) < 0 ? (
-                                      <Icon.ArrowDown
-                                        color="#6c757d"
-                                        size={9}
-                                        strokeWidth={3.5}
-                                      />
-                                    ) : (
-                                      ""
-                                    )}
-                                    <b className="deltainc-md text-secondary">
-                                      {Number(district.delta.deceased) > 0
-                                        ? commaSeperated(
-                                            district.delta.deceased
-                                          )
-                                        : Number(district.delta.recovered) < 0
-                                        ? commaSeperated(
-                                            Math.abs(district.delta.deceased)
-                                          )
-                                        : ""}
-                                    </b>
+                                    <DeltaArrow
+                                      deltaType={district.delta.deceased}
+                                      color={"#6c757d"}
+                                    />
+                                    <DeltaValue
+                                      deltaType={district.delta.deceased}
+                                    />
                                   </span>
                                   &nbsp;&nbsp;
                                   {Number(district.deceased)
@@ -2008,12 +1798,7 @@ class StateDetails extends Component {
               </div>
 
               <div className="col-sm">
-                <div
-                  className="row"
-                  style={{
-                    marginBottom: "0px",
-                  }}
-                >
+                <div className="row">
                   <div
                     className="col fadeInUp"
                     style={{
@@ -2786,7 +2571,7 @@ class StateDetails extends Component {
                     style={{ animationDelay: "1.9s" }}
                   >
                     <a
-                      href="https://www.icmr.gov.in/pdf/covid/labs/COVID_Testing_Labs_30052020.pdf"
+                      href="https://www.icmr.gov.in/pdf/covid/labs/COVID_Testing_Labs_28062020.pdf"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="linkTestLabsBtn"
@@ -2845,5 +2630,4 @@ class StateDetails extends Component {
     }
   }
 }
-
 export default StateDetails;
