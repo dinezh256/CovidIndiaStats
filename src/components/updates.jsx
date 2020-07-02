@@ -112,7 +112,10 @@ class Updates extends Component {
                     ? ""
                     : formatDateAbsolute(lastUpdated)}
                 </span>
-                <span>&nbsp;|&nbsp;</span>
+                <span id="line1" style={{ color: "#3f51b5" }}>
+                  &nbsp;●&nbsp;
+                </span>
+                <span id="line2">&nbsp;|&nbsp;</span>
                 <span
                   id="line2"
                   onClick={() => {

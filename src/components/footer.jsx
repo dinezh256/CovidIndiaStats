@@ -30,11 +30,10 @@ const Footer = () => {
           </h6>
         </a>
       </h6>
-      <div className="row">
+      <div className="col">
         <div align="center" className="col">
           <a
-            href="https://t.me/covidindiastats"
-            className="button"
+            href="https://instagram.com/covidindiaastats"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -43,30 +42,28 @@ const Footer = () => {
               style={{
                 textAlign: "center",
                 color: "white",
-                backgroundColor: "rgb(0, 136, 204)",
-                marginTop: 7.5,
-                width: 250,
-                fontWeight: 650,
-                fontSize: 15,
+                backgroundColor: "#E1306C",
+                marginTop: 5,
+                width: 180,
+                fontSize: 10,
                 alignContent: "center",
                 fontFamily: "notosans",
               }}
               onClick={() =>
                 ReactGa.event({
-                  category: "Telegram Clicked",
-                  action: "Telegram",
+                  category: "Instagram Clicked",
+                  action: "Instagram",
                 })
               }
             >
-              <Icon.Inbox />
-              &ensp; JOIN US ON TELEGRAM
+              <Icon.Instagram size="15px" />
+              &ensp; OUR INSTAGRAM PAGE
             </button>
           </a>
         </div>
         <div align="center" className="col">
           <a
             href="https://facebook.com/covidindiastats"
-            className="button"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -74,12 +71,11 @@ const Footer = () => {
               className="btn"
               style={{
                 textAlign: "center",
-                color: "rgb(59, 89, 152)",
-                backgroundColor: "rgba(59, 89, 152, 0.4)",
-                marginTop: 7.5,
-                width: 250,
-                fontWeight: 800,
-                fontSize: 15,
+                color: "white",
+                backgroundColor: "#3f729b",
+                marginTop: 5,
+                width: 180,
+                fontSize: 10,
                 alignContent: "center",
                 fontFamily: "notosans",
               }}
@@ -90,15 +86,14 @@ const Footer = () => {
                 })
               }
             >
-              <Icon.Facebook />
-              &ensp; LIKE ON FACEBOOK
+              <Icon.Facebook size="15px" />
+              &ensp; OUR FACEBOOK PAGE
             </button>
           </a>
         </div>
         <div align="center" className="col">
           <a
-            href="https://twitter.com/covidindiastats"
-            className="button"
+            href="https://t.me/covidindiastats"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -106,12 +101,43 @@ const Footer = () => {
               className="btn"
               style={{
                 textAlign: "center",
-                color: "#4ea2be",
-                backgroundColor: "#d9ecf5",
-                marginTop: 8,
-                width: 250,
-                fontWeight: 700,
-                fontSize: 15,
+                color: "white",
+                backgroundColor: "rgb(0, 136, 204)",
+                marginTop: 5,
+                width: 180,
+
+                fontSize: 10,
+                alignContent: "center",
+                fontFamily: "notosans",
+              }}
+              onClick={() =>
+                ReactGa.event({
+                  category: "Telegram Clicked",
+                  action: "Telegram",
+                })
+              }
+            >
+              <Icon.Inbox size="15px" />
+              &ensp; INSTANT UPDATES ON TELEGRAM
+            </button>
+          </a>
+        </div>
+        <div align="center" className="col">
+          <a
+            href="https://twitter.com/covidindiastats"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <button
+              className="btn"
+              style={{
+                textAlign: "center",
+                color: "white",
+                backgroundColor: "#00acee",
+                marginTop: 5,
+                marginBottom: 15,
+                width: 180,
+                fontSize: 10,
                 alignContent: "center",
                 fontFamily: "notosans",
               }}
@@ -122,7 +148,7 @@ const Footer = () => {
                 })
               }
             >
-              <Icon.Twitter />
+              <Icon.Twitter size="15px" />
               &ensp; UPDATES ON TWITTER
             </button>
           </a>
