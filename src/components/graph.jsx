@@ -599,14 +599,14 @@ class Graph extends Component {
                             <Icon.PlusCircle
                               size={9}
                               strokeWidth={3}
-                              fill="rgba(40, 167, 69, 0.2)"
+                              fill="rgba(179, 173, 173, 0.5)"
                               style={{ verticalAlign: -1 }}
                             />
                           ) : (
                             <Icon.Meh
                               size={9}
                               strokeWidth={3}
-                              fill="rgba(40, 167, 69, 0.2)"
+                              fill="rgba(179, 173, 173, 0.5)"
                               style={{ verticalAlign: -1 }}
                             />
                           )}{" "}
@@ -628,10 +628,10 @@ class Graph extends Component {
                   animationDelay: "2.35s",
                 }}
               >
-                <h6 className="lastUpdatedIndiaMap">
+                <h1 className="lastUpdatedIndiaMap">
                   Last Updated
-                  <h6>{lastUpdatedTime}</h6>
-                </h6>
+                  <h6>about {lastUpdatedTime}</h6>
+                </h1>
                 {clickConfirmedMap && (
                   <Choropleth
                     data={confirmedStatesData.slice(
@@ -641,7 +641,7 @@ class Graph extends Component {
                     colorLow="rgba(29, 141, 158, 0.85)"
                     colorHigh="rgba(29, 141, 158, 1)"
                     fill="rgb(18, 167, 190)"
-                    type="infected"
+                    type="Infected"
                     onMouseEnter={ReactGa.event({
                       category: "India map",
                       action: "India map clicked",
@@ -657,7 +657,7 @@ class Graph extends Component {
                     colorLow="rgba(173, 28, 57, 0.85)"
                     colorHigh="rgba(173, 28, 57, 1)"
                     fill="rgb(228, 116, 138)"
-                    type="active"
+                    type="Active"
                     onMouseEnter={ReactGa.event({
                       category: "India map",
                       action: "India map clicked",
@@ -673,7 +673,7 @@ class Graph extends Component {
                     colorLow="rgba(40, 167, 69, 0.85)"
                     colorHigh="rgba(40, 167, 69, 1)"
                     fill="rgb(30, 209, 72)"
-                    type="recovered"
+                    type="Recovered"
                     onMouseEnter={ReactGa.event({
                       category: "India map",
                       action: "India map clicked",
@@ -689,7 +689,7 @@ class Graph extends Component {
                     colorLow="rgba(74, 79, 83, 0.6)"
                     colorHigh="rgba(74, 79, 83, 1)"
                     fill="rgb(108, 117, 125)"
-                    type="deaths"
+                    type="Deceased"
                     onMouseEnter={ReactGa.event({
                       category: "India map",
                       action: "India map clicked",

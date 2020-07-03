@@ -17,15 +17,14 @@ const Choropleth = ({ data, colorLow, colorHigh, fill, type }) => {
 
   const geographyStyle = {
     default: {
-      outline: "#b13f2b",
+      outline: colorLow,
     },
     hover: {
-      fill: fill,
-      outline: "#ffffff",
       transition: "all 250ms",
+      strokeWidth: 0.6,
     },
     pressed: {
-      outline: "#b13f2b",
+      outline: colorLow,
     },
   };
   const [tooltipContent, setTooltipContent] = useState("");
@@ -83,7 +82,7 @@ const Choropleth = ({ data, colorLow, colorHigh, fill, type }) => {
                   style={geographyStyle}
                   onMouseEnter={onMouseEnter(geo, current)}
                   onMouseLeave={onMouseLeave}
-                  stroke={"#3a0910"}
+                  stroke={colorLow}
                   strokeWidth={0.15}
                 />
               );

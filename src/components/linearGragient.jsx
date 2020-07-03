@@ -9,15 +9,15 @@ const LinearGradient = (props) => {
   };
   const gradientStyle = {
     backgroundImage: `linear-gradient(to right, ${data.fromColor} , ${data.toColor})`,
-    height: 10,
+    height: 12,
   };
   return (
     <div>
       <div style={boxStyle} className="display-flex">
-        <span style={{ marginRight: 5 }}>{data.min}</span>
+        <span style={{ marginRight: 5, color: data.toColor }}>{data.min}</span>
         <span className="fill"></span>
         <div style={{ ...boxStyle, ...gradientStyle }}></div>
-        <span style={{ marginLeft: 5 }}>{data.max}</span>
+        <span style={{ marginLeft: 5, color: data.toColor }}>{data.max}</span>
       </div>
     </div>
   );
