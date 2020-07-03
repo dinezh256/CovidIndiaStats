@@ -649,6 +649,7 @@ span.MuiBadge-colorSecondary {
   font-size: 0.95rem !important;
   cursor: pointer;
   padding-top: 3%;
+  padding-bottom: 1%;
   padding-right: 4%;
   border-radius: 3px;
   width: 6.7rem;
@@ -705,7 +706,7 @@ span.MuiBadge-colorSecondary {
 
 @media only screen and (min-width: 768px) {
   .lastUpdatedIndiaMap {
-    font-size: 14px !important;
+    font-size: 18px !important;
     margin-right: 12px;
   }
 }
@@ -719,7 +720,7 @@ span.MuiBadge-colorSecondary {
 }
 @keyframes fadeIn {
   from {
-    opacity: 0.8;
+    opacity: 0.9;
   }
 
   to {
