@@ -16,12 +16,10 @@ const Choropleth = ({ data, colorLow, colorHigh, fill, type }) => {
   const COLOR_RANGE = [colorHigh, colorLow];
 
   const geographyStyle = {
-    default: {
-      outline: colorLow,
-    },
     hover: {
       transition: "all 250ms",
       strokeWidth: 0.6,
+      outline: "#b13f2b",
     },
     pressed: {
       outline: "#b13f2b",
