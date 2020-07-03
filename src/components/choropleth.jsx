@@ -24,7 +24,7 @@ const Choropleth = ({ data, colorLow, colorHigh, fill, type }) => {
       strokeWidth: 0.6,
     },
     pressed: {
-      outline: colorLow,
+      outline: "#b13f2b",
     },
   };
   const [tooltipContent, setTooltipContent] = useState("");
