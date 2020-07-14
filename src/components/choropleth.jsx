@@ -20,6 +20,10 @@ const Choropleth = ({ data, colorLow, colorHigh, type }) => {
     hover: {
       transition: "all 250ms",
       strokeWidth: 1,
+      outline: "#b13f2b",
+    },
+    pressed: {
+      outline: "#b13f2b",
     },
   };
   const [tooltipContent, setTooltipContent] = useState("");
