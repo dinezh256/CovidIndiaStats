@@ -247,8 +247,8 @@ class Table extends Component {
           <div className="containerHome">
             <div
               className="fadeInUp"
-              id="line1"
               style={{
+                marginTop: window.innerWidth < 767 ? "" : "10px",
                 marginBottom: "8px",
                 animationDelay: "0.5s",
                 boxShadow: "0 0 20px rgba(0,0,0,0.25)",
@@ -320,10 +320,11 @@ class Table extends Component {
                       />
                     </h5>
                     <section
-                      tyle={{
+                      style={{
                         justifyContent: "center",
                         paddingBottom: "-10px",
                       }}
+                      id="line1"
                     >
                       <MiniSparkline
                         sparklinedata={sparklinedata}
@@ -334,6 +335,23 @@ class Table extends Component {
                         fill="#42b3f4"
                         stroke="rgba(66, 179, 244, 0.7)"
                         width={76}
+                      />
+                    </section>
+                    <section
+                      style={{
+                        justifyContent: "center",
+                        paddingBottom: "-10px",
+                      }}
+                      id="line2"
+                    >
+                      <MiniSparkline
+                        sparklinedata={sparklinedata}
+                        datakey={0}
+                        min={min}
+                        max={max}
+                        type={sparklineconfirmed}
+                        fill="#42b3f4"
+                        stroke="rgba(66, 179, 244, 0.7)"
                       />
                     </section>
                   </td>
@@ -367,6 +385,7 @@ class Table extends Component {
                       )}
                     </h5>
                     <section
+                      id="line1"
                       style={{
                         justifyContent: "center",
                         paddingBottom: "-10px",
@@ -381,6 +400,23 @@ class Table extends Component {
                         fill="#ff446a"
                         stroke="rgba(255, 68, 106, 0.7)"
                         width={76}
+                      />
+                    </section>
+                    <section
+                      id="line2"
+                      style={{
+                        justifyContent: "center",
+                        paddingBottom: "-10px",
+                      }}
+                    >
+                      <MiniSparkline
+                        sparklinedata={sparklinedata}
+                        datakey={1}
+                        min={min}
+                        max={max}
+                        type={sparklineactive}
+                        fill="#ff446a"
+                        stroke="rgba(255, 68, 106, 0.7)"
                       />
                     </section>
                   </td>
@@ -421,7 +457,8 @@ class Table extends Component {
                       )}
                     </h5>
                     <section
-                      tyle={{
+                      id="line1"
+                      style={{
                         justifyContent: "center",
                         paddingBottom: "-10px",
                       }}
@@ -435,6 +472,23 @@ class Table extends Component {
                         fill="#58bd58"
                         stroke="rgba(88, 189, 88, 0.7)"
                         width={76}
+                      />
+                    </section>
+                    <section
+                      id="line2"
+                      style={{
+                        justifyContent: "center",
+                        paddingBottom: "-10px",
+                      }}
+                    >
+                      <MiniSparkline
+                        sparklinedata={sparklinedata}
+                        datakey={2}
+                        min={min}
+                        max={max}
+                        type={sparklinerecovered}
+                        fill="#58bd58"
+                        stroke="rgba(88, 189, 88, 0.7)"
                       />
                     </section>
                   </td>
@@ -478,7 +532,7 @@ class Table extends Component {
                       )}
                     </h5>
                     <section
-                      className="text-secondary"
+                      id="line1"
                       style={{
                         justifyContent: "center",
                         paddingBottom: "-10px",
@@ -495,229 +549,13 @@ class Table extends Component {
                         width={76}
                       />
                     </section>
-                  </td>
-                </tbody>
-              </table>
-            </div>
-            <div
-              className="fadeInUp"
-              id="line2"
-              style={{
-                marginTop: 14,
-                animationDelay: "0.5s",
-                boxShadow: "0 0 30px rgba(0,0,0,0.25)",
-                borderRadius: "6px",
-                width: "95%",
-                marginBottom: 10,
-              }}
-            >
-              <table
-                className="table table-sm table-striped table-borderless"
-                style={{ marginBottom: "-1px" }}
-              >
-                <thead>
-                  <tr>
-                    <th
-                      className="text-info span delta sticky-top"
-                      style={{ width: "25%", background: "#d9ecf5" }}
-                    >
-                      CONFIRMED
-                    </th>
-                    <th
-                      className="delta span sticky-top"
+                    <section
+                      id="line2"
                       style={{
-                        width: "25%",
-                        background: "#f5d2d2",
-                        color: "#ff446a",
+                        justifyContent: "center",
+                        paddingBottom: "-10px",
                       }}
                     >
-                      ACTIVE
-                    </th>
-                    <th
-                      className="text-success delta span sticky-top"
-                      style={{ width: "25%", background: "#d5e9d5" }}
-                    >
-                      Recovered
-                    </th>
-                    <th
-                      className="text-secondary delta span sticky-top"
-                      style={{
-                        background: "#ece7e7",
-                        fontWeight: 600,
-                        width: "25%",
-                      }}
-                    >
-                      DECEASED
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="tbody">
-                  <td>
-                    <h6 className="text-info delta" style={{ fontSize: 12 }}>
-                      {delta[0].deltaconfirmed > 0 ? (
-                        ""
-                      ) : (
-                        <Icon.Meh
-                          size={12}
-                          strokeWidth={3}
-                          fill="rgba(23, 162, 184, 0.2)"
-                          style={{ verticalAlign: -0.25 }}
-                        />
-                      )}
-
-                      {delta[0].deltaconfirmed > 0
-                        ? "+" + commaSeperated(delta[0].deltaconfirmed)
-                        : ""}
-                    </h6>
-                    <h5 className="text-info" style={{ textAlign: "center" }}>
-                      <CountUp
-                        start={0}
-                        end={Number(total[0].confirmed)}
-                        duration={2}
-                        separator=","
-                      />
-                    </h5>
-                    <section style={{ alignContent: "center" }}>
-                      <MiniSparkline
-                        sparklinedata={sparklinedata}
-                        datakey={0}
-                        min={min}
-                        max={max}
-                        type={sparklineconfirmed}
-                        fill="#42b3f4"
-                        stroke="rgba(66, 179, 244, 0.7)"
-                      />
-                    </section>
-                  </td>
-
-                  <td>
-                    <h6
-                      className="delta"
-                      style={{ color: "#ff446a", fontSize: 12 }}
-                    >
-                      <Icon.Heart
-                        size={12}
-                        strokeWidth={3}
-                        fill="rgba(255, 68, 106, 0.4)"
-                        style={{ verticalAlign: -0.5 }}
-                      />
-                    </h6>
-                    <h5 style={{ color: "#ff446a", textAlign: "center" }}>
-                      {!percentageToggleActive ? (
-                        <CountUp
-                          start={0}
-                          end={Number(total[0].active)}
-                          duration={2}
-                          separator=","
-                        />
-                      ) : (
-                        (
-                          (Number(total[0].active) /
-                            Number(total[0].confirmed)) *
-                          100
-                        ).toFixed(1) + "%"
-                      )}
-                    </h5>
-                    <section style={{ alignContent: "center" }}>
-                      <MiniSparkline
-                        sparklinedata={sparklinedata}
-                        datakey={1}
-                        min={min}
-                        max={max}
-                        type={sparklineactive}
-                        fill="#ff446a"
-                        stroke="rgba(255, 68, 106, 0.7)"
-                      />
-                    </section>
-                  </td>
-
-                  <td>
-                    <h6 className="text-success delta" style={{ fontSize: 12 }}>
-                      {Number(delta[0].deltarecovered) ? (
-                        ""
-                      ) : (
-                        <Icon.Smile
-                          size={12}
-                          strokeWidth={3}
-                          fill="rgba(23, 162, 184, 0.2)"
-                          style={{ verticalAlign: -0.5 }}
-                        />
-                      )}
-                      {Number(delta[0].deltarecovered) > 0
-                        ? "+" + commaSeperated(delta[0].deltarecovered)
-                        : ""}
-                    </h6>
-                    <h5
-                      className="text-success"
-                      style={{ textAlign: "center" }}
-                    >
-                      {!percentageToggleActive ? (
-                        <CountUp
-                          start={0}
-                          end={Number(total[0].recovered)}
-                          duration={2}
-                          separator=","
-                        />
-                      ) : (
-                        (
-                          (Number(total[0].recovered) /
-                            Number(total[0].confirmed)) *
-                          100
-                        ).toFixed(1) + "%"
-                      )}
-                    </h5>
-                    <section style={{ alignContent: "center" }}>
-                      <MiniSparkline
-                        sparklinedata={sparklinedata}
-                        datakey={2}
-                        min={min}
-                        max={max}
-                        type={sparklinerecovered}
-                        fill="#58bd58"
-                        stroke="rgba(88, 189, 88, 0.7)"
-                      />
-                    </section>
-                  </td>
-
-                  <td>
-                    <h6
-                      className="text-secondary delta"
-                      style={{ fontSize: 12 }}
-                    >
-                      {Number(delta[0].deltadeaths) > 0 ? (
-                        ""
-                      ) : (
-                        <Icon.Meh
-                          size={12}
-                          strokeWidth={3}
-                          fill="rgba(40, 167, 69, 0.2)"
-                          style={{ verticalAlign: -0.5 }}
-                        />
-                      )}{" "}
-                      {Number(delta[0].deltadeaths) > 0
-                        ? "+" + commaSeperated(delta[0].deltadeaths)
-                        : ""}
-                    </h6>
-                    <h5
-                      className="text-secondary"
-                      style={{ textAlign: "center" }}
-                    >
-                      {!percentageToggleActive ? (
-                        <CountUp
-                          start={0}
-                          end={Number(total[0].deaths)}
-                          duration={2}
-                          separator=","
-                        />
-                      ) : (
-                        (
-                          (Number(total[0].deaths) /
-                            Number(total[0].confirmed)) *
-                          100
-                        ).toFixed(1) + "%"
-                      )}
-                    </h5>
-                    <section style={{ alignContent: "center" }}>
                       <MiniSparkline
                         sparklinedata={sparklinedata}
                         datakey={3}

@@ -100,6 +100,7 @@ class Graph extends Component {
       twoWeeks,
       oneMonth,
     } = this.state;
+
     const graphClass = window.innerWidth < 767 ? "" : "container";
 
     const dailyConfirmed = [];
@@ -640,7 +641,6 @@ class Graph extends Component {
                     )}
                     colorLow="rgba(29, 141, 158, 0.85)"
                     colorHigh="rgba(29, 141, 158, 1)"
-                    fill="rgb(18, 167, 190)"
                     type="Infected"
                     onMouseEnter={ReactGa.event({
                       category: "India map",
@@ -672,7 +672,6 @@ class Graph extends Component {
                     )}
                     colorLow="rgba(40, 167, 69, 0.85)"
                     colorHigh="rgba(40, 167, 69, 1)"
-                    fill="rgb(30, 209, 72)"
                     type="Recovered"
                     onMouseEnter={ReactGa.event({
                       category: "India map",
@@ -688,7 +687,6 @@ class Graph extends Component {
                     )}
                     colorLow="rgba(74, 79, 83, 0.6)"
                     colorHigh="rgba(74, 79, 83, 1)"
-                    fill="rgb(108, 117, 125)"
                     type="Deceased"
                     onMouseEnter={ReactGa.event({
                       category: "India map",
