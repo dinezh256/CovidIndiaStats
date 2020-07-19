@@ -1,5 +1,4 @@
 import React from "react";
-import clsx from "clsx";
 import { NavLink } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
@@ -18,7 +17,7 @@ import FacebookIcon from "@material-ui/icons/Facebook";
 import WhatsAppIcon from "@material-ui/icons/WhatsApp";
 import TwitterIcon from "@material-ui/icons/Twitter";
 import ReactGa from "react-ga";
-import styles from "./Drawer.module.css";
+
 import mainLogo from "../logo.png";
 
 const useStyles = makeStyles({
@@ -31,7 +30,6 @@ const useStyles = makeStyles({
 });
 
 export default function SwipeableTemporaryDrawer() {
-  const classes = useStyles();
   const [state, setState] = React.useState({
     left: false,
   });
@@ -49,7 +47,7 @@ export default function SwipeableTemporaryDrawer() {
 
   const list = (anchor) => (
     <div
-      className={styles.MuiPaperroot}
+      className="MuiPaperroot"
       role="presentation"
       onClick={toggleDrawer(anchor, false)}
       onKeyDown={toggleDrawer(anchor, false)}
@@ -82,14 +80,7 @@ export default function SwipeableTemporaryDrawer() {
             <ListItemText primary={"Indepth"} />
           </ListItem>
         </NavLink>
-        {/* <NavLink to="/global" className="sideBarItem">
-          <ListItem button key={"Global"}>
-            <ListItemIcon>
-              {<PublicRoundedIcon fontSize="large" />}
-            </ListItemIcon>
-            <ListItemText primary={"Global"} />
-          </ListItem>
-        </NavLink> */}
+
         <NavLink to="/dive" className="sideBarItem">
           <ListItem button key={"Dive"}>
             <ListItemIcon>
@@ -120,6 +111,9 @@ export default function SwipeableTemporaryDrawer() {
         <h5 style={{ textAlign: "center" }}>covidindiastats.com</h5>
         <br />
         <Divider />
+        <br />
+        <br />
+        <br />
         <br />
         <h6
           style={{
