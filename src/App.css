@@ -497,12 +497,6 @@ span.MuiBadge-colorSecondary {
 
 @media (max-width: 414px) {
   .MuiPaperroot {
-    padding-bottom: 9.5rem;
-  }
-}
-
-@media (max-width: 411px) {
-  .MuiPaperroot {
     padding-bottom: 16rem;
   }
 }
