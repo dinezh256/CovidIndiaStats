@@ -481,6 +481,7 @@ class StateGraph extends Component {
                   boxShadow: "0 0 5px rgba(0,0,0,0.3)",
                   alignContent: "center",
                   animationDelay: "0.1s",
+                  marginBottom: "20px",
                 }}
               >
                 <div>
@@ -507,7 +508,7 @@ class StateGraph extends Component {
                       axisBottom={axisBottom}
                       axisLeft={axisLeft}
                       enableLabel={false}
-                      legends={adjustedLegends(240, 60, 60)}
+                      legends={adjustedLegends(220, 60, 55)}
                       animate={false}
                       motionStiffness={90}
                       motionDamping={20}
@@ -525,6 +526,7 @@ class StateGraph extends Component {
                   borderRadius: "6px",
                   boxShadow: "0 0 5px rgba(0,0,0,0.3)",
                   alignContent: "center",
+                  marginBottom: "20px",
                   animationDelay: "0.3s",
                 }}
               >
@@ -570,6 +572,7 @@ class StateGraph extends Component {
                   borderRadius: "6px",
                   boxShadow: "0 0 5px rgba(0,0,0,0.3)",
                   alignContent: "center",
+                  marginBottom: "20px",
                   animationDelay: "0.3s",
                 }}
               >
@@ -618,6 +621,7 @@ class StateGraph extends Component {
                   boxShadow: "0 0 5px rgba(0,0,0,0.3)",
                   alignContent: "center",
                   animationDelay: "0.3s",
+                  paddingBottom: "20px",
                 }}
               >
                 <div>
@@ -710,6 +714,8 @@ class StateGraph extends Component {
                   boxShadow: "0 0 5px rgba(0,0,0,0.3)",
                   alignContent: "center",
                   animationDelay: "0.3s",
+                  marginTop: "20px",
+                  paddingBottom: "20px",
                 }}
               >
                 <div>
@@ -819,10 +825,13 @@ class StateGraph extends Component {
                   boxShadow: "0 0 5px rgba(0,0,0,0.3)",
                   alignContent: "center",
                   animationDelay: "0.3s",
+                  paddingBottom: "20px",
                 }}
               >
                 <div>
-                  <h6 className="text-danger">DAYWISE COMPARISON</h6>
+                  <h6 className="text-danger statewise-head">
+                    DAYWISE COMPARISON
+                  </h6>
                   <ResponsiveContainer width="100%" height="100%" aspect={1.5}>
                     <ReBarChart
                       width={310}
@@ -910,10 +919,13 @@ class StateGraph extends Component {
                   boxShadow: "0 0 5px rgba(0,0,0,0.3)",
                   alignContent: "center",
                   animationDelay: "0.3s",
+                  paddingBottom: "20px",
                 }}
               >
                 <div>
-                  <h6 className="text-danger">CUMULATIVE COMPARISON</h6>
+                  <h6 className="text-danger statewise-head">
+                    CUMULATIVE COMPARISON
+                  </h6>
                   <ResponsiveContainer width="100%" height="100%" aspect={1.5}>
                     <LineChart
                       data={cumulativedata.slice(
@@ -1019,10 +1031,11 @@ class StateGraph extends Component {
                   alignContent: "center",
                   animationDelay: "0.3s",
                   marginTop: "20px",
+                  paddingBottom: "20px",
                 }}
               >
                 <div>
-                  <h5 className="text-danger">
+                  <h5 className="text-danger statewise-head">
                     INDIAN PATIENTS ABROAD{" "}
                     <a
                       href="https://timesofindia.indiatimes.com/india/3336-indians-infected-abroad-785-in-kuwait-634-in-singapore/articleshow/75184154.cms"
@@ -1058,10 +1071,11 @@ class StateGraph extends Component {
                   alignContent: "center",
                   animationDelay: "0.3s",
                   marginTop: "20px",
+                  paddingBottom: "20px",
                 }}
               >
                 <div>
-                  <h5 className="text-danger">
+                  <h5 className="text-danger statewise-head">
                     INDIAN PATIENTS ABROAD{" "}
                     <a
                       href="https://timesofindia.indiatimes.com/india/3336-indians-infected-abroad-785-in-kuwait-634-in-singapore/articleshow/75184154.cms"
@@ -1099,10 +1113,11 @@ class StateGraph extends Component {
                   alignContent: "center",
                   animationDelay: "0.3s",
                   marginTop: "20px",
+                  paddingBottom: "20px",
                 }}
               >
                 <div>
-                  <h5 className="text-danger">
+                  <h5 className="text-danger statewise-head">
                     PATIENT AGE
                     <h6 style={{ fontSize: 8, color: "grey" }}>
                       (awaiting more data)
@@ -1173,10 +1188,11 @@ class StateGraph extends Component {
                   alignContent: "center",
                   animationDelay: "0.3s",
                   marginTop: "20px",
+                  paddingBottom: "20px",
                 }}
               >
                 <div>
-                  <h5 className="text-danger">
+                  <h5 className="text-danger statewise-head">
                     PATIENT AGE
                     <h6 style={{ fontSize: 8, color: "grey" }}>
                       (awaiting more data)
@@ -1251,6 +1267,7 @@ class StateGraph extends Component {
                   boxShadow: "0 0 5px rgba(0,0,0,0.3)",
                   alignContent: "center",
                   marginTop: "20px",
+                  paddingBottom: "20px",
                 }}
               >
                 <div style={{ width: "100%" }}>
@@ -1259,7 +1276,7 @@ class StateGraph extends Component {
                       textAlign: "center",
                       marginTop: "10px",
                     }}
-                    className="text-danger"
+                    className="text-danger statewise-head"
                   >
                     CONFIRMED CASES TIMELINE IN TOP STATES
                   </h5>
