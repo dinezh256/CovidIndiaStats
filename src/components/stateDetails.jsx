@@ -8,9 +8,8 @@ import InfoTwoToneIcon from "@material-ui/icons/InfoTwoTone";
 import QueryBuilderTwoToneIcon from "@material-ui/icons/QueryBuilderTwoTone";
 import ColorizeRoundedIcon from "@material-ui/icons/ColorizeRounded";
 import Switch from "react-switch";
-import Tooltip, { TooltipProps } from "@material-ui/core/Tooltip";
 import { format } from "d3";
-import { Theme, makeStyles } from "@material-ui/core/styles";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import {
   formatDate,
   formatDateAbsolute,
@@ -60,6 +59,7 @@ class StateDetails extends Component {
       toggleRecovered: false,
       toggleDeceased: false,
       viewTable: false,
+      viewAll: false,
       beginning: true,
       twoWeeks: false,
       oneMonth: false,
@@ -70,6 +70,7 @@ class StateDetails extends Component {
     this.onClickRecovered = this.onClickRecovered.bind(this);
     this.onClickDeceased = this.onClickDeceased.bind(this);
     this.onViewTable = this.onViewTable.bind(this);
+    this.onViewAll = this.onViewAll.bind(this);
     this.handleBeginning = this.handleBeginning.bind(this);
     this.handleTwoWeeks = this.handleTwoWeeks.bind(this);
     this.handleOneMonth = this.handleOneMonth.bind(this);
@@ -94,6 +95,9 @@ class StateDetails extends Component {
 
   onViewTable(viewTable) {
     this.setState({ viewTable });
+  }
+  onViewAll(viewAll) {
+    this.setState({ viewAll });
   }
 
   handleBeginning({ beginning }) {
@@ -159,6 +163,7 @@ class StateDetails extends Component {
       toggleDeceased,
       toggleSwitch,
       viewTable,
+      viewAll,
       beginning,
       twoWeeks,
       oneMonth,
@@ -781,23 +786,6 @@ class StateDetails extends Component {
       }
     }
 
-    const useStylesBootstrap = makeStyles((theme: Theme) => ({
-      arrow: {
-        color: theme.palette.common.black,
-      },
-      tooltip: {
-        backgroundColor: theme.palette.common.black,
-      },
-    }));
-
-    function BootstrapTooltip(props: TooltipProps) {
-      const classes = useStylesBootstrap();
-
-      return (
-        <Tooltip disableTouchListener arrow classes={classes} {...props} />
-      );
-    }
-
     let timelineLength = 0;
 
     if (isLoaded) {
@@ -811,6 +799,11 @@ class StateDetails extends Component {
         timelineLength = lineTotalConfirmedData.length - 30;
       }
     }
+
+    const showAllDistricts = (item) => {
+      if (viewAll) return item.length;
+      else return 5;
+    };
 
     if (
       isLoaded &&
@@ -845,8 +838,16 @@ class StateDetails extends Component {
                   }}
                 >
                   {stateFullName[this.props.match.params.stateid.toUpperCase()]}
-                  <BootstrapTooltip
-                    title={"Data tallied with State bulletins, MoHFW and ICMR"}
+                  <OverlayTrigger
+                    key={"bottom"}
+                    placement={"bottom"}
+                    overlay={
+                      <Tooltip id={`tooltip-${"bottom"}`}>
+                        <strong>
+                          {"Data tallied with State bulletins, MoHFW and ICMR"}
+                        </strong>
+                      </Tooltip>
+                    }
                   >
                     <span>
                       <InfoTwoToneIcon
@@ -855,7 +856,7 @@ class StateDetails extends Component {
                         style={{ verticalAlign: "-0.15rem" }}
                       />
                     </span>
-                  </BootstrapTooltip>
+                  </OverlayTrigger>
                 </h6>
               </div>
 
@@ -865,13 +866,13 @@ class StateDetails extends Component {
                     fontFamily: "notosans",
                     textTransform: "uppercase",
                     textAlign: "right",
-                    color: "rgba(62, 77, 163, 0.8)",
-                    fontSize: 10,
+                    color: "slateblue",
+                    fontSize: 12,
                   }}
                 >
                   <span style={{ verticalAlign: "0.1rem", cursor: "pointer" }}>
                     <QueryBuilderTwoToneIcon
-                      color="primary"
+                      color="inherit"
                       fontSize="inherit"
                     />
                   </span>{" "}
@@ -894,7 +895,7 @@ class StateDetails extends Component {
               >
                 <div className="row" style={{ marginBottom: -5 }}>
                   <div className="col-7" style={{ textAlign: "left" }}>
-                    <h6 style={{ fontSize: 10, color: "#3e4da3" }}>
+                    <h6 style={{ fontSize: 12, color: "slateblue" }}>
                       <ColorizeRoundedIcon fontSize="small" /> Total samples
                       tested:{" "}
                       {expansionPanelData[0] === undefined
@@ -903,7 +904,7 @@ class StateDetails extends Component {
                     </h6>
                   </div>
                   <div className="col-5" style={{ textAlign: "right" }}>
-                    <h6 style={{ fontSize: 9, color: "#3e4da3" }}>
+                    <h6 style={{ fontSize: 12, color: "slateblue" }}>
                       {expansionPanelData[0] !== undefined
                         ? `as of ${expansionPanelData[0].date}`
                         : ""}
@@ -938,7 +939,10 @@ class StateDetails extends Component {
                     >
                       <h6
                         className="text-info"
-                        style={{ fontSize: "0.8rem", background: "#d9ecf5" }}
+                        style={{
+                          fontSize: "0.8rem",
+                          background: "rgba(66, 179, 244, 0.1)",
+                        }}
                       >
                         CONFIRMED
                       </h6>
@@ -1015,8 +1019,8 @@ class StateDetails extends Component {
                       <h6
                         style={{
                           fontSize: "0.8rem",
-                          color: "#ff446a",
-                          background: "#f5d2d2",
+                          color: "rgb(255, 80, 100)",
+                          background: "rgba(247, 177, 177, 0.3)",
                         }}
                       >
                         ACTIVE
@@ -1092,7 +1096,10 @@ class StateDetails extends Component {
                     >
                       <h6
                         className="text-success"
-                        style={{ fontSize: "0.8rem", background: "#d5e9d5" }}
+                        style={{
+                          fontSize: "0.8rem",
+                          background: "rgba(88, 189, 88, 0.2)",
+                        }}
                       >
                         RECOVERED
                       </h6>
@@ -1168,7 +1175,10 @@ class StateDetails extends Component {
                     >
                       <h6
                         className="text-secondary"
-                        style={{ fontSize: "0.8rem", background: "#ece7e7" }}
+                        style={{
+                          fontSize: "0.8rem",
+                          background: "rgba(92, 87, 86, 0.2)",
+                        }}
                       >
                         DECEASED
                       </h6>
@@ -1234,194 +1244,224 @@ class StateDetails extends Component {
                   >
                     {<br id="line2" />}
                     {<br id="line2" />}
-                    {isLoaded && toggleConfirmed ? (
-                      <div>
-                        <h6
-                          style={{
-                            color: "rgba(62, 77, 163, 0.7)",
-                            fontWeight: 700,
-                          }}
-                        >
-                          TOP DISTRICTS
-                        </h6>
+                    <div>
+                      <h6
+                        style={{
+                          color: "slateblue",
+                          fontWeight: 700,
+                        }}
+                      >
+                        TOP DISTRICTS{" "}
+                        {
+                          <span
+                            style={{
+                              cursor: "pointer",
+                              verticalAlign: "0.15rem",
+                              marginLeft: "5px",
+                            }}
+                            onClick={() => this.setState({ viewAll: !viewAll })}
+                          >
+                            {viewAll ? (
+                              <Icon.ChevronUp
+                                className="showUp"
+                                color="#3f51b5"
+                              />
+                            ) : (
+                              <Icon.ChevronDown
+                                className="showDown"
+                                color="#3f51b5"
+                              />
+                            )}
+                          </span>
+                        }
+                      </h6>
+                      {isLoaded && toggleConfirmed ? (
                         <ul>
                           {topDistricts.map((item) =>
-                            item.slice(0, 5).map((district) => (
-                              <li
-                                key={district.district}
-                                style={{
-                                  color: "grey",
-                                  fontWeight: 600,
-                                  fontSize: 12,
-                                  fontFamily: "notosans",
-                                }}
-                              >
-                                {commaSeperated(district.confirmed)}{" "}
-                                <span style={{ fontSize: 11 }}>
-                                  {district.district}
-                                </span>
-                                &nbsp;
-                                <span
+                            item
+                              .slice(0, showAllDistricts(item))
+                              .map((district) => (
+                                <li
+                                  key={district.district}
                                   style={{
-                                    color: "rgba(66, 179, 244, 0.9)",
-                                    fontSize: 11,
+                                    color: "slategrey",
+                                    fontWeight: 600,
+                                    fontSize: 12,
+                                    fontFamily: "notosans",
                                   }}
                                 >
-                                  {district.delta.confirmed > 0 ? (
-                                    <Icon.ArrowUp size={11} strokeWidth={3} />
-                                  ) : district.delta.confirmed < 0 ? (
-                                    <Icon.ArrowDown size={11} strokeWidth={3} />
-                                  ) : (
-                                    ""
-                                  )}
-                                  {district.delta.confirmed > 0
-                                    ? commaSeperated(district.delta.confirmed)
-                                    : district.delta.confirmed < 0
-                                    ? commaSeperated(
-                                        Math.abs(district.delta.confirmed)
-                                      )
-                                    : ""}
-                                </span>
-                              </li>
-                            ))
+                                  {commaSeperated(district.confirmed)}{" "}
+                                  <span style={{ fontSize: 11 }}>
+                                    {district.district}
+                                  </span>
+                                  &nbsp;
+                                  <span
+                                    style={{
+                                      color: "rgba(66, 179, 244, 0.9)",
+                                      fontSize: 11,
+                                    }}
+                                  >
+                                    {district.delta.confirmed > 0 ? (
+                                      <Icon.ArrowUp size={11} strokeWidth={3} />
+                                    ) : district.delta.confirmed < 0 ? (
+                                      <Icon.ArrowDown
+                                        size={11}
+                                        strokeWidth={3}
+                                      />
+                                    ) : (
+                                      ""
+                                    )}
+                                    {district.delta.confirmed > 0
+                                      ? commaSeperated(district.delta.confirmed)
+                                      : district.delta.confirmed < 0
+                                      ? commaSeperated(
+                                          Math.abs(district.delta.confirmed)
+                                        )
+                                      : ""}
+                                  </span>
+                                </li>
+                              ))
                           )}
                         </ul>
-                      </div>
-                    ) : (
-                      ""
-                    )}
-                    {isLoaded && toggleActive ? (
-                      <div>
-                        <h6 style={{ color: "rgba(62, 77, 163, 0.7)" }}>
-                          TOP DISTRICTS
-                        </h6>
+                      ) : (
+                        ""
+                      )}
+                    </div>
+                    <div>
+                      {isLoaded && toggleActive ? (
                         <ul>
                           {topDistricts.map((item) =>
-                            item.slice(0, 5).map((district) => (
-                              <li
-                                key={district.district}
-                                style={{
-                                  color: "grey",
-                                  fontWeight: 600,
-                                  fontSize: 12,
-                                  fontFamily: "notosans",
-                                }}
-                              >
-                                {commaSeperated(district.active)}{" "}
-                                <span style={{ fontSize: 11 }}>
-                                  {district.district}
-                                </span>
-                              </li>
-                            ))
-                          )}
-                        </ul>
-                      </div>
-                    ) : (
-                      ""
-                    )}
-
-                    {isLoaded && toggleRecovered ? (
-                      <div>
-                        <h6 style={{ color: "rgba(62, 77, 163, 0.7)" }}>
-                          TOP DISTRICTS
-                        </h6>
-                        <ul>
-                          {topDistricts.map((item) =>
-                            item.slice(0, 5).map((district) => (
-                              <li
-                                key={district.district}
-                                style={{
-                                  color: "grey",
-                                  fontWeight: 600,
-                                  fontSize: 12,
-                                  fontFamily: "notosans",
-                                }}
-                              >
-                                {commaSeperated(district.recovered)}{" "}
-                                <span style={{ fontSize: 11 }}>
-                                  {district.district}
-                                </span>
-                                &nbsp;
-                                <span
+                            item
+                              .slice(0, showAllDistricts(item))
+                              .map((district) => (
+                                <li
+                                  key={district.district}
                                   style={{
-                                    color: "rgba(88, 189, 88, 0.9)",
-                                    fontSize: 11,
+                                    color: "slategrey",
+                                    fontWeight: 600,
+                                    fontSize: 12,
+                                    fontFamily: "notosans",
                                   }}
                                 >
-                                  {district.delta.recovered > 0 ? (
-                                    <Icon.ArrowUp size={11} strokeWidth={3} />
-                                  ) : district.delta.recovered < 0 ? (
-                                    <Icon.ArrowDown size={11} strokeWidth={3} />
-                                  ) : (
-                                    ""
-                                  )}
-                                  {district.delta.recovered > 0
-                                    ? commaSeperated(district.delta.recovered)
-                                    : district.delta.recovered < 0
-                                    ? commaSeperated(
-                                        Math.abs(district.delta.recovered)
-                                      )
-                                    : ""}
-                                </span>
-                              </li>
-                            ))
+                                  {commaSeperated(district.active)}{" "}
+                                  <span style={{ fontSize: 11 }}>
+                                    {district.district}
+                                  </span>
+                                </li>
+                              ))
                           )}
                         </ul>
-                      </div>
-                    ) : (
-                      ""
-                    )}
-                    {isLoaded && toggleDeceased ? (
-                      <div>
-                        <h6 style={{ color: "rgba(62, 77, 163, 0.7)" }}>
-                          TOP DISTRICTS
-                        </h6>
+                      ) : (
+                        ""
+                      )}
+                    </div>
+                    <div>
+                      {isLoaded && toggleRecovered ? (
                         <ul>
                           {topDistricts.map((item) =>
-                            item.slice(0, 5).map((district) => (
-                              <li
-                                key={district.district}
-                                style={{
-                                  color: "grey",
-                                  fontWeight: 600,
-                                  fontFamily: "notosans",
-                                  fontSize: 12,
-                                }}
-                              >
-                                {district.deceased}{" "}
-                                <span style={{ fontSize: 11 }}>
-                                  {district.district}
-                                </span>
-                                &nbsp;
-                                <span
+                            item
+                              .slice(0, showAllDistricts(item))
+                              .map((district) => (
+                                <li
+                                  key={district.district}
                                   style={{
-                                    color: "rgba(74, 79, 83, 0.8)",
-                                    fontSize: 11,
+                                    color: "slategrey",
+                                    fontWeight: 600,
+                                    fontSize: 12,
+                                    fontFamily: "notosans",
                                   }}
                                 >
-                                  {district.delta.deceased > 0 ? (
-                                    <Icon.ArrowUp size={11} strokeWidth={3} />
-                                  ) : district.delta.deceased < 0 ? (
-                                    <Icon.ArrowDown size={11} strokeWidth={3} />
-                                  ) : (
-                                    ""
-                                  )}
-                                  {district.delta.deceased > 0
-                                    ? commaSeperated(district.delta.deceased)
-                                    : district.delta.deceased < 0
-                                    ? commaSeperated(
-                                        Math.abs(district.delta.deceased)
-                                      )
-                                    : ""}
-                                </span>
-                              </li>
-                            ))
+                                  {commaSeperated(district.recovered)}{" "}
+                                  <span style={{ fontSize: 11 }}>
+                                    {district.district}
+                                  </span>
+                                  &nbsp;
+                                  <span
+                                    style={{
+                                      color: "rgba(88, 189, 88, 0.9)",
+                                      fontSize: 11,
+                                    }}
+                                  >
+                                    {district.delta.recovered > 0 ? (
+                                      <Icon.ArrowUp size={11} strokeWidth={3} />
+                                    ) : district.delta.recovered < 0 ? (
+                                      <Icon.ArrowDown
+                                        size={11}
+                                        strokeWidth={3}
+                                      />
+                                    ) : (
+                                      ""
+                                    )}
+                                    {district.delta.recovered > 0
+                                      ? commaSeperated(district.delta.recovered)
+                                      : district.delta.recovered < 0
+                                      ? commaSeperated(
+                                          Math.abs(district.delta.recovered)
+                                        )
+                                      : ""}
+                                  </span>
+                                </li>
+                              ))
                           )}
                         </ul>
-                      </div>
-                    ) : (
-                      ""
-                    )}
+                      ) : (
+                        ""
+                      )}
+                    </div>
+                    <div>
+                      {" "}
+                      {isLoaded && toggleDeceased ? (
+                        <ul>
+                          {topDistricts.map((item) =>
+                            item
+                              .slice(0, showAllDistricts(item))
+                              .map((district) => (
+                                <li
+                                  key={district.district}
+                                  style={{
+                                    color: "slategrey",
+                                    fontWeight: 600,
+                                    fontFamily: "notosans",
+                                    fontSize: 12,
+                                  }}
+                                >
+                                  {district.deceased}{" "}
+                                  <span style={{ fontSize: 11 }}>
+                                    {district.district}
+                                  </span>
+                                  &nbsp;
+                                  <span
+                                    style={{
+                                      color: "rgba(74, 79, 83, 0.8)",
+                                      fontSize: 11,
+                                    }}
+                                  >
+                                    {district.delta.deceased > 0 ? (
+                                      <Icon.ArrowUp size={11} strokeWidth={3} />
+                                    ) : district.delta.deceased < 0 ? (
+                                      <Icon.ArrowDown
+                                        size={11}
+                                        strokeWidth={3}
+                                      />
+                                    ) : (
+                                      ""
+                                    )}
+                                    {district.delta.deceased > 0
+                                      ? commaSeperated(district.delta.deceased)
+                                      : district.delta.deceased < 0
+                                      ? commaSeperated(
+                                          Math.abs(district.delta.deceased)
+                                        )
+                                      : ""}
+                                  </span>
+                                </li>
+                              ))
+                          )}
+                        </ul>
+                      ) : (
+                        ""
+                      )}
+                    </div>
                   </div>
                   <div className="col-6">
                     {toggleConfirmed && (
@@ -1452,7 +1492,7 @@ class StateDetails extends Component {
                       <MiniBarPlot
                         barDailyData={barDailyDeceasedData}
                         type="deceased"
-                        fill="#474646"
+                        fill="#6c757d"
                       />
                     )}
                   </div>
@@ -1481,7 +1521,7 @@ class StateDetails extends Component {
                 </div>
                 <div className="w-100"></div>
                 <div className="row fadeInUp" style={{ animationDelay: "1s" }}>
-                  <div className="col">
+                  <div className="col" style={{ marginBottom: "15px" }}>
                     {
                       <h6
                         className="btnViewAll"
@@ -1497,304 +1537,302 @@ class StateDetails extends Component {
                           ? "VIEW ALL DISTRICTS"
                           : "HIDE ALL DISTRICTS"}{" "}
                         {!viewTable ? (
-                          <Icon.ArrowDownCircle
-                            size={11}
-                            style={{ verticalAlign: "-0.1rem" }}
+                          <Icon.Eye
+                            size={14}
+                            style={{ verticalAlign: "-0.2rem" }}
                           />
                         ) : (
-                          <Icon.ArrowUpCircle
-                            size={11}
-                            style={{ verticalAlign: "-0.1rem" }}
+                          <Icon.EyeOff
+                            size={14}
+                            style={{ verticalAlign: "-0.2rem" }}
                           />
                         )}
                       </h6>
                     }
                   </div>
-                </div>
-                <div className="w-100"></div>
-                <div className="col">
-                  {requiredData.length && viewTable ? (
-                    <div
-                      className="row fadeInUp"
-                      style={{ animationDelay: "0.1s" }}
-                    >
-                      <table
-                        className="table table-sm table-striped table-borderless"
-                        style={{
-                          minWidth: "300px",
-                          width: "100%",
-                        }}
-                        align="center"
+                  <div className="w-100"></div>
+                  <div className="col">
+                    {requiredData.length && viewTable ? (
+                      <div
+                        className="row fadeInUp"
+                        style={{ animationDelay: "0.1s" }}
                       >
-                        <thead className="thead-dark">
-                          <tr>
-                            <th
-                              className="th wideRow sticky-top"
-                              id="line1"
-                              style={{ width: "57px" }}
-                            >
-                              DISTRICT
-                            </th>
-                            <th
-                              className="th sticky-top"
-                              id="line2"
-                              style={{ width: "175px" }}
-                            >
-                              DISTRICT
-                            </th>
-                            <th
-                              className="th sticky-top text-info smallRow"
-                              style={{ textAlign: "center" }}
-                              id="line1"
-                            >
-                              CNFRMD
-                            </th>
-                            <th
-                              className="th sticky-top text-info"
-                              style={{ textAlign: "center" }}
-                              id="line2"
-                            >
-                              CONFIRMED
-                            </th>
-                            <th
-                              className="th sticky-top smallRow"
-                              style={{
-                                color: "rgb(255, 68, 106)",
-                                textAlign: "center",
-                              }}
-                              id="line1"
-                            >
-                              ACTIVE
-                            </th>
-                            <th
-                              className="th sticky-top narrowRow"
-                              style={{
-                                color: "rgb(255, 68, 106)",
-                                textAlign: "center",
-                              }}
-                              id="line2"
-                            >
-                              ACTIVE
-                            </th>
-                            <th
-                              className="th sticky-top text-success smallRow"
-                              style={{ textAlign: "center" }}
-                              id="line1"
-                            >
-                              RCVRD
-                            </th>
-                            <th
-                              className="th sticky-top text-success"
-                              style={{ textAlign: "center" }}
-                              id="line2"
-                            >
-                              RECOVERED
-                            </th>
-                            <th
-                              className="th sticky-top text-secondary smallRow"
-                              id="line1"
-                              style={{ textAlign: "center" }}
-                            >
-                              DEATHS
-                            </th>
-                            <th
-                              className="th sticky-top text-secondary"
-                              id="line2"
-                              style={{ textAlign: "center", width: "70px" }}
-                            >
-                              DECEASED
-                            </th>
-                          </tr>
-                        </thead>
-                        <tbody className="tbody">
-                          {requiredData.map((item) =>
-                            item.map((district) => (
-                              <tr className="tr">
-                                <td
-                                  className="tdleft align-middle"
-                                  style={{
-                                    color: "grey",
-                                    borderLeftWidth: "5px",
-                                    borderStyle: "solid",
-                                  }}
-                                >
-                                  {district.district}
-                                  {district.notes ? (
-                                    <BootstrapTooltip
-                                      title={parse(district.notes)}
-                                    >
-                                      <span
-                                        style={{ verticalAlign: "0.05rem" }}
+                        <table
+                          className="table table-sm table-striped"
+                          style={{
+                            minWidth: "300px",
+                            width: "93%",
+                          }}
+                          align="center"
+                        >
+                          <thead className="thead-dark">
+                            <tr>
+                              <th
+                                className="th wideRow sticky-top"
+                                id="line1"
+                                style={{ width: "57px" }}
+                              >
+                                DISTRICT
+                              </th>
+                              <th
+                                className="th sticky-top"
+                                id="line2"
+                                style={{ width: "175px" }}
+                              >
+                                DISTRICT
+                              </th>
+                              <th
+                                className="th sticky-top text-info smallRow"
+                                style={{ textAlign: "center" }}
+                                id="line1"
+                              >
+                                CNFRMD
+                              </th>
+                              <th
+                                className="th sticky-top text-info"
+                                style={{ textAlign: "center" }}
+                                id="line2"
+                              >
+                                CONFIRMED
+                              </th>
+                              <th
+                                className="th sticky-top smallRow"
+                                style={{
+                                  color: "rgb(255, 68, 106)",
+                                  textAlign: "center",
+                                }}
+                                id="line1"
+                              >
+                                ACTIVE
+                              </th>
+                              <th
+                                className="th sticky-top narrowRow"
+                                style={{
+                                  color: "rgb(255, 68, 106)",
+                                  textAlign: "center",
+                                }}
+                                id="line2"
+                              >
+                                ACTIVE
+                              </th>
+                              <th
+                                className="th sticky-top text-success smallRow"
+                                style={{ textAlign: "center" }}
+                                id="line1"
+                              >
+                                RCVRD
+                              </th>
+                              <th
+                                className="th sticky-top text-success"
+                                style={{ textAlign: "center" }}
+                                id="line2"
+                              >
+                                RECOVERED
+                              </th>
+                              <th
+                                className="th sticky-top text-secondary smallRow"
+                                id="line1"
+                                style={{ textAlign: "center" }}
+                              >
+                                DEATHS
+                              </th>
+                              <th
+                                className="th sticky-top text-secondary"
+                                id="line2"
+                                style={{ textAlign: "center", width: "70px" }}
+                              >
+                                DECEASED
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody className="tbody">
+                            {requiredData.map((item) =>
+                              item.map((district) => (
+                                <tr className="tr">
+                                  <td
+                                    className="tdleft align-middle"
+                                    style={{
+                                      color: "slategrey",
+                                    }}
+                                  >
+                                    {district.district}
+                                    {district.notes ? (
+                                      <OverlayTrigger
+                                        key={"right"}
+                                        placement={"right"}
+                                        overlay={
+                                          <Tooltip id={`tooltip-${"right"}`}>
+                                            <strong>
+                                              {parse(district.notes)}
+                                            </strong>
+                                          </Tooltip>
+                                        }
                                       >
-                                        <InfoTwoToneIcon
-                                          color="inherit"
-                                          fontSize="inherit"
-                                        />
-                                      </span>
-                                    </BootstrapTooltip>
-                                  ) : (
-                                    ""
-                                  )}
-                                </td>
-                                <td
-                                  className="delta td text-secondary align-middle"
-                                  style={{ textAlign: "right" }}
-                                >
-                                  <span className="arrowup text-info">
-                                    <DeltaArrow
-                                      deltaType={district.delta.confirmed}
-                                      color={"#42b3f4"}
-                                    />
-                                    <DeltaValue
-                                      deltaType={district.delta.confirmed}
-                                    />
-                                  </span>
-                                  &nbsp;&nbsp;
-                                  {commaSeperated(district.confirmed)}
-                                </td>
-                                <td
-                                  className="delta td text-secondary narrowRow align-middle"
-                                  style={{ textAlign: "right" }}
-                                >
-                                  {Number(district.active) > 0
-                                    ? commaSeperated(district.active)
-                                    : Number(district.active) < 0
-                                    ? "-" +
-                                      commaSeperated(Math.abs(district.active))
-                                    : "-"}
-                                </td>
-                                <td
-                                  className="delta td text-secondary align-middle"
-                                  style={{ textAlign: "right" }}
-                                >
-                                  <span className="arrowup text-success">
-                                    <DeltaArrow
-                                      deltaType={district.delta.recovered}
-                                      color={"#28a745"}
-                                    />
-                                    <DeltaValue
-                                      deltaType={district.delta.recovered}
-                                    />
-                                  </span>
-                                  &nbsp;
-                                  {Number(district.recovered)
-                                    ? commaSeperated(district.recovered)
-                                    : "-"}
-                                </td>
-                                <td
-                                  className="delta td text-secondary narrowRow align-middle"
-                                  style={{ textAlign: "right" }}
-                                >
-                                  <span className="arrowup text-secondary">
-                                    <DeltaArrow
-                                      deltaType={district.delta.deceased}
-                                      color={"#6c757d"}
-                                    />
-                                    <DeltaValue
-                                      deltaType={district.delta.deceased}
-                                    />
-                                  </span>
-                                  &nbsp;&nbsp;
-                                  {Number(district.deceased)
-                                    ? commaSeperated(district.deceased)
-                                    : "-"}
-                                </td>
-                              </tr>
-                            ))
-                          )}
-                        </tbody>
-                      </table>
-                    </div>
-                  ) : (
-                    <div className="row" style={{ alignContent: "center" }}>
-                      <div
-                        align="center"
-                        className="col fadeInUp"
-                        style={{ animationDelay: "0.1s" }}
-                      >
-                        <h6 className="feedbackBtn">
-                          <a
-                            href="https://forms.gle/N6V7VTgcmBtxkU4Q9"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            title="Provide us your valuable feedback"
-                            style={{ color: "rgb(59, 89, 152)" }}
-                          >
-                            <Icon.FileText size={30} />{" "}
-                          </a>
-                        </h6>
-                        <h6 className="feedbackBtn">
-                          Provide your valuable feedback to us
-                        </h6>
+                                        <span
+                                          style={{ verticalAlign: "0.05rem" }}
+                                        >
+                                          <InfoTwoToneIcon
+                                            color="inherit"
+                                            fontSize="inherit"
+                                          />
+                                        </span>
+                                      </OverlayTrigger>
+                                    ) : (
+                                      ""
+                                    )}
+                                  </td>
+                                  <td
+                                    className="delta td-md align-middle"
+                                    style={{ textAlign: "right" }}
+                                  >
+                                    <span className="arrowup text-info">
+                                      <DeltaArrow
+                                        deltaType={district.delta.confirmed}
+                                        color={"#42b3f4"}
+                                      />
+                                      <DeltaValue
+                                        deltaType={district.delta.confirmed}
+                                      />
+                                    </span>
+                                    &nbsp;&nbsp;
+                                    {commaSeperated(district.confirmed)}
+                                  </td>
+                                  <td
+                                    className="delta td-md text-secondary narrowRow align-middle"
+                                    style={{ textAlign: "right" }}
+                                  >
+                                    {Number(district.active) > 0
+                                      ? commaSeperated(district.active)
+                                      : Number(district.active) < 0
+                                      ? "-" +
+                                        commaSeperated(
+                                          Math.abs(district.active)
+                                        )
+                                      : "-"}
+                                  </td>
+                                  <td
+                                    className="delta td-md text-secondary align-middle"
+                                    style={{ textAlign: "right" }}
+                                  >
+                                    <span className="arrowup text-success">
+                                      <DeltaArrow
+                                        deltaType={district.delta.recovered}
+                                        color={"#28a745"}
+                                      />
+                                      <DeltaValue
+                                        deltaType={district.delta.recovered}
+                                      />
+                                    </span>
+                                    &nbsp;
+                                    {Number(district.recovered)
+                                      ? commaSeperated(district.recovered)
+                                      : "-"}
+                                  </td>
+                                  <td
+                                    className="delta td-md text-secondary narrowRow align-middle"
+                                    style={{ textAlign: "right" }}
+                                  >
+                                    <span className="arrowup text-secondary">
+                                      <DeltaArrow
+                                        deltaType={district.delta.deceased}
+                                        color={"#6c757d"}
+                                      />
+                                      <DeltaValue
+                                        deltaType={district.delta.deceased}
+                                      />
+                                    </span>
+                                    &nbsp;&nbsp;
+                                    {Number(district.deceased)
+                                      ? commaSeperated(district.deceased)
+                                      : "-"}
+                                  </td>
+                                </tr>
+                              ))
+                            )}
+                          </tbody>
+                        </table>
                       </div>
-                      <div
-                        className="col fadeInUp"
-                        style={{ animationDelay: "0.1s" }}
-                      >
-                        <div className="row shareBtn">
-                          <a
-                            href={`https://www.facebook.com/sharer/sharer.php?u=covidindiastats.com/${this.props.match.params.stateid.toUpperCase()}`}
-                            onClick={() => {
-                              ReactGa.event({
-                                category: "FB Share",
-                                action: "fb clicked",
-                              });
-                            }}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            title="Share COVID INDIA STATS on Facebook"
-                            style={{ color: "rgb(59, 89, 152)" }}
-                          >
-                            <FacebookIcon fontSize="large" />
-                          </a>
-                          <a
-                            href={`whatsapp://send?text=Track the spread of Covid19 from State to district level covidindiastats.com/${this.props.match.params.stateid.toUpperCase()}`}
-                            onClick={() => {
-                              ReactGa.event({
-                                category: "WA Share",
-                                action: "wa clicked",
-                              });
-                            }}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            title="Share COVID INDIA STATS on Whatsapp"
-                            style={{ color: "#25D366" }}
-                          >
-                            <WhatsAppIcon fontSize="large" />
-                          </a>
-                          <a
-                            href={`http://twitter.com/share?text=@covidindiastats Track the spread of Covid19 from State to District level.&url=covidindiastats.com/${this.props.match.params.stateid.toUpperCase()}`}
-                            onClick={() => {
-                              ReactGa.event({
-                                category: "Twitter Share",
-                                action: "T clicked",
-                              });
-                            }}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            title="Share COVID INDIA STATS on Twitter"
-                            style={{ color: "#00ACEE" }}
-                          >
-                            <TwitterIcon fontSize="large" />
-                          </a>
-                          <h6 className="likeShare">
-                            Help this information reach your dear ones
+                    ) : (
+                      <div className="row" style={{ alignContent: "center" }}>
+                        <div
+                          align="center"
+                          className="col fadeInUp"
+                          style={{ animationDelay: "0.1s" }}
+                        >
+                          <h6 className="feedbackBtn">
+                            <a
+                              href="https://forms.gle/N6V7VTgcmBtxkU4Q9"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              title="Provide your valuable feedback"
+                            >
+                              <Icon.FileText size={30} />{" "}
+                            </a>
+                          </h6>
+                          <h6 className="feedbackBtn">
+                            Please provide your valuable feedback
                           </h6>
                         </div>
+                        <div
+                          className="col fadeInUp"
+                          style={{ animationDelay: "0.1s" }}
+                        >
+                          <div className="row shareBtn">
+                            <a
+                              href={`https://www.facebook.com/sharer/sharer.php?u=covidindiastats.com/${this.props.match.params.stateid.toUpperCase()}`}
+                              onClick={() => {
+                                ReactGa.event({
+                                  category: "FB Share",
+                                  action: "fb clicked",
+                                });
+                              }}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              title="Share COVID INDIA STATS on Facebook"
+                              style={{ color: "rgb(59, 89, 152)" }}
+                            >
+                              <FacebookIcon fontSize="large" />
+                            </a>
+                            <a
+                              href={`whatsapp://send?text=Track the spread of Covid19 from State to district level covidindiastats.com/${this.props.match.params.stateid.toUpperCase()}`}
+                              onClick={() => {
+                                ReactGa.event({
+                                  category: "WA Share",
+                                  action: "wa clicked",
+                                });
+                              }}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              title="Share COVID INDIA STATS on Whatsapp"
+                              style={{ color: "#25D366" }}
+                            >
+                              <WhatsAppIcon fontSize="large" />
+                            </a>
+                            <a
+                              href={`http://twitter.com/share?text=@covidindiastats Track the spread of Covid19 from State to District level.&url=covidindiastats.com/${this.props.match.params.stateid.toUpperCase()}`}
+                              onClick={() => {
+                                ReactGa.event({
+                                  category: "Twitter Share",
+                                  action: "T clicked",
+                                });
+                              }}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              title="Share COVID INDIA STATS on Twitter"
+                              style={{ color: "#00ACEE" }}
+                            >
+                              <TwitterIcon fontSize="large" />
+                            </a>
+                            <h6 className="likeShare">
+                              Help this information reach your dear ones
+                            </h6>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  )}
+                    )}
+                  </div>
                 </div>
                 <div className="w-100"></div>
-                {/* <div className="row">
-                  <div className="col">
-                    <DistrictPicker
-                      districts={requiredDistricts[0]}
-                      isLoaded={districtsDailyLoaded}
-                      handleDistrictChange={this.handleDistrictChange}
-                    />
-                  </div>
-                </div> */}
               </div>
 
               <div className="col-sm">
@@ -1865,11 +1903,13 @@ class StateDetails extends Component {
                   >
                     <h6 style={{ textAlign: "right" }}>
                       <span
-                        className="text-secondary"
                         style={{
-                          fontSize: 10,
-                          background: "#ece7e7",
+                          fontSize: 13,
+                          color: "purple",
+                          background: "rgba(238, 130, 238)",
                           borderRadius: "3px",
+                          paddingRight: "2px",
+                          paddingLeft: "2px",
                         }}
                       >
                         {!toggleSwitch ? `CUMULATIVE` : `EVERYDAY`}
@@ -1957,7 +1997,7 @@ class StateDetails extends Component {
                             this.props.match.params.stateid.toUpperCase()
                           ]
                         }
-                        bgColor="#e4f3fa"
+                        bgColor="rgba(189, 216, 228, 0.1)"
                         titleClass="text-info"
                         type="confirmed"
                         date={date}
@@ -1966,7 +2006,7 @@ class StateDetails extends Component {
                           lineTotalConfirmedData.length
                         )}
                         daily={dailyConfirmed[0]}
-                        stroke="#0992c0"
+                        stroke="rgb(66, 179, 244)"
                         lineStroke="#35aad1"
                         color1="#6ebed6"
                         color2="#55b2ce"
@@ -1988,7 +2028,7 @@ class StateDetails extends Component {
                             this.props.match.params.stateid.toUpperCase()
                           ]
                         }
-                        bgColor="#f5d2d2"
+                        bgColor="rgba(247, 177, 177, 0.1)"
                         titleClass="text-danger"
                         type="active"
                         date={date}
@@ -2001,7 +2041,7 @@ class StateDetails extends Component {
                           dailyRecovered[0] -
                           dailyDeceased[0]
                         }
-                        stroke="#ff446a"
+                        stroke="rgba(255, 7, 58, 1)"
                         lineStroke="#ec7d93"
                         color1="#f16783"
                         color2="#ff446a"
@@ -2023,7 +2063,7 @@ class StateDetails extends Component {
                             this.props.match.params.stateid.toUpperCase()
                           ]
                         }
-                        bgColor="#d5e9d5"
+                        bgColor="rgba(177, 247, 177, 0.1)"
                         titleClass="text-success"
                         type="recovered"
                         date={date}
@@ -2054,7 +2094,7 @@ class StateDetails extends Component {
                             this.props.match.params.stateid.toUpperCase()
                           ]
                         }
-                        bgColor="#f3f3f3"
+                        bgColor="rgba(49, 43, 43, 0.05)"
                         titleClass="text-secondary"
                         type="deceased"
                         date={date}
@@ -2063,7 +2103,7 @@ class StateDetails extends Component {
                           lineTotalDeceasedData.length
                         )}
                         daily={dailyDeceased[0]}
-                        stroke="#2e2d2d"
+                        stroke="#6c757d"
                         lineStroke="#666565"
                         color1="#808080"
                         color2="#5e5a5a"
@@ -2085,7 +2125,7 @@ class StateDetails extends Component {
                         <section
                           className="graphsection"
                           style={{
-                            backgroundColor: "#e6e8f1",
+                            backgroundColor: "rgba(106, 68, 200, 0.1)",
                             borderRadius: "6px",
                             paddingTop: "5px",
                             marginTop: "10px",
@@ -2098,7 +2138,7 @@ class StateDetails extends Component {
                               textAlign: "left",
                               marginLeft: 10,
                               fontSize: "0.8rem",
-                              color: "#3e4da3",
+                              color: "slateblue",
                             }}
                           >
                             TESTED
@@ -2108,8 +2148,7 @@ class StateDetails extends Component {
                                   dateFormattedTestData.length - 1
                                 ].date
                               }
-
-                              <h5 style={{ fontSize: 14, color: "#3e4da3" }}>
+                              <h5 style={{ fontSize: 14, color: "slateblue" }}>
                                 {commaSeperated(
                                   dateFormattedTestData[
                                     dateFormattedTestData.length - 1
@@ -2143,7 +2182,7 @@ class StateDetails extends Component {
                           <ResponsiveContainer
                             width="100%"
                             height="100%"
-                            aspect={2.4}
+                            aspect={2.5}
                           >
                             <LineChart
                               data={dateFormattedTestData.slice(
@@ -2152,9 +2191,9 @@ class StateDetails extends Component {
                               )}
                               margin={{
                                 top: 40,
-                                right: -30,
+                                right: -26,
                                 left: 10,
-                                bottom: -12,
+                                bottom: -8,
                               }}
                               syncId="linechart"
                             >
@@ -2165,7 +2204,7 @@ class StateDetails extends Component {
                                   fill: "#6471b3",
                                   strokeWidth: 0.2,
                                 }}
-                                style={{ fontSize: 8, fontFamily: "notosans" }}
+                                style={{ fontSize: 10, fontFamily: "notosans" }}
                                 tickSize={5}
                                 tickCount={8}
                                 tickLine={{ stroke: "#6471b3" }}
@@ -2178,8 +2217,8 @@ class StateDetails extends Component {
                                 domain={[
                                   0,
                                   Math.ceil(
-                                    Math.max(...cumulativeTestDataArray) / 1000
-                                  ) * 1000,
+                                    Math.max(...cumulativeTestDataArray) / 10000
+                                  ) * 10000,
                                 ]}
                                 orientation="right"
                                 tick={{
@@ -2189,7 +2228,7 @@ class StateDetails extends Component {
                                 }}
                                 tickFormatter={format("~s")}
                                 tickSize={5}
-                                style={{ fontSize: 8, fontFamily: "notosans" }}
+                                style={{ fontSize: 10, fontFamily: "notosans" }}
                                 tickCount={8}
                                 tickLine={{ stroke: "#6471b3" }}
                                 axisLine={{
@@ -2221,9 +2260,9 @@ class StateDetails extends Component {
                                 isAnimationActive={true}
                                 connectNulls={true}
                                 dot={{
-                                  stroke: "#3e4da3",
+                                  stroke: "slateblue",
                                   strokeWidth: 0.1,
-                                  fill: "#3e4da3",
+                                  fill: "slateblue",
                                 }}
                                 onClick={() => {
                                   ReactGa.event({
@@ -2247,7 +2286,7 @@ class StateDetails extends Component {
                           ]
                         }
                         type="confirmed"
-                        bgColor="#e4f3fa"
+                        bgColor="rgba(189, 216, 228, 0.1)"
                         titleClass="text-info"
                         data={barDailyConfirmedData.slice(
                           timelineLength,
@@ -2267,7 +2306,7 @@ class StateDetails extends Component {
                             ? 100
                             : 10
                         }
-                        stroke="#0992c0"
+                        stroke="rgb(66, 179, 244)"
                         color1="#6ebed6"
                         color2="#55b2ce"
                       />
@@ -2279,7 +2318,7 @@ class StateDetails extends Component {
                           ]
                         }
                         type="active"
-                        bgColor="#f5d2d2"
+                        bgColor="rgba(247, 177, 177, 0.1)"
                         titleClass="text-danger"
                         data={barDailyActiveData.slice(
                           timelineLength,
@@ -2307,7 +2346,7 @@ class StateDetails extends Component {
                             ? 100
                             : 10
                         }
-                        stroke="#f16783"
+                        stroke="rgba(255, 7, 58, 1)"
                         color1="#f16783"
                         color2="#ff446a"
                       />
@@ -2319,7 +2358,7 @@ class StateDetails extends Component {
                           ]
                         }
                         type="recovered"
-                        bgColor="#d5e9d5"
+                        bgColor="rgba(177, 247, 177, 0.1)"
                         titleClass="text-success"
                         data={barDailyRecoveredData.slice(
                           timelineLength,
@@ -2351,7 +2390,7 @@ class StateDetails extends Component {
                           ]
                         }
                         type="deceased"
-                        bgColor="#f3f3f3"
+                        bgColor="rgba(49, 43, 43, 0.05)"
                         titleClass="text-secondary"
                         data={barDailyDeceasedData.slice(
                           timelineLength,
@@ -2371,7 +2410,7 @@ class StateDetails extends Component {
                             ? 50
                             : 5
                         }
-                        stroke="#474646"
+                        stroke="#6c757d"
                         color1="#808080"
                         color2="#5e5a5a"
                       />
@@ -2382,7 +2421,7 @@ class StateDetails extends Component {
                           className="graphsection"
                           style={{
                             alignSelf: "center",
-                            backgroundColor: "#e6e8f1",
+                            backgroundColor: "rgba(106, 68, 200, 0.1)",
                             borderRadius: "6px",
                             marginTop: 10,
                           }}
@@ -2393,7 +2432,7 @@ class StateDetails extends Component {
                               marginBottom: "-80px",
                               textAlign: "left",
                               marginLeft: 10,
-                              color: "#3e4da3",
+                              color: "slateblue",
                               fontSize: "0.8rem",
                             }}
                           >
@@ -2411,7 +2450,7 @@ class StateDetails extends Component {
                                 ].date
                               }
 
-                              <h5 style={{ fontSize: 14, color: "#3e4da3" }}>
+                              <h5 style={{ fontSize: 14, color: "slateblue" }}>
                                 {commaSeperated(
                                   dailyFormattedTestData[
                                     dailyFormattedTestData.length - 1
@@ -2461,7 +2500,7 @@ class StateDetails extends Component {
                           <ResponsiveContainer
                             width="100%"
                             height="100%"
-                            aspect={2.4}
+                            aspect={2.5}
                           >
                             <BarChart
                               data={dailyFormattedTestData.slice(
@@ -2470,9 +2509,9 @@ class StateDetails extends Component {
                               )}
                               margin={{
                                 top: 40,
-                                right: -30,
+                                right: -26,
                                 left: 10,
-                                bottom: -12,
+                                bottom: -8,
                               }}
                               syncId="barchart"
                             >
@@ -2484,7 +2523,7 @@ class StateDetails extends Component {
                                   strokeWidth: 0.2,
                                 }}
                                 axisLine={{ color: "#6471b3" }}
-                                style={{ fontSize: 8, fontFamily: "notosans" }}
+                                style={{ fontSize: 10, fontFamily: "notosans" }}
                                 tickSize={5}
                                 tickLine={{ stroke: "#6471b3" }}
                                 tickCount={8}
@@ -2523,7 +2562,7 @@ class StateDetails extends Component {
                                   strokeWidth: 0.2,
                                 }}
                                 tickFormatter={format("~s")}
-                                style={{ fontSize: 8, fontFamily: "notosans" }}
+                                style={{ fontSize: 10, fontFamily: "notosans" }}
                                 tickSize={5}
                                 tickLine={{ stroke: "#6471b3" }}
                                 tickCount={8}
@@ -2549,7 +2588,7 @@ class StateDetails extends Component {
                               <Bar
                                 dataKey="dailytested"
                                 name="Tested"
-                                fill="#3e4da3"
+                                fill="slateblue"
                                 radius={[2, 2, 0, 0]}
                                 onClick={() => {
                                   ReactGa.event({

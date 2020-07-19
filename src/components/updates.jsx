@@ -1,18 +1,20 @@
 import React, { Component } from "react";
 import ReactGa from "react-ga";
+import { NavLink } from "react-router-dom";
 import {
   formatDate,
   formatDateAbsolute,
   toTimestamp,
   timeSince,
 } from "../utils/common-functions";
+import * as Icon from "react-feather";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import NotificationsOffIcon from "@material-ui/icons/NotificationsOff";
 import LaunchRoundedIcon from "@material-ui/icons/LaunchRounded";
 import Badge from "@material-ui/core/Badge";
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
-import QueryBuilderTwoToneIcon from "@material-ui/icons/QueryBuilderTwoTone";
-import GroupWorkTwoToneIcon from "@material-ui/icons/GroupWorkTwoTone";
+import AccessTimeRoundedIcon from "@material-ui/icons/AccessTimeRounded";
+import GroupWorkOutlinedIcon from "@material-ui/icons/GroupWorkOutlined";
 import { Link } from "react-router-dom";
 
 class Updates extends Component {
@@ -101,10 +103,10 @@ class Updates extends Component {
               textAlign: "center",
             }}
           >
-            <span className="font-weight-bold" style={{ color: "#3f51b5" }}>
-              <h4 className="updates">
+            <span style={{ color: "#3f51b5" }}>
+              <h4 className="updates font-weight-bold">
                 <span style={{ verticalAlign: "0.1rem", cursor: "pointer" }}>
-                  <QueryBuilderTwoToneIcon color="primary" fontSize="small" />
+                  <AccessTimeRoundedIcon color="primary" fontSize="small" />
                 </span>
                 &nbsp;
                 <span style={{ color: "#3f51b5", textTransform: "uppercase" }}>
@@ -113,7 +115,49 @@ class Updates extends Component {
                     : formatDateAbsolute(lastUpdated)}
                 </span>
                 <span id="line1" style={{ color: "#3f51b5" }}>
-                  &nbsp;●&nbsp;
+                  &nbsp;|{" "}
+                  <NavLink to="/notifications" id="line1">
+                    {!wasSeen ? (
+                      <Badge
+                        color="primary"
+                        overlap="circle"
+                        variant="dot"
+                        fontSize="inherit"
+                        onClick={this.close.bind(this)}
+                      >
+                        <span
+                          className="about"
+                          onClick={() =>
+                            ReactGa.event({
+                              category: "Notification",
+                              action: "Bell clicked",
+                            })
+                          }
+                        >
+                          <Icon.Bell
+                            size={20}
+                            style={{ color: "rgb(62, 77, 163)" }}
+                          />{" "}
+                        </span>
+                      </Badge>
+                    ) : (
+                      <span
+                        className="about"
+                        onClick={() =>
+                          ReactGa.event({
+                            category: "Notification",
+                            action: "Bell clicked",
+                          })
+                        }
+                      >
+                        <Icon.Bell
+                          size={20}
+                          style={{ color: "rgb(62, 77, 163)" }}
+                        />
+                      </span>
+                    )}
+                  </NavLink>{" "}
+                  |&nbsp;
                 </span>
                 <span id="line2">&nbsp;|&nbsp;</span>
                 <span
@@ -142,12 +186,14 @@ class Updates extends Component {
                       <NotificationsIcon color="primary" />
                     )
                   ) : (
-                    <NotificationsOffIcon color="disabled" />
+                    <NotificationsOffIcon color="primary" />
                   )}
                 </span>
                 <span id="line2">&nbsp;|&nbsp;</span>
-                <span style={{ color: "red" }}>{items.length - 1}</span>
-                <span style={{ color: "#3f51b5" }}>
+                <span className="updates" style={{ color: "red" }}>
+                  {items.length}
+                </span>
+                <span className="updates" style={{ color: "#3f51b5" }}>
                   {" "}
                   STATES/UTs AFFECTED
                 </span>{" "}
@@ -157,7 +203,7 @@ class Updates extends Component {
                     cursor: "pointer",
                   }}
                 >
-                  <GroupWorkTwoToneIcon color="primary" fontSize="small" />
+                  <GroupWorkOutlinedIcon color="primary" fontSize="small" />
                 </span>
               </h4>
             </span>
@@ -194,18 +240,13 @@ class Updates extends Component {
                                   item.lastupdatedtime.split(/\//)[2],
                                 ].join("/")
                               ).getTime()
-                            ) +
-                            "  "}
-                          <span
-                            style={{ verticalAlign: "0.09rem", fontSize: 7 }}
-                          >
-                            <FiberManualRecordIcon
-                              fontSize="inherit"
-                              color="action"
-                            />
+                            )}{" "}
+                          &nbsp;
+                          <span style={{ color: "green" }}>
+                            <FiberManualRecordIcon fontSize="inherit" />
                           </span>
                         </h6>
-                        <h6 style={{ fontSize: 12, color: "#3a3838" }}>
+                        <h6 style={{ fontSize: 12 }}>
                           {` ${Number(item.deltaconfirmed)} new case${
                             Number(item.deltaconfirmed) > 1 ? "s" : ""
                           }${
@@ -233,7 +274,7 @@ class Updates extends Component {
                               <LaunchRoundedIcon
                                 style={{
                                   color: "peru",
-                                  background: "rgb(235, 224, 209)",
+                                  background: "rgba(255, 153, 0, 0.3)",
                                   borderRadius: "3px",
                                   padding: "2 2",
                                   fontWeight: 700,

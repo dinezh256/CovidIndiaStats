@@ -167,10 +167,10 @@ class World extends Component {
                 }}
               >
                 <td
-                  className="text-info td"
                   style={{
                     textAlign: "center",
-                    background: "#d9ecf5",
+                    color: "rgb(66, 179, 244)",
+                    background: "rgba(66, 179, 244, 0.1)",
                   }}
                 >
                   <h5 className="world-total">TOTAL CONFIRMED CASES</h5>
@@ -178,11 +178,10 @@ class World extends Component {
                   <h5>{commaSeperated(totalCases)}</h5>
                 </td>
                 <td
-                  className="td"
                   style={{
                     textAlign: "center",
-                    background: "#f1c7c7",
-                    color: "#ff446a",
+                    background: "rgba(247, 177, 177, 0.3)",
+                    color: "rgb(255, 80, 100)",
                   }}
                 >
                   <h5 className="world-total">TOTAL ACTIVE CASES</h5>
@@ -193,8 +192,7 @@ class World extends Component {
                   className="text-success td"
                   style={{
                     textAlign: "center",
-                    background: "#c3e0c3",
-                    color: "#ff446a",
+                    background: "rgba(88, 189, 88, 0.2)",
                   }}
                 >
                   <h5 className="world-total">TOTAL RECOVERED CASES</h5>
@@ -205,7 +203,7 @@ class World extends Component {
                   className="td text-secondary"
                   style={{
                     textAlign: "center",
-                    background: "#d8d7d7",
+                    background: "rgba(92, 87, 86, 0.2)",
                   }}
                 >
                   <h5 className="world-total">TOTAL DECEASED CASES</h5>
@@ -216,8 +214,8 @@ class World extends Component {
                   className="td"
                   style={{
                     textAlign: "center",
-                    color: "maroon",
-                    background: "#e6c5c5",
+                    color: "chocolate",
+                    background: "rgba(255, 153, 0, 0.2)",
                   }}
                 >
                   <h5 className="world-total">TOTAL CRITICAL CASES</h5>
@@ -236,10 +234,10 @@ class World extends Component {
                 }}
               >
                 <td
-                  className="text-info td"
                   style={{
                     textAlign: "center",
-                    background: "#d9ecf5",
+                    color: "rgb(66, 179, 244)",
+                    background: "rgba(66, 179, 244, 0.1)",
                   }}
                 >
                   <h5 className="world-total">TOTAL CONFIRMED CASES</h5>
@@ -247,11 +245,10 @@ class World extends Component {
                   <h5>{commaSeperated(totalCases)}</h5>
                 </td>
                 <td
-                  className="td"
                   style={{
                     textAlign: "center",
-                    background: "#f1c7c7",
-                    color: "#ff446a",
+                    background: "rgba(247, 177, 177, 0.2)",
+                    color: "rgb(255, 80, 100)",
                   }}
                 >
                   <h5 className="world-total">TOTAL ACTIVE CASES</h5>
@@ -260,7 +257,10 @@ class World extends Component {
                 </td>
                 <td
                   className="text-success td"
-                  style={{ textAlign: "center", background: "#c3e0c3" }}
+                  style={{
+                    textAlign: "center",
+                    background: "rgba(88, 189, 88, 0.2)",
+                  }}
                 >
                   <h5 className="world-total">TOTAL RECOVERED CASES</h5>
                   <h6>{((totalRecovered * 100) / totalCases).toFixed(2)}%</h6>
@@ -270,7 +270,7 @@ class World extends Component {
                   className="td text-secondary"
                   style={{
                     textAlign: "center",
-                    background: "#d8d7d7",
+                    background: "rgba(92, 87, 86, 0.2)",
                   }}
                 >
                   <h5 className="world-total">TOTAL DECEASED CASES</h5>
@@ -281,8 +281,8 @@ class World extends Component {
                   className="td"
                   style={{
                     textAlign: "center",
-                    color: "maroon",
-                    background: "#e6c5c5",
+                    color: "chocolate",
+                    background: "rgba(255, 153, 0, 0.2)",
                   }}
                 >
                   <h5 className="world-total">TOTAL CRITICAL CASES</h5>
@@ -330,36 +330,42 @@ class World extends Component {
             <div className="w-100"></div>
             <div className="col">
               <table
-                className="tableworld table-sm fadeInUp table-responsive table-hover table-bordered"
+                className="tableworld table-sm fadeInUp table-responsive"
                 align="center"
                 style={{ animationDelay: "0.9s" }}
               >
-                <thead className="thead-light">
-                  <tr>
+                <thead className="thead-dark">
+                  <tr style={{ background: "slateblue", color: "aliceblue" }}>
+                    <th className="th-cases sticky-top">#</th>
                     <th className="th-cases sticky-top">COUNTRY</th>
                     <th className="th-cases sticky-top">CONFIRMED</th>
                     <th className="th-cases sticky-top">ACTIVE</th>
                     <th className="th-cases sticky-top">Recovered</th>
                     <th className="th-cases sticky-top">DECEASED</th>
                     <th className="th-cases sticky-top">critical</th>
-                    <th className="th-cases sticky-top">Cases/Mil</th>
-                    <th className="th-cases sticky-top">Deaths/Mil</th>
+                    <th className="th-cases sticky-top">Cases/M</th>
+                    <th className="th-cases sticky-top">Recovered/M</th>
+                    <th className="th-cases sticky-top">Deaths/M</th>
                     <th className="th-cases sticky-top">TESTS</th>
-                    <th className="th-cases sticky-top">TESTS/MIL</th>
-                    <th className="th-cases sticky-top">LAST UPDATED</th>
+                    <th className="th-cases sticky-top">TESTS/M</th>
                   </tr>
                 </thead>
                 <tbody className="tbody">
-                  {countries.map((country) => (
+                  {countries.map((country, i) => (
                     <tr className="tr" key={country.country}>
+                      <td className="td-world" style={{ textAlign: "left" }}>
+                        {i + 1}
+                      </td>
                       <td
-                        className="text-secondary td-world"
+                        className="td-world"
                         style={{
+                          textAlign: "left",
                           textTransform: "uppercase",
                         }}
                       >
                         <img
                           src={country.countryInfo.flag}
+                          alt={country.countryInfo.iso2}
                           style={{
                             width: 22.5,
                             height: 13.5,
@@ -370,7 +376,9 @@ class World extends Component {
                       </td>
                       <td
                         className="td-world"
-                        style={{ textAlign: "right", background: "#e9f5fa" }}
+                        style={{
+                          background: "rgba(66, 179, 244, 0.1)",
+                        }}
                       >
                         <span className="text-info">
                           {Number(country.todayCases) === 0
@@ -384,8 +392,7 @@ class World extends Component {
                       <td
                         className="td-world"
                         style={{
-                          textAlign: "right",
-                          background: "rgba(241, 199, 199, 0.7)",
+                          background: "rgba(247, 177, 177, 0.2)",
                         }}
                       >
                         {Number(country.active) === 0
@@ -396,8 +403,7 @@ class World extends Component {
                       <td
                         className="td-world"
                         style={{
-                          textAlign: "right",
-                          background: "rgba(195, 224, 195, 0.7)",
+                          background: "rgba(88, 189, 88, 0.2)",
                         }}
                       >
                         <span className="text-success">
@@ -410,9 +416,8 @@ class World extends Component {
                           ? "-"
                           : commaSeperated(country.recovered)}
                       </td>
-                      <td className="td-world" style={{ textAlign: "right" }}>
+                      <td className="td-world">
                         <b
-                          align="left"
                           style={{
                             fontSize: "10px",
                             fontWeight: 700,
@@ -428,39 +433,29 @@ class World extends Component {
                           ? "-"
                           : commaSeperated(country.deaths)}
                       </td>
-                      <td className="td-world" style={{ textAlign: "right" }}>
+                      <td className="td-world">
                         {Number(country.critical) === 0
                           ? "-"
                           : commaSeperated(country.critical)}
                       </td>
-                      <td className="td-world" style={{ textAlign: "center" }}>
+                      <td className="td-world">
                         {commaSeperated(country.casesPerOneMillion)}
                       </td>
-                      <td className="td-world" style={{ textAlign: "center" }}>
+                      <td className="td-world">
+                        {Math.ceil(Number(country.recoveredPerOneMillion))}
+                      </td>
+                      <td className="td-world">
                         {Number(country.deathsPerOneMillion)}
                       </td>
-                      <td
-                        className="td-world"
-                        style={{ textAlign: "center", background: "#eee" }}
-                      >
+                      <td className="td-world">
                         {Number(country.tests) === 0
                           ? "-"
                           : commaSeperated(country.tests)}
                       </td>
-                      <td
-                        className="td-world"
-                        style={{ textAlign: "center", background: "#eee" }}
-                      >
+                      <td className="td-world">
                         {Number(country.testsPerOneMillion) === 0
                           ? "-"
                           : commaSeperated(country.testsPerOneMillion)}
-                      </td>
-                      <td
-                        className="td-world"
-                        style={{ textAlign: "center", background: "#eee" }}
-                      >
-                        {getDate(country.updated)}{" "}
-                        {months[Number(getMonth(country.updated))]}
                       </td>
                     </tr>
                   ))}

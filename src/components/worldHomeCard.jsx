@@ -68,7 +68,6 @@ class WorldHomeCard extends Component {
           <div
             className="col"
             style={{
-              background: "#e6e8f1",
               borderTopLeftRadius: "5px",
               borderTopRightRadius: "5px",
               borderSpacing: "1px",

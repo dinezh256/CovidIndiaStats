@@ -152,12 +152,16 @@ export function DeltaArrow({ deltaType, color }) {
   );
 }
 
-export function DeltaValue({ deltaType }) {
-  return Number(deltaType) > 0
-    ? commaSeperated(Number(deltaType))
-    : Number(deltaType) < 0
-    ? commaSeperated(Number(Math.abs(deltaType)))
-    : "";
+export function DeltaValue({ deltaType, color }) {
+  return Number(deltaType) > 0 ? (
+    <span style={{ color: color }}>{commaSeperated(Number(deltaType))}</span>
+  ) : Number(deltaType) < 0 ? (
+    <span style={{ color: color }}>
+      {commaSeperated(Math.abs(Number(deltaType)))}
+    </span>
+  ) : (
+    <h6 style={{ fontSize: 4 }}>&nbsp;</h6>
+  );
 }
 
 export const stateID = [

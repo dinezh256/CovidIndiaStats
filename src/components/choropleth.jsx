@@ -4,7 +4,6 @@ import { scaleLog } from "d3-scale";
 import ReactTooltip from "react-tooltip";
 import { commaSeperated } from "../utils/common-functions";
 import LinearGradient from "./linearGragient";
-import { Link } from "react-router-dom";
 
 const INDIA_TOPO_JSON = require("../india.topo.json");
 
@@ -13,10 +12,13 @@ const PROJECTION_CONFIG = {
   center: [82.8, 22.5937], // always in [East Latitude, North Longitude]
 };
 
-const Choropleth = ({ data, colorLow, colorHigh, type }) => {
+const Choropleth = ({ data, colorLow, colorHigh, type, borderColor }) => {
   const COLOR_RANGE = [colorHigh, colorLow];
 
   const geographyStyle = {
+    default: {
+      outline: colorHigh,
+    },
     hover: {
       transition: "all 250ms",
       strokeWidth: 1,
@@ -81,8 +83,8 @@ const Choropleth = ({ data, colorLow, colorHigh, type }) => {
                   style={geographyStyle}
                   onMouseEnter={onMouseEnter(geo, current)}
                   onMouseLeave={onMouseLeave}
-                  stroke={colorLow}
-                  strokeWidth={0.3}
+                  stroke={borderColor}
+                  strokeWidth={0.4}
                 />
               );
             })

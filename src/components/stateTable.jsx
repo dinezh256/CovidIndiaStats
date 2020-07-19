@@ -241,7 +241,7 @@ class StateTable extends Component {
         {requiredData.length && back ? (
           <div className="row fadeInUp" style={{ animationDelay: "0.5s" }}>
             <table
-              className="table table-sm table-striped table-borderless"
+              className="table table-sm table-borderless"
               style={{
                 minWidth: "350px",
                 tableLayout: "fixed",
@@ -350,8 +350,7 @@ class StateTable extends Component {
                         className="tdleft align-middle"
                         style={{
                           color: "grey",
-                          borderLeftWidth: "5px",
-                          borderStyle: "solid",
+                          backgroundColor: "rgba(63, 63, 95, 0.2)",
                         }}
                       >
                         {district.district}

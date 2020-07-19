@@ -372,13 +372,7 @@ class Graph extends Component {
                     marginBottom: "15px",
                   }}
                 >
-                  INDIA MAP
-                  <h6 id="line1" style={{ fontSize: 8, color: "grey" }}>
-                    Tap on a State/UT
-                  </h6>
-                  <h6 id="line2" style={{ fontSize: 8, color: "grey" }}>
-                    Hover Over a State/UT
-                  </h6>
+                  INDIA
                 </h4>
               </div>
 
@@ -428,12 +422,13 @@ class Graph extends Component {
                     }}
                   >
                     <h6
-                      className="text-info pad"
+                      className="pad"
                       style={{
+                        color: "rgb(66, 179, 244)",
                         background: `${
                           clickConfirmedMap
-                            ? "rgb(189, 216, 228)"
-                            : "rgba(189, 216, 228, 0.2)"
+                            ? "rgba(66, 179, 244, 0.5)"
+                            : "rgba(66, 179, 244, 0.1)"
                         }`,
                       }}
                     >
@@ -477,12 +472,11 @@ class Graph extends Component {
                     <h6
                       className="pad"
                       style={{
-                        color: "rgb(255, 68, 106)",
-
-                        background: `${
+                        color: "rgb(255, 80, 100)",
+                        backgroundColor: `${
                           clickActiveMap
-                            ? "rgba(247, 177, 177, 0.9)"
-                            : "rgba(247, 177, 177, 0.2)"
+                            ? "rgba(255, 80, 100, 0.4)"
+                            : "rgba(247, 177, 177, 0.3)"
                         }`,
                       }}
                     >
@@ -539,8 +533,8 @@ class Graph extends Component {
                       style={{
                         background: `${
                           clickRecoveredMap
-                            ? "rgb(182, 229, 182)"
-                            : "rgba(182, 229, 182, 0.2)"
+                            ? "rgba(88, 189, 88, 0.5)"
+                            : "rgba(88, 189, 88, 0.2)"
                         }`,
                       }}
                     >
@@ -586,8 +580,8 @@ class Graph extends Component {
                       style={{
                         background: `${
                           clickDeceasedMap
-                            ? "rgb(179, 173, 173)"
-                            : "rgba(179, 173, 173, 0.2)"
+                            ? "rgba(92, 87, 86, 0.5)"
+                            : "rgba(92, 87, 86, 0.2)"
                         }`,
                         cursor: "pointer",
                       }}
@@ -600,14 +594,14 @@ class Graph extends Component {
                             <Icon.PlusCircle
                               size={9}
                               strokeWidth={3}
-                              fill="rgba(179, 173, 173, 0.5)"
+                              fill="rgba(179, 173, 173, 0.1)"
                               style={{ verticalAlign: -1 }}
                             />
                           ) : (
                             <Icon.Meh
                               size={9}
                               strokeWidth={3}
-                              fill="rgba(179, 173, 173, 0.5)"
+                              fill="rgba(179, 173, 173, 0.1)"
                               style={{ verticalAlign: -1 }}
                             />
                           )}{" "}
@@ -639,9 +633,10 @@ class Graph extends Component {
                       1,
                       confirmedStatesData.length - 1
                     )}
-                    colorLow="rgba(29, 141, 158, 0.85)"
-                    colorHigh="rgba(29, 141, 158, 1)"
+                    colorLow="rgba(66, 179, 244, 0.85)"
+                    colorHigh="rgb(66, 179, 244)"
                     type="Infected"
+                    borderColor="rgba(66, 179, 244, 0.9)"
                     onMouseEnter={ReactGa.event({
                       category: "India map",
                       action: "India map clicked",
@@ -654,8 +649,9 @@ class Graph extends Component {
                       1,
                       activeStatesData.length - 1
                     )}
-                    colorLow="rgba(173, 28, 57, 0.85)"
-                    colorHigh="rgba(173, 28, 57, 1)"
+                    colorLow="rgba(221, 50, 85, 0.85)"
+                    colorHigh="rgba(221, 50, 85, 1)"
+                    borderColor="rgb(221, 50, 85)"
                     fill="rgb(228, 116, 138)"
                     type="Active"
                     onMouseEnter={ReactGa.event({
@@ -673,6 +669,7 @@ class Graph extends Component {
                     colorLow="rgba(40, 167, 69, 0.85)"
                     colorHigh="rgba(40, 167, 69, 1)"
                     type="Recovered"
+                    borderColor="rgba(40, 167, 69, 0.85)"
                     onMouseEnter={ReactGa.event({
                       category: "India map",
                       action: "India map clicked",
@@ -688,6 +685,7 @@ class Graph extends Component {
                     colorLow="rgba(74, 79, 83, 0.6)"
                     colorHigh="rgba(74, 79, 83, 1)"
                     type="Deceased"
+                    borderColor="rgba(74, 79, 95, 1)"
                     onMouseEnter={ReactGa.event({
                       category: "India map",
                       action: "India map clicked",
@@ -715,11 +713,13 @@ class Graph extends Component {
                   SPREAD TRENDS{" "}
                   <h6>
                     <span
-                      className="text-secondary"
                       style={{
-                        fontSize: 10,
-                        background: "#ece7e7",
+                        fontSize: 13,
+                        color: "purple",
+                        background: "rgba(238, 130, 238)",
                         borderRadius: "3px",
+                        paddingRight: "2px",
+                        paddingLeft: "2px",
                       }}
                     >
                       {!toggleActive ? `CUMULATIVE` : `EVERYDAY`}
@@ -745,8 +745,8 @@ class Graph extends Component {
                       action: "Switch clicked",
                     })}
                     checked={toggleActive}
-                    onColor="#86d3ff"
-                    onHandleColor="#2693e6"
+                    onColor="#2f8dd4c5"
+                    onHandleColor="#114f7eab"
                     handleDiameter={11}
                     uncheckedIcon={false}
                     checkedIcon={false}
@@ -816,14 +816,14 @@ class Graph extends Component {
                 <React.Fragment>
                   <LinePlot
                     type="confirmed"
-                    bgColor="#e4f3fa"
+                    bgColor="rgba(189, 216, 228, 0.1)"
                     titleClass="text-info"
                     data={data}
                     date={date}
                     timelineLength={timelineLength}
                     total={totalConfirmed}
                     daily={dailyConfirmed}
-                    stroke="#0992c0"
+                    stroke="rgb(66, 179, 244)"
                     lineStroke="#35aad1"
                     color1="#6ebed6"
                     color2="#55b2ce"
@@ -833,14 +833,14 @@ class Graph extends Component {
                   <div className="w-100"></div>
                   <LinePlot
                     type="active"
-                    bgColor="#f5d2d2"
+                    bgColor="rgba(247, 177, 177, 0.1)"
                     titleClass="text-danger"
                     data={totalActiveJson}
                     date={date}
                     timelineLength={timelineLength}
                     total={totalActive}
                     daily={dailyActive}
-                    stroke="#ff446a"
+                    stroke="rgba(255, 7, 58, 1)"
                     lineStroke="#ec7d93"
                     color1="#f16783"
                     color2="#ff446a"
@@ -849,14 +849,14 @@ class Graph extends Component {
                   <div className="w-100"></div>
                   <LinePlot
                     type="recovered"
-                    bgColor="#d5e9d5"
+                    bgColor="rgba(177, 247, 177, 0.1)"
                     titleClass="text-success"
                     data={data}
                     date={date}
                     timelineLength={timelineLength}
                     total={totalRecovered}
                     daily={dailyRecovered}
-                    stroke="#469246"
+                    stroke="#28a745"
                     lineStroke="#78b978"
                     color1="#81ce81"
                     color2="#5cb85c"
@@ -865,14 +865,14 @@ class Graph extends Component {
                   <div className="w-100"></div>
                   <LinePlot
                     type="deceased"
-                    bgColor="#f3f3f3"
+                    bgColor="rgba(49, 43, 43, 0.05)"
                     titleClass="text-secondary"
                     data={data}
                     date={date}
                     timelineLength={timelineLength}
                     total={totalDeceased}
                     daily={dailyDeceased}
-                    stroke="#2e2d2d"
+                    stroke="#6c757d"
                     lineStroke="#666565"
                     color1="#808080"
                     color2="#5e5a5a"
@@ -883,7 +883,7 @@ class Graph extends Component {
                     <section
                       className="graphsection"
                       style={{
-                        backgroundColor: "#e6e8f1",
+                        backgroundColor: "rgba(106, 68, 200, 0.1)",
                         borderRadius: "6px",
                         paddingTop: "5px",
                       }}
@@ -899,7 +899,7 @@ class Graph extends Component {
                         }}
                       >
                         TESTED
-                        <h6 style={{ fontSize: "12px", color: "#3f51b5" }}>
+                        <h6 style={{ fontSize: "12px", color: "#5969c2" }}>
                           {
                             cumulativeDateFormattedTests[
                               cumulativeDateFormattedTests.length - 1
@@ -929,7 +929,7 @@ class Graph extends Component {
                       <ResponsiveContainer
                         width="100%"
                         height="100%"
-                        aspect={2.4}
+                        aspect={2.5}
                       >
                         <LineChart
                           data={cumulativeDateFormattedTests.slice(
@@ -938,9 +938,9 @@ class Graph extends Component {
                           )}
                           margin={{
                             top: 40,
-                            right: -30,
+                            right: -26,
                             left: 10,
-                            bottom: -12,
+                            bottom: -8,
                           }}
                           syncId="linechart"
                         >
@@ -967,8 +967,8 @@ class Graph extends Component {
                             domain={[
                               0,
                               Math.ceil(
-                                Math.max(...totalSamplesTested) / 100000
-                              ) * 100000,
+                                Math.max(...totalSamplesTested) / 1000000
+                              ) * 1000000,
                             ]}
                             orientation="right"
                             tick={{
@@ -978,7 +978,7 @@ class Graph extends Component {
                             }}
                             tickFormatter={format("~s")}
                             tickSize={5}
-                            style={{ fontSize: 8, fontFamily: "notosans" }}
+                            style={{ fontSize: 10, fontFamily: "notosans" }}
                             tickCount={8}
                             axisLine={{
                               stroke: "#6471b3",
@@ -1029,43 +1029,43 @@ class Graph extends Component {
                 <React.Fragment>
                   <BarPlot
                     type="confirmed"
-                    bgColor="#e4f3fa"
+                    bgColor="rgba(189, 216, 228, 0.1)"
                     titleClass="text-info"
                     data={data}
                     date={date}
                     timelineLength={timelineLength}
                     daily={dailyConfirmed}
-                    divideBy={500}
+                    divideBy={1000}
                     dataKey="dailyconfirmed"
-                    stroke="#0992c0"
+                    stroke="rgb(66, 179, 244)"
                     color1="#6ebed6"
                     color2="#55b2ce"
                   />
                   <div className="w-100"></div>
                   <BarPlot
                     type="active"
-                    bgColor="#f5d2d2"
+                    bgColor="rgba(247, 177, 177, 0.1)"
                     titleClass="text-danger"
                     data={dailyActiveJson}
                     date={date}
                     timelineLength={timelineLength}
                     daily={dailyActive}
-                    divideBy={100}
+                    divideBy={1000}
                     dataKey="dailyactive"
-                    stroke="#dc3545"
+                    stroke="rgba(255, 7, 58, 1)"
                     color1="#f16783"
                     color2="#ff446a"
                   />
                   <div className="w-100"></div>
                   <BarPlot
                     type="recovered"
-                    bgColor="#d5e9d5"
+                    bgColor="rgba(177, 247, 177, 0.1)"
                     titleClass="text-success"
                     data={data}
                     date={date}
                     timelineLength={timelineLength}
                     daily={dailyRecovered}
-                    divideBy={100}
+                    divideBy={1000}
                     dataKey="dailyrecovered"
                     stroke="#28a745"
                     color1="#7ed87e"
@@ -1074,14 +1074,14 @@ class Graph extends Component {
                   <div className="w-100"></div>
                   <BarPlot
                     type="deceased"
-                    bgColor="#f3f3f3"
+                    bgColor="rgba(49, 43, 43, 0.05)"
                     data={data}
                     date={date}
                     timelineLength={timelineLength}
                     daily={dailyDeceased}
                     divideBy={100}
                     dataKey="dailydeceased"
-                    stroke="#474646"
+                    stroke="#6c757d"
                     color1="#808080"
                     color2="#5e5a5a"
                   />
@@ -1091,7 +1091,7 @@ class Graph extends Component {
                       className="graphsection"
                       style={{
                         alignSelf: "center",
-                        backgroundColor: "#e6e8f1",
+                        backgroundColor: "rgba(106, 68, 200, 0.1)",
                         borderRadius: "6px",
                         paddingTop: "5px",
                       }}
@@ -1099,15 +1099,15 @@ class Graph extends Component {
                       <h5
                         style={{
                           paddingTop: "8px",
-                          marginBottom: "-75px",
+                          marginBottom: "-70px",
                           textAlign: "left",
                           marginLeft: 10,
-                          color: "#3e4da3",
                           fontSize: "0.8rem",
+                          color: "#3e4da3",
                         }}
                       >
                         TESTED
-                        <h6 style={{ fontSize: "12px", color: "#3f51b5" }}>
+                        <h6 style={{ fontSize: "12px", color: "slateblue" }}>
                           {date.slice(-1)[0]}
 
                           <h5 style={{ fontSize: "0.8rem", color: "#3e4da3" }}>
@@ -1151,7 +1151,7 @@ class Graph extends Component {
                       <ResponsiveContainer
                         width="100%"
                         height="100%"
-                        aspect={2.4}
+                        aspect={2.5}
                       >
                         <BarChart
                           data={dailyDateFormattedTests.slice(
@@ -1160,9 +1160,9 @@ class Graph extends Component {
                           )}
                           margin={{
                             top: 40,
-                            right: -32,
+                            right: -26,
                             left: 10,
-                            bottom: -12,
+                            bottom: -8,
                           }}
                           syncId="barchart"
                         >

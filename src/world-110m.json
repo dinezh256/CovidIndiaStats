@@ -34327,7 +34327,7 @@
                     ],
                     "type": "Polygon",
                     "properties": {
-                        "NAME": "United Arab Emirates",
+                        "NAME": "UAE",
                         "NAME_LONG": "United Arab Emirates",
                         "ABBREV": "U.A.E.",
                         "FORMAL_EN": "United Arab Emirates",
@@ -36032,7 +36032,7 @@
                     ],
                     "type": "MultiPolygon",
                     "properties": {
-                        "NAME": "United Kingdom",
+                        "NAME": "UK",
                         "NAME_LONG": "United Kingdom",
                         "ABBREV": "U.K.",
                         "FORMAL_EN": "United Kingdom of Great Britain and Northern Ireland",
@@ -39407,7 +39407,7 @@
                     ],
                     "type": "MultiPolygon",
                     "properties": {
-                        "NAME": "United States of America",
+                        "NAME": "USA",
                         "NAME_LONG": "United States",
                         "ABBREV": "U.S.A.",
                         "FORMAL_EN": "United States of America",

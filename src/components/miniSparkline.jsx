@@ -9,7 +9,6 @@ import {
 } from "recharts";
 import { commaSeperated } from "../utils/common-functions";
 import PropTypes from "prop-types";
-import { Key } from "react-feather";
 let CreateReactClass = require("create-react-class");
 
 const CustomTooltip = CreateReactClass({
@@ -26,7 +25,13 @@ const CustomTooltip = CreateReactClass({
       const { payload } = this.props;
       return (
         <div>
-          <p style={{ fontSize: 8, fontFamily: "notosans" }}>
+          <p
+            style={{
+              fontSize: 10,
+              fontFamily: "notosans",
+              color: "rgba(90, 117, 177, 1)",
+            }}
+          >
             {commaSeperated(payload[0].value)}
           </p>
         </div>
@@ -67,14 +72,14 @@ const MiniSparkline = ({
           type="monotone"
           dataKey={lineKey[datakey]}
           stroke={fill}
-          strokeWidth={2.2}
+          strokeWidth={2}
           dot={false}
           animationDuration={2000}
         />
         <ReferenceDot
           x={type.length - 1}
           y={Number(type.slice(-1))}
-          r={3}
+          r={3.2}
           fill={fill}
           stroke={stroke}
           isFront={true}

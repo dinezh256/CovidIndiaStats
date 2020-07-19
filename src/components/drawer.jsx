@@ -11,7 +11,6 @@ import Divider from "@material-ui/core/Divider";
 import HomeRoundedIcon from "@material-ui/icons/HomeRounded";
 import MenuRoundedIcon from "@material-ui/icons/MenuRounded";
 import FlagRoundedIcon from "@material-ui/icons/FlagRounded";
-import PublicRoundedIcon from "@material-ui/icons/PublicRounded";
 import DashboardRoundedIcon from "@material-ui/icons/DashboardRounded";
 import LinkRoundedIcon from "@material-ui/icons/LinkRounded";
 import ForumRoundedIcon from "@material-ui/icons/ForumRounded";
@@ -19,6 +18,7 @@ import FacebookIcon from "@material-ui/icons/Facebook";
 import WhatsAppIcon from "@material-ui/icons/WhatsApp";
 import TwitterIcon from "@material-ui/icons/Twitter";
 import ReactGa from "react-ga";
+import styles from "./Drawer.module.css";
 import mainLogo from "../logo.png";
 
 const useStyles = makeStyles({
@@ -49,14 +49,12 @@ export default function SwipeableTemporaryDrawer() {
 
   const list = (anchor) => (
     <div
-      className={clsx(classes.list, {
-        [classes.fullList]: anchor === "top" || anchor === "bottom",
-      })}
+      className={styles.MuiPaperroot}
       role="presentation"
       onClick={toggleDrawer(anchor, false)}
       onKeyDown={toggleDrawer(anchor, false)}
     >
-      <List style={{ background: "#fff" }}>
+      <List>
         <br />
         <br />
         <ListItem button key={"covidindiastats"}>
@@ -70,41 +68,49 @@ export default function SwipeableTemporaryDrawer() {
         <Divider />
         <NavLink to="/" className="sideBarItem">
           <ListItem button key={"Home"}>
-            <ListItemIcon>{<HomeRoundedIcon fontSize="large" />}</ListItemIcon>
+            <ListItemIcon>
+              {<HomeRoundedIcon fontSize="large" color="primary" />}
+            </ListItemIcon>
             <ListItemText primary={"Home"} />
           </ListItem>
         </NavLink>
         <NavLink to="/indepth" className="sideBarItem">
           <ListItem button key={"Indepth"}>
             <ListItemIcon>
-              {<DashboardRoundedIcon fontSize="large" />}
+              {<DashboardRoundedIcon fontSize="large" color="primary" />}
             </ListItemIcon>
             <ListItemText primary={"Indepth"} />
           </ListItem>
         </NavLink>
-        <NavLink to="/global" className="sideBarItem">
+        {/* <NavLink to="/global" className="sideBarItem">
           <ListItem button key={"Global"}>
             <ListItemIcon>
               {<PublicRoundedIcon fontSize="large" />}
             </ListItemIcon>
             <ListItemText primary={"Global"} />
           </ListItem>
-        </NavLink>
+        </NavLink> */}
         <NavLink to="/dive" className="sideBarItem">
           <ListItem button key={"Dive"}>
-            <ListItemIcon>{<FlagRoundedIcon fontSize="large" />}</ListItemIcon>
+            <ListItemIcon>
+              {<FlagRoundedIcon fontSize="large" color="primary" />}
+            </ListItemIcon>
             <ListItemText primary={"Dive"} />
           </ListItem>
         </NavLink>
         <NavLink to="/links" className="sideBarItem">
           <ListItem button key={"Links"}>
-            <ListItemIcon>{<LinkRoundedIcon fontSize="large" />}</ListItemIcon>
+            <ListItemIcon>
+              {<LinkRoundedIcon fontSize="large" color="primary" />}
+            </ListItemIcon>
             <ListItemText primary={"Links"} />
           </ListItem>
         </NavLink>
         <NavLink to="/faq" className="sideBarItem">
           <ListItem button key={"FAQ"}>
-            <ListItemIcon>{<ForumRoundedIcon fontSize="large" />}</ListItemIcon>
+            <ListItemIcon>
+              {<ForumRoundedIcon fontSize="large" color="primary" />}
+            </ListItemIcon>
             <ListItemText primary={"FAQs"} />
           </ListItem>
         </NavLink>

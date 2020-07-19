@@ -18,11 +18,10 @@ body {
 }
 
 :root {
-  --bg: #242526;
+  --bg: rgba(36, 37, 38, 0.1);
   --bg-accent: #484a4d;
   --text-color: #dadce1;
   --nav-size: 60px;
-  --border: 1px solid #474a4d;
   --border-radius: 8px;
   --speed: 500ms;
 }
@@ -42,7 +41,6 @@ a {
   height: var(--nav-size);
   background-color: var(--bg);
   padding: 0;
-  border-bottom: var(--border);
   margin-bottom: 1.5rem;
 }
 
@@ -65,15 +63,27 @@ a {
 }
 
 .title {
-  font-weight: 600;
-  font-size: 1.25rem;
-  color: #8e99d8;
+  font-size: 1.5rem;
+  color: slateblue;
   font-family: notosans;
+}
+@media (max-width: 360px) {
+  .title {
+    font-size: 1.35rem;
+  }
 }
 
 .title:hover {
-  color: #8e99d8;
+  color: slateblue;
   text-decoration: none;
+}
+
+a.fadeInLeft.active:hover {
+  background: none !important;
+}
+
+a#line2.active:hover {
+  background: none !important;
 }
 
 @media (min-width: 360) {
@@ -84,6 +94,11 @@ a {
 
 .myNavbar-nav :hover {
   text-decoration: none;
+}
+
+.SunMoon {
+  margin-right: 15px;
+  cursor: pointer;
 }
 
 .imgAlign {
@@ -103,9 +118,8 @@ a {
 .menuIcon {
   cursor: pointer;
   margin-left: 14px;
-  background-color: #242526;
   border: none;
-  color: white;
+  color: slateblue;
   vertical-align: -0.1rem !important;
 }
 
@@ -125,15 +139,6 @@ a {
   .about {
     vertical-align: 0.1rem !important;
   }
-}
-
-.sideBarItem {
-  color: #000000;
-}
-
-.sideBarItem:hover {
-  color: #555;
-  text-decoration: none;
 }
 
 .MuiTypography-body1 {
@@ -213,9 +218,13 @@ a {
 }
 
 .updates {
-  color: #5e5959;
-  font-weight: 500;
   font-size: 0.9rem;
+}
+
+@media (max-width: 360px) {
+  .updates {
+    font-size: 0.8rem;
+  }
 }
 
 table td.wideRow,
@@ -291,20 +300,14 @@ th.smallRow {
 }
 
 .table tbody tr:hover {
-  background: rgb(233, 233, 233);
+  background: rgba(63, 63, 95, 0.2);
+
   cursor: pointer;
-  transition: linear 0.5s;
+  transition: linear 0.2s;
 }
 
-.td {
-  font-size: 0.8rem;
-  font-weight: 600;
-  border-radius: 4px;
-  word-break: keep-all;
-  color: #494545;
-  vertical-align: middle;
-  font-family: notosans;
-  word-wrap: none;
+.align-middle {
+  margin-bottom: -12px !important;
 }
 
 .tdleft {
@@ -318,22 +321,27 @@ th.smallRow {
 }
 
 .td-md {
-  font-size: 0.8rem;
+  font-size: 1.05rem;
   font-weight: 500;
   border-radius: 4px;
   word-wrap: break-word;
-  color: #494545;
-  vertical-align: middle;
+  color: slategrey !important;
+  vertical-align: right !important;
   font-family: notosans;
+}
+@media only screen and (max-width: 360px) {
+  .td-md {
+    font-size: 0.92rem;
+  }
 }
 
 .td-md-left {
-  font-size: 0.75rem;
+  font-size: 0.85rem;
   font-weight: 500;
   border-radius: 4px;
   word-break: keep-all;
-  color: #494545;
-  vertical-align: middle;
+  color: slateblue !important;
+  vertical-align: left;
   font-family: notosans;
 }
 
@@ -353,9 +361,25 @@ th.smallRow {
   font-size: 1.3rem;
   font-weight: 500;
 }
+
 .home-toggle {
   display: inline-flexbox;
   align-content: flex-end;
+}
+
+.formcontrol {
+  display: block;
+  width: 100%;
+  font-family: notosans;
+  height: calc(1.5em + 0.5rem + 2px);
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.5;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
 .link {
@@ -441,6 +465,15 @@ th.smallRow {
   margin-top: 5px;
 }
 
+.sideBarItem {
+  color: rgb(169, 161, 223) !important;
+}
+
+.sideBarItem:hover {
+  color: rgb(32, 32, 66, 0.9);
+  text-decoration: none;
+}
+
 span.MuiBadge-dot {
   height: 7px;
   min-width: 7px;
@@ -513,7 +546,7 @@ span.MuiBadge-colorSecondary {
 }
 
 .timelineButton {
-  background-color: moccasin;
+  background-color: rgba(255, 153, 0, 0.3);
   color: chocolate;
   padding: 3px 2px;
   cursor: pointer;
@@ -560,28 +593,35 @@ span.MuiBadge-colorSecondary {
 .th-cases {
   white-space: nowrap;
   border-radius: 4px;
+  text-align: left;
 }
+
 .td-world {
   font-size: 0.8rem;
   font-weight: 500;
   border-radius: 4px;
   word-wrap: break-word;
-  color: #494545;
   font-family: notosans;
+  text-align: right;
+}
+
+.td-world:hover {
+  background-color: rgba(105, 90, 205, 0.356);
 }
 
 .toggleDay {
-  background-color: peru;
-  color: rgb(235, 224, 209);
+  background-color: rgba(255, 153, 0, 0.274);
+  color: chocolate;
   padding: 3px 8px;
   border-radius: 4px;
   cursor: pointer;
   width: 8.5rem;
+  transition: all 0.5s linear;
 }
 
 .toggleDay:hover {
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.25) !important;
-  transition: all 0.3s linear;
+  box-shadow: 0 0 10px rgba(117, 113, 113, 1) !important;
+  transition: all 0.5s linear;
 }
 
 .FAQ {
@@ -645,12 +685,13 @@ span.MuiBadge-colorSecondary {
 }
 
 .pad {
-  text-align: right;
+  text-align: left;
   font-size: 0.95rem !important;
   cursor: pointer;
   padding-top: 3%;
   padding-bottom: 1%;
-  padding-right: 4%;
+  padding-right: 1%;
+  padding-left: 3%;
   border-radius: 3px;
   width: 6.7rem;
   position: sticky;
@@ -664,22 +705,23 @@ span.MuiBadge-colorSecondary {
 }
 
 .testpad {
-  background: #e6e8f1;
-  color: #3e4da3;
+  background: rgba(106, 68, 200, 0.2);
+  color: #5969c2;
   text-align: right;
   cursor: pointer;
-  margin-left: 40px;
-  width: 7rem;
+  margin-left: 25px;
+  width: 7.5rem;
   padding-top: 3%;
-  padding-right: 2%;
+  padding-right: 3%;
+  padding-bottom: 0.5px;
   border-radius: 3px;
   font-size: 0.8rem !important;
 }
 
 @media only screen and (max-width: 360px) {
   .testpad {
-    font-size: 0.7rem !important;
-    width: 6.2rem;
+    font-size: 0.9rem !important;
+    width: 7.5rem;
     margin-right: -10px !important;
   }
 }
@@ -687,8 +729,8 @@ span.MuiBadge-colorSecondary {
 @media only screen and (max-width: 576px) {
   .testpad {
     font-size: 0.8rem !important;
-    width: 7rem;
-    margin-left: 0px;
+    width: 7.5rem !important;
+    margin-left: -10px;
     margin-right: -2rem;
   }
 }
@@ -699,7 +741,7 @@ span.MuiBadge-colorSecondary {
 
 .lastUpdatedIndiaMap {
   text-align: right;
-  color: #dd2c00;
+  color: rgb(221, 44, 0);
   margin-bottom: -40px;
   font-size: 12px !important;
 }
@@ -804,7 +846,7 @@ span.MuiBadge-colorSecondary {
 }
 
 .hoveralert:hover {
-  background: rgb(235, 233, 233) !important;
+  background: rgba(73, 73, 109, 0.2) !important;
   cursor: pointer;
 }
 
@@ -893,8 +935,7 @@ span.MuiBadge-colorSecondary {
   text-align: center;
   margin-left: 4px !important;
   width: 11rem;
-  background-color: peru;
-  color: rgb(235, 224, 209);
+  background-color: rgba(255, 153, 0, 0.473);
   border-radius: 4px;
   padding-top: 7px;
   padding-bottom: 7px;
@@ -916,9 +957,7 @@ span.MuiBadge-colorSecondary {
   text-align: center;
   align-content: center;
   width: 150px;
-  color: rgb(235, 224, 209);
   cursor: pointer;
-  color: rgb(59, 89, 152);
   text-decoration: none;
   margin-bottom: 6px;
   margin-top: -2px;
@@ -944,7 +983,6 @@ span.MuiBadge-colorSecondary {
   text-align: center !important;
   vertical-align: middle;
   margin-top: 4px !important;
-  color: black !important;
   cursor: text;
   margin-left: -2rem;
   width: 140px;
@@ -956,10 +994,8 @@ span.MuiBadge-colorSecondary {
   margin-top: -2px !important;
   vertical-align: middle;
   justify-content: center;
-  color: black !important;
   cursor: text;
   padding-left: 1rem;
-
   width: 150px;
 }
 
@@ -1102,24 +1138,6 @@ span.MuiBadge-colorSecondary {
   }
 }
 
-.test {
-  color: rgb(64, 145, 64);
-  color: rgb(228, 116, 138);
-  color: rgb(62, 77, 163);
-  color: rgb(18, 167, 190);
-  color: rgb(226, 42, 79);
-  color: rgb(185, 193, 201);
-  color: rgb(74, 79, 83);
-  color: rgb(255, 68, 106);
-  color: rgb(255, 153, 0);
-  color: rgb(66, 179, 244);
-  color: rgb(10, 111, 145);
-  /* fb */
-  color: rgb(59, 89, 152);
-  color: rgb(23, 162, 184);
-  color: rgb(40, 167, 69);
-}
-
 @media only screen and (min-width: 576px) {
   #line1 {
     display: none;
@@ -1129,9 +1147,6 @@ span.MuiBadge-colorSecondary {
   #line2 {
     display: none;
   }
-}
-
-@media screen and (device-width: 360px) and (device-height: 640px) and (-webkit-device-pixel-ratio: 3) {
 }
 
 @font-face {

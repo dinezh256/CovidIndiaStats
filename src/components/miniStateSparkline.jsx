@@ -26,7 +26,9 @@ const CustomTooltip = CreateReactClass({
 
       return (
         <div>
-          <p style={{ fontSize: 8, fontFamily: "notosans" }}>
+          <p
+            style={{ fontSize: 10, fontFamily: "notosans", color: "slateblue" }}
+          >
             {Number(payload[0].value) > 0
               ? commaSeperated(payload[0].value)
               : "-" + commaSeperated(Math.abs(payload[0].value))}

@@ -82,21 +82,21 @@ const StateBarPlot = ({
           </h6>
         </h5>
 
-        <ResponsiveContainer width="100%" height="100%" aspect={2.4}>
+        <ResponsiveContainer width="100%" height="100%" aspect={2.5}>
           <BarChart
             data={data}
             margin={{
               top: 40,
-              right: -30,
+              right: -26,
               left: 10,
-              bottom: -12,
+              bottom: -8,
             }}
             syncId="barchart"
           >
             <XAxis
               dataKey="date"
               tick={{ stroke: stroke, strokeWidth: 0.2, fill: stroke }}
-              style={{ fontSize: 8, fontFamily: "notosans" }}
+              style={{ fontSize: 10, fontFamily: "notosans" }}
               tickSize={5}
               tickLine={{ stroke: stroke }}
               tickCount={8}
@@ -111,7 +111,7 @@ const StateBarPlot = ({
               tick={{ stroke: stroke, strokeWidth: 0.2, fill: stroke }}
               tickFormatter={format("~s")}
               tickSize={5}
-              style={{ fontSize: 8, fontFamily: "notosans" }}
+              style={{ fontSize: 10, fontFamily: "notosans" }}
               tickLine={{ stroke: stroke }}
               tickCount={8}
               axisLine={{ stroke: stroke, strokeWidth: "1.5px" }}

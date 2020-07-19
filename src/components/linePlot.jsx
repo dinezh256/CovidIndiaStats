@@ -21,6 +21,13 @@ function commaSeperated(x) {
   } else return x;
 }
 
+const divisorType = {
+  confirmed: 100000,
+  active: 100000,
+  recovered: 100000,
+  deceased: 10000,
+};
+
 const LinePlot = ({
   type,
   bgColor,
@@ -83,36 +90,40 @@ const LinePlot = ({
             </h6>
           </h6>
         </h5>
-        <ResponsiveContainer width="100%" height="100%" aspect={2.4}>
+        <ResponsiveContainer width="100%" height="100%" aspect={2.5}>
           <LineChart
             data={data.slice(timelineLength, data.length)}
             margin={{
               top: 40,
-              right: -32,
+              right: -26,
               left: 10,
-              bottom: -12,
+              bottom: -8,
             }}
             syncId="linechart"
           >
             <XAxis
               dataKey="date"
               tick={{ stroke: stroke, strokeWidth: 0.2, fill: stroke }}
-              style={{ fontSize: 8, fontFamily: "notosans" }}
+              style={{ fontSize: 10, fontFamily: "notosans" }}
               tickSize={5}
               tickLine={{ stroke: stroke }}
               tickCount={8}
-              axisLine={{ stroke: lineStroke, strokeWidth: "1.5px" }}
+              axisLine={{ stroke: stroke, strokeWidth: "1.5px" }}
             />
             <YAxis
-              domain={[0, Math.ceil(Math.max(...total) / 1000) * 1000]}
+              domain={[
+                0,
+                Math.ceil(Math.max(...total) / divisorType[type]) *
+                  divisorType[type],
+              ]}
               orientation="right"
               tick={{ stroke: stroke, strokeWidth: 0.2, fill: stroke }}
               tickFormatter={format("~s")}
               tickSize={5}
-              style={{ fontSize: 8, fontFamily: "notosans" }}
+              style={{ fontSize: 10, fontFamily: "notosans" }}
               tickLine={{ stroke: stroke }}
               tickCount={8}
-              axisLine={{ stroke: lineStroke, strokeWidth: "1.5px" }}
+              axisLine={{ stroke: stroke, strokeWidth: "1.5px" }}
             />
             <Tooltip
               contentStyle={{
@@ -138,7 +149,7 @@ const LinePlot = ({
               connectNulls={true}
               dot={{
                 stroke: `${stroke}`,
-                strokeWidth: 0.1,
+                strokeWidth: 1,
                 fill: `${stroke}`,
               }}
               onMouseEnter={() => {

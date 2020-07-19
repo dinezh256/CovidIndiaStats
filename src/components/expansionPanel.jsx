@@ -45,19 +45,17 @@ function ControlledExpansionPanels({ data, stateData, state, population }) {
     <div className={classes.root}>
       <div className="row" style={{ marginBottom: "-15px" }}>
         <div className="col-9">
-          <h6 style={{ fontSize: 12, color: "rgb(74, 79, 83)" }}>
+          <h6 style={{ fontSize: 12 }}>
             Population
-            <h5 style={{ color: "rgb(74, 79, 83)" }}>
-              {commaSeperated(population)}
-            </h5>
+            <h5>{commaSeperated(population)}</h5>
           </h6>
         </div>
         <div className="col-3">
           <h6
             style={{
-              fontSize: 10,
+              fontSize: 12,
               textAlign: "right",
-              color: "rgb(74, 79, 83)",
+              color: "slategrey",
             }}
           >
             {" "}
@@ -97,7 +95,7 @@ function ControlledExpansionPanels({ data, stateData, state, population }) {
           <Typography
             className={classes.secondaryHeading}
             style={{
-              color: "rgba(23, 162, 184, 0.7)",
+              color: "rgb(23, 162, 184)",
               fontFamily: "notosans",
               fontSize: 11,
             }}
@@ -150,7 +148,7 @@ function ControlledExpansionPanels({ data, stateData, state, population }) {
           <Typography
             className={classes.secondaryHeading}
             style={{
-              color: "rgba(255, 68, 106, 0.7)",
+              color: "rgb(255, 68, 106)",
               fontFamily: "notosans",
               fontSize: 11,
             }}
@@ -210,7 +208,7 @@ function ControlledExpansionPanels({ data, stateData, state, population }) {
           <Typography
             className={classes.secondaryHeading}
             style={{
-              color: "rgba(40, 167, 69, 0.7)",
+              color: "rgb(40, 167, 69)",
               fontFamily: "notosans",
               fontSize: 11,
             }}
@@ -260,7 +258,7 @@ function ControlledExpansionPanels({ data, stateData, state, population }) {
           <Typography
             className={classes.heading}
             style={{
-              color: "rgb(74, 79, 83)",
+              color: "slategrey",
               fontFamily: "notosans",
               fontSize: 14,
             }}
@@ -270,7 +268,7 @@ function ControlledExpansionPanels({ data, stateData, state, population }) {
           <Typography
             className={classes.secondaryHeading}
             style={{
-              color: "rgba(74, 79, 83, 0.7)",
+              color: "slategrey",
               fontFamily: "notosans",
               fontSize: 11,
             }}
@@ -288,7 +286,7 @@ function ControlledExpansionPanels({ data, stateData, state, population }) {
         <ExpansionPanelDetails>
           <Typography
             style={{
-              color: "rgb(74, 79, 83)",
+              color: "slategrey",
               fontFamily: "notosans",
               fontSize: 12,
             }}
@@ -330,7 +328,7 @@ function ControlledExpansionPanels({ data, stateData, state, population }) {
           <Typography
             className={classes.heading}
             style={{
-              color: "rgb(62, 77, 163)",
+              color: "slateblue",
               fontFamily: "notosans",
               fontSize: 14,
             }}
@@ -340,7 +338,7 @@ function ControlledExpansionPanels({ data, stateData, state, population }) {
           <Typography
             className={classes.secondaryHeading}
             style={{
-              color: "rgba(62, 77, 163, 0.7)",
+              color: "slateblue",
               fontFamily: "notosans",
               fontSize: 11,
             }}
@@ -362,7 +360,7 @@ function ControlledExpansionPanels({ data, stateData, state, population }) {
         <ExpansionPanelDetails>
           <Typography
             style={{
-              color: "rgb(62, 77, 163)",
+              color: "slateblue",
               fontFamily: "notosans",
               fontSize: 12,
             }}

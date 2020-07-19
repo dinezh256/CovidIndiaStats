@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import Table from "./table";
 import Graph from "./graph";
 import Footer from "./footer";
-import LinearProgress from "@material-ui/core/LinearProgress";
 import { Helmet } from "react-helmet";
 
 class Home extends Component {
@@ -18,7 +17,6 @@ class Home extends Component {
             />
           </Helmet>
           <div className="row">
-            <LinearProgress />
             <div className="col-sm">
               <Table />
             </div>
@@ -34,6 +32,7 @@ class Home extends Component {
               </div>
             </div>
           </div>
+
           <Footer />
         </div>
       </React.Fragment>

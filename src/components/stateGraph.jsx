@@ -369,6 +369,98 @@ class StateGraph extends Component {
       };
     }, {});
 
+    const theme = {
+      axis: {
+        fontSize: "14px",
+        tickColor: "#ccc",
+        ticks: {
+          line: {
+            stroke: "slateblue",
+          },
+          text: {
+            fill: "slateblue",
+          },
+        },
+        legend: {
+          text: {
+            fill: "slateblue",
+          },
+        },
+      },
+      grid: {
+        line: {
+          stroke: "#eeeeee",
+        },
+      },
+      tooltip: {
+        container: {
+          background: "#333",
+          color: "white",
+          fontFamily: "notosans",
+        },
+      },
+    };
+
+    const adjustedLegends = (x, y, space) => {
+      return [
+        {
+          dataFrom: "keys",
+          anchor: "bottom",
+          direction: "row",
+          justify: false,
+          translateX: x,
+          translateY: y,
+          itemsSpacing: space,
+          itemWidth: 22,
+          itemHeight: 0,
+          itemDirection: "top-to-bottom",
+          itemOpacity: 0.85,
+          itemTextColor: "slateblue",
+          symbolSize: 15,
+          symbolShape: "circle",
+          effects: [
+            {
+              on: "hover",
+              style: {
+                itemOpacity: 1,
+              },
+            },
+          ],
+        },
+      ];
+    };
+
+    const axisBottom = {
+      tickSize: 5,
+      tickPadding: 5,
+      tickRotation: -45,
+      legend: "",
+      legendPosition: "middle",
+      legendOffset: 32,
+    };
+    const axisLeft = {
+      tickSize: 5,
+      tickPadding: 5,
+      tickRotation: 0,
+      legend: "",
+      legendPosition: "middle",
+      legendOffset: -40,
+      format: format("~s"),
+    };
+
+    const stateKeys = [
+      "West Bengal",
+      "Telangana",
+      "Andhra Pradesh",
+      "Tamil Nadu",
+      "Uttar Pradesh",
+      "Karnataka",
+      "Rajasthan",
+      "Delhi",
+      "Gujarat",
+      "Maharashtra",
+    ];
+
     if (isLoaded) {
       return (
         <div className="container">
@@ -382,10 +474,16 @@ class StateGraph extends Component {
           <div className="row">
             <div className="col-sm">
               <div
-                className="card text-center fadeOutDown"
-                style={{ animationDelay: "0.1s" }}
+                className="text-center fadeInUp"
+                style={{
+                  width: "100%",
+                  borderRadius: "6px",
+                  boxShadow: "0 0 5px rgba(0,0,0,0.3)",
+                  alignContent: "center",
+                  animationDelay: "0.1s",
+                }}
               >
-                <div className="card-body">
+                <div>
                   <h5 className="text-info statewise-head">
                     TOP 10 STATES DAILY CONFIRMED CASES
                   </h5>
@@ -395,18 +493,7 @@ class StateGraph extends Component {
                         dayWiseConfirmed.length - 18,
                         dayWiseConfirmed.length
                       )}
-                      keys={[
-                        "West Bengal",
-                        "Telangana",
-                        "Andhra Pradesh",
-                        "Tamil Nadu",
-                        "Uttar Pradesh",
-                        "Karnataka",
-                        "Rajasthan",
-                        "Delhi",
-                        "Gujarat",
-                        "Maharashtra",
-                      ]}
+                      keys={stateKeys}
                       indexBy="date"
                       margin={{ top: 20, right: 0, bottom: 100, left: 34 }}
                       padding={0.3}
@@ -417,64 +504,14 @@ class StateGraph extends Component {
                       }}
                       axisTop={null}
                       axisRight={null}
-                      axisBottom={{
-                        tickSize: 5,
-                        tickPadding: 5,
-                        tickRotation: -45,
-                        legend: "",
-                        legendPosition: "middle",
-                        legendOffset: 32,
-                      }}
-                      axisLeft={{
-                        tickSize: 5,
-                        tickPadding: 5,
-                        tickRotation: 0,
-                        legend: "",
-                        legendPosition: "middle",
-                        legendOffset: -40,
-                        format: format("~s"),
-                      }}
-                      labelSkipWidth={12}
-                      labelSkipHeight={12}
-                      labelTextColor={{
-                        from: "color",
-                        modifiers: [["darker", 1.8]],
-                      }}
-                      legends={[
-                        {
-                          dataFrom: "keys",
-                          anchor: "bottom",
-                          direction: "row",
-                          justify: false,
-                          translateX: 230,
-                          translateY: 60,
-                          itemsSpacing: 60,
-                          itemWidth: 22,
-                          itemHeight: 0,
-                          itemDirection: "top-to-bottom",
-                          itemOpacity: 0.85,
-                          symbolSize: 15,
-                          symbolShape: "circle",
-                          effects: [
-                            {
-                              on: "hover",
-                              style: {
-                                itemOpacity: 1,
-                              },
-                            },
-                          ],
-                        },
-                      ]}
+                      axisBottom={axisBottom}
+                      axisLeft={axisLeft}
+                      enableLabel={false}
+                      legends={adjustedLegends(240, 60, 60)}
                       animate={false}
                       motionStiffness={90}
                       motionDamping={20}
-                      theme={{
-                        legends: {
-                          text: {
-                            fontSize: 10,
-                          },
-                        },
-                      }}
+                      theme={theme}
                     />
                   </div>
                 </div>
@@ -482,10 +519,16 @@ class StateGraph extends Component {
             </div>
             <div className="col-sm">
               <div
-                className="card text-center fadeOutDown"
-                style={{ animationDelay: "0.3s" }}
+                className="text-center fadeInUp"
+                style={{
+                  width: "100%",
+                  borderRadius: "6px",
+                  boxShadow: "0 0 5px rgba(0,0,0,0.3)",
+                  alignContent: "center",
+                  animationDelay: "0.3s",
+                }}
               >
-                <div className="card-body">
+                <div>
                   <h5 className="text-success statewise-head">
                     TOP 10 STATES DAILY RECOVERED CASES
                   </h5>
@@ -495,18 +538,7 @@ class StateGraph extends Component {
                         dayWiseRecovered.length - 18,
                         dayWiseRecovered.length
                       )}
-                      keys={[
-                        "West Bengal",
-                        "Telangana",
-                        "Andhra Pradesh",
-                        "Tamil Nadu",
-                        "Uttar Pradesh",
-                        "Karnataka",
-                        "Rajasthan",
-                        "Delhi",
-                        "Gujarat",
-                        "Maharashtra",
-                      ]}
+                      keys={stateKeys}
                       indexBy="date"
                       margin={{ top: 20, right: 0, bottom: 100, left: 30 }}
                       padding={0.3}
@@ -517,64 +549,14 @@ class StateGraph extends Component {
                       }}
                       axisTop={null}
                       axisRight={null}
-                      axisBottom={{
-                        tickSize: 5,
-                        tickPadding: 5,
-                        tickRotation: -45,
-                        legend: "",
-                        legendPosition: "middle",
-                        legendOffset: 32,
-                      }}
-                      axisLeft={{
-                        tickSize: 5,
-                        tickPadding: 5,
-                        tickRotation: 0,
-                        legend: "",
-                        legendPosition: "middle",
-                        legendOffset: -40,
-                        format: format("~s"),
-                      }}
-                      labelSkipWidth={12}
-                      labelSkipHeight={12}
-                      labelTextColor={{
-                        from: "color",
-                        modifiers: [["darker", 1.8]],
-                      }}
-                      legends={[
-                        {
-                          dataFrom: "keys",
-                          anchor: "bottom",
-                          direction: "row",
-                          justify: false,
-                          translateX: -60,
-                          translateY: 60,
-                          itemsSpacing: 75,
-                          itemWidth: 22,
-                          itemHeight: 0,
-                          itemDirection: "top-to-bottom",
-                          itemOpacity: 0.85,
-                          symbolSize: 15,
-                          symbolShape: "circle",
-                          effects: [
-                            {
-                              on: "hover",
-                              style: {
-                                itemOpacity: 1,
-                              },
-                            },
-                          ],
-                        },
-                      ]}
+                      axisBottom={axisBottom}
+                      axisLeft={axisLeft}
+                      enableLabel={false}
+                      legends={adjustedLegends(-80, 60, 90)}
                       animate={false}
                       motionStiffness={90}
                       motionDamping={20}
-                      theme={{
-                        legends: {
-                          text: {
-                            fontSize: 10,
-                          },
-                        },
-                      }}
+                      theme={theme}
                     />
                   </div>
                 </div>
@@ -582,12 +564,16 @@ class StateGraph extends Component {
             </div>
             <div className="col-sm">
               <div
-                className="card text-center fadeOutDown"
+                className="text-center fadeInUp"
                 style={{
+                  width: "100%",
+                  borderRadius: "6px",
+                  boxShadow: "0 0 5px rgba(0,0,0,0.3)",
+                  alignContent: "center",
                   animationDelay: "0.3s",
                 }}
               >
-                <div className="card-body">
+                <div>
                   <h5 className="statewise-head">
                     TOP 10 STATES DAILY DECEASED CASES
                   </h5>
@@ -597,18 +583,7 @@ class StateGraph extends Component {
                         dayWiseDeceased.length - 18,
                         dayWiseDeceased.length
                       )}
-                      keys={[
-                        "West Bengal",
-                        "Telangana",
-                        "Andhra Pradesh",
-                        "Tamil Nadu",
-                        "Uttar Pradesh",
-                        "Karnataka",
-                        "Rajasthan",
-                        "Delhi",
-                        "Gujarat",
-                        "Maharashtra",
-                      ]}
+                      keys={stateKeys}
                       indexBy="date"
                       margin={{ top: 20, right: 0, bottom: 100, left: 30 }}
                       padding={0.3}
@@ -619,64 +594,14 @@ class StateGraph extends Component {
                       }}
                       axisTop={null}
                       axisRight={null}
-                      axisBottom={{
-                        tickSize: 5,
-                        tickPadding: 5,
-                        tickRotation: -45,
-                        legend: "",
-                        legendPosition: "middle",
-                        legendOffset: 32,
-                      }}
-                      axisLeft={{
-                        tickSize: 5,
-                        tickPadding: 5,
-                        tickRotation: 0,
-                        legend: "",
-                        legendPosition: "middle",
-                        legendOffset: -40,
-                        format: format("~s"),
-                      }}
-                      labelSkipWidth={12}
-                      labelSkipHeight={12}
-                      labelTextColor={{
-                        from: "color",
-                        modifiers: [["darker", 1.8]],
-                      }}
-                      legends={[
-                        {
-                          dataFrom: "keys",
-                          anchor: "bottom",
-                          direction: "row",
-                          justify: false,
-                          translateX: -350,
-                          translateY: 60,
-                          itemsSpacing: 75,
-                          itemWidth: 22,
-                          itemHeight: 0,
-                          itemDirection: "top-to-bottom",
-                          itemOpacity: 0.85,
-                          symbolSize: 15,
-                          symbolShape: "circle",
-                          effects: [
-                            {
-                              on: "hover",
-                              style: {
-                                itemOpacity: 1,
-                              },
-                            },
-                          ],
-                        },
-                      ]}
+                      axisBottom={axisBottom}
+                      axisLeft={axisLeft}
+                      enableLabel={false}
+                      legends={adjustedLegends(-370, 60, 80)}
                       animate={false}
                       motionStiffness={90}
                       motionDamping={20}
-                      theme={{
-                        legends: {
-                          text: {
-                            fontSize: 10,
-                          },
-                        },
-                      }}
+                      theme={theme}
                     />
                   </div>
                 </div>
@@ -686,12 +611,16 @@ class StateGraph extends Component {
           <div className="row">
             <div className="col-sm" id="line1">
               <div
-                className="card text-center fadeOutDown"
+                className="text-center fadeInUp"
                 style={{
+                  width: "100%",
+                  borderRadius: "6px",
+                  boxShadow: "0 0 5px rgba(0,0,0,0.3)",
+                  alignContent: "center",
                   animationDelay: "0.3s",
                 }}
               >
-                <div className="card-body">
+                <div>
                   <h6 className="text-danger statewise-head">
                     DAYWISE COMPARISON
                   </h6>
@@ -774,12 +703,16 @@ class StateGraph extends Component {
 
             <div className="col-sm" id="line1">
               <div
-                className="card text-center fadeOutDown"
+                className="text-center fadeInUp"
                 style={{
+                  width: "100%",
+                  borderRadius: "6px",
+                  boxShadow: "0 0 5px rgba(0,0,0,0.3)",
+                  alignContent: "center",
                   animationDelay: "0.3s",
                 }}
               >
-                <div className="card-body">
+                <div>
                   <h6 className="text-danger statewise-head">
                     CUMULATIVE COMPARISON
                   </h6>
@@ -879,12 +812,16 @@ class StateGraph extends Component {
             </div>
             <div className="col-6" id="line2">
               <div
-                className="card text-center fadeOutDown"
+                className="text-center fadeInUp"
                 style={{
+                  width: "100%",
+                  borderRadius: "6px",
+                  boxShadow: "0 0 5px rgba(0,0,0,0.3)",
+                  alignContent: "center",
                   animationDelay: "0.3s",
                 }}
               >
-                <div className="card-body">
+                <div>
                   <h6 className="text-danger">DAYWISE COMPARISON</h6>
                   <ResponsiveContainer width="100%" height="100%" aspect={1.5}>
                     <ReBarChart
@@ -966,12 +903,16 @@ class StateGraph extends Component {
 
             <div className="col-6" id="line2">
               <div
-                className="card text-center fadeOutDown"
+                className="text-center fadeInUp"
                 style={{
+                  width: "100%",
+                  borderRadius: "6px",
+                  boxShadow: "0 0 5px rgba(0,0,0,0.3)",
+                  alignContent: "center",
                   animationDelay: "0.3s",
                 }}
               >
-                <div className="card-body">
+                <div>
                   <h6 className="text-danger">CUMULATIVE COMPARISON</h6>
                   <ResponsiveContainer width="100%" height="100%" aspect={1.5}>
                     <LineChart
@@ -1070,12 +1011,17 @@ class StateGraph extends Component {
             <div className="w-100"></div>
             <div className="col-sm" id="line1">
               <div
-                className="card text-center fadeOutDown"
+                className="text-center fadeInUp"
                 style={{
+                  width: "100%",
+                  borderRadius: "6px",
+                  boxShadow: "0 0 5px rgba(0,0,0,0.3)",
+                  alignContent: "center",
                   animationDelay: "0.3s",
+                  marginTop: "20px",
                 }}
               >
-                <div className="card-body">
+                <div>
                   <h5 className="text-danger">
                     INDIAN PATIENTS ABROAD{" "}
                     <a
@@ -1104,12 +1050,17 @@ class StateGraph extends Component {
             </div>
             <div className="col-6" id="line2">
               <div
-                className="card text-center fadeOutDown"
+                className="text-center fadeInUp"
                 style={{
+                  width: "100%",
+                  borderRadius: "6px",
+                  boxShadow: "0 0 5px rgba(0,0,0,0.3)",
+                  alignContent: "center",
                   animationDelay: "0.3s",
+                  marginTop: "20px",
                 }}
               >
-                <div className="card-body">
+                <div>
                   <h5 className="text-danger">
                     INDIAN PATIENTS ABROAD{" "}
                     <a
@@ -1140,12 +1091,17 @@ class StateGraph extends Component {
 
             <div className="col-sm" id="line1">
               <div
-                className="card text-center fadeOutDown"
+                className="text-center fadeInUp"
                 style={{
+                  width: "100%",
+                  borderRadius: "6px",
+                  boxShadow: "0 0 5px rgba(0,0,0,0.3)",
+                  alignContent: "center",
                   animationDelay: "0.3s",
+                  marginTop: "20px",
                 }}
               >
-                <div className="card-body">
+                <div>
                   <h5 className="text-danger">
                     PATIENT AGE
                     <h6 style={{ fontSize: 8, color: "grey" }}>
@@ -1209,12 +1165,17 @@ class StateGraph extends Component {
             </div>
             <div className="col-6" id="line2">
               <div
-                className="card text-center fadeOutDown"
+                className="text-center fadeInUp"
                 style={{
+                  width: "100%",
+                  borderRadius: "6px",
+                  boxShadow: "0 0 5px rgba(0,0,0,0.3)",
+                  alignContent: "center",
                   animationDelay: "0.3s",
+                  marginTop: "20px",
                 }}
               >
-                <div className="card-body">
+                <div>
                   <h5 className="text-danger">
                     PATIENT AGE
                     <h6 style={{ fontSize: 8, color: "grey" }}>
@@ -1286,10 +1247,10 @@ class StateGraph extends Component {
                 className="col"
                 style={{
                   width: "100%",
-                  background: "rgba(255,255,255,1)",
                   borderRadius: "6px",
                   boxShadow: "0 0 5px rgba(0,0,0,0.3)",
                   alignContent: "center",
+                  marginTop: "20px",
                 }}
               >
                 <div style={{ width: "100%" }}>

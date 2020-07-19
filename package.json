@@ -28,11 +28,12 @@
     "html-react-parser": "^0.10.3",
     "install": "^0.13.0",
     "json2csv": "^5.0.0",
+    "local-storage-fallback": "^4.1.1",
     "materialize-css": "^1.0.0-rc.2",
     "moment": "^2.24.0",
     "nivo": "^0.31.0",
     "node-sass": "^4.14.1",
-    "npm": "^6.14.4",
+    "npm": "^6.14.6",
     "react": "^16.13.1",
     "react-bootstrap": "^1.0.0",
     "react-bootstrap-toggle": "^2.3.2",
@@ -54,7 +55,11 @@
     "recharts": "^1.8.5",
     "sass-lint": "^1.13.1",
     "serve": "^11.3.2",
-    "topojson": "^3.0.2"
+    "styled-components": "^5.1.1",
+    "styled-theming": "^2.2.0",
+    "swr": "^0.2.3",
+    "topojson": "^3.0.2",
+    "use-dark-mode": "^2.3.1"
   },
   "scripts": {
     "start": "react-scripts start",

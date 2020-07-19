@@ -11,21 +11,21 @@ const PROJECTION_CONFIG = {
   scale: 33,
 };
 
-const COLOR_RANGE = ["#641304", "#b9381e"];
+const COLOR_RANGE = ["rgb(66, 179, 244)", "rgba(66, 179, 244, 0.85)"];
 
 const DEFAULT_COLOR = "#ffffff";
 
 const geographyStyle = {
   default: {
-    outline: "#b13f2b",
+    outline: "rgb(66, 179, 244)",
   },
   hover: {
-    fill: "#e08878",
     transition: "all 250ms",
-    outline: "#f13f2b",
+    strokeWidth: 0.5,
+    outline: "rgb(66, 179, 244)",
   },
   pressed: {
-    outline: "#b13f2b",
+    outline: "rgb(66, 179, 244)",
   },
 };
 
@@ -33,8 +33,8 @@ const WorldChoropleth = ({ data: statesdata }) => {
   const [tooltipContent, setTooltipContent] = useState("");
 
   const gradientData = {
-    fromColor: "rgb(245, 245, 245)",
-    toColor: "rgb(100, 19, 4)",
+    fromColor: "rgba(66, 179, 244, 0.1)",
+    toColor: "rgb(66, 179, 244)",
     min: 0,
     max:
       String(
@@ -56,7 +56,7 @@ const WorldChoropleth = ({ data: statesdata }) => {
       setTooltipContent(
         `${geo.properties.NAME}: ${commaSeperated(
           Number(current.value)
-        )} infected & ${commaSeperated(Number(current.active))} active`
+        )} infected`
       );
     };
   };
@@ -91,7 +91,7 @@ const WorldChoropleth = ({ data: statesdata }) => {
                     style={geographyStyle}
                     onMouseEnter={onMouseEnter(geo, current)}
                     onMouseLeave={onMouseLeave}
-                    stroke={"#e2808f"}
+                    stroke={"rgb(66, 179, 244)"}
                     strokeWidth={0.15}
                   />
                 );

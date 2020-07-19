@@ -126,14 +126,11 @@ class Updates extends Component {
                             ).getTime()
                           ) +
                           "  "}
-                        <span style={{ verticalAlign: "0.09rem", fontSize: 7 }}>
-                          <FiberManualRecordIcon
-                            fontSize="inherit"
-                            color="action"
-                          />
+                        <span style={{ color: "green" }}>
+                          <FiberManualRecordIcon fontSize="inherit" />
                         </span>
                       </h6>
-                      <h6 style={{ fontSize: 12, color: "#3a3838" }}>
+                      <h6 style={{ fontSize: 12 }}>
                         {` ${Number(item.deltaconfirmed)} new case${
                           Number(item.deltaconfirmed) > 1 ? "s" : ""
                         }${
@@ -158,7 +155,7 @@ class Updates extends Component {
                             <LaunchRoundedIcon
                               style={{
                                 color: "peru",
-                                background: "rgb(235, 224, 209)",
+                                background: "rgba(255, 153, 0, 0.3)",
                                 borderRadius: "3px",
                                 padding: "2 2",
                                 fontWeight: 700,
