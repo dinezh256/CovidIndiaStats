@@ -1,0 +1,17 @@
+.MuiPaperroot {
+  background-color: rgb(32, 32, 66) !important;
+  color: white !important;
+  padding-bottom: 8rem;
+}
+
+@media (max-width: 414px) {
+  .MuiPaperroot {
+    padding-bottom: 9.5rem;
+  }
+}
+
+@media (max-width: 411px) {
+  .MuiPaperroot {
+    padding-bottom: 16rem;
+  }
+}
