@@ -30,7 +30,7 @@ const Footer = () => {
           </h6>
         </a>
         <a
-          href="https://instagram.com/covidindiaastats"
+          href="https://instagram.com/covidindiastatsig"
           target="_blank"
           rel="noopener noreferrer"
           style={{ marginLeft: 2, marginRight: 2 }}
