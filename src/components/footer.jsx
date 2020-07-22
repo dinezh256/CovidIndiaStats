@@ -33,7 +33,7 @@ const Footer = () => {
       <div className="col">
         <div align="center" className="col">
           <a
-            href="https://instagram.com/covidindiaastats"
+            href="https://instagram.com/covidindiastatsig"
             target="_blank"
             rel="noopener noreferrer"
           >
