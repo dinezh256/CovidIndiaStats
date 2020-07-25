@@ -34,6 +34,7 @@ const StateLinePlot = ({
   color1,
   color2,
   divideBy,
+  interval,
 }) => {
   return (
     <div className="col">
@@ -88,14 +89,15 @@ const StateLinePlot = ({
             data={total}
             margin={{
               top: 40,
-              right: -26,
-              left: 10,
+              right: -20,
+              left: 20,
               bottom: -8,
             }}
             syncId="linechart"
           >
             <XAxis
               dataKey="date"
+              interval={interval}
               tick={{ stroke: stroke, strokeWidth: 0.2, fill: stroke }}
               style={{ fontSize: 10, fontFamily: "notosans" }}
               tickSize={5}

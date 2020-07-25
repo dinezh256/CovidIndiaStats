@@ -19,6 +19,7 @@
     "create-react-class": "^15.6.3",
     "d3": "^5.15.1",
     "d3-scale": "^3.2.1",
+    "d3-scale-chromatic": "^1.5.0",
     "d3-svg-legend": "^2.25.6",
     "date-fns": "^2.11.1",
     "firebase": "^7.14.2",
@@ -63,7 +64,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "CI=false react-scripts build",
+    "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

@@ -1,6 +1,5 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { makeStyles } from "@material-ui/core/styles";
 import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
@@ -19,15 +18,6 @@ import TwitterIcon from "@material-ui/icons/Twitter";
 import ReactGa from "react-ga";
 
 import mainLogo from "../logo.png";
-
-const useStyles = makeStyles({
-  list: {
-    width: 260,
-  },
-  fullList: {
-    width: "auto",
-  },
-});
 
 export default function SwipeableTemporaryDrawer() {
   const [state, setState] = React.useState({

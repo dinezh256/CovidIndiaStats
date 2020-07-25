@@ -51,10 +51,8 @@ function App() {
     ReactGa.pageview(window.location.pathname + window.location.search);
   }, []);
 
-  const url = "https://api.covid19india.org/v4/data-all.json";
-
+  // const url = "https://api.covid19india.org/v4/data-all.json";
   // const { data, error } = useSWR(url, fetcher);
-
   // console.log(error);
 
   return (

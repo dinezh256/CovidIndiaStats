@@ -3,16 +3,16 @@ import { NavLink, withRouter } from "react-router-dom";
 import SwipeableTemporaryDrawer from "./drawer";
 import NightsStayRoundedIcon from "@material-ui/icons/NightsStayRounded";
 import WbSunnyRoundedIcon from "@material-ui/icons/WbSunnyRounded";
-import { stateFullName } from "./../utils/common-functions";
+import { stateNavbarName } from "./../utils/common-functions";
 
 class Navbar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      title: stateFullName.hasOwnProperty(
+      title: stateNavbarName.hasOwnProperty(
         window.location.pathname.toUpperCase()
       )
-        ? stateFullName[window.location.pathname.toUpperCase()].toUpperCase()
+        ? stateNavbarName[window.location.pathname.toUpperCase()].toUpperCase()
         : "COVID INDIA STATS".toUpperCase(),
     };
   }
@@ -26,9 +26,9 @@ class Navbar extends Component {
   componentDidMount() {
     this.props.history.listen(() => {
       {
-        stateFullName.hasOwnProperty(window.location.pathname.toUpperCase())
+        stateNavbarName.hasOwnProperty(window.location.pathname.toUpperCase())
           ? this.changeTitle(
-              stateFullName[
+              stateNavbarName[
                 window.location.pathname.toUpperCase()
               ].toUpperCase()
             )

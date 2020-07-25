@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { getDate, getMonth } from "date-fns";
 import WorldChoropleth from "./worldchoropleth";
 import Footer from "./footer";
 import ReactGa from "react-ga";
@@ -83,21 +82,6 @@ class World extends Component {
         deaths: Number(country.deaths),
       })
     );
-
-    const months = [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
-    ];
 
     const cases = [];
     countries.map((country) => cases.push(country.cases));

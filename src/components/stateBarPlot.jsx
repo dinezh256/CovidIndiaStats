@@ -31,6 +31,7 @@ const StateBarPlot = ({
   daily,
   dailyDelta,
   sparkline,
+  interval,
   divideBy,
   stroke,
   color1,
@@ -87,13 +88,14 @@ const StateBarPlot = ({
             data={data}
             margin={{
               top: 40,
-              right: -26,
-              left: 10,
+              right: -20,
+              left: 20,
               bottom: -8,
             }}
             syncId="barchart"
           >
             <XAxis
+              interval={interval}
               dataKey="date"
               tick={{ stroke: stroke, strokeWidth: 0.2, fill: stroke }}
               style={{ fontSize: 10, fontFamily: "notosans" }}

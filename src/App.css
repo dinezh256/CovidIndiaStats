@@ -227,6 +227,10 @@ a#line2.active:hover {
   }
 }
 
+.MuiBadge-colorPrimary {
+  background-color: green !important;
+}
+
 table td.wideRow,
 th.wideRow {
   width: 90px;
@@ -702,12 +706,20 @@ span.MuiBadge-colorSecondary {
   font-size: 0.95rem !important;
   cursor: pointer;
   padding-top: 3%;
-  padding-bottom: 1%;
+  padding-bottom: 4px;
   padding-right: 1%;
   padding-left: 3%;
-  border-radius: 3px;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
   width: 6.7rem;
   position: sticky;
+  transition: all 0.1s linear;
+}
+
+.pad:hover {
+  padding-bottom: 0px;
+  border-bottom: solid 4px;
+  transition: all 0.1s linear;
 }
 
 @media only screen and (max-width: 360px) {
@@ -781,6 +793,11 @@ span.MuiBadge-colorSecondary {
   to {
     opacity: 1;
   }
+}
+
+.choroplethText {
+  border-radius: 3px;
+  padding: 5px;
 }
 
 .display-flex {

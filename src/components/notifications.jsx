@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import LaunchRoundedIcon from "@material-ui/icons/LaunchRounded";
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
-
 import { Link } from "react-router-dom";
+import { toTimestamp, timeSince } from "./../utils/common-functions";
 
 class Updates extends Component {
   constructor(props) {
@@ -30,49 +30,6 @@ class Updates extends Component {
 
   render() {
     const { data, isLoaded } = this.state;
-
-    function toTimestamp(strDate) {
-      var datum = Date.parse(strDate);
-      return datum / 1000;
-    }
-
-    function timeSince(timeStamp) {
-      var now = new Date(),
-        secondsPast = (now.getTime() - timeStamp) / 1000;
-
-      if (secondsPast < 60) {
-        return (
-          parseInt(secondsPast) +
-          ` second${parseInt(secondsPast) > 1 ? "s" : ""} ago`
-        );
-      }
-
-      if (secondsPast < 3600) {
-        return (
-          parseInt(secondsPast / 60) +
-          ` minute${parseInt(secondsPast / 60) > 1 ? "s" : ""} ago`
-        );
-      }
-
-      if (secondsPast <= 86400) {
-        return (
-          parseInt(secondsPast / 3600) +
-          ` hour${parseInt(secondsPast / 3600) > 1 ? "s" : ""} ago `
-        );
-      }
-      if (secondsPast > 86400) {
-        let day = timeStamp.getDate();
-        var month = timeStamp
-          .toDateString()
-          .match(/ [a-zA-Z]*/)[0]
-          .replace(" ", "");
-        var year =
-          timeStamp.getFullYear() === now.getFullYear()
-            ? ""
-            : " " + timeStamp.getFullYear();
-        return day + " " + month + year;
-      }
-    }
 
     let totalDeltaConfirmed = 0;
     data.map((item) => (totalDeltaConfirmed += Number(item.deltaconfirmed)));

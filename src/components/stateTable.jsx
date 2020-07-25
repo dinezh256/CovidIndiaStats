@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { indianstates } from "./API/index";
 import StatePicker from "./statepicker";
-import * as Icon from "react-feather";
 import Tooltip, { TooltipProps } from "@material-ui/core/Tooltip";
 import { Theme, makeStyles } from "@material-ui/core/styles";
 import InfoTwoToneIcon from "@material-ui/icons/InfoTwoTone";

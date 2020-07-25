@@ -254,7 +254,7 @@ class Table extends Component {
                     <th
                       className="delta span graphWidth"
                       style={{
-                        background: "rgba(247, 177, 177, 0.2)",
+                        background: "rgba(255, 7, 58, 0.125)",
                         color: "rgb(255, 80, 100)",
                       }}
                     >
@@ -290,7 +290,7 @@ class Table extends Component {
                           size={12}
                           strokeWidth={3}
                           fill="rgba(23, 162, 184, 0.2)"
-                          style={{ verticalAlign: 1 }}
+                          style={{ verticalAlign: "-0.2rem" }}
                         />
                       )}
 
@@ -356,8 +356,8 @@ class Table extends Component {
                       <Icon.Heart
                         size={12}
                         strokeWidth={3}
-                        fill="rgba(255, 68, 106, 0.4)"
-                        style={{ verticalAlign: -0.5 }}
+                        fill="#ff446a"
+                        style={{ verticalAlign: "-0.2rem" }}
                       />
                     </h6>
                     <h5 style={{ color: "#ff446a", textAlign: "center" }}>
@@ -422,7 +422,7 @@ class Table extends Component {
                           size={12}
                           strokeWidth={3}
                           fill="rgba(23, 162, 184, 0.2)"
-                          style={{ verticalAlign: 0.5 }}
+                          style={{ verticalAlign: "-0.2rem" }}
                         />
                       )}
                       {Number(delta[0].deltarecovered) > 0
@@ -497,7 +497,7 @@ class Table extends Component {
                           size={12}
                           strokeWidth={3}
                           fill="rgba(40, 167, 69, 0.2)"
-                          style={{ verticalAlign: 0.5 }}
+                          style={{ verticalAlign: "-0.2rem" }}
                         />
                       )}
                       {Number(delta[0].deltadeaths)

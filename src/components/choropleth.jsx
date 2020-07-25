@@ -12,6 +12,13 @@ const PROJECTION_CONFIG = {
   center: [82.8, 22.5937], // always in [East Latitude, North Longitude]
 };
 
+const gradientLowerColor = {
+  Infected: "rgba(66, 179, 244, 0.2)",
+  Active: "rgba(221, 50, 85, 0.2)",
+  Recovered: "rgba(40, 167, 69, 0.2)",
+  Deceased: "rgba(74, 79, 83, 0.2)",
+};
+
 const Choropleth = ({ data, colorLow, colorHigh, type, borderColor }) => {
   const COLOR_RANGE = [colorHigh, colorLow];
 
@@ -31,7 +38,7 @@ const Choropleth = ({ data, colorLow, colorHigh, type, borderColor }) => {
   const [tooltipContent, setTooltipContent] = useState("");
 
   const gradientData = {
-    fromColor: "rgb(240,240,240)",
+    fromColor: gradientLowerColor[type],
     toColor: COLOR_RANGE[0],
     min: 0,
     max:

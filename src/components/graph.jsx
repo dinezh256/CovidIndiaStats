@@ -346,6 +346,7 @@ class Graph extends Component {
           ].join("/")
         ).getTime()
       );
+
       return (
         <React.Fragment>
           <div className={graphClass}>
@@ -427,8 +428,8 @@ class Graph extends Component {
                         color: "rgb(66, 179, 244)",
                         background: `${
                           clickConfirmedMap
-                            ? "rgba(66, 179, 244, 0.5)"
-                            : "rgba(66, 179, 244, 0.1)"
+                            ? "rgba(66, 179, 244, 0.3)"
+                            : "rgba(66, 179, 244, 0.125)"
                         }`,
                       }}
                     >
@@ -475,8 +476,8 @@ class Graph extends Component {
                         color: "rgb(255, 80, 100)",
                         backgroundColor: `${
                           clickActiveMap
-                            ? "rgba(255, 80, 100, 0.4)"
-                            : "rgba(247, 177, 177, 0.3)"
+                            ? "rgba(255, 7, 58, 0.25)"
+                            : "rgba(255, 7, 58, 0.125)"
                         }`,
                       }}
                     >
@@ -533,8 +534,8 @@ class Graph extends Component {
                       style={{
                         background: `${
                           clickRecoveredMap
-                            ? "rgba(88, 189, 88, 0.5)"
-                            : "rgba(88, 189, 88, 0.2)"
+                            ? "rgba(88, 189, 88, 0.3)"
+                            : "rgba(88, 189, 88, 0.125)"
                         }`,
                       }}
                     >
@@ -580,8 +581,8 @@ class Graph extends Component {
                       style={{
                         background: `${
                           clickDeceasedMap
-                            ? "rgba(92, 87, 86, 0.5)"
-                            : "rgba(92, 87, 86, 0.2)"
+                            ? "rgba(92, 87, 86, 0.4)"
+                            : "rgba(92, 87, 86, 0.125)"
                         }`,
                         cursor: "pointer",
                       }}
@@ -633,10 +634,10 @@ class Graph extends Component {
                       1,
                       confirmedStatesData.length - 1
                     )}
-                    colorLow="rgba(66, 179, 244, 0.85)"
-                    colorHigh="rgb(66, 179, 244)"
+                    colorLow="rgba(66, 179, 200, 0.92)"
+                    colorHigh="rgb(66, 179, 200)"
                     type="Infected"
-                    borderColor="rgba(66, 179, 244, 0.9)"
+                    borderColor="rgba(66, 179, 190, 0.9)"
                     onMouseEnter={ReactGa.event({
                       category: "India map",
                       action: "India map clicked",
@@ -651,7 +652,7 @@ class Graph extends Component {
                     )}
                     colorLow="rgba(221, 50, 85, 0.85)"
                     colorHigh="rgba(221, 50, 85, 1)"
-                    borderColor="rgb(221, 50, 85)"
+                    borderColor="rgb(221, 50, 85, 0.8)"
                     fill="rgb(228, 116, 138)"
                     type="Active"
                     onMouseEnter={ReactGa.event({
@@ -666,7 +667,7 @@ class Graph extends Component {
                       1,
                       recoveredStatesData.length - 1
                     )}
-                    colorLow="rgba(40, 167, 69, 0.85)"
+                    colorLow="rgba(40, 167, 69, 0.92)"
                     colorHigh="rgba(40, 167, 69, 1)"
                     type="Recovered"
                     borderColor="rgba(40, 167, 69, 0.85)"
@@ -682,10 +683,10 @@ class Graph extends Component {
                       1,
                       deceasedStatesData.length - 1
                     )}
-                    colorLow="rgba(74, 79, 83, 0.6)"
+                    colorLow="rgba(74, 79, 83, 0.8)"
                     colorHigh="rgba(74, 79, 83, 1)"
                     type="Deceased"
-                    borderColor="rgba(74, 79, 95, 1)"
+                    borderColor="rgba(128, 128, 128, 0.9)"
                     onMouseEnter={ReactGa.event({
                       category: "India map",
                       action: "India map clicked",
@@ -816,7 +817,7 @@ class Graph extends Component {
                 <React.Fragment>
                   <LinePlot
                     type="confirmed"
-                    bgColor="rgba(189, 216, 228, 0.1)"
+                    bgColor="rgba(150, 196, 216, 0.1)"
                     titleClass="text-info"
                     data={data}
                     date={date}
@@ -833,7 +834,7 @@ class Graph extends Component {
                   <div className="w-100"></div>
                   <LinePlot
                     type="active"
-                    bgColor="rgba(247, 177, 177, 0.1)"
+                    bgColor="rgba(255, 7, 58, 0.125)"
                     titleClass="text-danger"
                     data={totalActiveJson}
                     date={date}
@@ -841,7 +842,7 @@ class Graph extends Component {
                     total={totalActive}
                     daily={dailyActive}
                     stroke="rgba(255, 7, 58, 1)"
-                    lineStroke="#ec7d93"
+                    lineStroke="#ff446a"
                     color1="#f16783"
                     color2="#ff446a"
                     dataKey="totalactive"
@@ -849,7 +850,7 @@ class Graph extends Component {
                   <div className="w-100"></div>
                   <LinePlot
                     type="recovered"
-                    bgColor="rgba(177, 247, 177, 0.1)"
+                    bgColor="rgba(88, 189, 88, 0.125)"
                     titleClass="text-success"
                     data={data}
                     date={date}
@@ -938,7 +939,7 @@ class Graph extends Component {
                           )}
                           margin={{
                             top: 40,
-                            right: -26,
+                            right: -24,
                             left: 10,
                             bottom: -8,
                           }}
@@ -951,7 +952,7 @@ class Graph extends Component {
                               fill: "#6471b3",
                               strokeWidth: 0.2,
                             }}
-                            style={{ fontSize: 8, fontFamily: "notosans" }}
+                            style={{ fontSize: 10, fontFamily: "notosans" }}
                             tickSize={5}
                             tickCount={8}
                             axisLine={{
@@ -1029,7 +1030,7 @@ class Graph extends Component {
                 <React.Fragment>
                   <BarPlot
                     type="confirmed"
-                    bgColor="rgba(189, 216, 228, 0.1)"
+                    bgColor="rgba(150, 196, 216, 0.1)"
                     titleClass="text-info"
                     data={data}
                     date={date}
@@ -1044,7 +1045,7 @@ class Graph extends Component {
                   <div className="w-100"></div>
                   <BarPlot
                     type="active"
-                    bgColor="rgba(247, 177, 177, 0.1)"
+                    bgColor="rgba(255, 7, 58, 0.125)"
                     titleClass="text-danger"
                     data={dailyActiveJson}
                     date={date}
@@ -1059,7 +1060,7 @@ class Graph extends Component {
                   <div className="w-100"></div>
                   <BarPlot
                     type="recovered"
-                    bgColor="rgba(177, 247, 177, 0.1)"
+                    bgColor="rgba(177, 247, 177, 0.125)"
                     titleClass="text-success"
                     data={data}
                     date={date}
@@ -1091,7 +1092,7 @@ class Graph extends Component {
                       className="graphsection"
                       style={{
                         alignSelf: "center",
-                        backgroundColor: "rgba(106, 68, 200, 0.1)",
+                        backgroundColor: "rgba(106, 68, 200, 0.125)",
                         borderRadius: "6px",
                         paddingTop: "5px",
                       }}
@@ -1160,7 +1161,7 @@ class Graph extends Component {
                           )}
                           margin={{
                             top: 40,
-                            right: -26,
+                            right: -24,
                             left: 10,
                             bottom: -8,
                           }}
@@ -1173,7 +1174,7 @@ class Graph extends Component {
                               fill: "#6471b3",
                               strokeWidth: 0.2,
                             }}
-                            style={{ fontSize: 8, fontFamily: "notosans" }}
+                            style={{ fontSize: 10, fontFamily: "notosans" }}
                             tickSize={5}
                             tickCount={8}
                             axisLine={{
@@ -1194,7 +1195,7 @@ class Graph extends Component {
                             }}
                             tickFormatter={format("~s")}
                             tickSize={5}
-                            style={{ fontSize: 8, fontFamily: "notosans" }}
+                            style={{ fontSize: 10, fontFamily: "notosans" }}
                             tickCount={8}
                             axisLine={{
                               stroke: "#6471b3",

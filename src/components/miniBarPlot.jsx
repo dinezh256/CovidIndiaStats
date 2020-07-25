@@ -11,7 +11,7 @@ import {
 
 const MiniBarPlot = ({ barDailyData, type, fill }) => {
   const renderCustomizedLabel = (props) => {
-    const { x, y, width, height, value } = props;
+    const { x, y, width, value } = props;
     const radius = 11;
 
     return (
@@ -30,14 +30,27 @@ const MiniBarPlot = ({ barDailyData, type, fill }) => {
     );
   };
   return (
-    <ResponsiveContainer aspect={1.4} width="100%" height="100%">
+    <ResponsiveContainer aspect={1} width="100%" height="100%">
       <BarChart
         data={barDailyData.slice(barDailyData.length - 7, barDailyData.length)}
         margin={{
           top: 53,
+          bottom: -15,
         }}
       >
-        <XAxis hide={true} dataKey="date" />
+        <XAxis
+          dataKey="date"
+          tick={{
+            stroke: fill,
+            fill: fill,
+            strokeWidth: 0.2,
+          }}
+          interval={0}
+          axisLine={{ color: "rgba(255,255,255,0)", strokeWidth: 0 }}
+          style={{ fontSize: "0.5rem", fontFamily: "notosans" }}
+          tickSize={5}
+          tickLine={{ stroke: fill }}
+        />
         <YAxis hide={true} />
         <Tooltip
           contentStyle={{
@@ -60,9 +73,11 @@ const MiniBarPlot = ({ barDailyData, type, fill }) => {
           name={type}
           fill={fill}
           radius={[5, 5, 0, 0]}
-          barSize={22}
+          barSize={20}
         >
-          <LabelList dataKey="label" content={renderCustomizedLabel} />
+          {type !== "active" && (
+            <LabelList dataKey="label" content={renderCustomizedLabel} />
+          )}
         </Bar>
       </BarChart>
     </ResponsiveContainer>

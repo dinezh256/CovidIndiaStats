@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { indianstates, statesTestData, districtsDaily } from "./API/index";
+import { indianstates, statesTestData } from "./API/index";
 import * as Icon from "react-feather";
 import FacebookIcon from "@material-ui/icons/Facebook";
 import WhatsAppIcon from "@material-ui/icons/WhatsApp";
@@ -17,6 +17,7 @@ import {
   DeltaArrow,
   DeltaValue,
   stateID,
+  stateFullName,
 } from "../utils/common-functions";
 import parse from "html-react-parser";
 import {
@@ -38,6 +39,7 @@ import ControlledExpansionPanels from "./expansionPanel";
 import MiniBarPlot from "./miniBarPlot";
 import MiniStateSparkline from "./miniStateSparkline";
 import NotFound from "./notFound";
+import StateChoropleth from "./stateChoropleth";
 
 class StateDetails extends Component {
   constructor(props) {
@@ -169,46 +171,6 @@ class StateDetails extends Component {
       oneMonth,
     } = this.state;
 
-    const stateFullName = {
-      AP: "Andhra Pradesh",
-      AN: "Andaman and Nicobar Islands",
-      AR: "Arunachal Pradesh",
-      AS: "Assam",
-      BR: "Bihar",
-      CH: "Chandigarh",
-      CT: "Chhattisgarh",
-      DN: "Dadra and Nagar Haveli and Daman and Diu",
-      DL: "Delhi",
-      GA: "Goa",
-      GJ: "Gujarat",
-      HP: "Himachal Pradesh",
-      HR: "Haryana",
-      JH: "Jharkhand",
-      JK: "Jammu and Kashmir",
-      KA: "Karnataka",
-      KL: "Kerala",
-      LA: "Ladakh",
-      LD: "Lakshadweep",
-      MH: "Maharashtra",
-      ML: "Meghalaya",
-      MN: "Manipur",
-      MP: "Madhya Pradesh",
-      MZ: "Mizoram",
-      NL: "Nagaland",
-      OR: "Odisha",
-      PB: "Punjab",
-      PY: "Puducherry",
-      RJ: "Rajasthan",
-      SK: "Sikkim",
-      TG: "Telangana",
-      TN: "Tamil Nadu",
-      TR: "Tripura",
-      UP: "Uttar Pradesh",
-      UT: "Uttarakhand",
-      WB: "West Bengal",
-      UN: "State Unassigned",
-    };
-
     const months = [
       "",
       "Jan",
@@ -242,6 +204,7 @@ class StateDetails extends Component {
     }
 
     const topDistricts = [];
+
     stateData.map((item) => {
       if (
         this.props.match.params.stateid.toUpperCase() === item.statecode &&
@@ -249,6 +212,7 @@ class StateDetails extends Component {
       )
         topDistricts.push(item.districtData);
     });
+
     if (
       isLoaded &&
       toggleConfirmed &&
@@ -787,23 +751,45 @@ class StateDetails extends Component {
     }
 
     let timelineLength = 0;
+    let interval = 0;
 
     if (isLoaded) {
       if (beginning) {
         timelineLength = 0;
-      }
-      if (twoWeeks) {
-        timelineLength = lineTotalConfirmedData.length - 15;
+        interval = 15;
       }
       if (oneMonth) {
         timelineLength = lineTotalConfirmedData.length - 30;
+        interval = 2;
+      }
+      if (twoWeeks) {
+        timelineLength = lineTotalConfirmedData.length - 15;
+        interval = 1;
       }
     }
 
     const showAllDistricts = (item) => {
       if (viewAll) return item.length;
-      else return 5;
+      else return 7;
     };
+
+    if (
+      totalStateDataLoaded &&
+      this.props.match.params.stateid.toUpperCase() === "DL"
+    ) {
+      requiredStateTotalData[0].district = "Delhi";
+      requiredStateTotalData[0].deceased = requiredStateTotalData[0].deaths;
+    }
+
+    const notADistrict = [
+      "Unknown",
+      "Foreign Evacuees",
+      "Other State",
+      "Italians",
+      "BSF Camp",
+      "Evacuees",
+      "Others",
+    ];
 
     if (
       isLoaded &&
@@ -896,8 +882,7 @@ class StateDetails extends Component {
                 <div className="row" style={{ marginBottom: -5 }}>
                   <div className="col-7" style={{ textAlign: "left" }}>
                     <h6 style={{ fontSize: 12, color: "slateblue" }}>
-                      <ColorizeRoundedIcon fontSize="small" /> Total samples
-                      tested:{" "}
+                      <ColorizeRoundedIcon fontSize="small" /> Total Tests:{" "}
                       {expansionPanelData[0] === undefined
                         ? "0"
                         : commaSeperated(expansionPanelData[0].totaltested)}
@@ -925,7 +910,7 @@ class StateDetails extends Component {
                         borderBottom: `${
                           toggleConfirmed
                             ? "solid rgba(10, 111, 145, 0.8) 7px"
-                            : ""
+                            : "solid rgba(128, 128, 128, 1) 7px"
                         }`,
                       }}
                       onClick={() => {
@@ -1004,7 +989,9 @@ class StateDetails extends Component {
                         textAlign: "center",
                         width: "25%",
                         borderBottom: `${
-                          toggleActive ? "solid rgba(201, 25, 60, 0.8) 7px" : ""
+                          toggleActive
+                            ? "solid rgba(201, 25, 60, 0.8) 7px"
+                            : "solid rgba(128, 128, 128, 1) 7px"
                         }`,
                       }}
                       onClick={() => {
@@ -1020,7 +1007,7 @@ class StateDetails extends Component {
                         style={{
                           fontSize: "0.8rem",
                           color: "rgb(255, 80, 100)",
-                          background: "rgba(247, 177, 177, 0.3)",
+                          background: "rgba(255, 7, 58, 0.125)",
                         }}
                       >
                         ACTIVE
@@ -1082,7 +1069,7 @@ class StateDetails extends Component {
                         borderBottom: `${
                           toggleRecovered
                             ? "solid rgba(64, 145, 64, 0.8) 7px"
-                            : ""
+                            : "solid rgba(128, 128, 128, 1) 7px"
                         }`,
                       }}
                       onClick={() => {
@@ -1098,7 +1085,7 @@ class StateDetails extends Component {
                         className="text-success"
                         style={{
                           fontSize: "0.8rem",
-                          background: "rgba(88, 189, 88, 0.2)",
+                          background: "rgba(88, 189, 88, 0.125)",
                         }}
                       >
                         RECOVERED
@@ -1161,7 +1148,9 @@ class StateDetails extends Component {
                         textAlign: "center",
                         width: "25%",
                         borderBottom: `${
-                          toggleDeceased ? "solid rgb(74, 79, 83) 7px" : ""
+                          toggleDeceased
+                            ? "solid rgb(74, 79, 83) 7px"
+                            : "solid rgba(128, 128, 128, 1) 7px"
                         }`,
                       }}
                       onClick={() => {
@@ -1239,20 +1228,77 @@ class StateDetails extends Component {
                 <div className="w-100"></div>
                 <div className="row">
                   <div
-                    className="col-6 fadeInUp"
-                    style={{ transitionDelay: "0.9s" }}
+                    className="col fadeInUp"
+                    style={{ animationDelay: "0.7s" }}
                   >
-                    {<br id="line2" />}
-                    {<br id="line2" />}
+                    {toggleConfirmed && (
+                      <StateChoropleth
+                        data={
+                          this.props.match.params.stateid.toUpperCase() === "DL"
+                            ? requiredStateTotalData
+                            : topDistricts[0]
+                        }
+                        colorLow="rgba(66, 200, 255, 0.1)"
+                        colorHigh="rgba(66, 200, 255, 1)"
+                        type="confirmed"
+                        borderColor="rgb(120, 190, 220)"
+                        stateCode={`${this.props.match.params.stateid.toUpperCase()}`}
+                      />
+                    )}
+                    {toggleActive && (
+                      <StateChoropleth
+                        data={
+                          this.props.match.params.stateid.toUpperCase() === "DL"
+                            ? requiredStateTotalData
+                            : topDistricts[0]
+                        }
+                        type="active"
+                        stateCode={`${this.props.match.params.stateid.toUpperCase()}`}
+                        colorLow="rgba(221, 50, 85, 0.1)"
+                        colorHigh="rgba(221, 50, 85, 1)"
+                        borderColor="rgb(255, 100, 100)"
+                      />
+                    )}
+                    {toggleRecovered && (
+                      <StateChoropleth
+                        data={
+                          this.props.match.params.stateid.toUpperCase() === "DL"
+                            ? requiredStateTotalData
+                            : topDistricts[0]
+                        }
+                        type="recovered"
+                        stateCode={`${this.props.match.params.stateid.toUpperCase()}`}
+                        colorLow="rgba(40, 167, 69, 0.1)"
+                        colorHigh="rgba(40, 167, 69, 1)"
+                        borderColor="rgba(40, 255, 69)"
+                      />
+                    )}
+                    {toggleDeceased && (
+                      <StateChoropleth
+                        data={
+                          this.props.match.params.stateid.toUpperCase() === "DL"
+                            ? requiredStateTotalData
+                            : topDistricts[0]
+                        }
+                        stateCode={`${this.props.match.params.stateid.toUpperCase()}`}
+                        colorLow="rgba(74, 79, 83, 0.1)"
+                        colorHigh="rgba(74, 79, 83, 1)"
+                        type="deceased"
+                        borderColor="rgb(150, 150, 150)"
+                      />
+                    )}
+                  </div>
+                </div>
+                <div className="w-100"></div>
+                <div className="row">
+                  <div
+                    className="col-6 fadeInUp"
+                    style={{ animationDelay: "0.9s" }}
+                  >
                     <div>
-                      <h6
-                        style={{
-                          color: "slateblue",
-                          fontWeight: 700,
-                        }}
-                      >
+                      <h6 style={{ color: "slateblue" }}>
                         TOP DISTRICTS{" "}
-                        {
+                        {topDistricts[0].length > 7 && (
                           <span
                             style={{
                               cursor: "pointer",
@@ -1273,7 +1319,7 @@ class StateDetails extends Component {
                               />
                             )}
                           </span>
-                        }
+                        )}
                       </h6>
                       {isLoaded && toggleConfirmed ? (
                         <ul>
@@ -1285,7 +1331,7 @@ class StateDetails extends Component {
                                   key={district.district}
                                   style={{
                                     color: "slategrey",
-                                    fontWeight: 600,
+
                                     fontSize: 12,
                                     fontFamily: "notosans",
                                   }}
@@ -1338,7 +1384,7 @@ class StateDetails extends Component {
                                   key={district.district}
                                   style={{
                                     color: "slategrey",
-                                    fontWeight: 600,
+
                                     fontSize: 12,
                                     fontFamily: "notosans",
                                   }}
@@ -1366,7 +1412,7 @@ class StateDetails extends Component {
                                   key={district.district}
                                   style={{
                                     color: "slategrey",
-                                    fontWeight: 600,
+
                                     fontSize: 12,
                                     fontFamily: "notosans",
                                   }}
@@ -1419,23 +1465,22 @@ class StateDetails extends Component {
                                 <li
                                   key={district.district}
                                   style={{
-                                    color: "slategrey",
-                                    fontWeight: 600,
                                     fontFamily: "notosans",
                                     fontSize: 12,
                                   }}
                                 >
-                                  {district.deceased}{" "}
-                                  <span style={{ fontSize: 11 }}>
+                                  <span
+                                    style={{ fontSize: 12, color: "slategrey" }}
+                                  >
+                                    {district.deceased}
+                                  </span>{" "}
+                                  <span
+                                    style={{ fontSize: 11, color: "slategrey" }}
+                                  >
                                     {district.district}
                                   </span>
                                   &nbsp;
-                                  <span
-                                    style={{
-                                      color: "rgba(74, 79, 83, 0.8)",
-                                      fontSize: 11,
-                                    }}
-                                  >
+                                  <span style={{ fontSize: 11 }}>
                                     {district.delta.deceased > 0 ? (
                                       <Icon.ArrowUp size={11} strokeWidth={3} />
                                     ) : district.delta.deceased < 0 ? (
@@ -1997,7 +2042,7 @@ class StateDetails extends Component {
                             this.props.match.params.stateid.toUpperCase()
                           ]
                         }
-                        bgColor="rgba(189, 216, 228, 0.1)"
+                        bgColor="rgba(150, 196, 216, 0.1)"
                         titleClass="text-info"
                         type="confirmed"
                         date={date}
@@ -2010,6 +2055,7 @@ class StateDetails extends Component {
                         lineStroke="#35aad1"
                         color1="#6ebed6"
                         color2="#55b2ce"
+                        interval={interval}
                         divideBy={
                           Math.max.apply(
                             Math,
@@ -2028,7 +2074,7 @@ class StateDetails extends Component {
                             this.props.match.params.stateid.toUpperCase()
                           ]
                         }
-                        bgColor="rgba(247, 177, 177, 0.1)"
+                        bgColor="rgba(255, 7, 58, 0.125)"
                         titleClass="text-danger"
                         type="active"
                         date={date}
@@ -2042,9 +2088,10 @@ class StateDetails extends Component {
                           dailyDeceased[0]
                         }
                         stroke="rgba(255, 7, 58, 1)"
-                        lineStroke="#ec7d93"
+                        lineStroke="#ff446a"
                         color1="#f16783"
                         color2="#ff446a"
+                        interval={interval}
                         divideBy={
                           Math.max.apply(
                             Math,
@@ -2073,9 +2120,10 @@ class StateDetails extends Component {
                         )}
                         daily={dailyRecovered[0]}
                         stroke="#469246"
-                        lineStroke="#78b978"
+                        lineStroke="#5cb85c"
                         color1="#5cb85c"
                         color2="#5cb85c"
+                        interval={interval}
                         divideBy={
                           Math.max.apply(
                             Math,
@@ -2107,6 +2155,7 @@ class StateDetails extends Component {
                         lineStroke="#666565"
                         color1="#808080"
                         color2="#5e5a5a"
+                        interval={interval}
                         divideBy={
                           Math.max.apply(
                             Math,
@@ -2191,8 +2240,8 @@ class StateDetails extends Component {
                               )}
                               margin={{
                                 top: 40,
-                                right: -26,
-                                left: 10,
+                                right: -20,
+                                left: 20,
                                 bottom: -8,
                               }}
                               syncId="linechart"
@@ -2204,6 +2253,7 @@ class StateDetails extends Component {
                                   fill: "#6471b3",
                                   strokeWidth: 0.2,
                                 }}
+                                interval={interval}
                                 style={{ fontSize: 10, fontFamily: "notosans" }}
                                 tickSize={5}
                                 tickCount={8}
@@ -2286,7 +2336,7 @@ class StateDetails extends Component {
                           ]
                         }
                         type="confirmed"
-                        bgColor="rgba(189, 216, 228, 0.1)"
+                        bgColor="rgba(150, 196, 216, 0.1)"
                         titleClass="text-info"
                         data={barDailyConfirmedData.slice(
                           timelineLength,
@@ -2296,6 +2346,7 @@ class StateDetails extends Component {
                         daily={dailyConfirmed[0]}
                         dailyDelta={dailyDeltaConfirmed[0]}
                         sparkline={sparklineTotalConfirmedData}
+                        interval={interval}
                         divideBy={
                           Math.max.apply(
                             Math,
@@ -2318,7 +2369,7 @@ class StateDetails extends Component {
                           ]
                         }
                         type="active"
-                        bgColor="rgba(247, 177, 177, 0.1)"
+                        bgColor="rgba(255, 7, 58, 0.125)"
                         titleClass="text-danger"
                         data={barDailyActiveData.slice(
                           timelineLength,
@@ -2336,6 +2387,7 @@ class StateDetails extends Component {
                           dailyDeltaDeceased[0]
                         }
                         sparkline={sparklineDailyActiveData}
+                        interval={interval}
                         divideBy={
                           Math.max.apply(
                             Math,
@@ -2400,6 +2452,7 @@ class StateDetails extends Component {
                         daily={dailyDeceased[0]}
                         dailyDelta={dailyDeltaDeceased[0]}
                         sparkline={sparklineDailyDeceasedData}
+                        interval={interval}
                         divideBy={
                           Math.max.apply(
                             Math,
@@ -2509,8 +2562,8 @@ class StateDetails extends Component {
                               )}
                               margin={{
                                 top: 40,
-                                right: -26,
-                                left: 10,
+                                right: -20,
+                                left: 20,
                                 bottom: -8,
                               }}
                               syncId="barchart"
@@ -2522,6 +2575,7 @@ class StateDetails extends Component {
                                   fill: "#6471b3",
                                   strokeWidth: 0.2,
                                 }}
+                                interval={interval}
                                 axisLine={{ color: "#6471b3" }}
                                 style={{ fontSize: 10, fontFamily: "notosans" }}
                                 tickSize={5}

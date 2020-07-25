@@ -95,7 +95,7 @@ const LinePlot = ({
             data={data.slice(timelineLength, data.length)}
             margin={{
               top: 40,
-              right: -26,
+              right: -24,
               left: 10,
               bottom: -8,
             }}
