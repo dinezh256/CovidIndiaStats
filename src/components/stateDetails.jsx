@@ -1566,7 +1566,7 @@ class StateDetails extends Component {
                 </div>
                 <div className="w-100"></div>
                 <div className="row fadeInUp" style={{ animationDelay: "1s" }}>
-                  <div className="col" style={{ marginBottom: "15px" }}>
+                  {/* <div className="col" style={{ marginBottom: "15px" }}>
                     {
                       <h6
                         className="btnViewAll"
@@ -1595,9 +1595,85 @@ class StateDetails extends Component {
                       </h6>
                     }
                   </div>
-                  <div className="w-100"></div>
+                  <div className="w-100"></div> */}
                   <div className="col">
-                    {requiredData.length && viewTable ? (
+                    <div className="row" style={{ alignContent: "center" }}>
+                      <div
+                        align="center"
+                        className="col fadeInUp"
+                        style={{ animationDelay: "0.1s" }}
+                      >
+                        <h6 className="feedbackBtn">
+                          <a
+                            href="https://forms.gle/N6V7VTgcmBtxkU4Q9"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            title="Provide your valuable feedback"
+                          >
+                            <Icon.FileText size={30} />{" "}
+                          </a>
+                        </h6>
+                        <h6 className="feedbackBtn">
+                          Please provide your valuable feedback
+                        </h6>
+                      </div>
+                      <div
+                        className="col fadeInUp"
+                        style={{ animationDelay: "0.1s" }}
+                      >
+                        <div className="row shareBtn">
+                          <a
+                            href={`https://www.facebook.com/sharer/sharer.php?u=covidindiastats.com/${this.props.match.params.stateid.toUpperCase()}`}
+                            onClick={() => {
+                              ReactGa.event({
+                                category: "FB Share",
+                                action: "fb clicked",
+                              });
+                            }}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            title="Share COVID INDIA STATS on Facebook"
+                            style={{ color: "rgb(59, 89, 152)" }}
+                          >
+                            <FacebookIcon fontSize="large" />
+                          </a>
+                          <a
+                            href={`whatsapp://send?text=Track the spread of Covid19 from State to district level covidindiastats.com/${this.props.match.params.stateid.toUpperCase()}`}
+                            onClick={() => {
+                              ReactGa.event({
+                                category: "WA Share",
+                                action: "wa clicked",
+                              });
+                            }}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            title="Share COVID INDIA STATS on Whatsapp"
+                            style={{ color: "#25D366" }}
+                          >
+                            <WhatsAppIcon fontSize="large" />
+                          </a>
+                          <a
+                            href={`http://twitter.com/share?text=@covidindiastats Track the spread of Covid19 from State to District level.&url=covidindiastats.com/${this.props.match.params.stateid.toUpperCase()}`}
+                            onClick={() => {
+                              ReactGa.event({
+                                category: "Twitter Share",
+                                action: "T clicked",
+                              });
+                            }}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            title="Share COVID INDIA STATS on Twitter"
+                            style={{ color: "#00ACEE" }}
+                          >
+                            <TwitterIcon fontSize="large" />
+                          </a>
+                          <h6 className="likeShare">
+                            Help this information reach your dear ones
+                          </h6>
+                        </div>
+                      </div>
+                    </div>
+                    {/* {requiredData.length && viewTable ? (
                       <div
                         className="row fadeInUp"
                         style={{ animationDelay: "0.1s" }}
@@ -1798,83 +1874,8 @@ class StateDetails extends Component {
                         </table>
                       </div>
                     ) : (
-                      <div className="row" style={{ alignContent: "center" }}>
-                        <div
-                          align="center"
-                          className="col fadeInUp"
-                          style={{ animationDelay: "0.1s" }}
-                        >
-                          <h6 className="feedbackBtn">
-                            <a
-                              href="https://forms.gle/N6V7VTgcmBtxkU4Q9"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              title="Provide your valuable feedback"
-                            >
-                              <Icon.FileText size={30} />{" "}
-                            </a>
-                          </h6>
-                          <h6 className="feedbackBtn">
-                            Please provide your valuable feedback
-                          </h6>
-                        </div>
-                        <div
-                          className="col fadeInUp"
-                          style={{ animationDelay: "0.1s" }}
-                        >
-                          <div className="row shareBtn">
-                            <a
-                              href={`https://www.facebook.com/sharer/sharer.php?u=covidindiastats.com/${this.props.match.params.stateid.toUpperCase()}`}
-                              onClick={() => {
-                                ReactGa.event({
-                                  category: "FB Share",
-                                  action: "fb clicked",
-                                });
-                              }}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              title="Share COVID INDIA STATS on Facebook"
-                              style={{ color: "rgb(59, 89, 152)" }}
-                            >
-                              <FacebookIcon fontSize="large" />
-                            </a>
-                            <a
-                              href={`whatsapp://send?text=Track the spread of Covid19 from State to district level covidindiastats.com/${this.props.match.params.stateid.toUpperCase()}`}
-                              onClick={() => {
-                                ReactGa.event({
-                                  category: "WA Share",
-                                  action: "wa clicked",
-                                });
-                              }}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              title="Share COVID INDIA STATS on Whatsapp"
-                              style={{ color: "#25D366" }}
-                            >
-                              <WhatsAppIcon fontSize="large" />
-                            </a>
-                            <a
-                              href={`http://twitter.com/share?text=@covidindiastats Track the spread of Covid19 from State to District level.&url=covidindiastats.com/${this.props.match.params.stateid.toUpperCase()}`}
-                              onClick={() => {
-                                ReactGa.event({
-                                  category: "Twitter Share",
-                                  action: "T clicked",
-                                });
-                              }}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              title="Share COVID INDIA STATS on Twitter"
-                              style={{ color: "#00ACEE" }}
-                            >
-                              <TwitterIcon fontSize="large" />
-                            </a>
-                            <h6 className="likeShare">
-                              Help this information reach your dear ones
-                            </h6>
-                          </div>
-                        </div>
-                      </div>
-                    )}
+                      ""
+                    )} */}
                   </div>
                 </div>
                 <div className="w-100"></div>
