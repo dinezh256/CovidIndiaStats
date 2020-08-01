@@ -83,7 +83,7 @@ const StateBarPlot = ({
           </h6>
         </h5>
 
-        <ResponsiveContainer width="100%" height="100%" aspect={2.5}>
+        <ResponsiveContainer width="100%" height="100%" aspect={2.3}>
           <BarChart
             data={data}
             margin={{
@@ -98,7 +98,7 @@ const StateBarPlot = ({
               interval={interval}
               dataKey="date"
               tick={{ stroke: stroke, strokeWidth: 0.2, fill: stroke }}
-              style={{ fontSize: 10, fontFamily: "notosans" }}
+              style={{ fontSize: "0.62rem", fontFamily: "notosans" }}
               tickSize={5}
               tickLine={{ stroke: stroke }}
               tickCount={8}
@@ -113,7 +113,7 @@ const StateBarPlot = ({
               tick={{ stroke: stroke, strokeWidth: 0.2, fill: stroke }}
               tickFormatter={format("~s")}
               tickSize={5}
-              style={{ fontSize: 10, fontFamily: "notosans" }}
+              style={{ fontSize: "0.62rem", fontFamily: "notosans" }}
               tickLine={{ stroke: stroke }}
               tickCount={8}
               axisLine={{ stroke: stroke, strokeWidth: "1.5px" }}

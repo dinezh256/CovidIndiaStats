@@ -930,7 +930,7 @@ class Graph extends Component {
                       <ResponsiveContainer
                         width="100%"
                         height="100%"
-                        aspect={2.5}
+                        aspect={2.3}
                       >
                         <LineChart
                           data={cumulativeDateFormattedTests.slice(
@@ -952,7 +952,10 @@ class Graph extends Component {
                               fill: "#6471b3",
                               strokeWidth: 0.2,
                             }}
-                            style={{ fontSize: 10, fontFamily: "notosans" }}
+                            style={{
+                              fontSize: "0.62rem",
+                              fontFamily: "notosans",
+                            }}
                             tickSize={5}
                             tickCount={8}
                             axisLine={{
@@ -979,7 +982,10 @@ class Graph extends Component {
                             }}
                             tickFormatter={format("~s")}
                             tickSize={5}
-                            style={{ fontSize: 10, fontFamily: "notosans" }}
+                            style={{
+                              fontSize: "0.62rem",
+                              fontFamily: "notosans",
+                            }}
                             tickCount={8}
                             axisLine={{
                               stroke: "#6471b3",
@@ -1152,7 +1158,7 @@ class Graph extends Component {
                       <ResponsiveContainer
                         width="100%"
                         height="100%"
-                        aspect={2.5}
+                        aspect={2.3}
                       >
                         <BarChart
                           data={dailyDateFormattedTests.slice(
@@ -1174,7 +1180,10 @@ class Graph extends Component {
                               fill: "#6471b3",
                               strokeWidth: 0.2,
                             }}
-                            style={{ fontSize: 10, fontFamily: "notosans" }}
+                            style={{
+                              fontSize: "0.62rem",
+                              fontFamily: "notosans",
+                            }}
                             tickSize={5}
                             tickCount={8}
                             axisLine={{
@@ -1195,7 +1204,10 @@ class Graph extends Component {
                             }}
                             tickFormatter={format("~s")}
                             tickSize={5}
-                            style={{ fontSize: 10, fontFamily: "notosans" }}
+                            style={{
+                              fontSize: "0.62rem",
+                              fontFamily: "notosans",
+                            }}
                             tickCount={8}
                             axisLine={{
                               stroke: "#6471b3",

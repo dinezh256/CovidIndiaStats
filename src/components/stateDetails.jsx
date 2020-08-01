@@ -2232,7 +2232,7 @@ class StateDetails extends Component {
                           <ResponsiveContainer
                             width="100%"
                             height="100%"
-                            aspect={2.5}
+                            aspect={2.3}
                           >
                             <LineChart
                               data={dateFormattedTestData.slice(
@@ -2255,7 +2255,10 @@ class StateDetails extends Component {
                                   strokeWidth: 0.2,
                                 }}
                                 interval={interval}
-                                style={{ fontSize: 10, fontFamily: "notosans" }}
+                                style={{
+                                  fontSize: "0.62rem",
+                                  fontFamily: "notosans",
+                                }}
                                 tickSize={5}
                                 tickCount={8}
                                 tickLine={{ stroke: "#6471b3" }}
@@ -2279,7 +2282,10 @@ class StateDetails extends Component {
                                 }}
                                 tickFormatter={format("~s")}
                                 tickSize={5}
-                                style={{ fontSize: 10, fontFamily: "notosans" }}
+                                style={{
+                                  fontSize: "0.62rem",
+                                  fontFamily: "notosans",
+                                }}
                                 tickCount={8}
                                 tickLine={{ stroke: "#6471b3" }}
                                 axisLine={{
@@ -2554,7 +2560,7 @@ class StateDetails extends Component {
                           <ResponsiveContainer
                             width="100%"
                             height="100%"
-                            aspect={2.5}
+                            aspect={2.3}
                           >
                             <BarChart
                               data={dailyFormattedTestData.slice(
@@ -2578,7 +2584,10 @@ class StateDetails extends Component {
                                 }}
                                 interval={interval}
                                 axisLine={{ color: "#6471b3" }}
-                                style={{ fontSize: 10, fontFamily: "notosans" }}
+                                style={{
+                                  fontSize: "0.62rem",
+                                  fontFamily: "notosans",
+                                }}
                                 tickSize={5}
                                 tickLine={{ stroke: "#6471b3" }}
                                 tickCount={8}
@@ -2617,7 +2626,10 @@ class StateDetails extends Component {
                                   strokeWidth: 0.2,
                                 }}
                                 tickFormatter={format("~s")}
-                                style={{ fontSize: 10, fontFamily: "notosans" }}
+                                style={{
+                                  fontSize: "0.62rem",
+                                  fontFamily: "notosans",
+                                }}
                                 tickSize={5}
                                 tickLine={{ stroke: "#6471b3" }}
                                 tickCount={8}
