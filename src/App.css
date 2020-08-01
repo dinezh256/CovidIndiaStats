@@ -218,12 +218,12 @@ a#line2.active:hover {
 }
 
 .updates {
-  font-size: 0.9rem;
+  font-size: 0.85rem;
 }
 
 @media (max-width: 360px) {
   .updates {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
   }
 }
 
