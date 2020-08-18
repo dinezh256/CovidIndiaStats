@@ -93,7 +93,7 @@ const Footer = () => {
         </div>
         <div align="center" className="col">
           <a
-            href="https://t.me/Allindia_covid"
+            href="https://Telegram.me/Allindia_covid"
             target="_blank"
             rel="noopener noreferrer"
           >
