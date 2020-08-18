@@ -16,7 +16,7 @@ import * as Icon from "react-feather";
 import WorldHomeCard from "./worldHomeCard";
 import LinePlot from "./linePlot";
 import BarPlot from "./barPlot";
-import { commaSeperated, timeSince } from "../utils/common-functions";
+import { commaSeperated, timeSince, formatDate } from "../utils/common-functions";
 import ReactGa from "react-ga";
 
 class Graph extends Component {
@@ -339,11 +339,9 @@ class Graph extends Component {
     if (isLoaded) {
       const lastUpdatedTime = timeSince(
         new Date(
-          [
-            grandTotal[0].lastupdatedtime.split(/\//)[1],
-            grandTotal[0].lastupdatedtime.split(/\//)[0],
-            grandTotal[0].lastupdatedtime.split(/\//)[2],
-          ].join("/")
+          formatDate(
+            grandTotal[0].lastupdatedtime
+          )
         ).getTime()
       );
 
