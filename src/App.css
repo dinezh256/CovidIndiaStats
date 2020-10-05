@@ -1138,6 +1138,41 @@ span.MuiBadge-colorSecondary {
   animation-fill-mode: both;
 }
 
+.colorChange {
+  animation: colorChange 20s ease-in-out;
+  animation-fill-mode: both;
+}
+
+@keyframes colorChange {
+  0% {
+    color: #6c757d;
+  }
+  12.5% {
+    color: #ff446a;
+  }
+  25% {
+    color: #6c757d;
+  }
+  37.5% {
+    color: #ff446a;
+  }
+  50% {
+    color: #6c757d;
+  }
+  62.5% {
+    color: #ff446a;
+  }
+  75% {
+    color: #6c757d;
+  }
+  87.5% {
+    color: #ff446a;
+  }
+  100% {
+    color: #6c757d;
+  }
+}
+
 @keyframes fadeInLeft {
   0% {
     opacity: 0;
