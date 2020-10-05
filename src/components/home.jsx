@@ -17,19 +17,17 @@ class Home extends Component {
             />
           </Helmet>
           <div className="row">
-            <div className="col-sm">
+            <div className="col-md">
               <Table />
             </div>
             <div
-              className="col-sm fadeInUp"
+              className="col-md fadeInUp"
               style={{
                 animationDelay: "0.8s",
                 marginTop: 15,
               }}
             >
-              <div align="center">
-                <Graph />
-              </div>
+              <Graph />
             </div>
           </div>
 

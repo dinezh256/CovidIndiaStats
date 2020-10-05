@@ -32,36 +32,6 @@ class Table extends Component {
       sortOrder: true,
       percentageToggleActive: false,
     };
-    this.onPercentageToggle = this.onPercentageToggle.bind(this);
-    this.onSortConfirmed = this.onSortConfirmed.bind(this);
-    this.onSortActive = this.onSortActive.bind(this);
-    this.onSortRecovered = this.onSortRecovered.bind(this);
-    this.onSortDeceased = this.onSortDeceased.bind(this);
-    this.handleSortOrder = this.handleSortOrder.bind(this);
-  }
-
-  onPercentageToggle(percentageToggleActive) {
-    this.setState({ percentageToggleActive });
-  }
-
-  onSortConfirmed({ sortConfirmed }) {
-    this.setState({ sortConfirmed });
-  }
-
-  onSortActive({ sortActive }) {
-    this.setState({ sortActive });
-  }
-
-  onSortRecovered({ sortRecovered }) {
-    this.setState({ sortRecovered });
-  }
-
-  onSortDeceased({ sortDeceased }) {
-    this.setState({ sortDeceased });
-  }
-
-  handleSortOrder({ sortOrder }) {
-    this.setState({ sortOrder });
   }
 
   componentDidMount() {
@@ -148,10 +118,6 @@ class Table extends Component {
     const sparklinerecovered = [];
     const sparklinedeceased = [];
 
-    // const allKeys = Object.keys(newItems);
-
-    // console.log(newItems[allKeys.slice(allKeys.length - 1)]);
-
     data.slice(data.length - 20, data.length).map((item) =>
       sparklinedata.push({
         confirmed: Number(item.dailyconfirmed),
@@ -183,44 +149,6 @@ class Table extends Component {
     data
       .slice(data.length - 20, data.length)
       .map((item) => sparklinedeceased.push(Number(item.dailydeceased)));
-
-    const min = Math.min(
-      ...sparklineconfirmed.slice(
-        sparklineconfirmed.length - 20,
-        sparklineconfirmed.length
-      ),
-      ...sparklineactive.slice(
-        sparklineactive.length - 20,
-        sparklineactive.length
-      ),
-      ...sparklinerecovered.slice(
-        sparklinerecovered.length - 20,
-        sparklinerecovered.length
-      ),
-      ...sparklinedeceased.slice(
-        sparklinedeceased.length - 20,
-        sparklinedeceased.length
-      )
-    );
-
-    const max = Math.max(
-      ...sparklineconfirmed.slice(
-        sparklineconfirmed.length - 20,
-        sparklineconfirmed.length
-      ),
-      ...sparklineactive.slice(
-        sparklineactive.length - 20,
-        sparklineactive.length
-      ),
-      ...sparklinerecovered.slice(
-        sparklinerecovered.length - 20,
-        sparklinerecovered.length
-      ),
-      ...sparklinedeceased.slice(
-        sparklinedeceased.length - 20,
-        sparklinedeceased.length
-      )
-    );
 
     if (isLoaded) {
       return (
@@ -321,8 +249,6 @@ class Table extends Component {
                       <MiniSparkline
                         sparklinedata={sparklinedata}
                         datakey={0}
-                        min={min}
-                        max={max}
                         type={sparklineconfirmed}
                         fill="#42b3f4"
                         stroke="rgba(66, 179, 244, 0.7)"
@@ -339,8 +265,6 @@ class Table extends Component {
                       <MiniSparkline
                         sparklinedata={sparklinedata}
                         datakey={0}
-                        min={min}
-                        max={max}
                         type={sparklineconfirmed}
                         fill="#42b3f4"
                         stroke="rgba(66, 179, 244, 0.7)"
@@ -386,8 +310,6 @@ class Table extends Component {
                       <MiniSparkline
                         sparklinedata={sparklinedata}
                         datakey={1}
-                        min={min}
-                        max={max}
                         type={sparklineactive}
                         fill="#ff446a"
                         stroke="rgba(255, 68, 106, 0.7)"
@@ -404,8 +326,6 @@ class Table extends Component {
                       <MiniSparkline
                         sparklinedata={sparklinedata}
                         datakey={1}
-                        min={min}
-                        max={max}
                         type={sparklineactive}
                         fill="#ff446a"
                         stroke="rgba(255, 68, 106, 0.7)"
@@ -458,8 +378,6 @@ class Table extends Component {
                       <MiniSparkline
                         sparklinedata={sparklinedata}
                         datakey={2}
-                        min={min}
-                        max={max}
                         type={sparklinerecovered}
                         fill="#58bd58"
                         stroke="rgba(88, 189, 88, 0.7)"
@@ -476,8 +394,6 @@ class Table extends Component {
                       <MiniSparkline
                         sparklinedata={sparklinedata}
                         datakey={2}
-                        min={min}
-                        max={max}
                         type={sparklinerecovered}
                         fill="#58bd58"
                         stroke="rgba(88, 189, 88, 0.7)"
@@ -504,10 +420,7 @@ class Table extends Component {
                         ? "+" + commaSeperated(delta[0].deltadeaths)
                         : ""}
                     </h6>
-                    <h5
-                      className="text-secondary"
-                      style={{ textAlign: "center" }}
-                    >
+                    <h5 className="colorChange" style={{ textAlign: "center" }}>
                       {!percentageToggleActive ? (
                         <CountUp
                           start={0}
@@ -533,8 +446,6 @@ class Table extends Component {
                       <MiniSparkline
                         sparklinedata={sparklinedata}
                         datakey={3}
-                        min={min}
-                        max={max}
                         type={sparklinedeceased}
                         fill="#5c5756"
                         stroke="rgba(92, 87, 86, 0.7)"
@@ -551,8 +462,6 @@ class Table extends Component {
                       <MiniSparkline
                         sparklinedata={sparklinedata}
                         datakey={3}
-                        min={min}
-                        max={max}
                         type={sparklinedeceased}
                         fill="#5c5756"
                         stroke="rgba(92, 87, 86, 0.7)"
@@ -982,7 +891,7 @@ class Table extends Component {
             </div>
             <div className="row container" id="line2">
               <table
-                className="table table-sm fadeInUp table-borderless"
+                className="table table-sm fadeInUp table-borderless table-responsive"
                 style={{
                   animationDelay: "1.9s",
                   marginTop: "-15px",
