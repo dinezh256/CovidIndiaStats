@@ -734,7 +734,7 @@ span.MuiBadge-colorSecondary {
   color: #5969c2;
   text-align: right;
   cursor: pointer;
-  margin-left: 25px;
+  margin-left: 32px;
   width: 7.5rem;
   padding-top: 3%;
   padding-right: 3%;
@@ -949,7 +949,7 @@ span.MuiBadge-colorSecondary {
   cursor: pointer;
   font-size: 12px;
   margin-bottom: -15px;
-  margin-top: 12px !important;
+  margin-top: 10px !important;
 }
 
 .btnMainPage {
