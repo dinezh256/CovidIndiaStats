@@ -408,7 +408,7 @@ class Graph extends Component {
                 className="fadeInUp toggle-map container"
                 style={{ animationDelay: "2.3s" }}
               >
-                <div className="row row-cols-4">
+                <div className="row row-cols-4 mapTabs">
                   <div
                     className="col"
                     onClick={() => {
