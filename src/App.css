@@ -11,6 +11,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: rgb(248, 248, 250);
+  overflow-x: hidden !important;
 }
 
 .clickable {
@@ -325,7 +326,7 @@ th.smallRow {
 }
 
 .td-md {
-  font-size: 1.05rem;
+  font-size: 1rem;
   font-weight: 500;
   border-radius: 4px;
   word-wrap: break-word;
@@ -335,7 +336,7 @@ th.smallRow {
 }
 @media only screen and (max-width: 360px) {
   .td-md {
-    font-size: 0.92rem;
+    font-size: 0.9rem;
   }
 }
 
@@ -748,11 +749,11 @@ span.MuiBadge-colorSecondary {
   font-size: 0.75rem !important;
 }
 
-@media only screen and (max-width: 360px) {
+@media only screen and (max-width: 361px) {
   .testpad {
     font-size: 0.9rem !important;
     width: 7.5rem;
-    margin-right: -10px !important;
+    margin-left: -8px !important;
   }
 }
 
