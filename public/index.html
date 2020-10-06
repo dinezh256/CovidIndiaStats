@@ -40,15 +40,7 @@
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
     -->
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <!--
-      Notice the use of %PUBLIC_URL% in the tags above.
-      It will be replaced with the URL of the `public` folder during the build.
-      Only files inside the `public` folder can be referenced from the HTML.
 
-      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-      work correctly both with client-side routing and a non-root public URL.
-      Learn how to configure a non-root public URL by running `npm run build`.
-    -->
     <title>Covid India Stats</title>
     <meta
       name="description"
@@ -67,9 +59,18 @@
       href="/fonts/NotoSans-Bold.ttf"
       as="font"
       type="font/ttf"
-      crossorigin="anonymous"
+      crossorigin
     />
-
+    <style>
+      @font-face {
+        font-family: "notosans";
+        src: url("/fonts/NotoSans-Bold.ttf");
+        src: local("notosans"),
+          url("/fonts/NotoSans-Bold.ttf") format("truetype");
+        font-style: normal;
+        font-display: swap;
+      }
+    </style>
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://www.covidindiastats.com" />
@@ -106,54 +107,5 @@
   </head>
   <body>
     <div id="root"></div>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
-
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
-
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
-
-    <!-- Insert these scripts at the bottom of the HTML, but before you use any Firebase services -->
-
-    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
-    <script
-      type="text/babel"
-      src="/__/firebase/7.14.2/firebase-app.js"
-    ></script>
-
-    <!-- If you enabled Analytics in your project, add the Firebase SDK for Analytics -->
-    <script
-      type="text/babel"
-      src="/__/firebase/7.14.2/firebase-analytics.js"
-    ></script>
-
-    <!-- Add Firebase products that you want to use -->
-    <script
-      type="text/babel"
-      src="/__/firebase/7.14.2/firebase-auth.js"
-    ></script>
-    <script
-      type="text/babel"
-      src="/__/firebase/7.14.2/firebase-firestore.js"
-    ></script>
   </body>
-  <script
-    async
-    src="https://www.googletagmanager.com/gtag/js?id=UA-163288419-1"
-  ></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() {
-      dataLayer.push(arguments);
-    }
-    gtag("js", new Date());
-    gtag("config", "UA-163288419-1", {
-      site_speed_sample_rate: 1,
-      sample_rate: 1,
-    });
-  </script>
 </html>
