@@ -17,15 +17,6 @@ class World extends Component {
       toggleToday: true,
       toggleYesterday: false,
     };
-    this.onToggleToday = this.onToggleToday.bind(this);
-    this.onToggleYesterday = this.onToggleYesterday.bind(this);
-  }
-
-  onToggleToday(toggleToday) {
-    this.setState({ toggleToday });
-  }
-  onToggleYesterday(toggleYesterday) {
-    this.setState({ toggleYesterday });
   }
 
   componentDidMount() {
@@ -164,7 +155,7 @@ class World extends Component {
                 <td
                   style={{
                     textAlign: "center",
-                    background: "rgba(255, 7, 58, 0.125)",
+                    background: "rgba(247, 177, 177, 0.3)",
                     color: "rgb(255, 80, 100)",
                   }}
                 >
@@ -231,7 +222,7 @@ class World extends Component {
                 <td
                   style={{
                     textAlign: "center",
-                    background: "rgb(255, 80, 100, 0.2)",
+                    background: "rgba(247, 177, 177, 0.2)",
                     color: "rgb(255, 80, 100)",
                   }}
                 >
