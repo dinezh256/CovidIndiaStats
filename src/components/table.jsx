@@ -32,6 +32,11 @@ class Table extends Component {
       sortOrder: true,
       percentageToggleActive: false,
     };
+    this.onPercentageToggle = this.onPercentageToggle.bind(this);
+  }
+
+  onPercentageToggle(percentageToggleActive) {
+    this.setState({ percentageToggleActive });
   }
 
   componentDidMount() {
