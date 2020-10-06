@@ -756,11 +756,11 @@ class StateDetails extends Component {
     if (isLoaded) {
       if (beginning) {
         timelineLength = 0;
-        interval = 15;
+        interval = 25;
       }
       if (oneMonth) {
         timelineLength = lineTotalConfirmedData.length - 30;
-        interval = 2;
+        interval = 3;
       }
       if (twoWeeks) {
         timelineLength = lineTotalConfirmedData.length - 15;
