@@ -11,9 +11,9 @@ const months = {
   "07": "Jul",
   "08": "Aug",
   "09": "Sep",
-  "10": "Oct",
-  "11": "Nov",
-  "12": "Dec",
+  10: "Oct",
+  11: "Nov",
+  12: "Dec",
 };
 
 export const stateNavbarName = {
@@ -160,7 +160,7 @@ export function DeltaValue({ deltaType, color }) {
       {commaSeperated(Math.abs(Number(deltaType)))}
     </span>
   ) : (
-    <h6 style={{ fontSize: 4 }}>&nbsp;</h6>
+    ""
   );
 }
 
