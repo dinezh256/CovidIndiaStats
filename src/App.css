@@ -1219,13 +1219,6 @@ span.MuiBadge-colorSecondary {
   }
 }
 
-@font-face {
-  font-family: "notosans";
-  src: url(fonts/NotoSans-Bold.ttf);
-  font-style: normal;
-  font-weight: 800;
-}
-
 h1,
 h2,
 h3,
