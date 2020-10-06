@@ -703,7 +703,7 @@ class Table extends Component {
                       }}
                     >
                       <td className="td-md-left align-middle">
-                        <h6 style={{ fontSize: 12, marginTop: "6px" }}>
+                        <h6 style={{ fontSize: 11.5, marginTop: "6px" }}>
                           {item.state} &nbsp;
                           {item.statenotes ? (
                             <OverlayTrigger
