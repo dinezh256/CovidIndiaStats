@@ -155,7 +155,7 @@ class World extends Component {
                 <td
                   style={{
                     textAlign: "center",
-                    background: "rgba(247, 177, 177, 0.3)",
+                    background: "rgba(255, 7, 58, 0.125)",
                     color: "rgb(255, 80, 100)",
                   }}
                 >
@@ -222,7 +222,7 @@ class World extends Component {
                 <td
                   style={{
                     textAlign: "center",
-                    background: "rgba(247, 177, 177, 0.2)",
+                    background: "rgba(255, 7, 58, 0.125)",
                     color: "rgb(255, 80, 100)",
                   }}
                 >
