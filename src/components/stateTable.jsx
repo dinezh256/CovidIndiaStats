@@ -187,7 +187,7 @@ class StateTable extends Component {
             marginBottom: "12px",
           }}
         >
-          <StatePicker handleStateChange={this.handleStateChange} />
+          <StatePicker handleStateChange={this.handleStateChange} back={back}/>
         </div>
         <div className="w-100"></div>
         <div className="w-100"></div>
