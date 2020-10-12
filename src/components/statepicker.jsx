@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { indianstates } from "./API/index";
 
-const StatePicker = ({ handleStateChange }) => {
+const StatePicker = ({ handleStateChange, back }) => {
   const [fetchedStates, setStates] = useState([]);
 
   useEffect(() => {
@@ -17,7 +17,7 @@ const StatePicker = ({ handleStateChange }) => {
         className="formcontrol"
         onChange={(e) => handleStateChange(e.target.value)}
       >
-        <option value="" selected disabled>
+        <option value="" selected={!back} disabled>
           Select a State/UT
         </option>
         {fetchedStates.map((item, i) =>
