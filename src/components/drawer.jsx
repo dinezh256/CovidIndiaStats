@@ -9,7 +9,6 @@ import Divider from "@material-ui/core/Divider";
 import HomeRoundedIcon from "@material-ui/icons/HomeRounded";
 import MenuRoundedIcon from "@material-ui/icons/MenuRounded";
 import FlagRoundedIcon from "@material-ui/icons/FlagRounded";
-import DashboardRoundedIcon from "@material-ui/icons/DashboardRounded";
 import LinkRoundedIcon from "@material-ui/icons/LinkRounded";
 import ForumRoundedIcon from "@material-ui/icons/ForumRounded";
 import FacebookIcon from "@material-ui/icons/Facebook";
@@ -62,14 +61,6 @@ export default function SwipeableTemporaryDrawer() {
             <ListItemText primary={"Home"} />
           </ListItem>
         </NavLink>
-        <NavLink to="/indepth" className="sideBarItem">
-          <ListItem button key={"Indepth"}>
-            <ListItemIcon>
-              {<DashboardRoundedIcon fontSize="large" color="primary" />}
-            </ListItemIcon>
-            <ListItemText primary={"Indepth"} />
-          </ListItem>
-        </NavLink>
 
         <NavLink to="/dive" className="sideBarItem">
           <ListItem button key={"Dive"}>
@@ -105,11 +96,15 @@ export default function SwipeableTemporaryDrawer() {
         <br />
         <br />
         <br />
+        <br />
+
+        <br />
         <h6
           style={{
             alignContent: "center",
             justifyContent: "center",
             textAlign: "center",
+            marginTop: "8px",
           }}
         >
           <a

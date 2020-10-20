@@ -15,7 +15,6 @@ import ReactGa from "react-ga";
 import Navbar from "./components/navbar";
 
 const Home = lazy(() => import("./components/home"));
-const StateGraph = lazy(() => import("./components/stateGraph"));
 const World = lazy(() => import("./components/world"));
 const Options = lazy(() => import("./components/options"));
 const FAQ = lazy(() => import("./components/faq"));
@@ -47,7 +46,7 @@ function App() {
   const darkMode = useDarkMode(true);
 
   useEffect(() => {
-    ReactGa.initialize("UA-163288419-1");
+    ReactGa.initialize("UA-16328 8419-1");
     ReactGa.pageview(window.location.pathname + window.location.search);
   }, []);
 
@@ -73,7 +72,7 @@ function App() {
                   <Route path="/dive" component={World} />
                   <Route path="/links" component={Options} />
                   <Route path="/faq" component={FAQ} />
-                  <Route path="/indepth" component={StateGraph} />
+
                   <Route path="/not-found" component={NotFound} />
                   <Route path="/notifications" component={Notifications} />
                   <Route exact path="/" component={Home} />

@@ -5,7 +5,6 @@
 
 html,
 body {
-  overflow-x: hidden !important;
   scroll-behavior: smooth;
 }
 
@@ -571,6 +570,43 @@ span.MuiBadge-colorSecondary {
     padding-right: 30px;
     padding-left: 30px;
   }
+}
+
+.joinTelegram {
+  text-align: center;
+  margin: 15px auto -15px auto;
+}
+
+.telegramLink {
+  background: #3f51b5;
+  padding: 5px 10px;
+  border-radius: 15px;
+}
+
+@keyframes blink {
+  0% {
+    color: white;
+  }
+  50% {
+    color: #ced4da;
+  }
+  100% {
+    color: white;
+  }
+}
+
+.telegramLink > a {
+  animation: blink 2s linear infinite;
+}
+
+.telegramLink > a:hover {
+  color: white;
+  text-decoration: none;
+}
+
+.telegramIcon {
+  vertical-align: -0.15rem;
+  margin-right: 5px;
 }
 
 .timelineButton {

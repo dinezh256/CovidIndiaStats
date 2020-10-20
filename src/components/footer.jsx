@@ -91,36 +91,7 @@ const Footer = () => {
             </button>
           </a>
         </div>
-        <div align="center" className="col">
-          <a
-            href="https://Telegram.me/Allindia_covid"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <button
-              className="btn"
-              style={{
-                textAlign: "center",
-                color: "rgb(0, 136, 234)",
-                backgroundColor: "rgba(0, 136, 204, 0.1)",
-                marginTop: 5,
-                width: 180,
-                fontSize: 10,
-                alignContent: "center",
-                fontFamily: "notosans",
-              }}
-              onClick={() =>
-                ReactGa.event({
-                  category: "Telegram Clicked",
-                  action: "Telegram",
-                })
-              }
-            >
-              <Icon.Inbox size="15px" />
-              &ensp; INSTANT UPDATES ON TELEGRAM
-            </button>
-          </a>
-        </div>
+
         <div align="center" className="col">
           <a
             href="https://twitter.com/covidindiastats"

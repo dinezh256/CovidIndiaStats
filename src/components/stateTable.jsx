@@ -187,7 +187,7 @@ class StateTable extends Component {
             marginBottom: "12px",
           }}
         >
-          <StatePicker handleStateChange={this.handleStateChange} back={back}/>
+          <StatePicker handleStateChange={this.handleStateChange} back={back} />
         </div>
         <div className="w-100"></div>
         <div className="w-100"></div>
@@ -220,7 +220,7 @@ class StateTable extends Component {
                 </Link>
               </button>
             </div>
-            <div className="col-2 fadeInUp" style={{ animationDelay: "0.4s" }}>
+            <div className="col-2 fadeInUp" style={{ animationDelay: "0.35s" }}>
               <h6
                 className="backButton"
                 onClick={() => {

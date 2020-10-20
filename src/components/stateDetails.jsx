@@ -14,8 +14,7 @@ import {
   formatDate,
   formatDateAbsolute,
   commaSeperated,
-  DeltaArrow,
-  DeltaValue,
+  statePopulation,
   stateID,
   stateFullName,
 } from "../utils/common-functions";
@@ -1560,7 +1559,11 @@ class StateDetails extends Component {
                           this.props.match.params.stateid.toUpperCase()
                         ]
                       }
-                      population={expansionPanelDataPopulation}
+                      population={
+                        statePopulation[
+                          this.props.match.params.stateid.toUpperCase()
+                        ]
+                      }
                     />
                   </div>
                 </div>

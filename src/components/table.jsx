@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import * as Icon from "react-feather";
+import { FaTelegramPlane } from "react-icons/fa";
 import CountUp from "react-countup";
 import Updates from "./updates";
 import InfoOutlined from "@material-ui/icons/InfoOutlined";
@@ -476,14 +477,22 @@ class Table extends Component {
                 </tbody>
               </table>
             </div>
+
             <div className="w-100"></div>
-            <div className="container">
-              <div className="row" id="line2">
-                <Updates />
+            <div className="row">
+              <div className="col joinTelegram">
+                <h6>
+                  <span className="telegramLink">
+                    <a href="https://telegram.me/Allindia_covid">
+                      <FaTelegramPlane className="telegramIcon" /> INSTANT
+                      UPDATES
+                    </a>
+                  </span>
+                </h6>
               </div>
             </div>
             <div className="w-100"></div>
-            <div className="row" id="line1">
+            <div className="row">
               <Updates />
             </div>
             <div className="w-100"></div>
@@ -495,28 +504,7 @@ class Table extends Component {
                 marginTop: "-20px",
               }}
             >
-              <h5 style={{ color: "#3e4da3" }}>
-                INDIA - STATEWISE{" "}
-                <OverlayTrigger
-                  key={"bottom"}
-                  placement={"bottom"}
-                  overlay={
-                    <Tooltip id={`tooltip-${"bottom"}`}>
-                      <strong>
-                        {"Data tallied with State bulletins and MoHFW"}
-                      </strong>
-                    </Tooltip>
-                  }
-                >
-                  <span>
-                    <InfoOutlined
-                      color="inherit"
-                      fontSize="small"
-                      style={{ verticalAlign: "-0.15rem" }}
-                    />
-                  </span>
-                </OverlayTrigger>
-              </h5>
+              <h5 style={{ color: "#3e4da3" }}>INDIA - STATEWISE </h5>
               <div
                 className="col fadeInUp"
                 style={{ animationDelay: "1.8s", alignItems: "right" }}
@@ -552,7 +540,7 @@ class Table extends Component {
                     fontWeight: "bold",
                   }}
                 >
-                  &nbsp;%age
+                  &nbsp;%
                 </span>
               </div>
             </div>
