@@ -46,7 +46,7 @@ function App() {
   const darkMode = useDarkMode(true);
 
   useEffect(() => {
-    ReactGa.initialize("UA-16328 8419-1");
+    ReactGa.initialize("UA-163288419-1");
     ReactGa.pageview(window.location.pathname + window.location.search);
   }, []);
 
@@ -72,7 +72,6 @@ function App() {
                   <Route path="/dive" component={World} />
                   <Route path="/links" component={Options} />
                   <Route path="/faq" component={FAQ} />
-
                   <Route path="/not-found" component={NotFound} />
                   <Route path="/notifications" component={Notifications} />
                   <Route exact path="/" component={Home} />
