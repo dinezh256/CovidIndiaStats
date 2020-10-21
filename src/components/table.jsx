@@ -479,7 +479,7 @@ class Table extends Component {
             </div>
 
             <div className="w-100"></div>
-            <div className="row">
+            <div className="row fadeInUp" style={{ animationDelay: "1s" }}>
               <div className="col joinTelegram">
                 <h6>
                   <span className="telegramLink">
