@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import * as Icon from "react-feather";
-import { FaTelegramPlane } from "react-icons/fa";
+import { FaWallet } from "react-icons/fa";
 import CountUp from "react-countup";
 import Updates from "./updates";
 import InfoOutlined from "@material-ui/icons/InfoOutlined";
@@ -483,9 +483,8 @@ class Table extends Component {
               <div className="col joinTelegram">
                 <h6>
                   <span className="telegramLink">
-                    <a href="https://telegram.me/Allindia_covid">
-                      <FaTelegramPlane className="telegramIcon" /> INSTANT
-                      UPDATES
+                    <a href="https://www.buymeacoffee.com/covidindiastats">
+                      <FaWallet className="telegramIcon" /> DONATE US
                     </a>
                   </span>
                 </h6>
