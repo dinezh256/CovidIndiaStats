@@ -105,10 +105,7 @@ class Updates extends Component {
           >
             <span style={{ color: "#3f51b5" }}>
               <h4 className="updates font-weight-bold">
-                
-                
                 <span id="line1" style={{ color: "#3f51b5" }}>
-                  &nbsp;|{" "}
                   <NavLink to="/notifications" id="line1">
                     {!wasSeen ? (
                       <Badge
