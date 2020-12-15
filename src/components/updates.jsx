@@ -105,7 +105,17 @@ class Updates extends Component {
           >
             <span style={{ color: "#3f51b5" }}>
               <h4 className="updates font-weight-bold">
+                <span style={{ verticalAlign: "0.1rem", cursor: "pointer" }}>
+                  <AccessTimeRoundedIcon color="primary" fontSize="small" />
+                </span>
+                &nbsp;
+                <span style={{ color: "#3f51b5", textTransform: "uppercase" }}>
+                  {isNaN(Date.parse(formatDate(lastUpdated)))
+                    ? ""
+                    : formatDateAbsolute(lastUpdated)}
+                </span>
                 <span id="line1" style={{ color: "#3f51b5" }}>
+                  &nbsp;|{" "}
                   <NavLink to="/notifications" id="line1">
                     {!wasSeen ? (
                       <Badge
