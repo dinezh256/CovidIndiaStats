@@ -243,6 +243,7 @@ class Table extends Component {
                         end={Number(total[0].confirmed)}
                         duration={2}
                         separator=","
+                        formattingFn={num => num.toLocaleString()}
                       />
                     </h5>
                     <section
@@ -297,6 +298,7 @@ class Table extends Component {
                           end={Number(total[0].active)}
                           duration={2}
                           separator=","
+                          formattingFn={num => num.toLocaleString()}
                         />
                       ) : (
                         (
@@ -365,6 +367,7 @@ class Table extends Component {
                           end={Number(total[0].recovered)}
                           duration={2}
                           separator=","
+                          formattingFn={num => num.toLocaleString()}
                         />
                       ) : (
                         (
@@ -433,6 +436,7 @@ class Table extends Component {
                           end={Number(total[0].deaths)}
                           duration={2}
                           separator=","
+                          formattingFn={num => num.toLocaleString()}
                         />
                       ) : (
                         (
