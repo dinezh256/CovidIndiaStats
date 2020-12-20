@@ -239,7 +239,7 @@ class Table extends Component {
                       }}
                     >
                       <CountUp
-                        start={0}
+                        start={10000000}
                         end={Number(total[0].confirmed)}
                         duration={2}
                         separator=","
