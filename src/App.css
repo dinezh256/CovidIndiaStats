@@ -273,7 +273,7 @@ th.smallRow {
 }
 
 .th-md {
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   font-weight: 500;
   cursor: pointer;
   border-radius: 5px;
@@ -329,7 +329,6 @@ th.smallRow {
   font-size: 0.9rem;
   font-weight: 500;
   border-radius: 4px;
-
   word-wrap: break-word;
   color: slategrey !important;
   vertical-align: right !important;
@@ -337,7 +336,7 @@ th.smallRow {
 }
 @media only screen and (max-width: 360px) {
   .td-md {
-    font-size: 0.78rem;
+    font-size: 0.75rem;
   }
 }
 
