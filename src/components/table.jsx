@@ -488,7 +488,7 @@ class Table extends Component {
                 <h6>
                   <span className="telegramLink">
                     <a href="https://www.buymeacoffee.com/covidindiastats">
-                      <FaWallet className="telegramIcon" /> DONATE US
+                      <FaWallet className="telegramIcon" /> SUPPORT US
                     </a>
                   </span>
                 </h6>
