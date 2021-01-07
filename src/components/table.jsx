@@ -363,7 +363,7 @@ class Table extends Component {
                     >
                       {!percentageToggleActive ? (
                         <CountUp
-                          start={0}
+                          start={10000000}
                           end={Number(total[0].recovered)}
                           duration={2}
                           separator=","
