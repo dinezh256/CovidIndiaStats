@@ -4,7 +4,7 @@ Dashboard live on <a href="https://covidindiastats.com" >covidindiastats.com</a>
 
 Created using <a href="https://reactjs.org/" >Create-React-App</a>
 
-After cloning, you can run:
+After forking and cloning, you can run:
 
 # npm install
 
