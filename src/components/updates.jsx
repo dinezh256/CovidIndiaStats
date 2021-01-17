@@ -105,17 +105,8 @@ class Updates extends Component {
           >
             <span style={{ color: "#3f51b5" }}>
               <h4 className="updates font-weight-bold">
-<!--                 <span style={{ verticalAlign: "0.1rem", cursor: "pointer" }}>
-                  <AccessTimeRoundedIcon color="primary" fontSize="small" />
-                </span>
-                &nbsp;
-                <span style={{ color: "#3f51b5", textTransform: "uppercase" }}>
-<!--                   {isNaN(Date.parse(formatDate(lastUpdated)))
-                    ? ""
-                    : formatDateAbsolute(lastUpdated)} -->
-                </span> -->
+
                 <span id="line1" style={{ color: "#3f51b5" }}>
-                  &nbsp;|{" "}
                   <NavLink to="/notifications" id="line1">
                     {!wasSeen ? (
                       <Badge
@@ -289,7 +280,7 @@ class Updates extends Component {
                 )
               ) : (
                 <div
-                  className="alert hoveralert"
+                  className="alert hoveralert fadeInUp"
                   role="alert"
                   style={{
                     marginBottom: "5px",
@@ -297,12 +288,10 @@ class Updates extends Component {
                     background: "rgba(108,117,125,.0627451)",
                     boxShadow: "0 0 2px rgba(0,0,0,0.1)",
                     marginTop: "10px",
-                    animation: "ease-in",
-                    animationDuration: "1s",
                     cursor: "pointer",
                   }}
                 >
-                  <h6 style={{ fontSize: 12, color: "#3a3838" }}>
+                  <h6 style={{ fontSize: 12, color: "grey" }}>
                     {" "}
                     No new updates!
                   </h6>
