@@ -33,9 +33,9 @@ const schemaMarkup = {
 const GlobalStyle = createGlobalStyle`
   body {
     background-color: ${(props) =>
-      props.theme.mode === true ? "#161625" : "rgb(248, 248, 250)"};
+      props.theme.mode === true ? "#151520" : "rgb(248, 248, 250)"};
     color: ${(props) =>
-      props.theme.mode === true ? "rgb(248, 248, 250)" : "#161625"};
+      props.theme.mode === true ? "rgb(248, 248, 250)" : "#151520"};
   }
 `;
 
