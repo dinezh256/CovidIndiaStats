@@ -33,9 +33,9 @@ const schemaMarkup = {
 const GlobalStyle = createGlobalStyle`
   body {
     background-color: ${(props) =>
-      props.theme.mode === true ? "#151520" : "rgb(248, 248, 250)"};
+      props.theme.mode === true ? "#161616" : "rgb(248, 248, 250)"};
     color: ${(props) =>
-      props.theme.mode === true ? "rgb(248, 248, 250)" : "#151520"};
+      props.theme.mode === true ? "rgb(248, 248, 250)" : "#161616"};
   }
 `;
 
@@ -46,7 +46,7 @@ function App() {
   const darkMode = useDarkMode(true);
 
   useEffect(() => {
-    ReactGa.initialize("UA-163288419-1");
+    ReactGa.initialize("UA-16328 8419-1");
     ReactGa.pageview(window.location.pathname + window.location.search);
   }, []);
 
@@ -64,23 +64,21 @@ function App() {
       <Router history={history}>
         <Navbar darkMode={darkMode} />
         <ThemeProvider theme={{ mode: darkMode.value }}>
-          <>
-            <GlobalStyle />
-            <Suspense fallback={<div />}>
-              <main className="container">
-                <Switch>
-                  <Route path="/dive" component={World} />
-                  <Route path="/links" component={Options} />
-                  <Route path="/faq" component={FAQ} />
-                  <Route path="/not-found" component={NotFound} />
-                  <Route path="/notifications" component={Notifications} />
-                  <Route exact path="/" component={Home} />
-                  <Route path="/:stateid?" component={StateDetails} />
-                  <Redirect to="/not-found" />
-                </Switch>
-              </main>
-            </Suspense>
-          </>
+          <GlobalStyle />
+          <Suspense fallback={<div />}>
+            <main className="container">
+              <Switch>
+                <Route path="/dive" component={World} />
+                <Route path="/links" component={Options} />
+                <Route path="/faq" component={FAQ} />
+                <Route path="/not-found" component={NotFound} />
+                <Route path="/notifications" component={Notifications} />
+                <Route exact path="/" component={Home} />
+                <Route path="/:stateid?" component={StateDetails} />
+                <Redirect to="/not-found" />
+              </Switch>
+            </main>
+          </Suspense>
         </ThemeProvider>
       </Router>
     </React.Fragment>

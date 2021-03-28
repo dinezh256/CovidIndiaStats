@@ -69,7 +69,7 @@ const Choropleth = ({ data, colorLow, colorHigh, type, borderColor }) => {
   };
 
   return (
-    <div className="container choropleth">
+    <div className="choropleth">
       <ReactTooltip multiline={true}>{tooltipContent}</ReactTooltip>
       <ComposableMap
         projectionConfig={PROJECTION_CONFIG}

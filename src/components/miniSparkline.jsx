@@ -49,11 +49,10 @@ const MiniSparkline = ({
   fill,
   stroke,
   datakey,
-  width,
 }) => {
   const lineKey = ["confirmed", "active", "recovered", "deceased"];
   return (
-    <ResponsiveContainer width={width} height="100%" aspect={2.25}>
+    <ResponsiveContainer width="98%" height="100%" aspect={2.25}>
       <LineChart data={sparklinedata} syncId="line2">
         <YAxis domain={[min, max]} hide={true} />
         <Tooltip

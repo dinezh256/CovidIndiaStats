@@ -25,15 +25,13 @@ class Navbar extends Component {
 
   componentDidMount() {
     this.props.history.listen(() => {
-      {
-        stateNavbarName.hasOwnProperty(window.location.pathname.toUpperCase())
-          ? this.changeTitle(
-              stateNavbarName[
-                window.location.pathname.toUpperCase()
-              ].toUpperCase()
-            )
-          : this.changeTitle("COVID INDIA STATS");
-      }
+      stateNavbarName.hasOwnProperty(window.location.pathname.toUpperCase())
+        ? this.changeTitle(
+            stateNavbarName[
+              window.location.pathname.toUpperCase()
+            ].toUpperCase()
+          )
+        : this.changeTitle("COVID INDIA STATS");
     });
   }
 

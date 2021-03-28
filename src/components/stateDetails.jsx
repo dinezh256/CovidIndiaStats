@@ -18,7 +18,6 @@ import {
   stateID,
   stateFullName,
 } from "../utils/common-functions";
-import parse from "html-react-parser";
 import {
   LineChart,
   Line,
@@ -152,7 +151,6 @@ class StateDetails extends Component {
       isLoaded,
       totalStateData,
       totalStateDataLoaded,
-      requiredData,
       statesDailyData,
       statesDailyDataLoaded,
       testData,
@@ -163,7 +161,6 @@ class StateDetails extends Component {
       toggleRecovered,
       toggleDeceased,
       toggleSwitch,
-      viewTable,
       viewAll,
       beginning,
       twoWeeks,
@@ -755,7 +752,7 @@ class StateDetails extends Component {
     if (isLoaded) {
       if (beginning) {
         timelineLength = 0;
-        interval = 40;
+        interval = 25;
       }
       if (oneMonth) {
         timelineLength = lineTotalConfirmedData.length - 30;
@@ -780,15 +777,15 @@ class StateDetails extends Component {
       requiredStateTotalData[0].deceased = requiredStateTotalData[0].deaths;
     }
 
-    const notADistrict = [
-      "Unknown",
-      "Foreign Evacuees",
-      "Other State",
-      "Italians",
-      "BSF Camp",
-      "Evacuees",
-      "Others",
-    ];
+    // const notADistrict = [
+    //   "Unknown",
+    //   "Foreign Evacuees",
+    //   "Other State",
+    //   "Italians",
+    //   "BSF Camp",
+    //   "Evacuees",
+    //   "Others",
+    // ];
 
     if (
       isLoaded &&
@@ -2586,7 +2583,6 @@ class StateDetails extends Component {
                                   strokeWidth: 0.2,
                                 }}
                                 interval={interval}
-                                axisLine={{ color: "#6471b3" }}
                                 style={{
                                   fontSize: "0.62rem",
                                   fontFamily: "notosans",

@@ -23,6 +23,21 @@ import {
 } from "../utils/common-functions";
 import ReactGa from "react-ga";
 
+const months2 = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+
 class Graph extends Component {
   constructor(props) {
     super(props);
@@ -30,7 +45,9 @@ class Graph extends Component {
       data: [],
       data2: [],
       tests: [],
+      totalTestsData: [],
       isLoaded: false,
+      isLoaded2: false,
       toggleActive: false,
       clickConfirmedMap: false,
       clickActiveMap: true,
@@ -87,15 +104,40 @@ class Graph extends Component {
         });
       })
     );
+
+    fetch("https://api.covid19india.org/v4/timeseries.json").then((res) =>
+      res.json().then((json) => {
+        const { totalTestsData } = this.state;
+        const totalData = json.TT.dates;
+
+        for (let key in totalData) {
+          totalTestsData.push({
+            testedasof: key,
+            deltaSamplestested:
+              totalData[key]?.delta?.tested || ""
+                ? totalData[key]?.delta?.tested
+                : 0,
+            totalsamplestested:
+              totalData[key]?.total?.tested || ""
+                ? totalData[key]?.total?.tested
+                : 0,
+          });
+        }
+
+        this.setState({ totalTestsData, isLoaded2: true });
+      })
+    );
   }
 
   render() {
     const {
       isLoaded,
+      isLoaded2,
       data,
       data2,
       toggleActive,
       tests,
+      totalTestsData,
       clickConfirmedMap,
       clickActiveMap,
       clickRecoveredMap,
@@ -105,7 +147,7 @@ class Graph extends Component {
       oneMonth,
     } = this.state;
 
-    const graphClass = window.innerWidth < 767 ? "" : "container";
+    console.log({ data });
 
     const dailyConfirmed = [];
     data.map((item) => dailyConfirmed.push(Number(item.dailyconfirmed)));
@@ -161,7 +203,13 @@ class Graph extends Component {
     data.map((item) => totalDeceased.push(Number(item.totaldeceased)));
 
     const date = [];
-    data.map((item) => date.push(item.date));
+    data.map((item) =>
+      date.push(
+        `${item.dateymd.split("-")[2]} ${
+          months2[Number(item.dateymd.split("-")[1]) - 1]
+        } ${item.dateymd.split("-")[0]}`
+      )
+    );
 
     const confirmedStatesData = [];
     data2.map((item) =>
@@ -205,125 +253,53 @@ class Graph extends Component {
       }
     });
 
-    const months2 = [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
-    ];
-
     const totalSamplesTested = [];
-    tests.map((item) =>
+    totalTestsData.map((item) =>
       totalSamplesTested.push(Number(item.totalsamplestested))
     );
 
     const testedDates = [];
     const testedData = [];
+    const dailyTestedData = [];
 
-    tests.map((item) => {
-      if (Number(item.totalsamplestested)) {
-        testedData.push(item.totalsamplestested);
-        testedDates.push(
-          `${item.updatetimestamp.split(/\//)[0]} ${
-            months2[
-              new Date([
-                item.updatetimestamp.split(/\//)[1],
-                item.updatetimestamp.split(/\//)[0],
-                item.updatetimestamp.split(/\//)[2],
-              ]).getMonth()
-            ]
-          } `
-        );
-      }
+    totalTestsData.map((item) => {
+      testedData.push(item.totalsamplestested);
+      dailyTestedData.push(item.deltaSamplestested);
+      testedDates.push(
+        `${item.testedasof.split("-")[2]} ${
+          months2[Number(item.testedasof.split("-")[1]) - 1]
+        } ${item.testedasof.split("-")[0]}`
+      );
     });
-
-    const removeItemIndices = [2, 4, 6, 8, 10, 12, 14, 16];
-    for (let i = removeItemIndices.length - 1; i >= 0; i--) {
-      testedData.splice(removeItemIndices[i], 1);
-      testedDates.splice(removeItemIndices[i], 1);
-    }
 
     const cumulativeDateFormattedTests = [];
 
     for (let i = 0; i < date.length; i++) {
-      if (testedDates.includes(date[i])) {
-        const index = testedDates.indexOf(date[i]);
-        cumulativeDateFormattedTests.push({
-          totaltested: testedData[index],
-          date: date[i],
-        });
-      } else
-        cumulativeDateFormattedTests.push({ totaltested: "-", date: date[i] });
+      const index = testedDates.indexOf(date[i]);
+      cumulativeDateFormattedTests.push({
+        totaltested: testedData[index],
+        date: `${date[i]?.split(" ")[0]} ${date[i]?.split(" ")[1]}`,
+      });
     }
 
     const dateFormattedTests = [];
 
     for (let i = 0; i < date.length; i++) {
-      if (testedDates.includes(date[i])) {
-        const index = testedDates.indexOf(date[i]);
-        dateFormattedTests.push({
-          totaltested: testedData[index],
-          date: date[i],
-        });
-      } else dateFormattedTests.push({ totaltested: 0, date: date[i] });
+      const index = testedDates.indexOf(date[i]);
+      dateFormattedTests.push({
+        totaltested: testedData[index],
+        deltaSamplestested: dailyTestedData[index],
+        date: date[i],
+      });
     }
 
     const dailyDateFormattedTests = [];
-    let previousData = 0;
 
     for (let i = 0; i < dateFormattedTests.length; i++) {
-      if (i === 0) {
-        dailyDateFormattedTests.push({
-          dailytested: dateFormattedTests[i].totaltested,
-          date: dateFormattedTests[i].date,
-        });
-      } else {
-        if (
-          dateFormattedTests[i].totaltested &&
-          dateFormattedTests[i - 1].totaltested
-        ) {
-          dailyDateFormattedTests.push({
-            dailytested:
-              dateFormattedTests[i].totaltested -
-              dateFormattedTests[i - 1].totaltested,
-            date: dateFormattedTests[i].date,
-          });
-          previousData = dateFormattedTests[i].totaltested;
-        } else if (
-          dateFormattedTests[i].totaltested === 0 &&
-          dateFormattedTests[i - 1].totaltested === 0
-        ) {
-          dailyDateFormattedTests.push({
-            dailytested: 0,
-            date: dateFormattedTests[i].date,
-          });
-        } else if (
-          dateFormattedTests[i].totaltested !== 0 &&
-          dateFormattedTests[i - 1].totaltested === 0
-        ) {
-          dailyDateFormattedTests.push({
-            dailytested: dateFormattedTests[i].totaltested - previousData,
-            date: dateFormattedTests[i].date,
-          });
-          previousData = dateFormattedTests[i].totaltested;
-        } else if (
-          dateFormattedTests[i].totaltested === 0 &&
-          dateFormattedTests[i - 1].totaltested !== 0
-        ) {
-          dailyDateFormattedTests.push({
-            dailytested: 0,
-            date: dateFormattedTests[i].date,
-          });
-        }
-      }
+      dailyDateFormattedTests.push({
+        dailytested: dateFormattedTests[i].deltaSamplestested,
+        date: `${date[i]?.split(" ")[0]} ${date[i]?.split(" ")[1]}`,
+      });
     }
 
     let timelineLength = 0;
@@ -340,292 +316,268 @@ class Graph extends Component {
       }
     }
 
-    if (isLoaded) {
-      const lastUpdatedTime = timeSince(
-        new Date(formatDate(grandTotal[0].lastupdatedtime)).getTime()
-      );
-
+    if (isLoaded && isLoaded2) {
       return (
-        <React.Fragment>
-          <div className={graphClass}>
+        <>
+          <div>
             <div
               className="row"
-              style={{
-                justifyContent: "center",
-                marginBottom: "25px",
-              }}
+              style={{ justifyContent: "center", marginBottom: "25px" }}
             >
-              {" "}
               <WorldHomeCard />
             </div>
             <div className="w-100"></div>
 
             <div className="row">
-              <div className="col-8">
+              <div className="indiaMapHead">
                 <h4
                   className="fadeInUp"
                   style={{
                     justifyContent: "left",
                     textAlign: "left",
-                    animationDelay: "2.2s",
+                    animationDelay: "2s",
                     marginBottom: "15px",
                   }}
                 >
-                  INDIA
+                  INDIA MAP
                 </h4>
-              </div>
-
-              <div
-                className="col-4 fadeInUp"
-                style={{
-                  animationDelay: "2.2s",
-                }}
-              >
-                <h6 className="testpad">
-                  SAMPLES TESTED
-                  <h6 style={{ fontSize: 14 }}>
-                    {commaSeperated(
-                      totalSamplesTested[totalSamplesTested.length - 1]
-                    )}
-                    <h6 style={{ fontSize: 10 }}>
-                      <Icon.PlusCircle
-                        size={9}
-                        strokeWidth={3}
-                        fill="rgba(106, 68, 255, 0.2)"
-                        style={{ verticalAlign: -1 }}
-                      />{" "}
+                <div
+                  className="fadeInUp testpad"
+                  style={{ animationDelay: "2.2s" }}
+                >
+                  <h6>
+                    SAMPLES TESTED
+                    <h6 style={{ fontSize: 14 }}>
                       {commaSeperated(
-                        totalSamplesTested[totalSamplesTested.length - 1] -
-                          totalSamplesTested[totalSamplesTested.length - 2]
+                        totalSamplesTested[totalSamplesTested.length - 1]
                       )}
+                      <h6 style={{ fontSize: 10 }}>
+                        <Icon.PlusCircle
+                          size={9}
+                          strokeWidth={3}
+                          fill="rgba(106, 68, 255, 0.2)"
+                          style={{ verticalAlign: -1 }}
+                        />{" "}
+                        {commaSeperated(
+                          totalSamplesTested[totalSamplesTested.length - 1] -
+                            totalSamplesTested[totalSamplesTested.length - 2]
+                        )}
+                      </h6>
                     </h6>
                   </h6>
-                </h6>
-              </div>
-
-              <div className="w-100"></div>
-              <div
-                className="fadeInUp toggle-map container"
-                style={{ animationDelay: "2.3s" }}
-              >
-                <div className="row row-cols-4 mapTabs">
-                  <div
-                    className="col"
-                    onClick={() => {
-                      this.setState({
-                        clickConfirmedMap: true,
-                        clickActiveMap: false,
-                        clickRecoveredMap: false,
-                        clickDeceasedMap: false,
-                      });
-                    }}
-                  >
-                    <h6
-                      className="pad"
-                      style={{
-                        color: "rgb(66, 179, 244)",
-                        background: `${
-                          clickConfirmedMap
-                            ? "rgba(66, 179, 244, 0.3)"
-                            : "rgba(66, 179, 244, 0.125)"
-                        }`,
-                      }}
-                    >
-                      CONFIRMED
-                      <h6 style={{ fontSize: 14 }}>
-                        {commaSeperated(grandTotal[0].confirmed)}
-                        <h6 style={{ fontSize: 10 }}>
-                          {Number(grandTotal[0].deltaconfirmed) > 0 ? (
-                            <Icon.PlusCircle
-                              size={9}
-                              strokeWidth={3}
-                              fill="rgba(23, 162, 184, 0.2)"
-                              style={{ verticalAlign: -1 }}
-                            />
-                          ) : (
-                            <Icon.Meh
-                              size={9}
-                              strokeWidth={3}
-                              fill="rgba(23, 162, 184, 0.2)"
-                              style={{ verticalAlign: -1 }}
-                            />
-                          )}
-                          {Number(grandTotal[0].deltaconfirmed) > 0
-                            ? " " + commaSeperated(grandTotal[0].deltaconfirmed)
-                            : ""}
-                        </h6>
-                      </h6>
-                    </h6>
-                  </div>
-                  <div
-                    className="col"
-                    onClick={() => {
-                      this.setState({
-                        clickConfirmedMap: false,
-                        clickActiveMap: true,
-                        clickRecoveredMap: false,
-                        clickDeceasedMap: false,
-                      });
-                    }}
-                  >
-                    <h6
-                      className="pad"
-                      style={{
-                        color: "rgb(255, 80, 100)",
-                        backgroundColor: `${
-                          clickActiveMap
-                            ? "rgba(255, 7, 58, 0.25)"
-                            : "rgba(255, 7, 58, 0.125)"
-                        }`,
-                      }}
-                    >
-                      ACTIVE
-                      <h6 style={{ fontSize: 14 }}>
-                        {commaSeperated(grandTotal[0].active)}
-                        <h6 style={{ fontSize: 10 }}>
-                          {Number(grandTotal[0].deltaconfirmed) -
-                            Number(grandTotal[0].deltarecovered) -
-                            Number(grandTotal[0].deltadeaths) >
-                          0 ? (
-                            <Icon.PlusCircle
-                              size={9}
-                              strokeWidth={3}
-                              fill="rgba(255, 68, 106, 0.2)"
-                              style={{ verticalAlign: -1 }}
-                            />
-                          ) : (
-                            <Icon.Heart
-                              size={9}
-                              strokeWidth={3}
-                              fill="rgba(255, 68, 106, 0.4)"
-                              style={{ verticalAlign: -1 }}
-                            />
-                          )}{" "}
-                          {Number(grandTotal[0].deltaconfirmed) -
-                            Number(grandTotal[0].deltarecovered) -
-                            Number(grandTotal[0].deltadeaths) >
-                          0
-                            ? " " +
-                              commaSeperated(
-                                Number(grandTotal[0].deltaconfirmed) -
-                                  Number(grandTotal[0].deltarecovered) -
-                                  Number(grandTotal[0].deltadeaths)
-                              )
-                            : ""}
-                        </h6>
-                      </h6>
-                    </h6>
-                  </div>
-                  <div
-                    className="col"
-                    onClick={() => {
-                      this.setState({
-                        clickActiveMap: false,
-                        clickConfirmedMap: false,
-                        clickRecoveredMap: true,
-                        clickDeceasedMap: false,
-                      });
-                    }}
-                  >
-                    <h6
-                      className="text-success pad"
-                      style={{
-                        background: `${
-                          clickRecoveredMap
-                            ? "rgba(88, 189, 88, 0.3)"
-                            : "rgba(88, 189, 88, 0.125)"
-                        }`,
-                      }}
-                    >
-                      RECOVERED
-                      <h6 style={{ fontSize: 14 }}>
-                        {commaSeperated(grandTotal[0].recovered)}
-                        <h6 style={{ fontSize: 10 }}>
-                          {Number(grandTotal[0].deltarecovered) > 0 ? (
-                            <Icon.PlusCircle
-                              size={9}
-                              strokeWidth={3}
-                              fill="rgba(23, 162, 184, 0.2)"
-                              style={{ verticalAlign: -1 }}
-                            />
-                          ) : (
-                            <Icon.Smile
-                              size={9}
-                              strokeWidth={3}
-                              fill="rgba(23, 162, 184, 0.2)"
-                              style={{ verticalAlign: -1 }}
-                            />
-                          )}
-                          {Number(grandTotal[0].deltarecovered) > 0
-                            ? " " + commaSeperated(grandTotal[0].deltarecovered)
-                            : ""}
-                        </h6>
-                      </h6>
-                    </h6>
-                  </div>
-                  <div
-                    className="col"
-                    onClick={() => {
-                      this.setState({
-                        clickActiveMap: false,
-                        clickRecoveredMap: false,
-                        clickConfirmedMap: false,
-                        clickDeceasedMap: true,
-                      });
-                    }}
-                  >
-                    <h6
-                      className="text-secondary pad"
-                      style={{
-                        background: `${
-                          clickDeceasedMap
-                            ? "rgba(92, 87, 86, 0.4)"
-                            : "rgba(92, 87, 86, 0.125)"
-                        }`,
-                        cursor: "pointer",
-                      }}
-                    >
-                      DECEASED
-                      <h6 style={{ fontSize: 14 }}>
-                        {commaSeperated(grandTotal[0].deaths)}
-                        <h6 style={{ fontSize: 10 }}>
-                          {Number(grandTotal[0].deltadeaths) > 0 ? (
-                            <Icon.PlusCircle
-                              size={9}
-                              strokeWidth={3}
-                              fill="rgba(179, 173, 173, 0.1)"
-                              style={{ verticalAlign: -1 }}
-                            />
-                          ) : (
-                            <Icon.Meh
-                              size={9}
-                              strokeWidth={3}
-                              fill="rgba(179, 173, 173, 0.1)"
-                              style={{ verticalAlign: -1 }}
-                            />
-                          )}{" "}
-                          {Number(grandTotal[0].deltadeaths) > 0
-                            ? " " + commaSeperated(grandTotal[0].deltadeaths)
-                            : ""}
-                        </h6>
-                      </h6>
-                    </h6>
-                  </div>
                 </div>
               </div>
 
               <div className="w-100"></div>
               <div
-                className="col fadeInUp"
-                style={{
-                  justifyContent: "left",
-                  animationDelay: "2.35s",
-                }}
+                className="fadeInUp toggle-map"
+                style={{ animationDelay: "2.05s" }}
               >
-                <h1 className="lastUpdatedIndiaMap">
+                <div
+                  className="mapTabs"
+                  onClick={() => {
+                    this.setState({
+                      clickConfirmedMap: true,
+                      clickActiveMap: false,
+                      clickRecoveredMap: false,
+                      clickDeceasedMap: false,
+                    });
+                  }}
+                  style={{
+                    color: "rgb(66, 179, 244)",
+                    background: `${
+                      clickConfirmedMap
+                        ? "rgba(66, 179, 244, 0.3)"
+                        : "rgba(66, 179, 244, 0.125)"
+                    }`,
+                  }}
+                >
+                  <h6 className="pad">
+                    CONFIRMED
+                    <h6 style={{ fontSize: 14 }}>
+                      {commaSeperated(grandTotal[0].confirmed)}
+                      <h6 style={{ fontSize: 10 }}>
+                        {Number(grandTotal[0].deltaconfirmed) > 0 ? (
+                          <Icon.PlusCircle
+                            size={9}
+                            strokeWidth={3}
+                            fill="rgba(23, 162, 184, 0.2)"
+                            style={{ verticalAlign: -1 }}
+                          />
+                        ) : (
+                          <Icon.Meh
+                            size={9}
+                            strokeWidth={3}
+                            fill="rgba(23, 162, 184, 0.2)"
+                            style={{ verticalAlign: -1 }}
+                          />
+                        )}
+                        {Number(grandTotal[0].deltaconfirmed) > 0
+                          ? " " + commaSeperated(grandTotal[0].deltaconfirmed)
+                          : ""}
+                      </h6>
+                    </h6>
+                  </h6>
+                </div>
+                <div
+                  className="mapTabs"
+                  onClick={() => {
+                    this.setState({
+                      clickConfirmedMap: false,
+                      clickActiveMap: true,
+                      clickRecoveredMap: false,
+                      clickDeceasedMap: false,
+                    });
+                  }}
+                  style={{
+                    color: "rgb(255, 80, 100)",
+                    backgroundColor: `${
+                      clickActiveMap
+                        ? "rgba(255, 7, 58, 0.25)"
+                        : "rgba(255, 7, 58, 0.125)"
+                    }`,
+                  }}
+                >
+                  <h6 className="pad">
+                    ACTIVE
+                    <h6 style={{ fontSize: 14 }}>
+                      {commaSeperated(grandTotal[0].active)}
+                      <h6 style={{ fontSize: 10 }}>
+                        {Number(grandTotal[0].deltaconfirmed) -
+                          Number(grandTotal[0].deltarecovered) -
+                          Number(grandTotal[0].deltadeaths) >
+                        0 ? (
+                          <Icon.PlusCircle
+                            size={9}
+                            strokeWidth={3}
+                            fill="rgba(255, 68, 106, 0.2)"
+                            style={{ verticalAlign: -1 }}
+                          />
+                        ) : (
+                          <Icon.Heart
+                            size={9}
+                            strokeWidth={3}
+                            fill="rgba(255, 68, 106, 0.4)"
+                            style={{ verticalAlign: -1 }}
+                          />
+                        )}{" "}
+                        {Number(grandTotal[0].deltaconfirmed) -
+                          Number(grandTotal[0].deltarecovered) -
+                          Number(grandTotal[0].deltadeaths) >
+                        0
+                          ? " " +
+                            commaSeperated(
+                              Number(grandTotal[0].deltaconfirmed) -
+                                Number(grandTotal[0].deltarecovered) -
+                                Number(grandTotal[0].deltadeaths)
+                            )
+                          : ""}
+                      </h6>
+                    </h6>
+                  </h6>
+                </div>
+                <div
+                  className="mapTabs"
+                  onClick={() => {
+                    this.setState({
+                      clickActiveMap: false,
+                      clickConfirmedMap: false,
+                      clickRecoveredMap: true,
+                      clickDeceasedMap: false,
+                    });
+                  }}
+                  style={{
+                    background: `${
+                      clickRecoveredMap
+                        ? "rgba(88, 189, 88, 0.3)"
+                        : "rgba(88, 189, 88, 0.125)"
+                    }`,
+                  }}
+                >
+                  <h6 className="text-success pad">
+                    RECOVERED
+                    <h6 style={{ fontSize: 14 }}>
+                      {commaSeperated(grandTotal[0].recovered)}
+                      <h6 style={{ fontSize: 10 }}>
+                        {Number(grandTotal[0].deltarecovered) > 0 ? (
+                          <Icon.PlusCircle
+                            size={9}
+                            strokeWidth={3}
+                            fill="rgba(23, 162, 184, 0.2)"
+                            style={{ verticalAlign: -1 }}
+                          />
+                        ) : (
+                          <Icon.Smile
+                            size={9}
+                            strokeWidth={3}
+                            fill="rgba(23, 162, 184, 0.2)"
+                            style={{ verticalAlign: -1 }}
+                          />
+                        )}
+                        {Number(grandTotal[0].deltarecovered) > 0
+                          ? " " + commaSeperated(grandTotal[0].deltarecovered)
+                          : ""}
+                      </h6>
+                    </h6>
+                  </h6>
+                </div>
+                <div
+                  className="mapTabs"
+                  onClick={() => {
+                    this.setState({
+                      clickActiveMap: false,
+                      clickRecoveredMap: false,
+                      clickConfirmedMap: false,
+                      clickDeceasedMap: true,
+                    });
+                  }}
+                  style={{
+                    background: `${
+                      clickDeceasedMap
+                        ? "rgba(92, 87, 86, 0.4)"
+                        : "rgba(92, 87, 86, 0.125)"
+                    }`,
+                    cursor: "pointer",
+                  }}
+                >
+                  <h6 className="text-secondary pad">
+                    DECEASED
+                    <h6 style={{ fontSize: 14 }}>
+                      {commaSeperated(grandTotal[0].deaths)}
+                      <h6 style={{ fontSize: 10 }}>
+                        {Number(grandTotal[0].deltadeaths) > 0 ? (
+                          <Icon.PlusCircle
+                            size={9}
+                            strokeWidth={3}
+                            fill="rgba(179, 173, 173, 0.1)"
+                            style={{ verticalAlign: -1 }}
+                          />
+                        ) : (
+                          <Icon.Meh
+                            size={9}
+                            strokeWidth={3}
+                            fill="rgba(179, 173, 173, 0.1)"
+                            style={{ verticalAlign: -1 }}
+                          />
+                        )}{" "}
+                        {Number(grandTotal[0].deltadeaths) > 0
+                          ? " " + commaSeperated(grandTotal[0].deltadeaths)
+                          : ""}
+                      </h6>
+                    </h6>
+                  </h6>
+                </div>
+              </div>
+
+              <div className="w-100"></div>
+              <div
+                className="col fadeInUp indiaMapChoropleth"
+                style={{ justifyContent: "left", animationDelay: "2.1s" }}
+              >
+                {/* <h1 className="lastUpdatedIndiaMap">
                   Last Updated
                   <h6>about {lastUpdatedTime}</h6>
-                </h1>
+                </h1> */}
                 {clickConfirmedMap && (
                   <Choropleth
                     data={confirmedStatesData.slice(
@@ -732,20 +684,14 @@ class Graph extends Component {
               >
                 <div
                   className="home-toggle float-right"
-                  style={{
-                    marginTop: "10px",
-                  }}
+                  style={{ marginTop: "10px" }}
                 >
                   <Switch
                     className="react-switch"
                     onChange={this.onToggle}
-                    onClick={ReactGa.event({
-                      category: "Switch",
-                      action: "Switch clicked",
-                    })}
                     checked={toggleActive}
-                    onColor="#2f8dd4c5"
-                    onHandleColor="#114f7eab"
+                    onColor="#2f8dd4"
+                    onHandleColor="#114f7e"
                     handleDiameter={11}
                     uncheckedIcon={false}
                     checkedIcon={false}
@@ -955,7 +901,7 @@ class Graph extends Component {
                               fontFamily: "notosans",
                             }}
                             tickSize={5}
-                            tickCount={8}
+                            tickCount={5}
                             axisLine={{
                               stroke: "#6471b3",
                               strokeWidth: "1.5px",
@@ -1183,7 +1129,7 @@ class Graph extends Component {
                               fontFamily: "notosans",
                             }}
                             tickSize={5}
-                            tickCount={8}
+                            tickCount={5}
                             axisLine={{
                               stroke: "#6471b3",
                               strokeWidth: "1.5px",
@@ -1252,7 +1198,7 @@ class Graph extends Component {
               <div className="w-100"></div>
             </div>
           </div>
-        </React.Fragment>
+        </>
       );
     } else {
       return null;

@@ -144,17 +144,6 @@ a#line2.active:hover {
   font-size: 1.3rem !important;
 }
 
-.containerHome {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  padding-right: 8px !important;
-  padding-left: 8px !important;
-  margin-right: auto;
-  margin-left: auto;
-}
-
 .containerWorld {
   display: flex;
   align-items: center;
@@ -261,8 +250,12 @@ th.smallRow {
   padding: 0;
 }
 
+.align-middle {
+  margin-bottom: -5px;
+}
+
 .th {
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   font-weight: 500;
   cursor: pointer;
   border-radius: 5px;
@@ -273,7 +266,7 @@ th.smallRow {
 }
 
 .th-md {
-  font-size: 0.78rem;
+  font-size: 0.8rem;
   font-weight: 500;
   cursor: pointer;
   border-radius: 5px;
@@ -298,21 +291,19 @@ th.smallRow {
   transition: linear 0.5s;
 }
 
+.table tbody tr td {
+  border-radius: 4px;
+
+}
+
 .table tbody tr:hover {
   background: rgba(63, 63, 95, 0.2);
-
   cursor: pointer;
   transition: linear 0.2s;
 }
 
-.align-middle {
-  margin-bottom: -15px !important;
-}
-
-@media only screen and (min-width: 768px) {
-  .tableBigScreen {
-    max-width: 93.5%;
-  }
+.statewiseTable::-webkit-scrollbar {
+  width: 0px;
 }
 
 .tdleft {
@@ -329,6 +320,7 @@ th.smallRow {
   font-size: 0.9rem;
   font-weight: 500;
   border-radius: 4px;
+
   word-wrap: break-word;
   color: slategrey !important;
   vertical-align: right !important;
@@ -336,27 +328,38 @@ th.smallRow {
 }
 @media only screen and (max-width: 360px) {
   .td-md {
-    font-size: 0.75rem;
+    font-size: 0.78rem;
   }
 }
 
 .td-md-left {
-  min-width: 120px;
-  border-radius: 4px !important;
+  min-width: 140px;
   color: slateblue !important;
   font-family: notosans;
   display: flex;
-  border-left: 1px solid;
+  align-items: center;
   justify-content: space-between;
-  text-overflow: ellipsis;
+  border-radius: 8px;
+ }
+
+.td-md-left > a,
+a:hover {
+  vertical-align: middle;
+  text-decoration: none !important;
+  color: slateblue !important;
 }
+
+.td-md-left > a > h6 {
+  font-size: 0.9rem;
+}
+
 .td-md-left > h6 {
-  font-size: 0.8rem;
+  font-size: 0.9rem;
 }
 
 .infoIcon {
   margin-left: 5px;
-  vertical-align: -0.55rem;
+  /* vertical-align: -0.55rem; */
 }
 
 .trend {
@@ -383,16 +386,17 @@ th.smallRow {
 
 .formcontrol {
   display: block;
-  width: 100%;
+  width: calc(100% - 30px);
+  margin: auto;
   font-family: notosans;
-  height: calc(1.5em + 0.5rem + 2px);
-  padding: 0.25rem 0.5rem;
-  font-size: 0.75rem;
+  height: 2.5rem;
+  padding: 0.25rem 0.55rem;
+  font-size: 1rem;
   font-weight: 400;
   line-height: 1.5;
   background-clip: padding-box;
   border: 1px solid #ced4da;
-  border-radius: 0.25rem;
+  border-radius: 0.5rem;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
@@ -535,10 +539,9 @@ span.MuiBadge-colorSecondary {
   color: navy;
 }
 
-@media only screen and (min-width: 768px) {
-  .worldHomeCard {
-    width: 95%;
-  }
+.worldHomeCard {
+  width: calc(100% - 15px);
+  margin: auto;
 }
 
 .graph-head {
@@ -558,28 +561,54 @@ span.MuiBadge-colorSecondary {
 }
 
 .home {
-  padding-right: 1px !important;
-  padding-left: 1px !important;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
   margin-right: auto;
   margin-left: auto;
 }
 
-@media (min-width: 1200px) {
-  .home {
-    padding-right: 30px;
-    padding-left: 30px;
-  }
-}
-
 .joinTelegram {
   text-align: center;
-  margin: 15px auto -15px auto;
+  margin: 15px auto auto auto;
+  line-height: 40px;
+}
+
+.statsTable {
+  width: calc(50% - 55px);
+  margin: 1rem 25px;
+}
+
+.graphSection {
+  width: calc(50% - 55px);
+  margin: auto 25px;
+}
+
+.indiaStateWiseHead {
+  display: flex;
+  justify-content: space-between;
 }
 
 .telegramLink {
   background: #3f51b5;
-  padding: 5px 10px;
+  padding: 5px 15px;
   border-radius: 15px;
+}
+
+.telegramLink  {
+  animation: blink 2s linear infinite;
+  color: white !important;
+  font-family: notosans;
+}
+
+.telegramLink:hover {
+  text-decoration: none;
+  color: white !important;
+}
+
+.telegramIcon {
+  vertical-align: -0.15rem;
+  margin-right: 5px;
 }
 
 @keyframes blink {
@@ -592,20 +621,6 @@ span.MuiBadge-colorSecondary {
   100% {
     color: white;
   }
-}
-
-.telegramLink > a {
-  animation: blink 2s linear infinite;
-}
-
-.telegramLink > a:hover {
-  color: white;
-  text-decoration: none;
-}
-
-.telegramIcon {
-  vertical-align: -0.15rem;
-  margin-right: 5px;
 }
 
 .timelineButton {
@@ -733,83 +748,54 @@ span.MuiBadge-colorSecondary {
   font-weight: 500;
 }
 
-.toggle-map {
-  text-align: center;
-  justify-content: center;
-  font-family: notosans;
-  margin-left: 0.5% !important;
-  margin-right: -4% !important;
+.indiaMapHead {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  margin: auto 10px;
 }
 
-@media only screen and (max-width: 576px) {
-  .toggle-map {
-    margin-left: -1% !important;
-    margin-right: 3% !important;
-  }
+.indiaMapChoropleth {
+  padding: auto 5px;
+}
+
+.toggle-map {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  margin: auto 10px;
 }
 
 .mapTabs {
-  margin: auto;
+  width: 24%;
   margin-bottom: 20px;
+  border-radius: 5px;
 }
 
 .pad {
   text-align: left;
   font-size: 0.95rem !important;
   cursor: pointer;
-  padding-top: 3%;
-  padding-bottom: 4px;
+  padding-top: 5%;
   padding-right: 1%;
-  padding-left: 3%;
-  border-top-left-radius: 4px;
-  border-top-right-radius: 4px;
-  width: 6.3rem;
+  padding-left: 5%;
   position: sticky;
   transition: all 0.1s linear;
 }
 
-.pad:hover {
-  padding-bottom: 0px;
-  border-bottom: solid 4px;
-  transition: all 0.1s linear;
-}
-
-@media only screen and (max-width: 360px) {
-  .pad {
-    width: 5.7rem;
-    font-size: 0.85rem !important;
-  }
-}
-
 .testpad {
+  width: 24%;
+}
+.testpad > h6 {
   background: rgba(106, 68, 200, 0.2);
   color: #5969c2;
   text-align: right;
   cursor: pointer;
-  margin-left: 32px;
-  width: 7.5rem;
-  padding-top: 3%;
-  padding-right: 3%;
+  padding-top: 5%;
+  padding-right: 5%;
   padding-bottom: 0.5px;
-  border-radius: 3px;
+  border-radius: 5px;
   font-size: 0.75rem !important;
-}
-
-@media only screen and (max-width: 361px) {
-  .testpad {
-    font-size: 0.9rem !important;
-    width: 7.5rem;
-    margin-left: -8px !important;
-  }
-}
-
-@media only screen and (max-width: 576px) {
-  .testpad {
-    font-size: 0.8rem !important;
-    width: 7.5rem !important;
-    margin-left: 8px;
-    margin-right: -2rem;
-  }
 }
 
 .mapTitle {
@@ -833,10 +819,11 @@ span.MuiBadge-colorSecondary {
 .choropleth {
   opacity: 0;
   animation-name: fadeIn;
-  animation-duration: 2s;
+  animation-duration: 1s;
   animation-iteration-count: 1;
   animation-fill-mode: both;
 }
+
 @keyframes fadeIn {
   from {
     opacity: 0.9;
@@ -1276,3 +1263,27 @@ th {
   font-family: notosans;
   font-weight: 800;
 }
+
+@media only screen and (max-width: 1024px) {
+  .home {
+    flex-direction: column;
+    justify-content: center;
+    margin: auto;
+  }
+  .statsTable {
+    width: calc(100% + 15px);
+    max-width: 500px;
+    margin: auto;
+    margin-left: -7.5px;
+  }
+  .graphSection {
+    width: 100%;
+    max-width: 500px;
+    margin: auto;
+  }
+
+  .statewiseTable {
+    margin-left: 0px;
+  }
+}
+

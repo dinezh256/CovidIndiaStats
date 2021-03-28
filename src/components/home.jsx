@@ -7,7 +7,7 @@ import { Helmet } from "react-helmet";
 class Home extends Component {
   render() {
     return (
-      <React.Fragment>
+      <>
         <div className="home">
           <Helmet>
             <title>Covid India Stats</title>
@@ -16,24 +16,22 @@ class Home extends Component {
               content="Track the spread of Coronavirus (COVID-19) in India and World"
             />
           </Helmet>
-          <div className="row">
-            <div className="col-md">
-              <Table />
-            </div>
-            <div
-              className="col-md fadeInUp"
-              style={{
-                animationDelay: "0.8s",
-                marginTop: 15,
-              }}
-            >
-              <Graph />
-            </div>
-          </div>
 
-          <Footer />
+          <Table />
+
+          <div
+            className="graphSection fadeInUp"
+            style={{
+              animationDelay: "0.8s",
+              marginTop: 15,
+            }}
+          >
+            <Graph />
+          </div>
         </div>
-      </React.Fragment>
+
+        <Footer />
+      </>
     );
   }
 }
