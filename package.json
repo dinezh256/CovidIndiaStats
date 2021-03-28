@@ -22,8 +22,6 @@
     "d3-scale-chromatic": "^1.5.0",
     "d3-svg-legend": "^2.25.6",
     "date-fns": "^2.19.0",
-    "firebase": "^7.14.2",
-    "firebase-tools": "^8.2.0",
     "font-awesome": "^4.7.0",
     "html-react-parser": "^0.10.3",
     "install": "^0.13.0",
