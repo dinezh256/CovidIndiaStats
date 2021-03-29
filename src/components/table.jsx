@@ -419,16 +419,14 @@ class Table extends Component {
             style={{
               textAlign: "center",
               animationDelay: "1.8s",
-              marginTop: "-20px",
+              marginTop: "-15px",
             }}
           >
-            <h5 style={{ color: "#3e4da3" }}>INDIA - STATEWISE </h5>
+            <h3>INDIA - STATEWISE </h3>
             <div style={{ alignItems: "right" }}>
               <div
                 className="home-toggle float-left"
-                style={{
-                  marginTop: "3px",
-                }}
+                style={{ marginTop: "2.5px" }}
               >
                 <Switch
                   className="react-switch"
@@ -448,15 +446,16 @@ class Table extends Component {
                   height={16}
                   width={35}
                 ></Switch>
+                <span
+                  style={{
+                    color: "#3e4da3",
+                    fontWeight: "bold",
+                    verticalAlign: "0.3rem",
+                  }}
+                >
+                  &nbsp;%
+                </span>
               </div>
-              <span
-                style={{
-                  color: "#3e4da3",
-                  fontWeight: "bold",
-                }}
-              >
-                &nbsp;%
-              </span>
             </div>
           </div>
 

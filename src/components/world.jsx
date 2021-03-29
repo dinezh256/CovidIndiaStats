@@ -444,7 +444,7 @@ class World extends Component {
       );
     } else {
       return (
-        <div className="containerHome">
+        <div style={{textAlign: "center"}}>
           <div
             className="spinner-grow"
             role="status"

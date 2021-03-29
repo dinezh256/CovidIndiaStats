@@ -302,6 +302,10 @@ th.smallRow {
   transition: linear 0.2s;
 }
 
+.statewiseTable {
+  margin-top: 10px;
+}
+
 .statewiseTable::-webkit-scrollbar {
   width: 0px;
 }
@@ -350,7 +354,8 @@ a:hover {
 }
 
 .td-md-left > a > h6 {
-  font-size: 0.9rem;
+  padding-top: 10px;
+  font-size: 0.92rem;
 }
 
 .td-md-left > h6 {
@@ -359,7 +364,7 @@ a:hover {
 
 .infoIcon {
   margin-left: 5px;
-  /* vertical-align: -0.55rem; */
+  vertical-align: -0.7rem;
 }
 
 .trend {
@@ -1265,6 +1270,10 @@ th {
 }
 
 @media only screen and (max-width: 1024px) {
+  #root {
+    overflow-x: hidden;
+
+  }
   .home {
     flex-direction: column;
     justify-content: center;
