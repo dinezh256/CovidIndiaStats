@@ -400,7 +400,7 @@ class Table extends Component {
             </table>
           </div>
 
-          <div className="joinTelegram">
+          <h6 className="joinTelegram">
             <a
               className="telegramLink"
               href="https://www.buymeacoffee.com/covidindiastats"
@@ -408,7 +408,7 @@ class Table extends Component {
               <FaHandHoldingHeart className="telegramIcon" /> SUPPORT
               COVIDINDIASTATS
             </a>
-          </div>
+          </h6>
           <div className="w-100"></div>
           <div className="row">
             <Updates />

@@ -302,6 +302,13 @@ th.smallRow {
   transition: linear 0.2s;
 }
 
+.spreadGraphType {
+  position: absolute;
+  right: 4.25rem;
+  margin-top: -1.5px;
+  margin-bottom: -5px;
+}
+
 .statewiseTable {
   margin-top: 10px;
 }
@@ -380,6 +387,7 @@ a:hover {
 }
 
 .home-title {
+  padding-top: 10px;
   font-size: 1.3rem;
   font-weight: 500;
 }
@@ -573,11 +581,6 @@ span.MuiBadge-colorSecondary {
   margin-left: auto;
 }
 
-.joinTelegram {
-  text-align: center;
-  margin: 15px auto auto auto;
-  line-height: 40px;
-}
 
 .statsTable {
   width: calc(50% - 55px);
@@ -594,25 +597,29 @@ span.MuiBadge-colorSecondary {
   justify-content: space-between;
 }
 
+.joinTelegram {
+  text-align: center;
+  margin: 15px auto auto auto;
+  line-height: 45px;
+}
+
 .telegramLink {
   background: #3f51b5;
   padding: 5px 15px;
   border-radius: 15px;
-}
-
-.telegramLink  {
-  animation: blink 2s linear infinite;
-  color: white !important;
+  color: white;
   font-family: notosans;
 }
 
 .telegramLink:hover {
   text-decoration: none;
+  padding: 5px 15px;
+  border-radius: 15px;
   color: white !important;
 }
 
 .telegramIcon {
-  vertical-align: -0.15rem;
+  vertical-align: 0rem;
   margin-right: 5px;
 }
 
@@ -631,11 +638,11 @@ span.MuiBadge-colorSecondary {
 .timelineButton {
   background-color: rgba(255, 153, 0, 0.3);
   color: chocolate;
-  padding: 3px 2px;
+  padding: 5px 3px;
   cursor: pointer;
   text-align: left;
   border-radius: 3px;
-  font-size: 12px;
+  font-size: 13px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.25) !important;
   transition: box-shadow 0.3s linear; /* vendorless fallback */
   -o-transition: box-shadow 0.3s linear; /* opera */

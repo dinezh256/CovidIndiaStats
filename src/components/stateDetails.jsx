@@ -183,6 +183,8 @@ class StateDetails extends Component {
       "Dec",
     ];
 
+    console.log({statesDailyData})
+
     if (requiredDistrictData) {
       for (let i = 0; i < requiredDistrictData.length; i++) {
         requiredDistrictData[i].newDate =
@@ -1673,209 +1675,6 @@ class StateDetails extends Component {
                         </div>
                       </div>
                     </div>
-                    {/* {requiredData.length && viewTable ? (
-                      <div
-                        className="row fadeInUp"
-                        style={{ animationDelay: "0.1s" }}
-                      >
-                        <table
-                          className="table table-sm table-striped"
-                          style={{
-                            minWidth: "300px",
-                            width: "93%",
-                          }}
-                          align="center"
-                        >
-                          <thead className="thead-dark">
-                            <tr>
-                              <th
-                                className="th wideRow sticky-top"
-                                id="line1"
-                                style={{ width: "57px" }}
-                              >
-                                DISTRICT
-                              </th>
-                              <th
-                                className="th sticky-top"
-                                id="line2"
-                                style={{ width: "175px" }}
-                              >
-                                DISTRICT
-                              </th>
-                              <th
-                                className="th sticky-top text-info smallRow"
-                                style={{ textAlign: "center" }}
-                                id="line1"
-                              >
-                                CNFRMD
-                              </th>
-                              <th
-                                className="th sticky-top text-info"
-                                style={{ textAlign: "center" }}
-                                id="line2"
-                              >
-                                CONFIRMED
-                              </th>
-                              <th
-                                className="th sticky-top smallRow"
-                                style={{
-                                  color: "rgb(255, 68, 106)",
-                                  textAlign: "center",
-                                }}
-                                id="line1"
-                              >
-                                ACTIVE
-                              </th>
-                              <th
-                                className="th sticky-top narrowRow"
-                                style={{
-                                  color: "rgb(255, 68, 106)",
-                                  textAlign: "center",
-                                }}
-                                id="line2"
-                              >
-                                ACTIVE
-                              </th>
-                              <th
-                                className="th sticky-top text-success smallRow"
-                                style={{ textAlign: "center" }}
-                                id="line1"
-                              >
-                                RCVRD
-                              </th>
-                              <th
-                                className="th sticky-top text-success"
-                                style={{ textAlign: "center" }}
-                                id="line2"
-                              >
-                                RECOVERED
-                              </th>
-                              <th
-                                className="th sticky-top text-secondary smallRow"
-                                id="line1"
-                                style={{ textAlign: "center" }}
-                              >
-                                DEATHS
-                              </th>
-                              <th
-                                className="th sticky-top text-secondary"
-                                id="line2"
-                                style={{ textAlign: "center", width: "70px" }}
-                              >
-                                DECEASED
-                              </th>
-                            </tr>
-                          </thead>
-                          <tbody className="tbody">
-                            {requiredData.map((item) =>
-                              item.map((district) => (
-                                <tr className="tr">
-                                  <td
-                                    className="tdleft align-middle"
-                                    style={{
-                                      color: "slategrey",
-                                    }}
-                                  >
-                                    {district.district}
-                                    {district.notes ? (
-                                      <OverlayTrigger
-                                        key={"right"}
-                                        placement={"right"}
-                                        overlay={
-                                          <Tooltip id={`tooltip-${"right"}`}>
-                                            <strong>
-                                              {parse(district.notes)}
-                                            </strong>
-                                          </Tooltip>
-                                        }
-                                      >
-                                        <span
-                                          style={{ verticalAlign: "0.05rem" }}
-                                        >
-                                          <InfoTwoToneIcon
-                                            color="inherit"
-                                            fontSize="inherit"
-                                          />
-                                        </span>
-                                      </OverlayTrigger>
-                                    ) : (
-                                      ""
-                                    )}
-                                  </td>
-                                  <td
-                                    className="delta td-md align-middle"
-                                    style={{ textAlign: "right" }}
-                                  >
-                                    <span className="arrowup text-info">
-                                      <DeltaArrow
-                                        deltaType={district.delta.confirmed}
-                                        color={"#42b3f4"}
-                                      />
-                                      <DeltaValue
-                                        deltaType={district.delta.confirmed}
-                                      />
-                                    </span>
-                                    &nbsp;&nbsp;
-                                    {commaSeperated(district.confirmed)}
-                                  </td>
-                                  <td
-                                    className="delta td-md text-secondary narrowRow align-middle"
-                                    style={{ textAlign: "right" }}
-                                  >
-                                    {Number(district.active) > 0
-                                      ? commaSeperated(district.active)
-                                      : Number(district.active) < 0
-                                      ? "-" +
-                                        commaSeperated(
-                                          Math.abs(district.active)
-                                        )
-                                      : "-"}
-                                  </td>
-                                  <td
-                                    className="delta td-md text-secondary align-middle"
-                                    style={{ textAlign: "right" }}
-                                  >
-                                    <span className="arrowup text-success">
-                                      <DeltaArrow
-                                        deltaType={district.delta.recovered}
-                                        color={"#28a745"}
-                                      />
-                                      <DeltaValue
-                                        deltaType={district.delta.recovered}
-                                      />
-                                    </span>
-                                    &nbsp;
-                                    {Number(district.recovered)
-                                      ? commaSeperated(district.recovered)
-                                      : "-"}
-                                  </td>
-                                  <td
-                                    className="delta td-md text-secondary narrowRow align-middle"
-                                    style={{ textAlign: "right" }}
-                                  >
-                                    <span className="arrowup text-secondary">
-                                      <DeltaArrow
-                                        deltaType={district.delta.deceased}
-                                        color={"#6c757d"}
-                                      />
-                                      <DeltaValue
-                                        deltaType={district.delta.deceased}
-                                      />
-                                    </span>
-                                    &nbsp;&nbsp;
-                                    {Number(district.deceased)
-                                      ? commaSeperated(district.deceased)
-                                      : "-"}
-                                  </td>
-                                </tr>
-                              ))
-                            )}
-                          </tbody>
-                        </table>
-                      </div>
-                    ) : (
-                      ""
-                    )} */}
                   </div>
                 </div>
                 <div className="w-100"></div>
@@ -2316,18 +2115,21 @@ class StateDetails extends Component {
                                 name="Tested"
                                 isAnimationActive={true}
                                 connectNulls={true}
-                                dot={({ cx, cy }) => (
-                                  <svg
-                                    x={cx - 2.25}
-                                    y={cy - 2.25}
-                                    width={4.5}
-                                    height={4.5}
-                                    fill="#3e4da3"
-                                    viewBox="0 0 1024 1024"
-                                  >
-                                    <path d="M517.12 53.248q95.232 0 179.2 36.352t145.92 98.304 98.304 145.92 36.352 179.2-36.352 179.2-98.304 145.92-145.92 98.304-179.2 36.352-179.2-36.352-145.92-98.304-98.304-145.92-36.352-179.2 36.352-179.2 98.304-145.92 145.92-98.304 179.2-36.352zM663.552 261.12q-15.36 0-28.16 6.656t-23.04 18.432-15.872 27.648-5.632 33.28q0 35.84 21.504 61.44t51.2 25.6 51.2-25.6 21.504-61.44q0-17.408-5.632-33.28t-15.872-27.648-23.04-18.432-28.16-6.656zM373.76 261.12q-29.696 0-50.688 25.088t-20.992 60.928 20.992 61.44 50.688 25.6 50.176-25.6 20.48-61.44-20.48-60.928-50.176-25.088zM520.192 602.112q-51.2 0-97.28 9.728t-82.944 27.648-62.464 41.472-35.84 51.2q-1.024 1.024-1.024 2.048-1.024 3.072-1.024 8.704t2.56 11.776 7.168 11.264 12.8 6.144q25.6-27.648 62.464-50.176 31.744-19.456 79.36-35.328t114.176-15.872q67.584 0 116.736 15.872t81.92 35.328q37.888 22.528 63.488 50.176 17.408-5.12 19.968-18.944t0.512-18.944-3.072-7.168-1.024-3.072q-26.624-55.296-100.352-88.576t-176.128-33.28z" />
-                                  </svg>
-                                )}
+                                dot={({ cx, cy }) =>
+                                  cx &&
+                                  cy && (
+                                    <svg
+                                      x={cx - 2.25}
+                                      y={cy - 2.25}
+                                      width={4.5}
+                                      height={4.5}
+                                      fill="#3e4da3"
+                                      viewBox="0 0 1024 1024"
+                                    >
+                                      <path d="M517.12 53.248q95.232 0 179.2 36.352t145.92 98.304 98.304 145.92 36.352 179.2-36.352 179.2-98.304 145.92-145.92 98.304-179.2 36.352-179.2-36.352-145.92-98.304-98.304-145.92-36.352-179.2 36.352-179.2 98.304-145.92 145.92-98.304 179.2-36.352zM663.552 261.12q-15.36 0-28.16 6.656t-23.04 18.432-15.872 27.648-5.632 33.28q0 35.84 21.504 61.44t51.2 25.6 51.2-25.6 21.504-61.44q0-17.408-5.632-33.28t-15.872-27.648-23.04-18.432-28.16-6.656zM373.76 261.12q-29.696 0-50.688 25.088t-20.992 60.928 20.992 61.44 50.688 25.6 50.176-25.6 20.48-61.44-20.48-60.928-50.176-25.088zM520.192 602.112q-51.2 0-97.28 9.728t-82.944 27.648-62.464 41.472-35.84 51.2q-1.024 1.024-1.024 2.048-1.024 3.072-1.024 8.704t2.56 11.776 7.168 11.264 12.8 6.144q25.6-27.648 62.464-50.176 31.744-19.456 79.36-35.328t114.176-15.872q67.584 0 116.736 15.872t81.92 35.328q37.888 22.528 63.488 50.176 17.408-5.12 19.968-18.944t0.512-18.944-3.072-7.168-1.024-3.072q-26.624-55.296-100.352-88.576t-176.128-33.28z" />
+                                    </svg>
+                                  )
+                                }
                                 activeDot={{ r: 2.5 }}
                                 onClick={() => {
                                   ReactGa.event({
