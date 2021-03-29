@@ -71,7 +71,7 @@ class WorldHomeCard extends Component {
             textAlign: "center",
           }}
         >
-          <NavLink to="/dive" className="coverage">
+          <NavLink to="/global" className="coverage">
             <PublicRoundedIcon
               size="inherit"
               color="primary"
@@ -87,7 +87,7 @@ class WorldHomeCard extends Component {
             }}
             onClick={() => this.setState({ showData: !showData })}
           >
-            {showData ? (
+            {!showData ? (
               <Icon.ChevronUp className="showUp" color="#3f51b5" />
             ) : (
               <Icon.ChevronDown className="showDown" color="#3f51b5" />
@@ -100,7 +100,10 @@ class WorldHomeCard extends Component {
           <table className="table table-sm table-borderless">
             <thead>
               <tr>
-                <th className="text-info span delta" style={{ width: "25%" }}>
+                <th
+                  className="span delta"
+                  style={{ color: "rgb(66, 179, 244)", width: "25%" }}
+                >
                   CONFIRMED
                 </th>
                 <th
@@ -135,7 +138,7 @@ class WorldHomeCard extends Component {
                   className="delta"
                   style={{
                     fontSize: 12,
-                    color: "rgba(23, 162, 184, 0.7)",
+                    color: "rgba(66, 179, 244, 0.7)",
                   }}
                 >
                   +
@@ -143,7 +146,7 @@ class WorldHomeCard extends Component {
                     ? commaSeperated(Number(todayCases))
                     : ""}
                 </h6>
-                <h6 className="text-info" style={{ textAlign: "center" }}>
+                <h6 style={{ color: "rgb(66, 179, 244)", textAlign: "center" }}>
                   {cases !== undefined ? (
                     <CountUp
                       start={0}

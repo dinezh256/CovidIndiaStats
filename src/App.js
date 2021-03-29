@@ -68,7 +68,7 @@ function App() {
           <Suspense fallback={<div />}>
             <main className="container">
               <Switch>
-                <Route path="/dive" component={World} />
+                <Route path="/global" component={World} />
                 <Route path="/links" component={Options} />
                 <Route path="/faq" component={FAQ} />
                 <Route path="/not-found" component={NotFound} />

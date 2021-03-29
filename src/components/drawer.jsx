@@ -62,12 +62,12 @@ export default function SwipeableTemporaryDrawer() {
           </ListItem>
         </NavLink>
 
-        <NavLink to="/dive" className="sideBarItem">
-          <ListItem button key={"Dive"}>
+        <NavLink to="/global" className="sideBarItem">
+          <ListItem button key={"Global"}>
             <ListItemIcon>
               {<FlagRoundedIcon fontSize="large" color="primary" />}
             </ListItemIcon>
-            <ListItemText primary={"Dive"} />
+            <ListItemText primary={"Global"} />
           </ListItem>
         </NavLink>
         <NavLink to="/links" className="sideBarItem">
@@ -100,6 +100,7 @@ export default function SwipeableTemporaryDrawer() {
 
         <br />
         <h6
+        className="drawer-share"
           style={{
             alignContent: "center",
             justifyContent: "center",

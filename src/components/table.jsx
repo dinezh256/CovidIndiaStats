@@ -195,7 +195,7 @@ class Table extends Component {
                     className="text-success delta span graphWidth"
                     style={{ background: "rgba(88, 189, 88, 0.2)" }}
                   >
-                    Recovered
+                    RECOVERED
                   </th>
                   <th
                     className="text-secondary delta span graphWidth"
@@ -479,7 +479,7 @@ class Table extends Component {
                       })
                     }
                   >
-                    CNFRMD
+                    C
                     {sortConfirmed && (
                       <SortRoundedIcon
                         fontSize="inherit"
@@ -503,7 +503,7 @@ class Table extends Component {
                       })
                     }
                   >
-                    ACTIVE
+                    A
                     {sortActive && (
                       <SortRoundedIcon
                         fontSize="inherit"
@@ -526,7 +526,7 @@ class Table extends Component {
                       })
                     }
                   >
-                    RCVRD
+                    R
                     {sortRecovered && (
                       <SortRoundedIcon
                         fontSize="inherit"
@@ -549,7 +549,7 @@ class Table extends Component {
                       })
                     }
                   >
-                    DECSD
+                    D
                     {sortDeceased && (
                       <SortRoundedIcon
                         fontSize="inherit"

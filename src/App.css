@@ -201,8 +201,18 @@ a#line2.active:hover {
   font-size: 0.7rem;
 }
 
+.drawer-share a {
+  padding: 0 0.75rem;
+  text-decoration: none;
+}
+
+
 .updates {
   font-size: 0.85rem;
+}
+
+.updates span {
+  filter: brightness(1.25);
 }
 
 @media (max-width: 360px) {
@@ -293,7 +303,6 @@ th.smallRow {
 
 .table tbody tr td {
   border-radius: 4px;
-
 }
 
 .table tbody tr:hover {
@@ -311,6 +320,12 @@ th.smallRow {
 
 .statewiseTable {
   margin-top: 10px;
+}
+
+.statewiseTable > table > thead > tr > th {
+  padding-bottom: 0.5rem;
+  padding-top: 0.5rem;
+  font-size: 14px;
 }
 
 .statewiseTable::-webkit-scrollbar {
@@ -351,7 +366,7 @@ th.smallRow {
   align-items: center;
   justify-content: space-between;
   border-radius: 8px;
- }
+}
 
 .td-md-left > a,
 a:hover {
@@ -580,7 +595,6 @@ span.MuiBadge-colorSecondary {
   margin-right: auto;
   margin-left: auto;
 }
-
 
 .statsTable {
   width: calc(50% - 55px);
@@ -1279,7 +1293,6 @@ th {
 @media only screen and (max-width: 1024px) {
   #root {
     overflow-x: hidden;
-
   }
   .home {
     flex-direction: column;
@@ -1302,4 +1315,3 @@ th {
     margin-left: 0px;
   }
 }
-
