@@ -19,7 +19,7 @@ const months = {
 export const stateNavbarName = {
   "/": "COVID INDIA STATS",
   "/INDEPTH": "INDEPTH",
-  "/GLOBAL": "Global PLOTS",
+  "/GLOBAL": "COVID GLOBAL STATS",
   "/DIVE": "COVID GLOBAL STATS",
   "/LINKS": "Helpful links",
   "/FAQ": "faqs",
