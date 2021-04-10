@@ -57,7 +57,7 @@ class Updates extends Component {
 
   render() {
     const { data, isLoaded, toggleActive, lastUpdated, wasSeen } = this.state;
-    console.log({ lastUpdated });
+    // console.log({ lastUpdated });
 
     const bellProps = { size: 17, style: { color: "rgb(62, 77, 163)" } };
 

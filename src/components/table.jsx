@@ -66,7 +66,7 @@ class Table extends Component {
     const [isLoading] = this.context.isLoading;
     const { allStatesData, isDataLoading } = this.state;
 
-    console.table({ allData });
+    // console.table({ allData });
 
     if (!isLoading && isDataLoading) {
       for (let key in allData) {
@@ -551,9 +551,9 @@ class Table extends Component {
             >
               <thead className="thead-dark">
                 <tr>
-                  <th className="th th-left sticky-top">State/UT</th>
+                  <th className="th">State/UT</th>
                   <th
-                    className="th text-info sticky-top"
+                    className="th"
                     onClick={() =>
                       this.setState({
                         sortConfirmed: true,
@@ -565,6 +565,7 @@ class Table extends Component {
                         sortOrder: !sortOrder,
                       })
                     }
+                    style={{ color: "rgb(66, 179, 244)" }}
                   >
                     Confirmed
                     {sortConfirmed && (
@@ -578,7 +579,7 @@ class Table extends Component {
                     )}
                   </th>
                   <th
-                    className="th sticky-top"
+                    className="th"
                     style={{ color: "#ff446a" }}
                     onClick={() =>
                       this.setState({
@@ -604,7 +605,7 @@ class Table extends Component {
                     )}
                   </th>
                   <th
-                    className="th text-success sticky-top"
+                    className="th text-success"
                     onClick={() =>
                       this.setState({
                         sortConfirmed: false,
@@ -629,7 +630,7 @@ class Table extends Component {
                     )}
                   </th>
                   <th
-                    className="th text-secondary sticky-top"
+                    className="th text-secondary"
                     onClick={() =>
                       this.setState({
                         sortConfirmed: false,
@@ -654,7 +655,7 @@ class Table extends Component {
                     )}
                   </th>
                   <th
-                    className="th sticky-top"
+                    className="th"
                     style={{ color: "#5969c2" }}
                     onClick={() =>
                       this.setState({
@@ -680,7 +681,7 @@ class Table extends Component {
                     )}
                   </th>
                   <th
-                    className="th sticky-top"
+                    className="th"
                     style={{ color: "#f4c430" }}
                     onClick={() =>
                       this.setState({
