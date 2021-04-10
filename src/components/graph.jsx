@@ -18,6 +18,7 @@ import LinePlot from "./linePlot";
 import BarPlot from "./barPlot";
 import { commaSeperated } from "../utils/common-functions";
 import ReactGa from "react-ga";
+import { AppContext } from "./../context/index";
 
 const months2 = [
   "January",
@@ -89,6 +90,8 @@ class Graph extends Component {
     this.setState({ oneMonth });
   }
 
+  static contextType = AppContext;
+
   componentDidMount() {
     fetch("https://api.covid19india.org/data.json").then((res) =>
       res.json().then((json) => {
@@ -99,58 +102,58 @@ class Graph extends Component {
         });
       })
     );
+  }
 
-    fetch("https://api.covid19india.org/v4/timeseries.json").then((res) =>
-      res.json().then((json) => {
-        const { totalTestsData, vaccinatedData } = this.state;
-        const totalData = json.TT.dates;
+  componentDidUpdate() {
+    const [allData] = this.context.allData;
+    const [isLoading] = this.context.isLoading;
 
-        console.log({ totalData });
+    const { isLoaded2, totalTestsData, vaccinatedData } = this.state;
 
-        for (let key in totalData) {
-          totalTestsData.push({
-            testedasof: key,
-            deltaSamplestested:
-              totalData[key]?.delta?.tested || ""
-                ? totalData[key]?.delta?.tested
-                : 0,
-            totalsamplestested:
-              totalData[key]?.total?.tested || ""
-                ? totalData[key]?.total?.tested
-                : 0,
+    if (!isLoading && !isLoaded2) {
+      const totalData = allData?.TT?.dates;
+
+      for (let key in totalData) {
+        totalTestsData.push({
+          testedasof: key,
+          deltaSamplestested:
+            totalData[key]?.delta?.tested || ""
+              ? totalData[key]?.delta?.tested
+              : 0,
+          totalsamplestested:
+            totalData[key]?.total?.tested || ""
+              ? totalData[key]?.total?.tested
+              : 0,
+        });
+
+        const splittedDate = key.split("-");
+        if (key === "2020-01-30") {
+          vaccinatedData.push({
+            date: `${splittedDate[2]} ${months2[Number(splittedDate[1]) - 1]} ${
+              splittedDate[0]
+            }`,
+            deltaVaccinated: 0,
+            totalVaccinated: 0,
           });
-
-          const splittedDate = key.split("-");
-          if (key === "2020-01-30") {
-            vaccinatedData.push({
-              date: `${splittedDate[2]} ${
-                months2[Number(splittedDate[1]) - 1]
-              } ${splittedDate[0]}`,
-              deltaVaccinated: 0,
-              totalVaccinated: 0,
-            });
-          } else {
-            vaccinatedData.push({
-              date: `${splittedDate[2]} ${
-                months2[Number(splittedDate[1]) - 1]
-              } ${splittedDate[0]}`,
-              deltaVaccinated:
-                totalData[key]?.delta?.vaccinated || ""
-                  ? totalData[key]?.delta?.vaccinated
-                  : "-",
-              totalVaccinated:
-                totalData[key]?.delta?.vaccinated || ""
-                  ? totalData[key]?.total?.vaccinated
-                  : "-",
-            });
-          }
+        } else {
+          vaccinatedData.push({
+            date: `${splittedDate[2]} ${months2[Number(splittedDate[1]) - 1]} ${
+              splittedDate[0]
+            }`,
+            deltaVaccinated:
+              totalData[key]?.delta?.vaccinated || ""
+                ? totalData[key]?.delta?.vaccinated
+                : "-",
+            totalVaccinated:
+              totalData[key]?.delta?.vaccinated || ""
+                ? totalData[key]?.total?.vaccinated
+                : "-",
+          });
         }
+      }
 
-        
-
-        this.setState({ totalTestsData, vaccinatedData, isLoaded2: true });
-      })
-    );
+      this.setState({ totalTestsData, vaccinatedData, isLoaded2: true });
+    }
   }
 
   render() {
@@ -370,12 +373,34 @@ class Graph extends Component {
           });
         }
       });
-      localStorage.setItem(
-        "lastTotalVaccinated",
-        formattedVaccinatedData[formattedVaccinatedData.length - 1].totalVaccinated
-      );
+
+      let found = false;
+
+      let totalVaccinated = 0;
+      formattedVaccinatedData
+        .slice(0)
+        .reverse()
+        .map((item) => {
+          if (item.totalVaccinated !== "-" && !found) {
+            found = true;
+            totalVaccinated = item.totalVaccinated;
+          }
+        });
+      localStorage.setItem("lastTotalVaccinated", totalVaccinated);
     }
 
+    const contentStyle = {
+      background: "rgba(255,255,255,0)",
+      border: "none",
+      borderRadius: "5px",
+      fontSize: "0.7rem",
+      fontFamily: "notosans",
+      textTransform: "uppercase",
+      textAlign: "left",
+      lineHeight: 0.8,
+    };
+
+    // console.log({ allData });
 
     if (isLoaded && isLoaded2) {
       return (
@@ -654,7 +679,6 @@ class Graph extends Component {
                 className="col fadeInUp indiaMapChoropleth"
                 style={{ justifyContent: "left", animationDelay: "2.1s" }}
               >
-                
                 {clickConfirmedMap && (
                   <Choropleth
                     data={confirmedStatesData.slice(
@@ -738,7 +762,7 @@ class Graph extends Component {
                     wordWrap: "normal",
                   }}
                 >
-                  SPREAD TRENDS{" "}
+                  SPREAD TRENDS
                 </h6>
               </div>
               <div
@@ -1018,16 +1042,7 @@ class Graph extends Component {
                             }}
                           />
                           <Tooltip
-                            contentStyle={{
-                              background: "rgba(255,255,255,0)",
-                              border: "none",
-                              borderRadius: "5px",
-                              fontSize: "0.7rem",
-                              fontFamily: "notosans",
-                              textTransform: "uppercase",
-                              textAlign: "left",
-                              lineHeight: 0.8,
-                            }}
+                            contentStyle={contentStyle}
                             cursor={false}
                             position={{ x: 120, y: 15 }}
                           />
@@ -1099,14 +1114,18 @@ class Graph extends Component {
                                 formattedVaccinatedData.length - 1
                               ].totalVaccinated
                             )}{" "}
-                            <span style={{ fontSize: 8 }}>
-                              +
-                              {commaSeperated(
-                                formattedVaccinatedData[
-                                  formattedVaccinatedData.length - 1
-                                ].deltaVaccinated
-                              )}
-                            </span>
+                            {formattedVaccinatedData[
+                              formattedVaccinatedData.length - 1
+                            ].deltaVaccinated !== "-" && (
+                              <span style={{ fontSize: 8 }}>
+                                +
+                                {commaSeperated(
+                                  formattedVaccinatedData[
+                                    formattedVaccinatedData.length - 1
+                                  ].deltaVaccinated
+                                )}
+                              </span>
+                            )}
                           </h5>
                         </h6>
                       </h5>
@@ -1175,16 +1194,7 @@ class Graph extends Component {
                             }}
                           />
                           <Tooltip
-                            contentStyle={{
-                              background: "rgba(255,255,255,0)",
-                              border: "none",
-                              borderRadius: "5px",
-                              fontSize: "0.7rem",
-                              fontFamily: "notosans",
-                              textTransform: "uppercase",
-                              textAlign: "left",
-                              lineHeight: 0.8,
-                            }}
+                            contentStyle={contentStyle}
                             cursor={false}
                             position={{ x: 120, y: 15 }}
                           />
@@ -1311,35 +1321,28 @@ class Graph extends Component {
                               dailyDateFormattedTests[
                                 dailyDateFormattedTests.length - 1
                               ].dailytested
-                            )}{" "}
+                            )}
                             <span style={{ fontSize: 8 }}>
-                              {dailyDateFormattedTests[
-                                dailyDateFormattedTests.length - 1
-                              ].dailytested -
+                              {`${
                                 dailyDateFormattedTests[
-                                  dailyDateFormattedTests.length - 2
-                                ].dailytested >=
-                              0
-                                ? `+${commaSeperated(
-                                    Math.abs(
-                                      dailyDateFormattedTests[
-                                        dailyDateFormattedTests.length - 1
-                                      ].dailytested -
-                                        dailyDateFormattedTests[
-                                          dailyDateFormattedTests.length - 2
-                                        ].dailytested
-                                    )
-                                  )}`
-                                : `-${commaSeperated(
-                                    Math.abs(
-                                      dailyDateFormattedTests[
-                                        dailyDateFormattedTests.length - 1
-                                      ].dailytested -
-                                        dailyDateFormattedTests[
-                                          dailyDateFormattedTests.length - 2
-                                        ].dailytested
-                                    )
-                                  )}`}
+                                  dailyDateFormattedTests.length - 1
+                                ].dailytested -
+                                  dailyDateFormattedTests[
+                                    dailyDateFormattedTests.length - 2
+                                  ].dailytested >=
+                                0
+                                  ? "+"
+                                  : "-"
+                              }${commaSeperated(
+                                Math.abs(
+                                  dailyDateFormattedTests[
+                                    dailyDateFormattedTests.length - 1
+                                  ].dailytested -
+                                    dailyDateFormattedTests[
+                                      dailyDateFormattedTests.length - 2
+                                    ].dailytested
+                                )
+                              )}`}
                             </span>
                           </h5>
                         </h6>
@@ -1408,16 +1411,7 @@ class Graph extends Component {
                             }}
                           />
                           <Tooltip
-                            contentStyle={{
-                              background: "rgba(255,255,255,0)",
-                              border: "none",
-                              borderRadius: "5px",
-                              fontSize: "0.7rem",
-                              fontFamily: "notosans",
-                              textTransform: "uppercase",
-                              textAlign: "left",
-                              lineHeight: 0.8,
-                            }}
+                            contentStyle={contentStyle}
                             cursor={{ fill: "transparent" }}
                             position={{ x: 120, y: 15 }}
                           />
@@ -1472,26 +1466,29 @@ class Graph extends Component {
                               ].deltaVaccinated
                             )}{" "}
                             <span style={{ fontSize: 8 }}>
-                              {`${
-                                formattedVaccinatedData[
-                                  formattedVaccinatedData.length - 1
-                                ].deltaVaccinated -
-                                  formattedVaccinatedData[
-                                    formattedVaccinatedData.length - 2
-                                  ].deltaVaccinated >=
-                                0
-                                  ? "+"
-                                  : "-"
-                              }${commaSeperated(
-                                Math.abs(
+                              {formattedVaccinatedData[
+                                formattedVaccinatedData.length - 1
+                              ].deltaVaccinated !== "-" &&
+                                `${
                                   formattedVaccinatedData[
                                     formattedVaccinatedData.length - 1
                                   ].deltaVaccinated -
                                     formattedVaccinatedData[
                                       formattedVaccinatedData.length - 2
-                                    ].deltaVaccinated
-                                )
-                              )}`}
+                                    ].deltaVaccinated >=
+                                  0
+                                    ? "+"
+                                    : "-"
+                                }${commaSeperated(
+                                  Math.abs(
+                                    formattedVaccinatedData[
+                                      formattedVaccinatedData.length - 1
+                                    ].deltaVaccinated -
+                                      formattedVaccinatedData[
+                                        formattedVaccinatedData.length - 2
+                                      ].deltaVaccinated
+                                  )
+                                )}`}
                             </span>
                           </h5>
                         </h6>
@@ -1560,16 +1557,7 @@ class Graph extends Component {
                             }}
                           />
                           <Tooltip
-                            contentStyle={{
-                              background: "rgba(255,255,255,0)",
-                              border: "none",
-                              borderRadius: "5px",
-                              fontSize: "0.7rem",
-                              fontFamily: "notosans",
-                              textTransform: "uppercase",
-                              textAlign: "left",
-                              lineHeight: 0.8,
-                            }}
+                            contentStyle={contentStyle}
                             cursor={{ fill: "transparent" }}
                             position={{ x: 120, y: 15 }}
                           />

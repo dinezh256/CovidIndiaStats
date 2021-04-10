@@ -211,21 +211,6 @@ ul {
   background-color: green !important;
 }
 
-table td.wideRow,
-th.wideRow {
-  width: 90px;
-}
-
-table td.narrowRow,
-th.narrowRow {
-  width: 49px;
-}
-
-table td.smallRow,
-th.smallRow {
-  width: 35px !important;
-}
-
 .table {
   position: relative;
   width: 30rem;
@@ -251,24 +236,10 @@ th.smallRow {
 }
 
 .th {
-  font-size: 0.75rem;
   font-weight: 500;
   cursor: pointer;
   border-radius: 5px;
   padding: 0;
-  vertical-align: middle;
-  font-variant-east-asian: full-width;
-  position: sticky;
-}
-
-.th-md {
-  font-size: 0.8rem;
-  font-weight: 500;
-  cursor: pointer;
-  border-radius: 5px;
-  padding: 0;
-  vertical-align: middle;
-  font-variant-east-asian: full-width;
   position: sticky;
 }
 
@@ -311,11 +282,20 @@ th.smallRow {
 .statewiseTable > table > thead > tr > th {
   padding-bottom: 0.5rem;
   padding-top: 0.5rem;
-  font-size: 14px;
+  font-size: 13px;
+  white-space: nowrap;
 }
 
 .statewiseTable::-webkit-scrollbar {
-  width: 0px;
+  background: rgba(128, 128, 128, 0.3);
+  border-radius: 15px;
+  width: 0;
+  height: 12px;
+}
+
+.statewiseTable::-webkit-scrollbar-thumb:horizontal {
+  border-radius: 15px;
+  background-color: slategray;
 }
 
 .tdleft {

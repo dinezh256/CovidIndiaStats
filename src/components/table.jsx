@@ -16,21 +16,26 @@ import {
   commaSeperated,
   DeltaArrow,
   DeltaValue,
+  stateFullName,
 } from "../utils/common-functions";
+import { AppContext } from "./../context/index";
 
 class Table extends Component {
   constructor(props) {
     super(props);
     this.state = {
       isLoaded: false,
-      items: [],
+      isDataLoading: true,
       total: [],
       delta: [],
       data: [],
+      allStatesData: [],
       sortConfirmed: true,
       sortActive: false,
       sortRecovered: false,
       sortDeceased: false,
+      sortTested: false,
+      sortVaccinated: false,
       sortOrder: true,
       percentageToggleActive: false,
     };
@@ -41,14 +46,13 @@ class Table extends Component {
     this.setState({ percentageToggleActive });
   }
 
+  static contextType = AppContext;
+
   componentDidMount() {
     fetch("https://api.covid19india.org/data.json").then((res) =>
       res.json().then((json) => {
         this.setState({
           isLoaded: true,
-          items: json.statewise.filter(
-            (item) => item.confirmed !== "0" && item.state !== "Total"
-          ),
           total: json.statewise.filter((item) => item.state === "Total"),
           delta: json.statewise,
           data: json.cases_time_series,
@@ -57,10 +61,31 @@ class Table extends Component {
     );
   }
 
+  componentDidUpdate() {
+    const [allData] = this.context.allData;
+    const [isLoading] = this.context.isLoading;
+    const { allStatesData, isDataLoading } = this.state;
+
+    console.table({ allData });
+
+    if (!isLoading && isDataLoading) {
+      for (let key in allData) {
+        if (key !== "UN") {
+          const stateKeys = Object.keys(allData[key]["dates"]);
+          allStatesData.push({
+            code: key,
+            name: stateFullName[key],
+            data: allData[key]["dates"][stateKeys[stateKeys.length - 1]],
+          });
+        }
+      }
+      this.setState({ allStatesData, isDataLoading: false });
+    }
+  }
+
   render() {
     const {
       isLoaded,
-      items,
       total,
       delta,
       data,
@@ -68,9 +93,21 @@ class Table extends Component {
       sortActive,
       sortRecovered,
       sortDeceased,
+      sortTested,
+      sortVaccinated,
       sortOrder,
       percentageToggleActive,
+      allStatesData,
+      isDataLoading,
     } = this.state;
+
+    const getActiveNumber = (total) => {
+      const confirmed = total?.confirmed;
+      const recovered = total?.recovered;
+      const deceased = total?.deceased;
+
+      return confirmed - recovered - deceased;
+    };
 
     const totalVaccinated = localStorage.getItem("lastTotalVaccinated");
 
@@ -93,31 +130,55 @@ class Table extends Component {
     data.map((item) => dailyDeceased.push(Number(item.dailydeceased)));
 
     if (sortConfirmed) {
-      items.sort(function (x, y) {
+      allStatesData.sort(function (x, y) {
         return sortOrder
-          ? Number(y.confirmed) - Number(x.confirmed)
-          : Number(x.confirmed) - Number(y.confirmed);
+          ? Number(y?.data?.total?.confirmed) -
+              Number(x?.data?.total?.confirmed)
+          : Number(x?.data?.total?.confirmed) -
+              Number(y?.data?.total?.confirmed);
       });
     }
     if (sortActive) {
-      items.sort(function (x, y) {
+      allStatesData.sort(function (x, y) {
         return !sortOrder
-          ? Number(y.active) - Number(x.active)
-          : Number(x.active) - Number(y.active);
+          ? Number(getActiveNumber(y?.data?.total)) -
+              Number(getActiveNumber(x?.data?.total))
+          : Number(getActiveNumber(x?.data?.total)) -
+              Number(getActiveNumber(y?.data?.total));
       });
     }
     if (sortRecovered) {
-      items.sort(function (x, y) {
+      allStatesData.sort(function (x, y) {
         return !sortOrder
-          ? Number(y.recovered) - Number(x.recovered)
-          : Number(x.recovered) - Number(y.recovered);
+          ? Number(y?.data?.total?.recovered) -
+              Number(x?.data?.total?.recovered)
+          : Number(x?.data?.total?.recovered) -
+              Number(y?.data?.total?.recovered);
       });
     }
     if (sortDeceased) {
-      items.sort(function (x, y) {
+      allStatesData.sort(function (x, y) {
         return !sortOrder
-          ? Number(y.deaths) - Number(x.deaths)
-          : Number(x.deaths) - Number(y.deaths);
+          ? Number(y?.data?.total?.deceased) - Number(x?.data?.total?.deceased)
+          : Number(x?.data?.total?.deceased) - Number(y?.data?.total?.deceased);
+      });
+    }
+
+    if (sortTested) {
+      allStatesData.sort(function (x, y) {
+        return !sortOrder
+          ? Number(y?.data?.total?.tested) - Number(x?.data?.total?.tested)
+          : Number(x?.data?.total?.tested) - Number(y?.data?.total?.tested);
+      });
+    }
+
+    if (sortVaccinated) {
+      allStatesData.sort(function (x, y) {
+        return !sortOrder
+          ? Number(y?.data?.total?.vaccinated) -
+              Number(x?.data?.total?.vaccinated)
+          : Number(x?.data?.total?.vaccinated) -
+              Number(y?.data?.total?.vaccinated);
       });
     }
 
@@ -401,7 +462,7 @@ class Table extends Component {
                 </td>
               </tbody>
             </table>
-            {(totalVaccinated || "") && (
+            {(totalVaccinated || "") && totalVaccinated !== "-" && (
               <div className="vaccinatedPeople">
                 <h6>
                   <img src={shield} className="vaccineShield" />{" "}
@@ -415,8 +476,6 @@ class Table extends Component {
           <div className="row">
             <Updates />
           </div>
-          <div className="w-100"></div>
-
           <div className="w-100"></div>
           <div
             className="indiaStateWiseHead fadeInUp"
@@ -492,7 +551,7 @@ class Table extends Component {
             >
               <thead className="thead-dark">
                 <tr>
-                  <th className="th sticky-top">State/UT</th>
+                  <th className="th th-left sticky-top">State/UT</th>
                   <th
                     className="th text-info sticky-top"
                     onClick={() =>
@@ -501,11 +560,13 @@ class Table extends Component {
                         sortActive: false,
                         sortRecovered: false,
                         sortDeceased: false,
+                        sortTested: false,
+                        sortVaccinated: false,
                         sortOrder: !sortOrder,
                       })
                     }
                   >
-                    C
+                    Confirmed
                     {sortConfirmed && (
                       <SortRoundedIcon
                         fontSize="inherit"
@@ -525,11 +586,13 @@ class Table extends Component {
                         sortActive: true,
                         sortRecovered: false,
                         sortDeceased: false,
+                        sortTested: false,
+                        sortVaccinated: false,
                         sortOrder: !sortOrder,
                       })
                     }
                   >
-                    A
+                    Active
                     {sortActive && (
                       <SortRoundedIcon
                         fontSize="inherit"
@@ -548,11 +611,13 @@ class Table extends Component {
                         sortActive: false,
                         sortRecovered: true,
                         sortDeceased: false,
+                        sortTested: false,
+                        sortVaccinated: false,
                         sortOrder: !sortOrder,
                       })
                     }
                   >
-                    R
+                    Recovered
                     {sortRecovered && (
                       <SortRoundedIcon
                         fontSize="inherit"
@@ -571,12 +636,66 @@ class Table extends Component {
                         sortActive: false,
                         sortRecovered: false,
                         sortDeceased: true,
+                        sortTested: false,
+                        sortVaccinated: false,
                         sortOrder: !sortOrder,
                       })
                     }
                   >
-                    D
+                    Deaths
                     {sortDeceased && (
+                      <SortRoundedIcon
+                        fontSize="inherit"
+                        style={{
+                          color: "#ffc107",
+                          verticalAlign: "-0.1rem",
+                        }}
+                      />
+                    )}
+                  </th>
+                  <th
+                    className="th sticky-top"
+                    style={{ color: "#5969c2" }}
+                    onClick={() =>
+                      this.setState({
+                        sortConfirmed: false,
+                        sortActive: false,
+                        sortRecovered: false,
+                        sortDeceased: false,
+                        sortTested: true,
+                        sortVaccinated: false,
+                        sortOrder: !sortOrder,
+                      })
+                    }
+                  >
+                    Tested
+                    {sortTested && (
+                      <SortRoundedIcon
+                        fontSize="inherit"
+                        style={{
+                          color: "#ffc107",
+                          verticalAlign: "-0.1rem",
+                        }}
+                      />
+                    )}
+                  </th>
+                  <th
+                    className="th sticky-top"
+                    style={{ color: "#f4c430" }}
+                    onClick={() =>
+                      this.setState({
+                        sortConfirmed: false,
+                        sortActive: false,
+                        sortRecovered: false,
+                        sortDeceased: false,
+                        sortTested: false,
+                        sortVaccinated: true,
+                        sortOrder: !sortOrder,
+                      })
+                    }
+                  >
+                    Vaccinated
+                    {sortVaccinated && (
                       <SortRoundedIcon
                         fontSize="inherit"
                         style={{
@@ -589,201 +708,336 @@ class Table extends Component {
                 </tr>
               </thead>
               <tbody className="tbody">
-                {items.map((item, i) => (
-                  <tr
-                    className="tr"
-                    key={item.statecode}
-                    style={{
-                      background: i % 2 === 0 ? "rgba(63, 63, 95, 0.2)" : "",
-                    }}
-                  >
-                    <td className="align-middle">
-                      <div className="td-md-left">
-                        <Link to={`/${item.statecode}`}>
-                          <h6>{item.state}</h6>
-                        </Link>
-                        <h6>
-                          {item.statenotes ? (
-                            <OverlayTrigger
-                              key="right"
-                              placement="right"
-                              overlay={
-                                <Tooltip id="tooltip-right">
-                                  {parse(item.statenotes)}
-                                </Tooltip>
-                              }
-                            >
-                              <span>
-                                <InfoOutlined
-                                  color="inherit"
-                                  fontSize="inherit"
-                                  className="infoIcon"
-                                />
-                              </span>
-                            </OverlayTrigger>
-                          ) : (
-                            ""
-                          )}
-                        </h6>
-                      </div>
-                    </td>
-                    <td
-                      className="delta td-md align-middle"
-                      style={{ textAlign: "right" }}
-                    >
-                      <h6 className="arrowup">
-                        <DeltaArrow
-                          deltaType={item.deltaconfirmed}
-                          color={"#42b3f4"}
-                        />
-                        <DeltaValue
-                          deltaType={item.deltaconfirmed}
-                          color={"#42b3f4"}
-                        />
-                        <h6 className="delta td-md align-middle">
-                          {commaSeperated(item.confirmed)}
-                        </h6>
-                      </h6>
-                    </td>
-                    <td className="delta td-md align-middle">
-                      <h6 className="arrowup">
-                        <h6
-                          className="delta td-md align-middle"
-                          style={{ textAlign: "right" }}
+                {!isDataLoading &&
+                  allStatesData.map(
+                    (item, i) =>
+                      item.code !== "TT" && (
+                        <tr
+                          className="tr"
+                          key={item.code}
+                          style={{
+                            background:
+                              i % 2 === 0 ? "rgba(63, 63, 95, 0.2)" : "",
+                          }}
                         >
-                          {percentageToggleActive
-                            ? ((item.active * 100) / item.confirmed).toFixed(
-                                1
-                              ) + "%"
-                            : commaSeperated(item.active)}
-                        </h6>
-                      </h6>
-                    </td>
-                    <td
-                      className="delta td-md align-middle"
-                      style={{ textAlign: "right" }}
-                    >
-                      <h6 className="arrowup">
-                        <DeltaArrow
-                          deltaType={item.deltarecovered}
-                          color={"#28a745"}
-                        />
-                        <DeltaValue
-                          deltaType={item.deltarecovered}
-                          color={"#28a745"}
-                        />
-                        <h6 className="delta td-md align-middle">
-                          {percentageToggleActive
-                            ? ((item.recovered * 100) / item.confirmed).toFixed(
-                                1
-                              ) + "%"
-                            : commaSeperated(item.recovered)}
-                        </h6>
-                      </h6>
-                    </td>
-                    <td
-                      className="delta td-md align-middle"
-                      style={{ textAlign: "right" }}
-                    >
-                      <h6 className="arrowup">
-                        <DeltaArrow
-                          deltaType={item.deltadeaths}
-                          color={"#6c757d"}
-                        />
-                        <DeltaValue
-                          deltaType={item.deltadeaths}
-                          color={"#6c757d"}
-                        />
-                        <h6 className="delta td-md align-middle">
-                          {percentageToggleActive
-                            ? ((item.deaths * 100) / item.confirmed).toFixed(
-                                1
-                              ) + "%"
-                            : commaSeperated(item.deaths)}
-                        </h6>
-                      </h6>
-                    </td>
-                  </tr>
-                ))}
-                <tr
-                  className="tr"
-                  key={total[0].statecode}
-                  style={{ background: "rgba(105, 90, 205, 0.2)" }}
-                >
-                  <td className="align-middle">
-                    <div className="td-md-left">
-                      <h6 style={{ marginTop: "6px" }}>INDIA</h6>
-                    </div>
-                  </td>
-                  <td
-                    className="delta td-md align-middle"
-                    style={{ textAlign: "right" }}
-                  >
-                    <h6 className="arrowup text-info">
-                      <DeltaArrow
-                        deltaType={total[0].deltaconfirmed}
-                        color={"#42b3f4"}
-                      />
-                      <DeltaValue
-                        deltaType={total[0].deltaconfirmed}
-                        color={"#42b3f4"}
-                      />
-                      <h6 className="delta td-md align-middle">
-                        {commaSeperated(total[0].confirmed)}
-                      </h6>
-                    </h6>
-                  </td>
-                  <td
-                    className="delta td-md align-middle"
-                    style={{ textAlign: "right" }}
-                  >
-                    <h6 className="arrowup">
-                      <h6 className="align-middle">
-                        {total[0].active === "0"
-                          ? "-"
-                          : commaSeperated(total[0].active)}
-                      </h6>
-                    </h6>
-                  </td>
-                  <td
-                    className="delta td-md text-secondary align-middle"
-                    style={{ textAlign: "right" }}
-                  >
-                    <h6 className="arrowup">
-                      <DeltaArrow
-                        deltaType={total[0].deltarecovered}
-                        color={"#28a745"}
-                      />
-                      <DeltaValue
-                        deltaType={total[0].deltarecovered}
-                        color={"#28a745"}
-                      />
-                      <h6 className="delta td-md align-middle">
-                        {total[0].recovered === "0"
-                          ? "-"
-                          : commaSeperated(total[0].recovered)}
-                      </h6>
-                    </h6>
-                  </td>
-                  <td
-                    className="delta td-md align-middle"
-                    style={{ textAlign: "right" }}
-                  >
-                    <h6 className="arrowup">
-                      <DeltaArrow
-                        deltaType={total[0].deltadeaths}
-                        color={"#6c757d"}
-                      />
-                      <DeltaValue
-                        deltaType={total[0].deltadeaths}
-                        color={"#6c757d"}
-                      />
-                      <h6 className="delta td-md align-middle">
-                        {commaSeperated(total[0].deaths)}
-                      </h6>
-                    </h6>
-                  </td>
-                </tr>
+                          <td className="align-middle">
+                            <div className="td-md-left">
+                              <Link to={`/${item.code}`}>
+                                <h6>{item.name}</h6>
+                              </Link>
+                              <h6>
+                                {/* {item.statenotes ? (
+                                  <OverlayTrigger
+                                    key="right"
+                                    placement="right"
+                                    overlay={
+                                      <Tooltip id="tooltip-right">
+                                        {parse(item.statenotes)}
+                                      </Tooltip>
+                                    }
+                                  >
+                                    <span>
+                                      <InfoOutlined
+                                        color="inherit"
+                                        fontSize="inherit"
+                                        className="infoIcon"
+                                      />
+                                    </span>
+                                  </OverlayTrigger>
+                                ) : (
+                                  ""
+                                )} */}
+                              </h6>
+                            </div>
+                          </td>
+                          <td
+                            className="delta td-md align-middle"
+                            style={{ textAlign: "right" }}
+                          >
+                            <h6 className="arrowup">
+                              <DeltaArrow
+                                deltaType={item?.data?.delta?.confirmed}
+                                color={"#42b3f4"}
+                              />
+                              <DeltaValue
+                                deltaType={item?.data?.delta?.confirmed}
+                                color={"#42b3f4"}
+                              />
+                              <h6 className="delta td-md align-middle">
+                                {commaSeperated(item?.data?.total?.confirmed)}
+                              </h6>
+                            </h6>
+                          </td>
+                          <td className="delta td-md align-middle">
+                            <h6 className="arrowup">
+                              <h6
+                                className="delta td-md align-middle"
+                                style={{ textAlign: "right" }}
+                              >
+                                {percentageToggleActive
+                                  ? (
+                                      (getActiveNumber(item?.data?.total) *
+                                        100) /
+                                      item?.data?.total?.confirmed
+                                    ).toFixed(1) + "%"
+                                  : commaSeperated(
+                                      getActiveNumber(item?.data?.total)
+                                    )}
+                              </h6>
+                            </h6>
+                          </td>
+                          <td
+                            className="delta td-md align-middle"
+                            style={{ textAlign: "right" }}
+                          >
+                            <h6 className="arrowup">
+                              <DeltaArrow
+                                deltaType={item?.data?.delta?.recovered}
+                                color={"#28a745"}
+                              />
+                              <DeltaValue
+                                deltaType={item?.data?.delta?.recovered}
+                                color={"#28a745"}
+                              />
+                              <h6 className="delta td-md align-middle">
+                                {percentageToggleActive
+                                  ? (
+                                      (item?.data?.total?.recovered * 100) /
+                                      item?.data?.total?.confirmed
+                                    ).toFixed(1) + "%"
+                                  : commaSeperated(
+                                      item?.data?.total?.recovered
+                                    )}
+                              </h6>
+                            </h6>
+                          </td>
+                          <td
+                            className="delta td-md align-middle"
+                            style={{ textAlign: "right" }}
+                          >
+                            <h6 className="arrowup">
+                              <DeltaArrow
+                                deltaType={item?.data?.delta?.deceased}
+                                color={"#6c757d"}
+                              />
+                              <DeltaValue
+                                deltaType={item?.data?.delta?.deceased}
+                                color={"#6c757d"}
+                              />
+                              <h6 className="delta td-md align-middle">
+                                {percentageToggleActive
+                                  ? (
+                                      (item?.data?.total?.deceased * 100) /
+                                      item?.data?.total?.confirmed
+                                    ).toFixed(1) + "%"
+                                  : commaSeperated(item?.data?.total?.deceased)}
+                              </h6>
+                            </h6>
+                          </td>
+                          <td
+                            className="delta td-md align-middle"
+                            style={{ textAlign: "right" }}
+                          >
+                            <h6 className="arrowup">
+                              <DeltaArrow
+                                deltaType={item?.data?.delta?.tested}
+                                color={"#5969c2"}
+                              />
+                              <DeltaValue
+                                deltaType={item?.data?.delta?.tested}
+                                color={"#5969c2"}
+                              />
+                              <h6 className="delta td-md align-middle">
+                                {commaSeperated(item?.data?.total?.tested)}
+                              </h6>
+                            </h6>
+                          </td>
+                          <td
+                            className="delta td-md align-middle"
+                            style={{ textAlign: "right" }}
+                          >
+                            <h6 className="arrowup">
+                              <DeltaArrow
+                                deltaType={item?.data?.delta?.vaccinated}
+                                color={"#f4c32f"}
+                              />
+                              <DeltaValue
+                                deltaType={item?.data?.delta?.vaccinated}
+                                color={"#f4c32f"}
+                              />
+                              <h6 className="delta td-md align-middle">
+                                {commaSeperated(item?.data?.total?.vaccinated)}
+                              </h6>
+                            </h6>
+                          </td>
+                        </tr>
+                      )
+                  )}
+                {!isDataLoading &&
+                  allStatesData.map(
+                    (item, i) =>
+                      item.code === "TT" && (
+                        <tr
+                          className="tr"
+                          key={item.code}
+                          style={{
+                            background:
+                              i % 2 === 0 ? "rgba(63, 63, 95, 0.2)" : "",
+                          }}
+                        >
+                          <td className="align-middle">
+                            <div className="td-md-left">
+                              <Link to={`/${item.code}`}>
+                                <h6>{item.name}</h6>
+                              </Link>
+                              <h6>
+                                {/* {item.statenotes ? (
+                                  <OverlayTrigger
+                                    key="right"
+                                    placement="right"
+                                    overlay={
+                                      <Tooltip id="tooltip-right">
+                                        {parse(item.statenotes)}
+                                      </Tooltip>
+                                    }
+                                  >
+                                    <span>
+                                      <InfoOutlined
+                                        color="inherit"
+                                        fontSize="inherit"
+                                        className="infoIcon"
+                                      />
+                                    </span>
+                                  </OverlayTrigger>
+                                ) : (
+                                  ""
+                                )} */}
+                              </h6>
+                            </div>
+                          </td>
+                          <td
+                            className="delta td-md align-middle"
+                            style={{ textAlign: "right" }}
+                          >
+                            <h6 className="arrowup">
+                              <DeltaArrow
+                                deltaType={item?.data?.delta?.confirmed}
+                                color={"#42b3f4"}
+                              />
+                              <DeltaValue
+                                deltaType={item?.data?.delta?.confirmed}
+                                color={"#42b3f4"}
+                              />
+                              <h6 className="delta td-md align-middle">
+                                {commaSeperated(item?.data?.total?.confirmed)}
+                              </h6>
+                            </h6>
+                          </td>
+                          <td className="delta td-md align-middle">
+                            <h6 className="arrowup">
+                              <h6
+                                className="delta td-md align-middle"
+                                style={{ textAlign: "right" }}
+                              >
+                                {percentageToggleActive
+                                  ? (
+                                      (getActiveNumber(item?.data?.total) *
+                                        100) /
+                                      item?.data?.total?.confirmed
+                                    ).toFixed(1) + "%"
+                                  : commaSeperated(
+                                      getActiveNumber(item?.data?.total)
+                                    )}
+                              </h6>
+                            </h6>
+                          </td>
+                          <td
+                            className="delta td-md align-middle"
+                            style={{ textAlign: "right" }}
+                          >
+                            <h6 className="arrowup">
+                              <DeltaArrow
+                                deltaType={item?.data?.delta?.recovered}
+                                color={"#28a745"}
+                              />
+                              <DeltaValue
+                                deltaType={item?.data?.delta?.recovered}
+                                color={"#28a745"}
+                              />
+                              <h6 className="delta td-md align-middle">
+                                {percentageToggleActive
+                                  ? (
+                                      (item?.data?.total?.recovered * 100) /
+                                      item?.data?.total?.confirmed
+                                    ).toFixed(1) + "%"
+                                  : commaSeperated(
+                                      item?.data?.total?.recovered
+                                    )}
+                              </h6>
+                            </h6>
+                          </td>
+                          <td
+                            className="delta td-md align-middle"
+                            style={{ textAlign: "right" }}
+                          >
+                            <h6 className="arrowup">
+                              <DeltaArrow
+                                deltaType={item?.data?.delta?.deceased}
+                                color={"#6c757d"}
+                              />
+                              <DeltaValue
+                                deltaType={item?.data?.delta?.deceased}
+                                color={"#6c757d"}
+                              />
+                              <h6 className="delta td-md align-middle">
+                                {percentageToggleActive
+                                  ? (
+                                      (item?.data?.total?.deceased * 100) /
+                                      item?.data?.total?.confirmed
+                                    ).toFixed(1) + "%"
+                                  : commaSeperated(item?.data?.total?.deceased)}
+                              </h6>
+                            </h6>
+                          </td>
+                          <td
+                            className="delta td-md align-middle"
+                            style={{ textAlign: "right" }}
+                          >
+                            <h6 className="arrowup">
+                              <DeltaArrow
+                                deltaType={item?.data?.delta?.tested}
+                                color={"#5969c2"}
+                              />
+                              <DeltaValue
+                                deltaType={item?.data?.delta?.tested}
+                                color={"#5969c2"}
+                              />
+                              <h6 className="delta td-md align-middle">
+                                {commaSeperated(item?.data?.total?.tested)}
+                              </h6>
+                            </h6>
+                          </td>
+                          <td
+                            className="delta td-md align-middle"
+                            style={{ textAlign: "right" }}
+                          >
+                            <h6 className="arrowup">
+                              <DeltaArrow
+                                deltaType={item?.data?.delta?.vaccinated}
+                                color={"#f4c32f"}
+                              />
+                              <DeltaValue
+                                deltaType={item?.data?.delta?.vaccinated}
+                                color={"#f4c32f"}
+                              />
+                              <h6 className="delta td-md align-middle">
+                                {commaSeperated(item?.data?.total?.vaccinated)}
+                              </h6>
+                            </h6>
+                          </td>
+                        </tr>
+                      )
+                  )}
               </tbody>
             </table>
           </div>

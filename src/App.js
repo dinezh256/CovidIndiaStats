@@ -5,7 +5,6 @@ import {
   Switch,
   Redirect,
 } from "react-router-dom";
-// import useSWR from "swr";
 import { Helmet } from "react-helmet";
 import useDarkMode from "use-dark-mode";
 import { ThemeProvider, createGlobalStyle } from "styled-components";
@@ -13,6 +12,7 @@ import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import ReactGa from "react-ga";
 import Navbar from "./components/navbar";
+import AppContextProvider from "./context";
 
 const Home = lazy(() => import("./components/home"));
 const World = lazy(() => import("./components/world"));
@@ -50,10 +50,6 @@ function App() {
     ReactGa.pageview(window.location.pathname + window.location.search);
   }, []);
 
-  // const url = "https://api.covid19india.org/v4/data-all.json";
-  // const { data, error } = useSWR(url, fetcher);
-  // console.log(error);
-
   return (
     <React.Fragment>
       <Helmet>
@@ -61,26 +57,28 @@ function App() {
           {JSON.stringify(schemaMarkup)}
         </script>
       </Helmet>
-      <Router history={history}>
-        <Navbar darkMode={darkMode} />
-        <ThemeProvider theme={{ mode: darkMode.value }}>
-          <GlobalStyle />
-          <Suspense fallback={<div />}>
-            <main className="container">
-              <Switch>
-                <Route path="/global" component={World} />
-                <Route path="/links" component={Options} />
-                <Route path="/faq" component={FAQ} />
-                <Route path="/not-found" component={NotFound} />
-                <Route path="/notifications" component={Notifications} />
-                <Route exact path="/" component={Home} />
-                <Route path="/:stateid?" component={StateDetails} />
-                <Redirect to="/not-found" />
-              </Switch>
-            </main>
-          </Suspense>
-        </ThemeProvider>
-      </Router>
+      <AppContextProvider>
+        <Router history={history}>
+          <Navbar darkMode={darkMode} />
+          <ThemeProvider theme={{ mode: darkMode.value }}>
+            <GlobalStyle />
+            <Suspense fallback={<div />}>
+              <main className="container">
+                <Switch>
+                  <Route path="/global" component={World} />
+                  <Route path="/links" component={Options} />
+                  <Route path="/faq" component={FAQ} />
+                  <Route path="/not-found" component={NotFound} />
+                  <Route path="/notifications" component={Notifications} />
+                  <Route exact path="/" component={Home} />
+                  <Route path="/:stateid?" component={StateDetails} />
+                  <Redirect to="/not-found" />
+                </Switch>
+              </main>
+            </Suspense>
+          </ThemeProvider>
+        </Router>
+      </AppContextProvider>
     </React.Fragment>
   );
 }

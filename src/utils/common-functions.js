@@ -247,6 +247,7 @@ export const stateFullName = {
   UT: "Uttarakhand",
   WB: "West Bengal",
   UN: "State Unassigned",
+  TT: "India",
 };
 
 export const stateMaps = {
