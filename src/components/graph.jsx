@@ -1575,7 +1575,7 @@ class Graph extends Component {
                           />
                           <Bar
                             dataKey="deltaVaccinated"
-                            name="Tested"
+                            name="Vaccinated"
                             fill="#f4c430"
                             radius={[3, 3, 0, 0]}
                             barSize={20}
