@@ -1,7 +1,7 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import LaunchRoundedIcon from "@material-ui/icons/LaunchRounded";
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
-import { Link } from "react-router-dom";
 import { toTimestamp, timeSince } from "./../utils/common-functions";
 
 class Updates extends Component {
@@ -106,21 +106,19 @@ class Updates extends Component {
                               " died"
                             : ""
                         } in ${item.state}`}
-                        {"  "}
-                        {
-                          <Link key={item.statecode} to={`/${item.statecode}`}>
-                            <LaunchRoundedIcon
-                              style={{
-                                color: "peru",
-                                background: "rgba(255, 153, 0, 0.3)",
-                                borderRadius: "3px",
-                                padding: "2 2",
-                                fontWeight: 700,
-                                fontSize: 16,
-                              }}
-                            />
-                          </Link>
-                        }
+
+                        <Link key={item.statecode} to={`/${item.statecode}`}>
+                          <LaunchRoundedIcon
+                            style={{
+                              color: "peru",
+                              background: "rgba(255, 153, 0, 0.3)",
+                              borderRadius: "3px",
+                              padding: "2 2",
+                              fontWeight: 700,
+                              fontSize: 16,
+                            }}
+                          />
+                        </Link>
                       </h6>
                     </div>
                   )
@@ -140,10 +138,7 @@ class Updates extends Component {
                   cursor: "pointer",
                 }}
               >
-                <h6 style={{ fontSize: 12, color: "#3a3838" }}>
-                  {" "}
-                  No new updates till now!
-                </h6>
+                <h6 style={{ fontSize: 12 }}>No new updates till now!</h6>
               </div>
             )}
           </div>

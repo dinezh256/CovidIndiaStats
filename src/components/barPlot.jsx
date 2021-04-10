@@ -66,8 +66,7 @@ const BarPlot = ({
               textTransform: "capitalize",
             }}
           >
-            {date.slice(-1)[0]}
-
+            {Number(date.slice(-1)[0].split(" ")[0])} {date.slice(-1)[0].split(" ")[1]}
             <h5
               style={{
                 fontSize: "0.8rem",
@@ -89,7 +88,7 @@ const BarPlot = ({
           </h6>
         </h5>
 
-        <ResponsiveContainer width="100%" height="100%" aspect={2.3}>
+        <ResponsiveContainer width="100%" height="100%" aspect={2.2}>
           <BarChart
             width={310}
             height={120}
@@ -103,12 +102,12 @@ const BarPlot = ({
             syncId="barchart"
           >
             <XAxis
-              dataKey="date"
+              dataKey="newDate"
               tick={{ stroke: stroke, strokeWidth: 0.2, fill: stroke }}
               style={{ fontSize: "0.62rem", fontFamily: "notosans" }}
               tickSize={5}
               tickLine={{ stroke: stroke }}
-              tickCount={8}
+              tickCount={5}
               axisLine={{ stroke: stroke, strokeWidth: "1.5px" }}
             />
             <YAxis

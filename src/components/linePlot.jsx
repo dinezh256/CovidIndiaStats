@@ -73,7 +73,7 @@ const LinePlot = ({
               textTransform: "capitalize",
             }}
           >
-            {date.slice(-1)[0]}
+            {Number(date.slice(-1)[0].split(" ")[0])} {date.slice(-1)[0].split(" ")[1]}
             <h6
               style={{
                 fontSize: "0.8rem",
@@ -90,24 +90,19 @@ const LinePlot = ({
             </h6>
           </h6>
         </h5>
-        <ResponsiveContainer width="100%" height="100%" aspect={2.3}>
+        <ResponsiveContainer width="100%" height="100%" aspect={2.2}>
           <LineChart
             data={data.slice(timelineLength, data.length)}
-            margin={{
-              top: 40,
-              right: -24,
-              left: 10,
-              bottom: -8,
-            }}
+            margin={{ top: 40, right: -24, left: 10, bottom: -8 }}
             syncId="linechart"
           >
             <XAxis
-              dataKey="date"
+              dataKey="newDate"
               tick={{ stroke: stroke, strokeWidth: 0.2, fill: stroke }}
               style={{ fontSize: "0.62rem", fontFamily: "notosans" }}
               tickSize={5}
               tickLine={{ stroke: stroke }}
-              tickCount={8}
+              tickCount={5}
               axisLine={{ stroke: stroke, strokeWidth: "1.5px" }}
             />
             <YAxis

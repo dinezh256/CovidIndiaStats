@@ -1,21 +1,16 @@
 import React, { Component } from "react";
 import ReactGa from "react-ga";
-import { NavLink } from "react-router-dom";
-import {
-  formatDate,
-  formatDateAbsolute,
-  toTimestamp,
-  timeSince,
-} from "../utils/common-functions";
+import { Link } from "react-router-dom";
 import * as Icon from "react-feather";
-import NotificationsIcon from "@material-ui/icons/Notifications";
-import NotificationsOffIcon from "@material-ui/icons/NotificationsOff";
 import LaunchRoundedIcon from "@material-ui/icons/LaunchRounded";
 import Badge from "@material-ui/core/Badge";
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 import AccessTimeRoundedIcon from "@material-ui/icons/AccessTimeRounded";
-import GroupWorkOutlinedIcon from "@material-ui/icons/GroupWorkOutlined";
-import { Link } from "react-router-dom";
+import {
+  formatDateAbsolute,
+  toTimestamp,
+  timeSince,
+} from "../utils/common-functions";
 
 class Updates extends Component {
   constructor(props) {
@@ -24,7 +19,6 @@ class Updates extends Component {
       isLoaded: false,
       data: [],
       toggleActive: false,
-      items: [],
       lastUpdated: "",
       wasSeen: false,
     };
@@ -44,9 +38,6 @@ class Updates extends Component {
             (item) => item.confirmed !== "0" && item.state !== "Total"
           ),
           lastUpdated: json.statewise[0].lastupdatedtime,
-          items: json.statewise.filter(
-            (item) => item.confirmed !== "0" && item.state !== "Total"
-          ),
         });
         let localLastUpdated = localStorage.getItem("localLastUpdated");
 
@@ -65,14 +56,10 @@ class Updates extends Component {
   }
 
   render() {
-    const {
-      data,
-      isLoaded,
-      toggleActive,
-      lastUpdated,
-      items,
-      wasSeen,
-    } = this.state;
+    const { data, isLoaded, toggleActive, lastUpdated, wasSeen } = this.state;
+    console.log({ lastUpdated });
+
+    const bellProps = { size: 17, style: { color: "rgb(62, 77, 163)" } };
 
     let totalDeltaConfirmed = 0;
     data.map((item) => (totalDeltaConfirmed += Number(item.deltaconfirmed)));
@@ -98,25 +85,20 @@ class Updates extends Component {
         >
           <div
             className="home-toggle"
-            style={{
-              alignItems: "center",
-              textAlign: "center",
-            }}
+            style={{ alignItems: "center", textAlign: "center" }}
           >
             <span style={{ color: "#3f51b5" }}>
               <h4 className="updates font-weight-bold">
                 <span style={{ verticalAlign: "0.1rem", cursor: "pointer" }}>
                   <AccessTimeRoundedIcon color="primary" fontSize="small" />
                 </span>
-                &nbsp;
-                <span style={{ color: "#3f51b5", textTransform: "uppercase" }}>
-                  {isNaN(Date.parse(formatDate(lastUpdated)))
-                    ? ""
-                    : formatDateAbsolute(lastUpdated)}
+                &emsp;
+                <span style={{ color: "#3f51b5" }}>
+                  {formatDateAbsolute(lastUpdated)}
                 </span>
                 <span id="line1" style={{ color: "#3f51b5" }}>
-                  &nbsp;|{" "}
-                  <NavLink to="/notifications" id="line1">
+                  &emsp;|&emsp;
+                  <Link to="/notifications" id="line1">
                     {!wasSeen ? (
                       <Badge
                         color="primary"
@@ -125,41 +107,18 @@ class Updates extends Component {
                         fontSize="inherit"
                         onClick={this.close.bind(this)}
                       >
-                        <span
-                          className="about"
-                          onClick={() =>
-                            ReactGa.event({
-                              category: "Notification",
-                              action: "Bell clicked",
-                            })
-                          }
-                        >
-                          <Icon.Bell
-                            size={20}
-                            style={{ color: "rgb(62, 77, 163)" }}
-                          />{" "}
+                        <span className="about">
+                          <Icon.Bell {...bellProps} />
                         </span>
                       </Badge>
                     ) : (
-                      <span
-                        className="about"
-                        onClick={() =>
-                          ReactGa.event({
-                            category: "Notification",
-                            action: "Bell clicked",
-                          })
-                        }
-                      >
-                        <Icon.Bell
-                          size={20}
-                          style={{ color: "rgb(62, 77, 163)" }}
-                        />
+                      <span className="about">
+                        <Icon.Bell {...bellProps} />
                       </span>
                     )}
-                  </NavLink>{" "}
-                  |&nbsp;
+                  </Link>
                 </span>
-                <span id="line2">&nbsp;|&nbsp;</span>
+                <span id="line2">&emsp;|&emsp;</span>
                 <span
                   id="line2"
                   onClick={() => {
@@ -180,25 +139,14 @@ class Updates extends Component {
                         fontSize="inherit"
                         onClick={this.close.bind(this)}
                       >
-                        <NotificationsIcon color="primary" />
+                        <Icon.Bell {...bellProps} />
                       </Badge>
                     ) : (
-                      <NotificationsIcon color="primary" />
+                      <Icon.Bell {...bellProps} />
                     )
                   ) : (
-                    <NotificationsOffIcon color="primary" />
+                    <Icon.BellOff {...bellProps} />
                   )}
-                </span>
-                <span id="line2">&nbsp;|&nbsp;</span>
-                
-                {" "}
-                <span
-                  style={{
-                    verticalAlign: "0.1rem",
-                    cursor: "pointer",
-                  }}
-                >
-                  <GroupWorkOutlinedIcon color="primary" fontSize="small" />
                 </span>
               </h4>
             </span>
@@ -235,7 +183,7 @@ class Updates extends Component {
                                   item.lastupdatedtime.split(/\//)[2],
                                 ].join("/")
                               ).getTime()
-                            )}{" "}
+                            )}
                           &nbsp;
                           <span style={{ color: "green" }}>
                             <FiberManualRecordIcon fontSize="inherit" />
@@ -297,10 +245,7 @@ class Updates extends Component {
                     cursor: "pointer",
                   }}
                 >
-                  <h6 style={{ fontSize: 12, color: "#3a3838" }}>
-                    {" "}
-                    No new updates!
-                  </h6>
+                  <h6 style={{ fontSize: 12 }}>No new updates!</h6>
                 </div>
               ))}
           </div>

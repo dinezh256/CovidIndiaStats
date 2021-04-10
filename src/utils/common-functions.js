@@ -2,15 +2,15 @@ import * as Icon from "react-feather";
 import React from "react";
 
 const months = {
-  "01": "Jan",
-  "02": "Feb",
-  "03": "Mar",
-  "04": "Apr",
-  "05": "May",
-  "06": "Jun",
-  "07": "Jul",
-  "08": "Aug",
-  "09": "Sep",
+  1: "Jan",
+  2: "Feb",
+  3: "Mar",
+  4: "Apr",
+  5: "May",
+  6: "Jun",
+  7: "Jul",
+  8: "Aug",
+  9: "Sep",
   10: "Oct",
   11: "Nov",
   12: "Dec",
@@ -68,14 +68,19 @@ export const formatDate = (unformattedDate) => {
   const month = unformattedDate.slice(3, 5);
   const year = unformattedDate.slice(6, 10);
   const time = unformattedDate.slice(11);
+
   return `${year}-${month}-${day}T${time}+05:30`;
 };
 
 export const formatDateAbsolute = (unformattedDate) => {
-  const day = unformattedDate.slice(0, 2);
-  const month = unformattedDate.slice(3, 5);
-  const time = unformattedDate.slice(11);
-  return `${day} ${months[month]}, ${time.slice(0, 5)} IST`;
+  if (!(unformattedDate || "")) return "";
+
+  const splitDateTime = unformattedDate.split(" ");
+  const dateMonthYear = splitDateTime[0].split("/");
+  const date = dateMonthYear[0];
+  const month = dateMonthYear[1];
+  const time = splitDateTime[1];
+  return `${date} ${months[Number(month)]}, ${time.slice(0, 5)} IST`;
 };
 
 export function commaSeperated(x) {

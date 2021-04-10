@@ -40,8 +40,8 @@ class Graph extends Component {
     this.state = {
       data: [],
       data2: [],
-      tests: [],
       totalTestsData: [],
+      vaccinatedData: [],
       isLoaded: false,
       isLoaded2: false,
       toggleActive: false,
@@ -96,15 +96,16 @@ class Graph extends Component {
           isLoaded: true,
           data: json.cases_time_series,
           data2: json.statewise,
-          tests: json.tested,
         });
       })
     );
 
     fetch("https://api.covid19india.org/v4/timeseries.json").then((res) =>
       res.json().then((json) => {
-        const { totalTestsData } = this.state;
+        const { totalTestsData, vaccinatedData } = this.state;
         const totalData = json.TT.dates;
+
+        console.log({ totalData });
 
         for (let key in totalData) {
           totalTestsData.push({
@@ -118,9 +119,36 @@ class Graph extends Component {
                 ? totalData[key]?.total?.tested
                 : 0,
           });
+
+          const splittedDate = key.split("-");
+          if (key === "2020-01-30") {
+            vaccinatedData.push({
+              date: `${splittedDate[2]} ${
+                months2[Number(splittedDate[1]) - 1]
+              } ${splittedDate[0]}`,
+              deltaVaccinated: 0,
+              totalVaccinated: 0,
+            });
+          } else {
+            vaccinatedData.push({
+              date: `${splittedDate[2]} ${
+                months2[Number(splittedDate[1]) - 1]
+              } ${splittedDate[0]}`,
+              deltaVaccinated:
+                totalData[key]?.delta?.vaccinated || ""
+                  ? totalData[key]?.delta?.vaccinated
+                  : "-",
+              totalVaccinated:
+                totalData[key]?.delta?.vaccinated || ""
+                  ? totalData[key]?.total?.vaccinated
+                  : "-",
+            });
+          }
         }
 
-        this.setState({ totalTestsData, isLoaded2: true });
+        
+
+        this.setState({ totalTestsData, vaccinatedData, isLoaded2: true });
       })
     );
   }
@@ -132,8 +160,8 @@ class Graph extends Component {
       data,
       data2,
       toggleActive,
-      tests,
       totalTestsData,
+      vaccinatedData,
       clickConfirmedMap,
       clickActiveMap,
       clickRecoveredMap,
@@ -143,9 +171,15 @@ class Graph extends Component {
       oneMonth,
     } = this.state;
 
-    console.log({ data });
-
     const dailyConfirmed = [];
+
+    data.map(
+      (item) =>
+        (item["newDate"] = `${item.date?.split(" ")[0]} ${
+          item.date?.split(" ")[1]
+        } `)
+    );
+
     data.map((item) => dailyConfirmed.push(Number(item.dailyconfirmed)));
     const dailyActive = [];
     data.map((item) =>
@@ -163,7 +197,7 @@ class Graph extends Component {
           Number(item.dailyconfirmed) -
           Number(item.dailyrecovered) -
           Number(item.dailydeceased),
-        date: item.date,
+        newDate: item.newDate,
       })
     );
 
@@ -190,7 +224,7 @@ class Graph extends Component {
           Number(item.totalconfirmed) -
           Number(item.totalrecovered) -
           Number(item.totaldeceased),
-        date: item.date,
+        newDate: item.newDate,
       })
     );
     const totalRecovered = [];
@@ -274,7 +308,7 @@ class Graph extends Component {
       const index = testedDates.indexOf(date[i]);
       cumulativeDateFormattedTests.push({
         totaltested: testedData[index],
-        date: `${date[i]?.split(" ")[0]} ${date[i]?.split(" ")[1]} `,
+        date: `${Number(date[i]?.split(" ")[0])} ${date[i]?.split(" ")[1]} `,
       });
     }
 
@@ -294,7 +328,7 @@ class Graph extends Component {
     for (let i = 0; i < dateFormattedTests.length; i++) {
       dailyDateFormattedTests.push({
         dailytested: dateFormattedTests[i].deltaSamplestested,
-        date: `${date[i]?.split(" ")[0]} ${date[i]?.split(" ")[1]} `,
+        date: `${Number(date[i]?.split(" ")[0])} ${date[i]?.split(" ")[1]} `,
       });
     }
 
@@ -305,14 +339,43 @@ class Graph extends Component {
         timelineLength = 0;
       }
       if (twoWeeks) {
-        timelineLength = data.length - 15;
+        timelineLength = data.length - 30;
       }
       if (oneMonth) {
-        timelineLength = data.length - 30;
+        timelineLength = data.length - 90;
       }
     }
 
-    console.log({ cumulativeDateFormattedTests });
+    const formattedVaccinatedData = [];
+
+    if (isLoaded && isLoaded2) {
+      date.map((d) => {
+        let res = d;
+        vaccinatedData.map((d2) => {
+          if (res === d2.date) {
+            res = d2;
+          }
+        });
+        if (res.date === d) {
+          formattedVaccinatedData.push({
+            date: `${Number(d.split(" ")[0])} ${d.split(" ")[1]} `,
+            deltaVaccinated: res.deltaVaccinated,
+            totalVaccinated: res.totalVaccinated,
+          });
+        } else {
+          formattedVaccinatedData.push({
+            date: `${Number(d.split(" ")[0])} ${d.split(" ")[1]} `,
+            deltaVaccinated: "-",
+            totalVaccinated: "-",
+          });
+        }
+      });
+      localStorage.setItem(
+        "lastTotalVaccinated",
+        formattedVaccinatedData[formattedVaccinatedData.length - 1].totalVaccinated
+      );
+    }
+
 
     if (isLoaded && isLoaded2) {
       return (
@@ -337,7 +400,7 @@ class Graph extends Component {
                     paddingTop: "15px",
                   }}
                 >
-                  INDIA MAP
+                  INDIAN MAP
                 </h3>
                 <div
                   className="fadeInUp testpad"
@@ -345,7 +408,7 @@ class Graph extends Component {
                 >
                   <h6>
                     TEST SAMPLES
-                    <h6 style={{ fontSize: 14 }}>
+                    <h6 style={{ fontSize: 13 }}>
                       {commaSeperated(
                         totalSamplesTested[totalSamplesTested.length - 1]
                       )}
@@ -388,11 +451,16 @@ class Graph extends Component {
                         ? "rgba(66, 179, 244, 0.3)"
                         : "rgba(66, 179, 244, 0.125)"
                     }`,
+                    border: `${
+                      clickConfirmedMap
+                        ? "2px solid rgba(66, 179, 244, 0.3)"
+                        : "2px solid transparent"
+                    }`,
                   }}
                 >
                   <h6 className="pad">
                     CONFIRMED
-                    <h6 style={{ fontSize: 14 }}>
+                    <h6 style={{ fontSize: 13 }}>
                       {commaSeperated(grandTotal[0].confirmed)}
                       <h6 style={{ fontSize: 10 }}>
                         {Number(grandTotal[0].deltaconfirmed) > 0 ? (
@@ -434,11 +502,16 @@ class Graph extends Component {
                         ? "rgba(255, 7, 58, 0.25)"
                         : "rgba(255, 7, 58, 0.125)"
                     }`,
+                    border: `${
+                      clickActiveMap
+                        ? "2px solid rgba(255, 7, 58, 0.3)"
+                        : "2px solid transparent"
+                    }`,
                   }}
                 >
                   <h6 className="pad">
                     ACTIVE
-                    <h6 style={{ fontSize: 14 }}>
+                    <h6 style={{ fontSize: 13 }}>
                       {commaSeperated(grandTotal[0].active)}
                       <h6 style={{ fontSize: 10 }}>
                         {Number(grandTotal[0].deltaconfirmed) -
@@ -490,11 +563,16 @@ class Graph extends Component {
                         ? "rgba(88, 189, 88, 0.3)"
                         : "rgba(88, 189, 88, 0.125)"
                     }`,
+                    border: `${
+                      clickRecoveredMap
+                        ? "2px solid rgba(88, 189, 88, 0.3)"
+                        : "2px solid transparent"
+                    }`,
                   }}
                 >
                   <h6 className="text-success pad">
                     RECOVERED
-                    <h6 style={{ fontSize: 14 }}>
+                    <h6 style={{ fontSize: 13 }}>
                       {commaSeperated(grandTotal[0].recovered)}
                       <h6 style={{ fontSize: 10 }}>
                         {Number(grandTotal[0].deltarecovered) > 0 ? (
@@ -535,12 +613,16 @@ class Graph extends Component {
                         ? "rgba(92, 87, 86, 0.4)"
                         : "rgba(92, 87, 86, 0.125)"
                     }`,
-                    cursor: "pointer",
+                    border: `${
+                      clickDeceasedMap
+                        ? "2px solid rgba(92, 87, 86, 0.4)"
+                        : "2px solid transparent"
+                    }`,
                   }}
                 >
                   <h6 className="text-secondary pad">
                     DECEASED
-                    <h6 style={{ fontSize: 14 }}>
+                    <h6 style={{ fontSize: 13 }}>
                       {commaSeperated(grandTotal[0].deaths)}
                       <h6 style={{ fontSize: 10 }}>
                         {Number(grandTotal[0].deltadeaths) > 0 ? (
@@ -572,10 +654,7 @@ class Graph extends Component {
                 className="col fadeInUp indiaMapChoropleth"
                 style={{ justifyContent: "left", animationDelay: "2.1s" }}
               >
-                {/* <h1 className="lastUpdatedIndiaMap">
-                  Last Updated
-                  <h6>about {lastUpdatedTime}</h6>
-                </h1> */}
+                
                 {clickConfirmedMap && (
                   <Choropleth
                     data={confirmedStatesData.slice(
@@ -730,7 +809,7 @@ class Graph extends Component {
                     })
                   }
                 >
-                  &nbsp;1 Month{" "}
+                  &nbsp;3 Months{" "}
                   {oneMonth && <Icon.CheckCircle size={10} strokeWidth={3} />}
                 </h6>
               </div>
@@ -746,7 +825,7 @@ class Graph extends Component {
                     })
                   }
                 >
-                  &nbsp;15 Days{" "}
+                  &nbsp;1 Month{" "}
                   {twoWeeks && <Icon.CheckCircle size={10} strokeWidth={3} />}
                 </h6>
               </div>
@@ -872,7 +951,7 @@ class Graph extends Component {
                       <ResponsiveContainer
                         width="100%"
                         height="100%"
-                        aspect={2.3}
+                        aspect={2.2}
                       >
                         <LineChart
                           data={cumulativeDateFormattedTests.slice(
@@ -899,7 +978,7 @@ class Graph extends Component {
                               fontFamily: "notosans",
                             }}
                             tickSize={5}
-                            tickCount={8}
+                            tickCount={5}
                             axisLine={{
                               stroke: "#6471b3",
                               strokeWidth: "1.5px",
@@ -970,6 +1049,163 @@ class Graph extends Component {
                                   width={4.5}
                                   height={4.5}
                                   fill="#3e4da3"
+                                  viewBox="0 0 1024 1024"
+                                >
+                                  <path d="M517.12 53.248q95.232 0 179.2 36.352t145.92 98.304 98.304 145.92 36.352 179.2-36.352 179.2-98.304 145.92-145.92 98.304-179.2 36.352-179.2-36.352-145.92-98.304-98.304-145.92-36.352-179.2 36.352-179.2 98.304-145.92 145.92-98.304 179.2-36.352zM663.552 261.12q-15.36 0-28.16 6.656t-23.04 18.432-15.872 27.648-5.632 33.28q0 35.84 21.504 61.44t51.2 25.6 51.2-25.6 21.504-61.44q0-17.408-5.632-33.28t-15.872-27.648-23.04-18.432-28.16-6.656zM373.76 261.12q-29.696 0-50.688 25.088t-20.992 60.928 20.992 61.44 50.688 25.6 50.176-25.6 20.48-61.44-20.48-60.928-50.176-25.088zM520.192 602.112q-51.2 0-97.28 9.728t-82.944 27.648-62.464 41.472-35.84 51.2q-1.024 1.024-1.024 2.048-1.024 3.072-1.024 8.704t2.56 11.776 7.168 11.264 12.8 6.144q25.6-27.648 62.464-50.176 31.744-19.456 79.36-35.328t114.176-15.872q67.584 0 116.736 15.872t81.92 35.328q37.888 22.528 63.488 50.176 17.408-5.12 19.968-18.944t0.512-18.944-3.072-7.168-1.024-3.072q-26.624-55.296-100.352-88.576t-176.128-33.28z" />
+                                </svg>
+                              )
+                            }
+                            activeDot={{ r: 2.5 }}
+                          />
+                        </LineChart>
+                      </ResponsiveContainer>
+                    </section>
+                  </div>
+                  <div className="w-100"></div>
+                  <div className="w-100"></div>
+                  <div className="col">
+                    <section
+                      className="graphsection"
+                      style={{
+                        backgroundColor: "rgba(255, 223, 0, 0.1)",
+                        borderRadius: "6px",
+                        paddingTop: "5px",
+                        marginTop: "10px",
+                      }}
+                    >
+                      <h5
+                        style={{
+                          paddingTop: "8px",
+                          marginBottom: "-70px",
+                          textAlign: "left",
+                          marginLeft: 10,
+                          fontSize: "0.8rem",
+                          color: "#f4c430",
+                        }}
+                      >
+                        VACCINE DOSES
+                        <h6 style={{ fontSize: "12px", color: "#f4c430aa" }}>
+                          {
+                            formattedVaccinatedData[
+                              formattedVaccinatedData.length - 1
+                            ].date
+                          }
+
+                          <h5
+                            style={{ fontSize: "0.8rem", color: "#f4c430dd" }}
+                          >
+                            {commaSeperated(
+                              formattedVaccinatedData[
+                                formattedVaccinatedData.length - 1
+                              ].totalVaccinated
+                            )}{" "}
+                            <span style={{ fontSize: 8 }}>
+                              +
+                              {commaSeperated(
+                                formattedVaccinatedData[
+                                  formattedVaccinatedData.length - 1
+                                ].deltaVaccinated
+                              )}
+                            </span>
+                          </h5>
+                        </h6>
+                      </h5>
+                      <ResponsiveContainer
+                        width="100%"
+                        height="100%"
+                        aspect={2.2}
+                      >
+                        <LineChart
+                          data={formattedVaccinatedData.slice(
+                            timelineLength,
+                            formattedVaccinatedData.length
+                          )}
+                          margin={{
+                            top: 40,
+                            right: -24,
+                            left: 10,
+                            bottom: -8,
+                          }}
+                          syncId="linechart"
+                        >
+                          <XAxis
+                            dataKey="date"
+                            tick={{
+                              stroke: "#f4c430dd",
+                              fill: "#f4c430dd",
+                              strokeWidth: 0.2,
+                            }}
+                            style={{
+                              fontSize: "0.62rem",
+                              fontFamily: "notosans",
+                            }}
+                            tickSize={5}
+                            tickCount={5}
+                            axisLine={{
+                              stroke: "#f4c430dd",
+                              strokeWidth: "1.5px",
+                            }}
+                            tickLine={{
+                              stroke: "#f4c430dd",
+                              strokeWidth: "1.5px",
+                            }}
+                          />
+                          <YAxis
+                            domain={[0, "auto"]}
+                            orientation="right"
+                            tick={{
+                              stroke: "#f4c430dd",
+                              fill: "#f4c430dd",
+                              strokeWidth: 0.2,
+                            }}
+                            tickFormatter={format("~s")}
+                            tickSize={5}
+                            style={{
+                              fontSize: "0.62rem",
+                              fontFamily: "notosans",
+                            }}
+                            tickCount={8}
+                            axisLine={{
+                              stroke: "#f4c430dd",
+                              strokeWidth: "1.5px",
+                            }}
+                            tickLine={{
+                              stroke: "#f4c430dd",
+                              strokeWidth: "1.5px",
+                            }}
+                          />
+                          <Tooltip
+                            contentStyle={{
+                              background: "rgba(255,255,255,0)",
+                              border: "none",
+                              borderRadius: "5px",
+                              fontSize: "0.7rem",
+                              fontFamily: "notosans",
+                              textTransform: "uppercase",
+                              textAlign: "left",
+                              lineHeight: 0.8,
+                            }}
+                            cursor={false}
+                            position={{ x: 120, y: 15 }}
+                          />
+                          <Line
+                            type="monotone"
+                            dataKey="totalVaccinated"
+                            stroke="#f4c430"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            name="Vaccinated"
+                            isAnimationActive={true}
+                            connectNulls={true}
+                            dot={({ cx, cy }) =>
+                              cx &&
+                              cy && (
+                                <svg
+                                  x={cx - 2.25}
+                                  y={cy - 2.25}
+                                  width={4.5}
+                                  height={4.5}
+                                  fill="#f4c430"
                                   viewBox="0 0 1024 1024"
                                 >
                                   <path d="M517.12 53.248q95.232 0 179.2 36.352t145.92 98.304 98.304 145.92 36.352 179.2-36.352 179.2-98.304 145.92-145.92 98.304-179.2 36.352-179.2-36.352-145.92-98.304-98.304-145.92-36.352-179.2 36.352-179.2 98.304-145.92 145.92-98.304 179.2-36.352zM663.552 261.12q-15.36 0-28.16 6.656t-23.04 18.432-15.872 27.648-5.632 33.28q0 35.84 21.504 61.44t51.2 25.6 51.2-25.6 21.504-61.44q0-17.408-5.632-33.28t-15.872-27.648-23.04-18.432-28.16-6.656zM373.76 261.12q-29.696 0-50.688 25.088t-20.992 60.928 20.992 61.44 50.688 25.6 50.176-25.6 20.48-61.44-20.48-60.928-50.176-25.088zM520.192 602.112q-51.2 0-97.28 9.728t-82.944 27.648-62.464 41.472-35.84 51.2q-1.024 1.024-1.024 2.048-1.024 3.072-1.024 8.704t2.56 11.776 7.168 11.264 12.8 6.144q25.6-27.648 62.464-50.176 31.744-19.456 79.36-35.328t114.176-15.872q67.584 0 116.736 15.872t81.92 35.328q37.888 22.528 63.488 50.176 17.408-5.12 19.968-18.944t0.512-18.944-3.072-7.168-1.024-3.072q-26.624-55.296-100.352-88.576t-176.128-33.28z" />
@@ -1068,8 +1304,8 @@ class Graph extends Component {
                       >
                         TESTED
                         <h6 style={{ fontSize: "12px", color: "#5969c2" }}>
-                          {date.slice(-1)[0]}
-
+                          {date.slice(-1)[0].split(" ")[0]}{" "}
+                          {date.slice(-1)[0].split(" ")[1]}
                           <h5 style={{ fontSize: "0.8rem", color: "#3e4da3" }}>
                             {commaSeperated(
                               dailyDateFormattedTests[
@@ -1111,7 +1347,7 @@ class Graph extends Component {
                       <ResponsiveContainer
                         width="100%"
                         height="100%"
-                        aspect={2.3}
+                        aspect={2.2}
                       >
                         <BarChart
                           data={dailyDateFormattedTests.slice(
@@ -1138,7 +1374,7 @@ class Graph extends Component {
                               fontFamily: "notosans",
                             }}
                             tickSize={5}
-                            tickCount={8}
+                            tickCount={5}
                             axisLine={{
                               stroke: "#6471b3",
                               strokeWidth: "1.5px",
@@ -1197,6 +1433,152 @@ class Graph extends Component {
                                 action: "Testedbar hover",
                               });
                             }}
+                          />
+                        </BarChart>
+                      </ResponsiveContainer>
+                    </section>
+                  </div>
+                  <div className="w-100"></div>
+                  <div className="col">
+                    <section
+                      className="graphsection"
+                      style={{
+                        alignSelf: "center",
+                        backgroundColor: "rgba(255, 223, 0, 0.1)",
+                        borderRadius: "6px",
+                        paddingTop: "5px",
+                      }}
+                    >
+                      <h5
+                        style={{
+                          paddingTop: "8px",
+                          marginBottom: "-70px",
+                          textAlign: "left",
+                          marginLeft: 10,
+                          fontSize: "0.8rem",
+                          color: "#f4c430",
+                        }}
+                      >
+                        VACCINE DOSES
+                        <h6 style={{ fontSize: "12px", color: "#f4c430aa" }}>
+                          {date.slice(-1)[0].split(" ")[0]}{" "}
+                          {date.slice(-1)[0].split(" ")[1]}
+                          <h5
+                            style={{ fontSize: "0.8rem", color: "#f4c430dd" }}
+                          >
+                            {commaSeperated(
+                              formattedVaccinatedData[
+                                formattedVaccinatedData.length - 1
+                              ].deltaVaccinated
+                            )}{" "}
+                            <span style={{ fontSize: 8 }}>
+                              {`${
+                                formattedVaccinatedData[
+                                  formattedVaccinatedData.length - 1
+                                ].deltaVaccinated -
+                                  formattedVaccinatedData[
+                                    formattedVaccinatedData.length - 2
+                                  ].deltaVaccinated >=
+                                0
+                                  ? "+"
+                                  : "-"
+                              }${commaSeperated(
+                                Math.abs(
+                                  formattedVaccinatedData[
+                                    formattedVaccinatedData.length - 1
+                                  ].deltaVaccinated -
+                                    formattedVaccinatedData[
+                                      formattedVaccinatedData.length - 2
+                                    ].deltaVaccinated
+                                )
+                              )}`}
+                            </span>
+                          </h5>
+                        </h6>
+                      </h5>
+                      <ResponsiveContainer
+                        width="100%"
+                        height="100%"
+                        aspect={2.2}
+                      >
+                        <BarChart
+                          data={formattedVaccinatedData.slice(
+                            timelineLength,
+                            formattedVaccinatedData.length
+                          )}
+                          margin={{
+                            top: 40,
+                            right: -24,
+                            left: 10,
+                            bottom: -8,
+                          }}
+                          syncId="barchart"
+                        >
+                          <XAxis
+                            dataKey="date"
+                            tick={{
+                              stroke: "#f4c430dd",
+                              fill: "#f4c430dd",
+                              strokeWidth: 0.2,
+                            }}
+                            style={{
+                              fontSize: "0.62rem",
+                              fontFamily: "notosans",
+                            }}
+                            tickSize={5}
+                            tickCount={5}
+                            axisLine={{
+                              stroke: "#f4c430dd",
+                              strokeWidth: "1.5px",
+                            }}
+                            tickLine={{
+                              stroke: "#f4c430dd",
+                              strokeWidth: "1.5px",
+                            }}
+                          />
+                          <YAxis
+                            orientation="right"
+                            tick={{
+                              stroke: "#f4c430dd",
+                              fill: "#f4c430dd",
+                              strokeWidth: 0.2,
+                            }}
+                            tickFormatter={format("~s")}
+                            tickSize={5}
+                            style={{
+                              fontSize: "0.62rem",
+                              fontFamily: "notosans",
+                            }}
+                            tickCount={8}
+                            axisLine={{
+                              stroke: "#f4c430dd",
+                              strokeWidth: "1.5px",
+                            }}
+                            tickLine={{
+                              stroke: "#f4c430dd",
+                              strokeWidth: "1.5px",
+                            }}
+                          />
+                          <Tooltip
+                            contentStyle={{
+                              background: "rgba(255,255,255,0)",
+                              border: "none",
+                              borderRadius: "5px",
+                              fontSize: "0.7rem",
+                              fontFamily: "notosans",
+                              textTransform: "uppercase",
+                              textAlign: "left",
+                              lineHeight: 0.8,
+                            }}
+                            cursor={{ fill: "transparent" }}
+                            position={{ x: 120, y: 15 }}
+                          />
+                          <Bar
+                            dataKey="deltaVaccinated"
+                            name="Tested"
+                            fill="#f4c430"
+                            radius={[3, 3, 0, 0]}
+                            barSize={20}
                           />
                         </BarChart>
                       </ResponsiveContainer>

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { ComposableMap, Geographies, Geography } from "react-simple-maps";
+import { Link } from "react-router-dom";
 import { scaleLog } from "d3-scale";
 import ReactTooltip from "react-tooltip";
 import { commaSeperated } from "../utils/common-functions";
@@ -13,10 +14,10 @@ const PROJECTION_CONFIG = {
 };
 
 const gradientLowerColor = {
-  Infected: "rgba(66, 179, 244, 0.2)",
-  Active: "rgba(221, 50, 85, 0.2)",
-  Recovered: "rgba(40, 167, 69, 0.2)",
-  Deceased: "rgba(74, 79, 83, 0.2)",
+  Infected: "rgba(66, 179, 244, 0.05)",
+  Active: "rgba(221, 50, 85, 0.05)",
+  Recovered: "rgba(40, 167, 69, 0.05)",
+  Deceased: "rgba(74, 79, 83, 0.05)",
 };
 
 const Choropleth = ({ data, colorLow, colorHigh, type, borderColor }) => {
@@ -83,16 +84,20 @@ const Choropleth = ({ data, colorLow, colorHigh, type, borderColor }) => {
             geographies.map((geo) => {
               const current = data.find((s) => s.id === geo.id);
               return (
-                <Geography
-                  key={geo.rsmKey}
-                  geography={geo}
-                  fill={current ? colorScale(Number(current.value)) : "#FFFFFF"}
-                  style={geographyStyle}
-                  onMouseEnter={onMouseEnter(geo, current)}
-                  onMouseLeave={onMouseLeave}
-                  stroke={borderColor}
-                  strokeWidth={0.4}
-                />
+                <Link to={`/${geo.id}`}>
+                  <Geography
+                    key={geo.rsmKey}
+                    geography={geo}
+                    fill={
+                      current ? colorScale(Number(current.value)) : "#FFFFFF"
+                    }
+                    style={geographyStyle}
+                    onMouseEnter={onMouseEnter(geo, current)}
+                    onMouseLeave={onMouseLeave}
+                    stroke={borderColor}
+                    strokeWidth={0.4}
+                  />
+                </Link>
               );
             })
           }

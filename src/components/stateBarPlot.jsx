@@ -83,7 +83,7 @@ const StateBarPlot = ({
           </h6>
         </h5>
 
-        <ResponsiveContainer width="100%" height="100%" aspect={2.3}>
+        <ResponsiveContainer width="100%" height="100%" aspect={2.2}>
           <BarChart
             data={data}
             margin={{

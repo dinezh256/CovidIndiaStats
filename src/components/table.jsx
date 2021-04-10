@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import * as Icon from "react-feather";
 import { FaHandHoldingHeart } from "react-icons/fa";
+import { Link } from "react-router-dom";
 import CountUp from "react-countup";
 import Updates from "./updates";
 import InfoOutlined from "@material-ui/icons/InfoOutlined";
@@ -8,14 +9,14 @@ import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import SortRoundedIcon from "@material-ui/icons/SortRounded";
 import parse from "html-react-parser";
 import Switch from "react-switch";
-import MiniSparkline from "./miniSparkline";
 import ReactGa from "react-ga";
+import shield from "../utils/shield.svg";
+import MiniSparkline from "./miniSparkline";
 import {
   commaSeperated,
   DeltaArrow,
   DeltaValue,
 } from "../utils/common-functions";
-import { Link } from "react-router-dom";
 
 class Table extends Component {
   constructor(props) {
@@ -70,6 +71,8 @@ class Table extends Component {
       sortOrder,
       percentageToggleActive,
     } = this.state;
+
+    const totalVaccinated = localStorage.getItem("lastTotalVaccinated");
 
     const dailyConfirmed = [];
     data.map((item) => dailyConfirmed.push(Number(item.dailyconfirmed)));
@@ -398,21 +401,22 @@ class Table extends Component {
                 </td>
               </tbody>
             </table>
+            {(totalVaccinated || "") && (
+              <div className="vaccinatedPeople">
+                <h6>
+                  <img src={shield} className="vaccineShield" />{" "}
+                  {commaSeperated(totalVaccinated)} have been Vaccinated
+                </h6>
+              </div>
+            )}
           </div>
 
-          <h6 className="joinTelegram">
-            <a
-              className="telegramLink"
-              href="https://www.buymeacoffee.com/covidindiastats"
-            >
-              <FaHandHoldingHeart className="telegramIcon" /> SUPPORT
-              COVIDINDIASTATS
-            </a>
-          </h6>
           <div className="w-100"></div>
           <div className="row">
             <Updates />
           </div>
+          <div className="w-100"></div>
+
           <div className="w-100"></div>
           <div
             className="indiaStateWiseHead fadeInUp"
@@ -457,6 +461,28 @@ class Table extends Component {
                 </span>
               </div>
             </div>
+          </div>
+
+          <div
+            className="supportUs fadeInUp"
+            style={{ animationDelay: "1.9s" }}
+          >
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              className="telegramLink"
+              href="https://www.buymeacoffee.com/covidindiastats"
+            >
+              Support Covid India Stats
+            </a>
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              className="supportBtn"
+              href="https://www.buymeacoffee.com/covidindiastats"
+            >
+              <FaHandHoldingHeart className="telegramIcon" />
+            </a>
           </div>
 
           <div className="statewiseTable table-responsive">
@@ -574,7 +600,7 @@ class Table extends Component {
                     <td className="align-middle">
                       <div className="td-md-left">
                         <Link to={`/${item.statecode}`}>
-                          <h6>{item.state} &nbsp;</h6>
+                          <h6>{item.state}</h6>
                         </Link>
                         <h6>
                           {item.statenotes ? (
@@ -605,21 +631,19 @@ class Table extends Component {
                       className="delta td-md align-middle"
                       style={{ textAlign: "right" }}
                     >
-                      <Link to={`/${item.statecode}`}>
-                        <h6 className="arrowup">
-                          <DeltaArrow
-                            deltaType={item.deltaconfirmed}
-                            color={"#42b3f4"}
-                          />
-                          <DeltaValue
-                            deltaType={item.deltaconfirmed}
-                            color={"#42b3f4"}
-                          />
-                          <h6 className="delta td-md align-middle">
-                            {commaSeperated(item.confirmed)}
-                          </h6>
+                      <h6 className="arrowup">
+                        <DeltaArrow
+                          deltaType={item.deltaconfirmed}
+                          color={"#42b3f4"}
+                        />
+                        <DeltaValue
+                          deltaType={item.deltaconfirmed}
+                          color={"#42b3f4"}
+                        />
+                        <h6 className="delta td-md align-middle">
+                          {commaSeperated(item.confirmed)}
                         </h6>
-                      </Link>
+                      </h6>
                     </td>
                     <td className="delta td-md align-middle">
                       <h6 className="arrowup">
@@ -639,52 +663,45 @@ class Table extends Component {
                       className="delta td-md align-middle"
                       style={{ textAlign: "right" }}
                     >
-                      {" "}
-                      <Link to={`/${item.statecode}`}>
-                        <h6 className="arrowup">
-                          <DeltaArrow
-                            deltaType={item.deltarecovered}
-                            color={"#28a745"}
-                          />
-                          <DeltaValue
-                            deltaType={item.deltarecovered}
-                            color={"#28a745"}
-                          />
-                          <h6 className="delta td-md align-middle">
-                            {percentageToggleActive
-                              ? (
-                                  (item.recovered * 100) /
-                                  item.confirmed
-                                ).toFixed(1) + "%"
-                              : commaSeperated(item.recovered)}
-                          </h6>
+                      <h6 className="arrowup">
+                        <DeltaArrow
+                          deltaType={item.deltarecovered}
+                          color={"#28a745"}
+                        />
+                        <DeltaValue
+                          deltaType={item.deltarecovered}
+                          color={"#28a745"}
+                        />
+                        <h6 className="delta td-md align-middle">
+                          {percentageToggleActive
+                            ? ((item.recovered * 100) / item.confirmed).toFixed(
+                                1
+                              ) + "%"
+                            : commaSeperated(item.recovered)}
                         </h6>
-                      </Link>
+                      </h6>
                     </td>
                     <td
                       className="delta td-md align-middle"
                       style={{ textAlign: "right" }}
                     >
-                      {" "}
-                      <Link to={`/${item.statecode}`}>
-                        <h6 className="arrowup">
-                          <DeltaArrow
-                            deltaType={item.deltadeaths}
-                            color={"#6c757d"}
-                          />
-                          <DeltaValue
-                            deltaType={item.deltadeaths}
-                            color={"#6c757d"}
-                          />
-                          <h6 className="delta td-md align-middle">
-                            {percentageToggleActive
-                              ? ((item.deaths * 100) / item.confirmed).toFixed(
-                                  1
-                                ) + "%"
-                              : commaSeperated(item.deaths)}
-                          </h6>
+                      <h6 className="arrowup">
+                        <DeltaArrow
+                          deltaType={item.deltadeaths}
+                          color={"#6c757d"}
+                        />
+                        <DeltaValue
+                          deltaType={item.deltadeaths}
+                          color={"#6c757d"}
+                        />
+                        <h6 className="delta td-md align-middle">
+                          {percentageToggleActive
+                            ? ((item.deaths * 100) / item.confirmed).toFixed(
+                                1
+                              ) + "%"
+                            : commaSeperated(item.deaths)}
                         </h6>
-                      </Link>
+                      </h6>
                     </td>
                   </tr>
                 ))}

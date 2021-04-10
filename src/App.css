@@ -27,11 +27,6 @@ ul {
   padding: 0;
 }
 
-a {
-  color: var(--text-color);
-  text-decoration: none;
-}
-
 .myNavbar {
   height: var(--nav-size);
   background-color: var(--bg);
@@ -71,14 +66,6 @@ a {
 .title:hover {
   color: slateblue;
   text-decoration: none;
-}
-
-a.fadeInLeft.active:hover {
-  background: none !important;
-}
-
-a#line2.active:hover {
-  background: none !important;
 }
 
 @media (min-width: 360) {
@@ -205,7 +192,6 @@ a#line2.active:hover {
   padding: 0 0.75rem;
   text-decoration: none;
 }
-
 
 .updates {
   font-size: 0.85rem;
@@ -371,13 +357,13 @@ th.smallRow {
 .td-md-left > a,
 a:hover {
   vertical-align: middle;
-  text-decoration: none !important;
   color: slateblue !important;
 }
 
 .td-md-left > a > h6 {
   padding-top: 10px;
   font-size: 0.92rem;
+  color: slateblue !important;
 }
 
 .td-md-left > h6 {
@@ -580,6 +566,26 @@ span.MuiBadge-colorSecondary {
   border-radius: 4px;
 }
 
+.vaccinatedPeople {
+  border-radius: 5px;
+}
+
+.vaccinatedPeople > h6 {
+  margin-top: 0.5rem;
+  padding: 0.25rem;
+  color: rgb(244, 195, 47);
+  font-family: notosans;
+  font-weight: 500 !important;
+  text-align: center;
+  font-size: 14px;
+}
+
+.vaccineShield {
+  height: 20px;
+  vertical-align: -0.25rem;
+  margin-right: 10px;
+}
+
 .graphsection {
   height: max-content;
 }
@@ -611,30 +617,50 @@ span.MuiBadge-colorSecondary {
   justify-content: space-between;
 }
 
-.joinTelegram {
+.supportUs {
+  display: flex;
+  justify-content: space-between;
+  background-color: rgba(59, 115, 119, 0.75);
+  background-image: linear-gradient(
+    360deg,
+    rgba(59, 115, 119, 0.75) 0%,
+    #254d86 74%
+  );
+  padding: 6.5px 5px 6.5px 10px;
+  width: calc(100% - 1px);
+  margin: auto;
+  margin-bottom: -0.85rem;
+  border-radius: 5px 5px 0 0;
+}
+
+.supportUs > a,
+a:hover {
+  text-decoration: none;
+  color: white !important;
+}
+
+.supportBtn {
+  border-radius: 5px;
+  background-color: #d8932c;
+  border: 1px solid #d8932c;
+  width: 45px;
   text-align: center;
-  margin: 15px auto auto auto;
-  line-height: 45px;
 }
 
 .telegramLink {
-  background: #3f51b5;
-  padding: 5px 15px;
-  border-radius: 15px;
-  color: white;
+  text-align: center;
+  color: white !important;
   font-family: notosans;
+  position: relative;
 }
 
 .telegramLink:hover {
   text-decoration: none;
-  padding: 5px 15px;
-  border-radius: 15px;
   color: white !important;
 }
 
 .telegramIcon {
-  vertical-align: 0rem;
-  margin-right: 5px;
+  vertical-align: -0.1rem;
 }
 
 @keyframes blink {
@@ -793,14 +819,14 @@ span.MuiBadge-colorSecondary {
 }
 
 .mapTabs {
-  width: 24%;
+  width: 24.5%;
   margin-bottom: 20px;
   border-radius: 5px;
 }
 
 .pad {
   text-align: left;
-  font-size: 0.95rem !important;
+  font-size: 0.85rem !important;
   cursor: pointer;
   padding-top: 5%;
   padding-right: 1%;

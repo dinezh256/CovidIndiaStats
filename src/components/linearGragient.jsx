@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 const LinearGradient = (props) => {
   const { data } = props;
   const boxStyle = {
-    width: "22rem",
+    width: "100%",
     margin: "auto",
   };
   const gradientStyle = {

@@ -28,7 +28,7 @@ const schemaMarkup = {
   name:
     "Track the spread of Coronavirus (COVID-19) in India from state level to district level and around the world",
   alternateName: "COVID INDIA STATS",
-  url: "https://covidindiastats.com/",
+  url: "https://www.covidindiastats.com/",
 };
 const GlobalStyle = createGlobalStyle`
   body {

@@ -2031,7 +2031,7 @@ class StateDetails extends Component {
                           <ResponsiveContainer
                             width="100%"
                             height="100%"
-                            aspect={2.3}
+                            aspect={2.2}
                           >
                             <LineChart
                               data={dateFormattedTestData.slice(
@@ -2370,7 +2370,7 @@ class StateDetails extends Component {
                           <ResponsiveContainer
                             width="100%"
                             height="100%"
-                            aspect={2.3}
+                            aspect={2.2}
                           >
                             <BarChart
                               data={dailyFormattedTestData.slice(
