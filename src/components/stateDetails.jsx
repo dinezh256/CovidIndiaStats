@@ -387,7 +387,7 @@ class StateDetails extends Component {
             stateid: Number(
               item[this.props.match.params.stateid.toLowerCase()]
             ),
-            date: item.newdate.split(" ")[0] + " " + item.newdate.split(" ")[1],
+            date: item.newdate.split(" ")[0] + " " + item.newdate.split(" ")[1] + " ",
             label: Number(item[this.props.match.params.stateid.toLowerCase()]),
           });
       });
@@ -443,7 +443,7 @@ class StateDetails extends Component {
             stateid: Number(
               item[this.props.match.params.stateid.toLowerCase()]
             ),
-            date: item.newdate.split(" ")[0] + " " + item.newdate.split(" ")[1],
+            date: item.newdate.split(" ")[0] + " " + item.newdate.split(" ")[1] + " ",
           });
       });
     }
@@ -471,7 +471,7 @@ class StateDetails extends Component {
             stateid: Number(
               item[this.props.match.params.stateid.toLowerCase()]
             ),
-            date: item.newdate.split(" ")[0] + " " + item.newdate.split(" ")[1],
+            date: item.newdate.split(" ")[0] + " " + item.newdate.split(" ")[1] + " ",
             label: Number(item[this.props.match.params.stateid.toLowerCase()]),
           });
       });
@@ -524,7 +524,7 @@ class StateDetails extends Component {
             stateid: Number(
               item[this.props.match.params.stateid.toLowerCase()]
             ),
-            date: item.newdate.split(" ")[0] + " " + item.newdate.split(" ")[1],
+            date: item.newdate.split(" ")[0] + " " + item.newdate.split(" ")[1] + " ",
           });
       });
     }
@@ -566,7 +566,7 @@ class StateDetails extends Component {
             stateid: Number(
               item[this.props.match.params.stateid.toLowerCase()]
             ),
-            date: item.newdate.split(" ")[0] + " " + item.newdate.split(" ")[1],
+            date: item.newdate.split(" ")[0] + " " + item.newdate.split(" ")[1] + " ",
             label: Number(item[this.props.match.params.stateid.toLowerCase()]),
           });
       });
@@ -623,7 +623,7 @@ class StateDetails extends Component {
             stateid: Number(
               item[this.props.match.params.stateid.toLowerCase()]
             ),
-            date: item.newdate.split(" ")[0] + " " + item.newdate.split(" ")[1],
+            date: item.newdate.split(" ")[0] + " " + item.newdate.split(" ")[1] + " ",
           });
       });
     }
