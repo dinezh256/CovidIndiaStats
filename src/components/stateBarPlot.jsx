@@ -96,7 +96,7 @@ const StateBarPlot = ({
             syncId="barchart"
           >
             <XAxis
-              interval={interval}
+              interval={"preserveStartEnd"}
               dataKey="date"
               tick={{ stroke: stroke, strokeWidth: 0.2, fill: stroke }}
               style={{ fontSize: "0.62rem", fontFamily: "notosans" }}
