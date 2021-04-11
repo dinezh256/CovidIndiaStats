@@ -1341,4 +1341,14 @@ th {
   .statewiseTable::-webkit-scrollbar {
     height: 0px;
   }
+
+  ::-webkit-scrollbar {
+    background: transparent;
+    width: 0;
+  }
+
+  ::-webkit-scrollbar-thumb:vertical {
+    /* border-radius: 15px; */
+    background-color: transparent;
+  }
 }
