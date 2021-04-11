@@ -98,7 +98,7 @@ const StateLinePlot = ({
           >
             <XAxis
               dataKey="date"
-              interval={interval}
+              interval={"preserveStartEnd"}
               tick={{ stroke: stroke, strokeWidth: 0.2, fill: stroke }}
               style={{ fontSize: "0.62rem", fontFamily: "notosans" }}
               tickSize={5}
