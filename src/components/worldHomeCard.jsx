@@ -153,6 +153,7 @@ class WorldHomeCard extends Component {
                       end={Number(cases)}
                       duration={2}
                       separator=","
+                      formattingFn={(number) => commaSeperated(number)}
                     />
                   ) : (
                     ""
@@ -185,6 +186,7 @@ class WorldHomeCard extends Component {
                       end={Number(active)}
                       duration={2}
                       separator=","
+                      formattingFn={(number) => commaSeperated(number)}
                     />
                   ) : (
                     ""
@@ -212,6 +214,7 @@ class WorldHomeCard extends Component {
                       end={Number(recovered)}
                       duration={2}
                       separator=","
+                      formattingFn={(number) => commaSeperated(number)}
                     />
                   ) : (
                     ""
@@ -239,6 +242,7 @@ class WorldHomeCard extends Component {
                       end={Number(deaths)}
                       duration={2}
                       separator=","
+                      formattingFn={(number) => commaSeperated(number)}
                     />
                   ) : (
                     ""
