@@ -347,7 +347,7 @@ function ControlledExpansionPanels({ data, stateData, state, population }) {
             {data[0] !== undefined
               ? commaSeperated(
                   Math.round(
-                    (Number(data[0].totaltested) / Number(population)) * 1000000
+                    (Number(data[0].totalTested) / Number(population)) * 1000000
                   )
                 )
               : "0"}{" "}
@@ -369,7 +369,7 @@ function ControlledExpansionPanels({ data, stateData, state, population }) {
             {data[0] !== undefined
               ? commaSeperated(
                   Math.round(
-                    (Number(data[0].totaltested) / Number(population)) * 1000000
+                    (Number(data[0].totalTested) / Number(population)) * 1000000
                   )
                 )
               : "0"}{" "}

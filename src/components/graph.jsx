@@ -10,13 +10,12 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import Switch from "react-switch";
-import { format } from "d3";
 import * as Icon from "react-feather";
 import Choropleth from "./choropleth";
 import WorldHomeCard from "./worldHomeCard";
 import LinePlot from "./linePlot";
 import BarPlot from "./barPlot";
-import { commaSeperated } from "../utils/common-functions";
+import { abbreviateNumber, commaSeperated } from "../utils/common-functions";
 import ReactGa from "react-ga";
 import { AppContext } from "./../context/index";
 
@@ -399,8 +398,6 @@ class Graph extends Component {
       textAlign: "left",
       lineHeight: 0.8,
     };
-
-    // console.log({ allData });
 
     if (isLoaded && isLoaded2) {
       return (
@@ -1025,7 +1022,7 @@ class Graph extends Component {
                               fill: "#6471b3",
                               strokeWidth: 0.2,
                             }}
-                            tickFormatter={format("~s")}
+                            tickFormatter={abbreviateNumber}
                             tickSize={5}
                             style={{
                               fontSize: "0.62rem",
@@ -1076,7 +1073,7 @@ class Graph extends Component {
                       </ResponsiveContainer>
                     </section>
                   </div>
-                  <div className="w-100"></div>
+
                   <div className="w-100"></div>
                   <div className="col">
                     <section
@@ -1177,7 +1174,7 @@ class Graph extends Component {
                               fill: "#f4c430dd",
                               strokeWidth: 0.2,
                             }}
-                            tickFormatter={format("~s")}
+                            tickFormatter={abbreviateNumber}
                             tickSize={5}
                             style={{
                               fontSize: "0.62rem",
@@ -1287,6 +1284,7 @@ class Graph extends Component {
                     daily={dailyDeceased}
                     divideBy={100}
                     dataKey="dailydeceased"
+                    titleClass="text-secondary"
                     stroke="#6c757d"
                     color1="#808080"
                     color2="#5e5a5a"
@@ -1394,7 +1392,7 @@ class Graph extends Component {
                               fill: "#6471b3",
                               strokeWidth: 0.2,
                             }}
-                            tickFormatter={format("~s")}
+                            tickFormatter={abbreviateNumber}
                             tickSize={5}
                             style={{
                               fontSize: "0.62rem",
@@ -1540,7 +1538,7 @@ class Graph extends Component {
                               fill: "#f4c430dd",
                               strokeWidth: 0.2,
                             }}
-                            tickFormatter={format("~s")}
+                            tickFormatter={abbreviateNumber}
                             tickSize={5}
                             style={{
                               fontSize: "0.62rem",

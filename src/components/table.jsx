@@ -27,6 +27,7 @@ class Table extends Component {
       isLoaded: false,
       isDataLoading: true,
       data: [],
+      statewise: [],
       allStatesData: [],
       sortConfirmed: true,
       sortActive: false,
@@ -49,9 +50,11 @@ class Table extends Component {
   componentDidMount() {
     fetch("https://api.covid19india.org/data.json").then((res) =>
       res.json().then((json) => {
+       
         this.setState({
           isLoaded: true,
           data: json.cases_time_series,
+          statewise: json.statewise,
         });
       })
     );
@@ -91,6 +94,7 @@ class Table extends Component {
       percentageToggleActive,
       allStatesData,
       isDataLoading,
+      statewise,
     } = this.state;
 
     const getActiveNumber = (total) => {
@@ -120,6 +124,19 @@ class Table extends Component {
 
     const dailyDeceased = [];
     data.map((item) => dailyDeceased.push(Number(item.dailydeceased)));
+
+    allStatesData.map((t) => {
+      let found = false;
+      let stateNotes = "";
+      statewise.map((s) => {
+        if (t.code === s.statecode && !found) {
+          stateNotes = s.statenotes;
+          found = true;
+        }
+
+        t["stateNotes"] = stateNotes;
+      });
+    });
 
     if (sortConfirmed) {
       allStatesData.sort(function (x, y) {
@@ -327,8 +344,7 @@ class Table extends Component {
                               end={Number(getActiveNumber(item?.data?.total))}
                               duration={2}
                               separator=","
-                            formattingFn={(number) => commaSeperated(number)}
-
+                              formattingFn={(number) => commaSeperated(number)}
                             />
                           ) : (
                             (
@@ -383,8 +399,7 @@ class Table extends Component {
                               end={Number(item?.data?.total?.recovered)}
                               duration={2}
                               separator=","
-                            formattingFn={(number) => commaSeperated(number)}
-
+                              formattingFn={(number) => commaSeperated(number)}
                             />
                           ) : (
                             (
@@ -439,8 +454,7 @@ class Table extends Component {
                               end={Number(item?.data?.total?.deceased)}
                               duration={2}
                               separator=","
-                            formattingFn={(number) => commaSeperated(number)}
-
+                              formattingFn={(number) => commaSeperated(number)}
                             />
                           ) : (
                             (
@@ -733,13 +747,13 @@ class Table extends Component {
                               <h6>{item.name}</h6>
                             </Link>
                             <h6>
-                              {/* {item.statenotes ? (
+                              {item.stateNotes ? (
                                   <OverlayTrigger
                                     key="right"
                                     placement="right"
                                     overlay={
                                       <Tooltip id="tooltip-right">
-                                        {parse(item.statenotes)}
+                                        {parse(item.stateNotes)}
                                       </Tooltip>
                                     }
                                   >
@@ -753,7 +767,7 @@ class Table extends Component {
                                   </OverlayTrigger>
                                 ) : (
                                   ""
-                                )} */}
+                                )}
                             </h6>
                           </div>
                         </td>
@@ -890,9 +904,7 @@ class Table extends Component {
                       >
                         <td className="align-middle">
                           <div className="td-md-left">
-                            <Link to={`/${item.code}`}>
-                              <h6>{item.name}</h6>
-                            </Link>
+                            <h6 style={{paddingTop: "7.5px"}}>{item.name}</h6>
                           </div>
                         </td>
                         <td

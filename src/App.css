@@ -7,6 +7,15 @@ html,
 body {
   scroll-behavior: smooth;
 }
+::-webkit-scrollbar {
+  background: rgba(128, 128, 128, 0.3);
+  width: 12px;
+}
+
+::-webkit-scrollbar-thumb:vertical {
+  /* border-radius: 15px; */
+  background-color: slategray;
+}
 
 .clickable {
   cursor: pointer;
@@ -300,8 +309,6 @@ ul {
   background-color: slategray;
 }
 
-
-
 .thleft {
   position: fixed;
   z-index: 10;
@@ -346,13 +353,13 @@ ul {
 .td-md-left > a,
 a:hover {
   vertical-align: middle;
-  color: slateblue !important;
+  color: rgb(87, 70, 202) !important;
 }
 
 .td-md-left > a > h6 {
-  padding-top: 10px;
-  font-size: 0.92rem;
-  color: slateblue !important;
+  padding-top: 8px;
+  font-size: 0.95rem;
+  color: rgb(87, 70, 202) !important;
 }
 
 .td-md-left > h6 {
@@ -1331,7 +1338,7 @@ th {
     margin-left: 0px;
   }
 
-  .statewiseTable::-webkit-scrollbar  {
+  .statewiseTable::-webkit-scrollbar {
     height: 0px;
   }
 }

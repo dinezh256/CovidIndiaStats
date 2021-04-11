@@ -8,7 +8,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import ReactGa from "react-ga";
-import { format } from "d3";
+import { abbreviateNumber } from "../utils/common-functions";
 
 function commaSeperated(x) {
   if (x !== undefined || x !== 0) {
@@ -66,7 +66,8 @@ const StateLinePlot = ({
               textTransform: "capitalize",
             }}
           >
-            {date[date.length - 1]}
+            {Number(date.slice(-1)[0].split(" ")[0])}{" "}
+            {date.slice(-1)[0].split(" ")[1]}
 
             <h5
               style={{
@@ -102,7 +103,7 @@ const StateLinePlot = ({
               style={{ fontSize: "0.62rem", fontFamily: "notosans" }}
               tickSize={5}
               tickLine={{ stroke: stroke }}
-              tickCount={8}
+              tickCount={5}
               axisLine={{ stroke: stroke, strokeWidth: "1.5px" }}
             />
             <YAxis
@@ -119,7 +120,7 @@ const StateLinePlot = ({
               ]}
               orientation="right"
               tick={{ stroke: stroke, strokeWidth: 0.2, fill: stroke }}
-              tickFormatter={format("~s")}
+              tickFormatter={abbreviateNumber}
               tickSize={5}
               style={{ fontSize: "0.62rem", fontFamily: "notosans" }}
               tickLine={{ stroke: stroke }}

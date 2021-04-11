@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { indianstates, statesTestData } from "./API/index";
+import { indianstates } from "./API/index";
 import * as Icon from "react-feather";
 import FacebookIcon from "@material-ui/icons/Facebook";
 import WhatsAppIcon from "@material-ui/icons/WhatsApp";
@@ -8,7 +8,6 @@ import InfoTwoToneIcon from "@material-ui/icons/InfoTwoTone";
 import QueryBuilderTwoToneIcon from "@material-ui/icons/QueryBuilderTwoTone";
 import ColorizeRoundedIcon from "@material-ui/icons/ColorizeRounded";
 import Switch from "react-switch";
-import { format } from "d3";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import {
   formatDate,
@@ -17,6 +16,7 @@ import {
   statePopulation,
   stateID,
   stateFullName,
+  abbreviateNumber,
 } from "../utils/common-functions";
 import {
   LineChart,
@@ -38,6 +38,7 @@ import MiniBarPlot from "./miniBarPlot";
 import MiniStateSparkline from "./miniStateSparkline";
 import NotFound from "./notFound";
 import StateChoropleth from "./stateChoropleth";
+import { AppContext } from "./../context/index";
 
 class StateDetails extends Component {
   constructor(props) {
@@ -49,8 +50,6 @@ class StateDetails extends Component {
       totalStateDataLoaded: false,
       statesDailyData: [],
       statesDailyDataLoaded: false,
-      testData: [],
-      testDataLoaded: false,
       districtsDaily: [],
       districtsDailyLoaded: false,
       toggleSwitch: false,
@@ -63,6 +62,10 @@ class StateDetails extends Component {
       beginning: true,
       twoWeeks: false,
       oneMonth: false,
+      isLoaded2: false,
+      totalTestsData: [],
+      vaccinatedData: [],
+      currentStateCode: this.props.match.params.stateid.toUpperCase(),
     };
     this.onSwitch = this.onSwitch.bind(this);
     this.onClickConfirmed = this.onClickConfirmed.bind(this);
@@ -110,22 +113,23 @@ class StateDetails extends Component {
     this.setState({ oneMonth });
   }
 
+  static contextType = AppContext;
+
   async componentDidMount() {
     const fetchedStates = await indianstates();
     this.setState({ stateData: fetchedStates, isLoaded: true });
 
+    const { currentStateCode } = this.state;
+
     const requiredData = [];
     fetchedStates.map((item) => {
       if (
-        this.props.match.params.stateid.toUpperCase() === item.statecode &&
-        stateID.includes(this.props.match.params.stateid.toUpperCase())
+        currentStateCode === item.statecode &&
+        stateID.includes(currentStateCode)
       )
         requiredData.push(item.districtData);
     });
     this.setState({ requiredData });
-
-    const fetchedStateTestData = await statesTestData();
-    this.setState({ testData: fetchedStateTestData, testDataLoaded: true });
 
     fetch("https://api.covid19india.org/data.json").then((res) =>
       res.json().then((json) => {
@@ -145,17 +149,91 @@ class StateDetails extends Component {
     );
   }
 
+  componentDidUpdate() {
+    const [allData] = this.context.allData;
+    const [isLoading] = this.context.isLoading;
+    const months = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+
+    const {
+      isLoaded2,
+      totalTestsData,
+      vaccinatedData,
+      currentStateCode,
+    } = this.state;
+
+    if (!isLoading && !isLoaded2) {
+      const totalData = allData[currentStateCode]?.dates;
+
+      for (let key in totalData) {
+        const splittedDate = key.split("-");
+
+        totalTestsData.push({
+          date: `${splittedDate[2]} ${months[Number(splittedDate[1]) - 1]} ${
+            splittedDate[0]
+          }`,
+          deltaSamplestested:
+            totalData[key]?.delta?.tested || ""
+              ? totalData[key]?.delta?.tested
+              : "-",
+          totalsamplestested:
+            totalData[key]?.total?.tested || ""
+              ? totalData[key]?.total?.tested
+              : "-",
+        });
+
+        if (key === "2020-01-30") {
+          vaccinatedData.push({
+            date: `${splittedDate[2]} ${months[Number(splittedDate[1]) - 1]} ${
+              splittedDate[0]
+            }`,
+            deltaVaccinated: 0,
+            totalVaccinated: 0,
+          });
+        } else {
+          vaccinatedData.push({
+            date: `${splittedDate[2]} ${months[Number(splittedDate[1]) - 1]} ${
+              splittedDate[0]
+            }`,
+            deltaVaccinated:
+              totalData[key]?.delta?.vaccinated || ""
+                ? totalData[key]?.delta?.vaccinated
+                : "-",
+            totalVaccinated:
+              totalData[key]?.delta?.vaccinated || ""
+                ? totalData[key]?.total?.vaccinated
+                : "-",
+          });
+        }
+      }
+
+      this.setState({ totalTestsData, vaccinatedData, isLoaded2: true });
+    }
+  }
+
   render() {
     const {
       stateData,
       isLoaded,
+      isLoaded2,
       totalStateData,
       totalStateDataLoaded,
       statesDailyData,
       statesDailyDataLoaded,
-      testData,
-      testDataLoaded,
       requiredDistrictData,
+      currentStateCode,
       toggleConfirmed,
       toggleActive,
       toggleRecovered,
@@ -165,7 +243,20 @@ class StateDetails extends Component {
       beginning,
       twoWeeks,
       oneMonth,
+      totalTestsData,
+      vaccinatedData,
     } = this.state;
+
+    const contentStyle = {
+      background: "rgba(255,255,255,0)",
+      border: "none",
+      borderRadius: "5px",
+      fontSize: "0.7rem",
+      fontFamily: "notosans",
+      textTransform: "uppercase",
+      textAlign: "left",
+      lineHeight: 0.8,
+    };
 
     const months = [
       "",
@@ -183,8 +274,6 @@ class StateDetails extends Component {
       "Dec",
     ];
 
-    console.log({statesDailyData})
-
     if (requiredDistrictData) {
       for (let i = 0; i < requiredDistrictData.length; i++) {
         requiredDistrictData[i].newDate =
@@ -198,24 +287,22 @@ class StateDetails extends Component {
       statesDailyData[i].newdate =
         statesDailyData[i].date.split(/\-/)[0] +
         " " +
-        statesDailyData[i].date.split(/\-/)[1];
+        statesDailyData[i].date.split(/\-/)[1] +
+        " 20" +
+        statesDailyData[i].date.split(/\-/)[2];
     }
 
     const topDistricts = [];
 
     stateData.map((item) => {
       if (
-        this.props.match.params.stateid.toUpperCase() === item.statecode &&
-        stateID.includes(this.props.match.params.stateid.toUpperCase())
+        currentStateCode === item.statecode &&
+        stateID.includes(currentStateCode)
       )
         topDistricts.push(item.districtData);
     });
 
-    if (
-      isLoaded &&
-      toggleConfirmed &&
-      stateID.includes(this.props.match.params.stateid.toUpperCase())
-    ) {
+    if (isLoaded && toggleConfirmed && stateID.includes(currentStateCode)) {
       topDistricts[0].sort(function (x, y) {
         return Number(y.confirmed) - Number(x.confirmed);
       });
@@ -242,7 +329,7 @@ class StateDetails extends Component {
     const requiredStateTotalData = [];
     if (totalStateDataLoaded) {
       totalStateData.map((item) => {
-        if (this.props.match.params.stateid.toUpperCase() === item.statecode)
+        if (currentStateCode === item.statecode)
           requiredStateTotalData.push(item);
       });
     }
@@ -295,15 +382,12 @@ class StateDetails extends Component {
 
     if (statesDailyDataLoaded) {
       statesDailyData.map((item) => {
-        if (
-          item.status === "Confirmed" &&
-          stateID.includes(this.props.match.params.stateid.toUpperCase())
-        )
+        if (item.status === "Confirmed" && stateID.includes(currentStateCode))
           barDailyConfirmedData.push({
             stateid: Number(
               item[this.props.match.params.stateid.toLowerCase()]
             ),
-            date: item.newdate,
+            date: item.newdate.split(" ")[0] + " " + item.newdate.split(" ")[1],
             label: Number(item[this.props.match.params.stateid.toLowerCase()]),
           });
       });
@@ -359,7 +443,7 @@ class StateDetails extends Component {
             stateid: Number(
               item[this.props.match.params.stateid.toLowerCase()]
             ),
-            date: item.newdate,
+            date: item.newdate.split(" ")[0] + " " + item.newdate.split(" ")[1],
           });
       });
     }
@@ -372,10 +456,7 @@ class StateDetails extends Component {
     const sparklineDailyRecoveredData = [];
     if (statesDailyDataLoaded) {
       statesDailyData.map((item) => {
-        if (
-          item.status === "Recovered" &&
-          stateID.includes(this.props.match.params.stateid.toUpperCase())
-        )
+        if (item.status === "Recovered" && stateID.includes(currentStateCode))
           sparklineDailyRecoveredData.push(
             Number(item[this.props.match.params.stateid.toLowerCase()])
           );
@@ -385,15 +466,12 @@ class StateDetails extends Component {
     const barDailyRecoveredData = [];
     if (statesDailyDataLoaded) {
       statesDailyData.map((item) => {
-        if (
-          item.status === "Recovered" &&
-          stateID.includes(this.props.match.params.stateid.toUpperCase())
-        )
+        if (item.status === "Recovered" && stateID.includes(currentStateCode))
           barDailyRecoveredData.push({
             stateid: Number(
               item[this.props.match.params.stateid.toLowerCase()]
             ),
-            date: item.newdate,
+            date: item.newdate.split(" ")[0] + " " + item.newdate.split(" ")[1],
             label: Number(item[this.props.match.params.stateid.toLowerCase()]),
           });
       });
@@ -441,15 +519,12 @@ class StateDetails extends Component {
     const lineTotalRecoveredData = [];
     if (statesDailyDataLoaded) {
       statesDailyData.map((item) => {
-        if (
-          item.status === "Recovered" &&
-          stateID.includes(this.props.match.params.stateid.toUpperCase())
-        )
+        if (item.status === "Recovered" && stateID.includes(currentStateCode))
           lineTotalRecoveredData.push({
             stateid: Number(
               item[this.props.match.params.stateid.toLowerCase()]
             ),
-            date: item.newdate,
+            date: item.newdate.split(" ")[0] + " " + item.newdate.split(" ")[1],
           });
       });
     }
@@ -462,10 +537,7 @@ class StateDetails extends Component {
     const sparklineDailyDeceasedData = [];
     if (statesDailyDataLoaded) {
       statesDailyData.map((item) => {
-        if (
-          item.status === "Deceased" &&
-          stateID.includes(this.props.match.params.stateid.toUpperCase())
-        )
+        if (item.status === "Deceased" && stateID.includes(currentStateCode))
           sparklineDailyDeceasedData.push(
             Number(item[this.props.match.params.stateid.toLowerCase()])
           );
@@ -489,15 +561,12 @@ class StateDetails extends Component {
     const barDailyDeceasedData = [];
     if (statesDailyDataLoaded) {
       statesDailyData.map((item) => {
-        if (
-          item.status === "Deceased" &&
-          stateID.includes(this.props.match.params.stateid.toUpperCase())
-        )
+        if (item.status === "Deceased" && stateID.includes(currentStateCode))
           barDailyDeceasedData.push({
             stateid: Number(
               item[this.props.match.params.stateid.toLowerCase()]
             ),
-            date: item.newdate,
+            date: item.newdate.split(" ")[0] + " " + item.newdate.split(" ")[1],
             label: Number(item[this.props.match.params.stateid.toLowerCase()]),
           });
       });
@@ -549,15 +618,12 @@ class StateDetails extends Component {
     const lineTotalDeceasedData = [];
     if (statesDailyDataLoaded) {
       statesDailyData.map((item) => {
-        if (
-          item.status === "Deceased" &&
-          stateID.includes(this.props.match.params.stateid.toUpperCase())
-        )
+        if (item.status === "Deceased" && stateID.includes(currentStateCode))
           lineTotalDeceasedData.push({
             stateid: Number(
               item[this.props.match.params.stateid.toLowerCase()]
             ),
-            date: item.newdate,
+            date: item.newdate.split(" ")[0] + " " + item.newdate.split(" ")[1],
           });
       });
     }
@@ -625,144 +691,77 @@ class StateDetails extends Component {
       )
     );
 
-    const requiredStateTestData = [];
-    testData.map((item) => {
-      if (
-        item.state ===
-          stateFullName[this.props.match.params.stateid.toUpperCase()] &&
-        this.props.match.params.stateid.toUpperCase() !== "LD" &&
-        stateID.includes(this.props.match.params.stateid.toUpperCase())
-      )
-        requiredStateTestData.push(item);
-    });
+    const formattedVaccinatedData = [];
+    const formattedTestedData = [];
 
-    for (let i = 0; i < requiredStateTestData.length; i++) {
-      requiredStateTestData[i].date =
-        requiredStateTestData[i].updatedon.split(/\//)[0] +
-        " " +
-        months[Number(requiredStateTestData[i].updatedon.split(/\//)[1])];
+    if (isLoaded && isLoaded2) {
+      date.map((d) => {
+        let res = d;
+        vaccinatedData.map((d2) => {
+          if (res === d2.date) {
+            res = d2;
+          }
+        });
+        if (res.date === d) {
+          formattedVaccinatedData.push({
+            date: `${Number(d.split(" ")[0])} ${d.split(" ")[1]} `,
+            deltaVaccinated: res.deltaVaccinated,
+            totalVaccinated: res.totalVaccinated,
+          });
+        } else {
+          formattedVaccinatedData.push({
+            date: `${Number(d.split(" ")[0])} ${d.split(" ")[1]} `,
+            deltaVaccinated: "-",
+            totalVaccinated: "-",
+          });
+        }
+      });
+    }
+
+    if (isLoaded && isLoaded2) {
+      date.map((d) => {
+        let res = d;
+        totalTestsData.map((d2) => {
+          if (res === d2.date) {
+            res = d2;
+          }
+        });
+        if (res.date === d) {
+          formattedTestedData.push({
+            date: `${Number(d.split(" ")[0])} ${d.split(" ")[1]} `,
+            deltaTested: res.deltaSamplestested,
+            totalTested: res.totalsamplestested,
+          });
+        } else {
+          formattedTestedData.push({
+            date: `${Number(d.split(" ")[0])} ${d.split(" ")[1]} `,
+            deltaTested: "-",
+            totalTested: "-",
+          });
+        }
+      });
     }
 
     const expansionPanelData = [];
-    const expansionPanelDataPopulation = [];
 
-    for (let i = requiredStateTestData.length - 1; i >= 0; i--) {
-      if (requiredStateTestData[i].totaltested) {
-        expansionPanelData.push(requiredStateTestData[i]);
+    for (let i = formattedTestedData.length - 1; i >= 0; i--) {
+      if (formattedTestedData[i].totalTested) {
+        expansionPanelData.push(formattedTestedData[i]);
         break;
-      }
-    }
-    for (let i = requiredStateTestData.length - 1; i >= 0; i--) {
-      if (requiredStateTestData[i].populationncp2019projection) {
-        expansionPanelDataPopulation.push(
-          requiredStateTestData[i].populationncp2019projection
-        );
-        break;
-      }
-    }
-
-    const cumulativeTestDataArray = [];
-    const cumulativeTestDataDateArray = [];
-
-    requiredStateTestData.map((item) => {
-      cumulativeTestDataArray.push(Number(item.totaltested));
-      cumulativeTestDataDateArray.push(item.date);
-    });
-
-    const dateFormattedTestData = [];
-
-    for (let i = 0; i < date.length; i++) {
-      if (cumulativeTestDataDateArray.includes(date[i])) {
-        const index = cumulativeTestDataDateArray.indexOf(date[i]);
-        if (cumulativeTestDataArray[index]) {
-          dateFormattedTestData.push({
-            totaltested: cumulativeTestDataArray[index],
-            date: date[i],
-          });
-        } else
-          dateFormattedTestData.push({
-            totaltested: "-",
-            date: date[i],
-          });
-      } else dateFormattedTestData.push({ totaltested: "-", date: date[i] });
-    }
-
-    const formattedTestData = [];
-    for (let i = 0; i < date.length; i++) {
-      if (cumulativeTestDataDateArray.includes(date[i])) {
-        const index = cumulativeTestDataDateArray.indexOf(date[i]);
-        formattedTestData.push({
-          totaltested: cumulativeTestDataArray[index],
-          date: date[i],
-        });
-      } else formattedTestData.push({ totaltested: 0, date: date[i] });
-    }
-
-    const dailyFormattedTestData = [];
-    let previousData = 0;
-
-    for (let i = 0; i < formattedTestData.length; i++) {
-      if (i === 0)
-        dailyFormattedTestData.push({
-          dailytested: formattedTestData[i].totaltested,
-          date: formattedTestData[i].date,
-        });
-      else {
-        if (
-          formattedTestData[i].totaltested &&
-          formattedTestData[i - 1].totaltested
-        ) {
-          dailyFormattedTestData.push({
-            dailytested:
-              formattedTestData[i].totaltested -
-              formattedTestData[i - 1].totaltested,
-            date: formattedTestData[i].date,
-          });
-          previousData = formattedTestData[i].totaltested;
-        } else if (
-          formattedTestData[i].totaltested === 0 &&
-          formattedTestData[i - 1].totaltested === 0
-        ) {
-          dailyFormattedTestData.push({
-            dailytested: 0,
-            date: formattedTestData[i].date,
-          });
-        } else if (
-          formattedTestData[i].totaltested !== 0 &&
-          formattedTestData[i - 1].totaltested === 0
-        ) {
-          dailyFormattedTestData.push({
-            dailytested: formattedTestData[i].totaltested - previousData,
-            date: formattedTestData[i].date,
-          });
-          previousData = formattedTestData[i].totaltested;
-        } else if (
-          formattedTestData[i].totaltested === 0 &&
-          formattedTestData[i - 1].totaltested !== 0
-        ) {
-          dailyFormattedTestData.push({
-            dailytested: 0,
-            date: formattedTestData[i].date,
-          });
-        }
       }
     }
 
     let timelineLength = 0;
-    let interval = 0;
 
     if (isLoaded) {
       if (beginning) {
         timelineLength = 0;
-        interval = Math.round(lineTotalConfirmedData.length / 9);
       }
       if (oneMonth) {
-        timelineLength = lineTotalConfirmedData.length - 30;
-        interval = 3;
+        timelineLength = lineTotalConfirmedData.length - 90;
       }
       if (twoWeeks) {
-        timelineLength = lineTotalConfirmedData.length - 15;
-        interval = 1;
+        timelineLength = lineTotalConfirmedData.length - 30;
       }
     }
 
@@ -771,44 +770,26 @@ class StateDetails extends Component {
       else return 7;
     };
 
-    if (
-      totalStateDataLoaded &&
-      this.props.match.params.stateid.toUpperCase() === "DL"
-    ) {
+    if (totalStateDataLoaded && currentStateCode === "DL") {
       requiredStateTotalData[0].district = "Delhi";
       requiredStateTotalData[0].deceased = requiredStateTotalData[0].deaths;
     }
 
-    // const notADistrict = [
-    //   "Unknown",
-    //   "Foreign Evacuees",
-    //   "Other State",
-    //   "Italians",
-    //   "BSF Camp",
-    //   "Evacuees",
-    //   "Others",
-    // ];
-
     if (
       isLoaded &&
+      isLoaded2 &&
       totalStateDataLoaded &&
       statesDailyDataLoaded &&
-      testDataLoaded &&
-      stateID.includes(this.props.match.params.stateid.toUpperCase())
+      stateID.includes(currentStateCode)
     ) {
       return (
-        <React.Fragment>
+        <>
           <div className="containerStates">
             <Helmet>
-              <title>
-                {stateFullName[this.props.match.params.stateid.toUpperCase()]}{" "}
-                Covid Dashboard
-              </title>
+              <title>{stateFullName[currentStateCode]} Covid Dashboard</title>
               <meta
                 name="description"
-                content={`Track the spread of Coronavirus (COVID-19) in ${
-                  stateFullName[this.props.match.params.stateid.toUpperCase()]
-                }`}
+                content={`Track the spread of Coronavirus (COVID-19) in ${stateFullName[currentStateCode]}`}
               />
             </Helmet>
             <div className="row fadeInUp" style={{ animationDelay: "0.4s" }}>
@@ -821,7 +802,7 @@ class StateDetails extends Component {
                     color: "rgb(226, 42, 79)",
                   }}
                 >
-                  {stateFullName[this.props.match.params.stateid.toUpperCase()]}
+                  {stateFullName[currentStateCode]}
                   <OverlayTrigger
                     key={"bottom"}
                     placement={"bottom"}
@@ -883,7 +864,7 @@ class StateDetails extends Component {
                       <ColorizeRoundedIcon fontSize="small" /> Total Tests:{" "}
                       {expansionPanelData[0] === undefined
                         ? "0"
-                        : commaSeperated(expansionPanelData[0].totaltested)}
+                        : commaSeperated(expansionPanelData[0].totalTested)}
                     </h6>
                   </div>
                   <div className="col-5" style={{ textAlign: "right" }}>
@@ -1232,7 +1213,7 @@ class StateDetails extends Component {
                     {toggleConfirmed && (
                       <StateChoropleth
                         data={
-                          this.props.match.params.stateid.toUpperCase() === "DL"
+                          currentStateCode === "DL"
                             ? requiredStateTotalData
                             : topDistricts[0]
                         }
@@ -1240,18 +1221,18 @@ class StateDetails extends Component {
                         colorHigh="rgba(66, 200, 255, 1)"
                         type="confirmed"
                         borderColor="rgb(120, 190, 220)"
-                        stateCode={`${this.props.match.params.stateid.toUpperCase()}`}
+                        stateCode={`${currentStateCode}`}
                       />
                     )}
                     {toggleActive && (
                       <StateChoropleth
                         data={
-                          this.props.match.params.stateid.toUpperCase() === "DL"
+                          currentStateCode === "DL"
                             ? requiredStateTotalData
                             : topDistricts[0]
                         }
                         type="active"
-                        stateCode={`${this.props.match.params.stateid.toUpperCase()}`}
+                        stateCode={`${currentStateCode}`}
                         colorLow="rgba(221, 50, 85, 0.1)"
                         colorHigh="rgba(221, 50, 85, 1)"
                         borderColor="rgb(255, 100, 100)"
@@ -1260,12 +1241,12 @@ class StateDetails extends Component {
                     {toggleRecovered && (
                       <StateChoropleth
                         data={
-                          this.props.match.params.stateid.toUpperCase() === "DL"
+                          currentStateCode === "DL"
                             ? requiredStateTotalData
                             : topDistricts[0]
                         }
                         type="recovered"
-                        stateCode={`${this.props.match.params.stateid.toUpperCase()}`}
+                        stateCode={`${currentStateCode}`}
                         colorLow="rgba(40, 167, 69, 0.1)"
                         colorHigh="rgba(40, 167, 69, 1)"
                         borderColor="rgba(40, 255, 69)"
@@ -1274,11 +1255,11 @@ class StateDetails extends Component {
                     {toggleDeceased && (
                       <StateChoropleth
                         data={
-                          this.props.match.params.stateid.toUpperCase() === "DL"
+                          currentStateCode === "DL"
                             ? requiredStateTotalData
                             : topDistricts[0]
                         }
-                        stateCode={`${this.props.match.params.stateid.toUpperCase()}`}
+                        stateCode={`${currentStateCode}`}
                         colorLow="rgba(74, 79, 83, 0.1)"
                         colorHigh="rgba(74, 79, 83, 1)"
                         type="deceased"
@@ -1553,51 +1534,13 @@ class StateDetails extends Component {
                     <ControlledExpansionPanels
                       data={expansionPanelData}
                       stateData={requiredStateTotalData}
-                      state={
-                        stateFullName[
-                          this.props.match.params.stateid.toUpperCase()
-                        ]
-                      }
-                      population={
-                        statePopulation[
-                          this.props.match.params.stateid.toUpperCase()
-                        ]
-                      }
+                      state={stateFullName[currentStateCode]}
+                      population={statePopulation[currentStateCode]}
                     />
                   </div>
                 </div>
                 <div className="w-100"></div>
                 <div className="row fadeInUp" style={{ animationDelay: "1s" }}>
-                  {/* <div className="col" style={{ marginBottom: "15px" }}>
-                    {
-                      <h6
-                        className="btnViewAll"
-                        onClick={() => {
-                          this.setState({ viewTable: !viewTable });
-                          ReactGa.event({
-                            category: "View Button",
-                            action: "View Button Clicked",
-                          });
-                        }}
-                      >
-                        {!viewTable
-                          ? "VIEW ALL DISTRICTS"
-                          : "HIDE ALL DISTRICTS"}{" "}
-                        {!viewTable ? (
-                          <Icon.Eye
-                            size={14}
-                            style={{ verticalAlign: "-0.2rem" }}
-                          />
-                        ) : (
-                          <Icon.EyeOff
-                            size={14}
-                            style={{ verticalAlign: "-0.2rem" }}
-                          />
-                        )}
-                      </h6>
-                    }
-                  </div>
-                  <div className="w-100"></div> */}
                   <div className="col">
                     <div className="row" style={{ alignContent: "center" }}>
                       <div
@@ -1625,7 +1568,7 @@ class StateDetails extends Component {
                       >
                         <div className="row shareBtn">
                           <a
-                            href={`https://www.facebook.com/sharer/sharer.php?u=covidindiastats.com/${this.props.match.params.stateid.toUpperCase()}`}
+                            href={`https://www.facebook.com/sharer/sharer.php?u=covidindiastats.com/${currentStateCode}`}
                             onClick={() => {
                               ReactGa.event({
                                 category: "FB Share",
@@ -1640,7 +1583,7 @@ class StateDetails extends Component {
                             <FacebookIcon fontSize="large" />
                           </a>
                           <a
-                            href={`whatsapp://send?text=Track the spread of Covid19 from State to district level covidindiastats.com/${this.props.match.params.stateid.toUpperCase()}`}
+                            href={`whatsapp://send?text=Track the spread of Covid19 from State to district level covidindiastats.com/${currentStateCode}`}
                             onClick={() => {
                               ReactGa.event({
                                 category: "WA Share",
@@ -1655,7 +1598,7 @@ class StateDetails extends Component {
                             <WhatsAppIcon fontSize="large" />
                           </a>
                           <a
-                            href={`http://twitter.com/share?text=@covidindiastats Track the spread of Covid19 from State to District level.&url=covidindiastats.com/${this.props.match.params.stateid.toUpperCase()}`}
+                            href={`http://twitter.com/share?text=@covidindiastats Track the spread of Covid19 from State to District level.&url=covidindiastats.com/${currentStateCode}`}
                             onClick={() => {
                               ReactGa.event({
                                 category: "Twitter Share",
@@ -1735,11 +1678,7 @@ class StateDetails extends Component {
                     style={{ animationDelay: "1.4s" }}
                   >
                     <h6 style={{ color: "rgb(226, 42, 79)" }}>
-                      {
-                        stateFullName[
-                          this.props.match.params.stateid.toUpperCase()
-                        ]
-                      }
+                      {stateFullName[currentStateCode]}
                     </h6>
                   </div>
                   <div
@@ -1800,7 +1739,7 @@ class StateDetails extends Component {
                         })
                       }
                     >
-                      &nbsp;1 Month{" "}
+                      &nbsp;3 Months{" "}
                       {oneMonth && (
                         <Icon.CheckCircle size={10} strokeWidth={3} />
                       )}
@@ -1821,7 +1760,7 @@ class StateDetails extends Component {
                         })
                       }
                     >
-                      &nbsp;15 Days{" "}
+                      &nbsp;1 Month{" "}
                       {twoWeeks && (
                         <Icon.CheckCircle size={10} strokeWidth={3} />
                       )}
@@ -1830,18 +1769,15 @@ class StateDetails extends Component {
                 </div>
 
                 <div className="w-100"></div>
+
                 <div
                   className="row fadeInUp"
                   style={{ animationDelay: "1.8s", marginTop: "-25px" }}
                 >
                   {!toggleSwitch && (
-                    <React.Fragment>
+                    <>
                       <StateLinePlot
-                        stateName={
-                          stateFullName[
-                            this.props.match.params.stateid.toUpperCase()
-                          ]
-                        }
+                        stateName={stateFullName[currentStateCode]}
                         bgColor="rgba(150, 196, 216, 0.1)"
                         titleClass="text-info"
                         type="confirmed"
@@ -1855,7 +1791,7 @@ class StateDetails extends Component {
                         lineStroke="#35aad1"
                         color1="#6ebed6"
                         color2="#55b2ce"
-                        interval={interval}
+                        interval={"preserveStartEnd"}
                         divideBy={
                           Math.max.apply(
                             Math,
@@ -1869,11 +1805,7 @@ class StateDetails extends Component {
                       />
                       <div className="w-100"></div>
                       <StateLinePlot
-                        stateName={
-                          stateFullName[
-                            this.props.match.params.stateid.toUpperCase()
-                          ]
-                        }
+                        stateName={stateFullName[currentStateCode]}
                         bgColor="rgba(255, 7, 58, 0.125)"
                         titleClass="text-danger"
                         type="active"
@@ -1891,7 +1823,7 @@ class StateDetails extends Component {
                         lineStroke="#ff446a"
                         color1="#f16783"
                         color2="#ff446a"
-                        interval={interval}
+                        interval={"preserveStartEnd"}
                         divideBy={
                           Math.max.apply(
                             Math,
@@ -1905,11 +1837,7 @@ class StateDetails extends Component {
                       />
                       <div className="w-100"></div>
                       <StateLinePlot
-                        stateName={
-                          stateFullName[
-                            this.props.match.params.stateid.toUpperCase()
-                          ]
-                        }
+                        stateName={stateFullName[currentStateCode]}
                         bgColor="rgba(177, 247, 177, 0.1)"
                         titleClass="text-success"
                         type="recovered"
@@ -1923,7 +1851,7 @@ class StateDetails extends Component {
                         lineStroke="#5cb85c"
                         color1="#5cb85c"
                         color2="#5cb85c"
-                        interval={interval}
+                        interval={"preserveStartEnd"}
                         divideBy={
                           Math.max.apply(
                             Math,
@@ -1937,11 +1865,7 @@ class StateDetails extends Component {
                       />
                       <div className="w-100"></div>
                       <StateLinePlot
-                        stateName={
-                          stateFullName[
-                            this.props.match.params.stateid.toUpperCase()
-                          ]
-                        }
+                        stateName={stateFullName[currentStateCode]}
                         bgColor="rgba(49, 43, 43, 0.05)"
                         titleClass="text-secondary"
                         type="deceased"
@@ -1955,7 +1879,7 @@ class StateDetails extends Component {
                         lineStroke="#666565"
                         color1="#808080"
                         color2="#5e5a5a"
-                        interval={interval}
+                        interval={"preserveStartEnd"}
                         divideBy={
                           Math.max.apply(
                             Math,
@@ -1993,34 +1917,28 @@ class StateDetails extends Component {
                             TESTED
                             <h6 style={{ fontSize: "10px", color: "#3f51b5" }}>
                               {
-                                dateFormattedTestData[
-                                  dateFormattedTestData.length - 1
+                                formattedTestedData[
+                                  formattedTestedData.length - 1
                                 ].date
                               }
                               <h5 style={{ fontSize: 14, color: "slateblue" }}>
                                 {commaSeperated(
-                                  dateFormattedTestData[
-                                    dateFormattedTestData.length - 1
-                                  ].totaltested
-                                )}{" "}
+                                  formattedTestedData[
+                                    formattedTestedData.length - 1
+                                  ].totalTested
+                                )}
                                 <span style={{ fontSize: 9 }}>
-                                  {dateFormattedTestData[
-                                    dateFormattedTestData.length - 1
-                                  ].totaltested !== "-"
-                                    ? dateFormattedTestData[
-                                        dateFormattedTestData.length - 1
-                                      ].totaltested &&
-                                      dateFormattedTestData[
-                                        dateFormattedTestData.length - 2
-                                      ].totaltested
+                                  {formattedTestedData[
+                                    formattedTestedData.length - 1
+                                  ].deltaTested !== "-"
+                                    ? formattedTestedData[
+                                        formattedTestedData.length - 1
+                                      ].deltaTested
                                       ? "+" +
                                         commaSeperated(
-                                          dateFormattedTestData[
-                                            dateFormattedTestData.length - 1
-                                          ].totaltested -
-                                            dateFormattedTestData[
-                                              dateFormattedTestData.length - 2
-                                            ].totaltested
+                                          formattedTestedData[
+                                            formattedTestedData.length - 1
+                                          ].deltaTested
                                         )
                                       : ""
                                     : "-"}
@@ -2034,9 +1952,9 @@ class StateDetails extends Component {
                             aspect={2.2}
                           >
                             <LineChart
-                              data={dateFormattedTestData.slice(
+                              data={formattedTestedData.slice(
                                 timelineLength,
-                                dateFormattedTestData.length
+                                formattedTestedData.length
                               )}
                               margin={{
                                 top: 40,
@@ -2053,13 +1971,13 @@ class StateDetails extends Component {
                                   fill: "#6471b3",
                                   strokeWidth: 0.2,
                                 }}
-                                interval={interval}
+                                interval={"preserveStartEnd"}
                                 style={{
                                   fontSize: "0.62rem",
                                   fontFamily: "notosans",
                                 }}
                                 tickSize={5}
-                                tickCount={8}
+                                tickCount={5}
                                 tickLine={{ stroke: "#6471b3" }}
                                 axisLine={{
                                   stroke: "#6471b3",
@@ -2067,19 +1985,14 @@ class StateDetails extends Component {
                                 }}
                               />
                               <YAxis
-                                domain={[
-                                  0,
-                                  Math.ceil(
-                                    Math.max(...cumulativeTestDataArray) / 10000
-                                  ) * 10000,
-                                ]}
+                                domain={[0, "auto"]}
                                 orientation="right"
                                 tick={{
                                   stroke: "#6471b3",
                                   fill: "#6471b3",
                                   strokeWidth: 0.2,
                                 }}
-                                tickFormatter={format("~s")}
+                                tickFormatter={abbreviateNumber}
                                 tickSize={5}
                                 style={{
                                   fontSize: "0.62rem",
@@ -2093,22 +2006,13 @@ class StateDetails extends Component {
                                 }}
                               />
                               <Retooltip
-                                contentStyle={{
-                                  background: "rgba(255,255,255,0)",
-                                  border: "none",
-                                  borderRadius: "5px",
-                                  fontSize: "0.7rem",
-                                  fontFamily: "notosans",
-                                  textTransform: "uppercase",
-                                  textAlign: "left",
-                                  lineHeight: 0.8,
-                                }}
+                                contentStyle={contentStyle}
                                 cursor={false}
                                 position={{ x: 120, y: 22 }}
                               />
                               <Line
                                 type="monotone"
-                                dataKey="totaltested"
+                                dataKey="totalTested"
                                 stroke="#6471b3"
                                 strokeWidth="3"
                                 strokeLinecap="round"
@@ -2142,16 +2046,169 @@ class StateDetails extends Component {
                           </ResponsiveContainer>
                         </section>
                       </div>
-                    </React.Fragment>
+                      <div className="w-100"></div>
+                      <div className="col">
+                        <section
+                          className="graphsection"
+                          style={{
+                            backgroundColor: "rgba(255, 223, 0, 0.1)",
+                            borderRadius: "6px",
+                            paddingTop: "5px",
+                            marginTop: "10px",
+                          }}
+                        >
+                          <h5
+                            style={{
+                              paddingTop: "5px",
+                              marginBottom: "-80px",
+                              textAlign: "left",
+                              marginLeft: 10,
+                              fontSize: "0.8rem",
+                              color: "#f4c430",
+                            }}
+                          >
+                            VACCINE DOSES
+                            <h6
+                              style={{ fontSize: "12px", color: "#f4c430aa" }}
+                            >
+                              {
+                                formattedVaccinatedData[
+                                  formattedVaccinatedData.length - 1
+                                ].date
+                              }
+
+                              <h5
+                                style={{
+                                  fontSize: "0.8rem",
+                                  color: "#f4c430dd",
+                                }}
+                              >
+                                {commaSeperated(
+                                  formattedVaccinatedData[
+                                    formattedVaccinatedData.length - 1
+                                  ].totalVaccinated
+                                )}{" "}
+                                {formattedVaccinatedData[
+                                  formattedVaccinatedData.length - 1
+                                ].deltaVaccinated !== "-" && (
+                                  <span style={{ fontSize: 8 }}>
+                                    +
+                                    {commaSeperated(
+                                      formattedVaccinatedData[
+                                        formattedVaccinatedData.length - 1
+                                      ].deltaVaccinated
+                                    )}
+                                  </span>
+                                )}
+                              </h5>
+                            </h6>
+                          </h5>
+                          <ResponsiveContainer
+                            width="100%"
+                            height="100%"
+                            aspect={2.2}
+                          >
+                            <LineChart
+                              data={formattedVaccinatedData.slice(
+                                timelineLength,
+                                formattedVaccinatedData.length
+                              )}
+                              margin={{
+                                top: 40,
+                                right: -20,
+                                left: 20,
+                                bottom: -8,
+                              }}
+                              syncId="linechart"
+                            >
+                              <XAxis
+                                dataKey="date"
+                                tick={{
+                                  stroke: "#f4c430dd",
+                                  fill: "#f4c430dd",
+                                  strokeWidth: 0.2,
+                                }}
+                                interval={"preserveStartEnd"}
+                                style={{
+                                  fontSize: "0.62rem",
+                                  fontFamily: "notosans",
+                                }}
+                                tickSize={5}
+                                tickCount={5}
+                                axisLine={{
+                                  stroke: "#f4c430dd",
+                                  strokeWidth: "1.5px",
+                                }}
+                                tickLine={{
+                                  stroke: "#f4c430dd",
+                                  strokeWidth: "1.5px",
+                                }}
+                              />
+                              <YAxis
+                                domain={[0, "auto"]}
+                                orientation="right"
+                                tick={{
+                                  stroke: "#f4c430dd",
+                                  fill: "#f4c430dd",
+                                  strokeWidth: 0.2,
+                                }}
+                                tickFormatter={abbreviateNumber}
+                                tickSize={5}
+                                style={{
+                                  fontSize: "0.62rem",
+                                  fontFamily: "notosans",
+                                }}
+                                tickCount={8}
+                                axisLine={{
+                                  stroke: "#f4c430dd",
+                                  strokeWidth: "1.5px",
+                                }}
+                                tickLine={{
+                                  stroke: "#f4c430dd",
+                                  strokeWidth: "1.5px",
+                                }}
+                              />
+                              <Retooltip
+                                contentStyle={contentStyle}
+                                cursor={false}
+                                position={{ x: 120, y: 22 }}
+                              />
+                              <Line
+                                type="monotone"
+                                dataKey="totalVaccinated"
+                                stroke="#f4c430"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                name="Vaccinated"
+                                isAnimationActive={true}
+                                connectNulls={true}
+                                dot={({ cx, cy }) =>
+                                  cx &&
+                                  cy && (
+                                    <svg
+                                      x={cx - 2.25}
+                                      y={cy - 2.25}
+                                      width={4.5}
+                                      height={4.5}
+                                      fill="#f4c430"
+                                      viewBox="0 0 1024 1024"
+                                    >
+                                      <path d="M517.12 53.248q95.232 0 179.2 36.352t145.92 98.304 98.304 145.92 36.352 179.2-36.352 179.2-98.304 145.92-145.92 98.304-179.2 36.352-179.2-36.352-145.92-98.304-98.304-145.92-36.352-179.2 36.352-179.2 98.304-145.92 145.92-98.304 179.2-36.352zM663.552 261.12q-15.36 0-28.16 6.656t-23.04 18.432-15.872 27.648-5.632 33.28q0 35.84 21.504 61.44t51.2 25.6 51.2-25.6 21.504-61.44q0-17.408-5.632-33.28t-15.872-27.648-23.04-18.432-28.16-6.656zM373.76 261.12q-29.696 0-50.688 25.088t-20.992 60.928 20.992 61.44 50.688 25.6 50.176-25.6 20.48-61.44-20.48-60.928-50.176-25.088zM520.192 602.112q-51.2 0-97.28 9.728t-82.944 27.648-62.464 41.472-35.84 51.2q-1.024 1.024-1.024 2.048-1.024 3.072-1.024 8.704t2.56 11.776 7.168 11.264 12.8 6.144q25.6-27.648 62.464-50.176 31.744-19.456 79.36-35.328t114.176-15.872q67.584 0 116.736 15.872t81.92 35.328q37.888 22.528 63.488 50.176 17.408-5.12 19.968-18.944t0.512-18.944-3.072-7.168-1.024-3.072q-26.624-55.296-100.352-88.576t-176.128-33.28z" />
+                                    </svg>
+                                  )
+                                }
+                                activeDot={{ r: 2.5 }}
+                              />
+                            </LineChart>
+                          </ResponsiveContainer>
+                        </section>
+                      </div>
+                    </>
                   )}
                   {toggleSwitch && (
-                    <React.Fragment>
+                    <>
                       <StateBarPlot
-                        stateName={
-                          stateFullName[
-                            this.props.match.params.stateid.toUpperCase()
-                          ]
-                        }
+                        stateName={stateFullName[currentStateCode]}
                         type="confirmed"
                         bgColor="rgba(150, 196, 216, 0.1)"
                         titleClass="text-info"
@@ -2163,7 +2220,7 @@ class StateDetails extends Component {
                         daily={dailyConfirmed[0]}
                         dailyDelta={dailyDeltaConfirmed[0]}
                         sparkline={sparklineTotalConfirmedData}
-                        interval={interval}
+                        interval={"preserveStartEnd"}
                         divideBy={
                           Math.max.apply(
                             Math,
@@ -2180,11 +2237,7 @@ class StateDetails extends Component {
                       />
                       <div className="w-100"></div>
                       <StateBarPlot
-                        stateName={
-                          stateFullName[
-                            this.props.match.params.stateid.toUpperCase()
-                          ]
-                        }
+                        stateName={stateFullName[currentStateCode]}
                         type="active"
                         bgColor="rgba(255, 7, 58, 0.125)"
                         titleClass="text-danger"
@@ -2204,7 +2257,7 @@ class StateDetails extends Component {
                           dailyDeltaDeceased[0]
                         }
                         sparkline={sparklineDailyActiveData}
-                        interval={interval}
+                        interval={"preserveStartEnd"}
                         divideBy={
                           Math.max.apply(
                             Math,
@@ -2221,11 +2274,7 @@ class StateDetails extends Component {
                       />
                       <div className="w-100"></div>
                       <StateBarPlot
-                        stateName={
-                          stateFullName[
-                            this.props.match.params.stateid.toUpperCase()
-                          ]
-                        }
+                        stateName={stateFullName[currentStateCode]}
                         type="recovered"
                         bgColor="rgba(177, 247, 177, 0.1)"
                         titleClass="text-success"
@@ -2253,11 +2302,7 @@ class StateDetails extends Component {
                       />
                       <div className="w-100"></div>
                       <StateBarPlot
-                        stateName={
-                          stateFullName[
-                            this.props.match.params.stateid.toUpperCase()
-                          ]
-                        }
+                        stateName={stateFullName[currentStateCode]}
                         type="deceased"
                         bgColor="rgba(49, 43, 43, 0.05)"
                         titleClass="text-secondary"
@@ -2269,7 +2314,7 @@ class StateDetails extends Component {
                         daily={dailyDeceased[0]}
                         dailyDelta={dailyDeltaDeceased[0]}
                         sparkline={sparklineDailyDeceasedData}
-                        interval={interval}
+                        interval={"preserveStartEnd"}
                         divideBy={
                           Math.max.apply(
                             Math,
@@ -2315,51 +2360,49 @@ class StateDetails extends Component {
                               }}
                             >
                               {
-                                dailyFormattedTestData[
-                                  dailyFormattedTestData.length - 1
+                                formattedTestedData[
+                                  formattedTestedData.length - 1
                                 ].date
                               }
 
                               <h5 style={{ fontSize: 14, color: "slateblue" }}>
                                 {commaSeperated(
-                                  dailyFormattedTestData[
-                                    dailyFormattedTestData.length - 1
-                                  ].dailytested
+                                  formattedTestedData[
+                                    formattedTestedData.length - 1
+                                  ].deltaTested
                                 )}{" "}
                                 <span style={{ fontSize: 9 }}>
-                                  {dailyFormattedTestData[
-                                    dailyFormattedTestData.length - 1
-                                  ].dailytested &&
-                                  dailyFormattedTestData[
-                                    dailyFormattedTestData.length - 2
-                                  ].dailytested
-                                    ? dailyFormattedTestData[
-                                        dailyFormattedTestData.length - 1
-                                      ].dailytested -
-                                        dailyFormattedTestData[
-                                          dailyFormattedTestData.length - 2
-                                        ].dailytested >
+                                  {formattedTestedData[
+                                    formattedTestedData.length - 1
+                                  ].deltaTested &&
+                                  formattedTestedData[
+                                    formattedTestedData.length - 2
+                                  ].deltaTested
+                                    ? formattedTestedData[
+                                        formattedTestedData.length - 1
+                                      ].deltaTested -
+                                        formattedTestedData[
+                                          formattedTestedData.length - 2
+                                        ].deltaTested >
                                       0
                                       ? `+${commaSeperated(
                                           Math.abs(
-                                            dailyFormattedTestData[
-                                              dailyFormattedTestData.length - 1
-                                            ].dailytested -
-                                              dailyFormattedTestData[
-                                                dailyFormattedTestData.length -
-                                                  2
-                                              ].dailytested
+                                            formattedTestedData[
+                                              formattedTestedData.length - 1
+                                            ].deltaTested -
+                                              formattedTestedData[
+                                                formattedTestedData.length - 2
+                                              ].deltaTested
                                           )
                                         )}`
                                       : `-${commaSeperated(
                                           Math.abs(
-                                            dailyFormattedTestData[
-                                              dailyFormattedTestData.length - 1
-                                            ].dailytested -
-                                              dailyFormattedTestData[
-                                                dailyFormattedTestData.length -
-                                                  2
-                                              ].dailytested
+                                            formattedTestedData[
+                                              formattedTestedData.length - 1
+                                            ].deltaTested -
+                                              formattedTestedData[
+                                                formattedTestedData.length - 2
+                                              ].deltaTested
                                           )
                                         )}`
                                     : ""}
@@ -2373,9 +2416,9 @@ class StateDetails extends Component {
                             aspect={2.2}
                           >
                             <BarChart
-                              data={dailyFormattedTestData.slice(
+                              data={formattedTestedData.slice(
                                 timelineLength,
-                                dailyFormattedTestData.length
+                                formattedTestedData.length
                               )}
                               margin={{
                                 top: 40,
@@ -2392,7 +2435,7 @@ class StateDetails extends Component {
                                   fill: "#6471b3",
                                   strokeWidth: 0.2,
                                 }}
-                                interval={interval}
+                                interval={"preserveStartEnd"}
                                 style={{
                                   fontSize: "0.62rem",
                                   fontFamily: "notosans",
@@ -2410,20 +2453,16 @@ class StateDetails extends Component {
                                   Math.floor(
                                     Math.min.apply(
                                       Math,
-                                      dailyFormattedTestData.map(function (
-                                        item
-                                      ) {
-                                        return Number(item.dailytested);
+                                      formattedTestedData.map(function (item) {
+                                        return Number(item.deltaTested);
                                       })
                                     ) / 1000
                                   ) * 1000,
                                   Math.ceil(
                                     Math.max.apply(
                                       Math,
-                                      dailyFormattedTestData.map(function (
-                                        item
-                                      ) {
-                                        return Number(item.dailytested);
+                                      formattedTestedData.map(function (item) {
+                                        return Number(item.deltaTested);
                                       })
                                     ) / 1000
                                   ) * 1000,
@@ -2434,7 +2473,7 @@ class StateDetails extends Component {
                                   fill: "#6471b3",
                                   strokeWidth: 0.2,
                                 }}
-                                tickFormatter={format("~s")}
+                                tickFormatter={abbreviateNumber}
                                 style={{
                                   fontSize: "0.62rem",
                                   fontFamily: "notosans",
@@ -2462,7 +2501,7 @@ class StateDetails extends Component {
                                 position={{ x: 120, y: 22 }}
                               />
                               <Bar
-                                dataKey="dailytested"
+                                dataKey="deltaTested"
                                 name="Tested"
                                 fill="slateblue"
                                 radius={[2, 2, 0, 0]}
@@ -2477,7 +2516,153 @@ class StateDetails extends Component {
                           </ResponsiveContainer>
                         </section>
                       </div>
-                    </React.Fragment>
+                      <div className="w-100"></div>
+                      <div className="col">
+                        <section
+                          className="graphsection"
+                          style={{
+                            alignSelf: "center",
+                            backgroundColor: "rgba(255, 223, 0, 0.1)",
+                            borderRadius: "6px",
+                            paddingTop: "5px",
+                          }}
+                        >
+                          <h5
+                            style={{
+                              paddingTop: "5px",
+                              marginBottom: "-80px",
+                              textAlign: "left",
+                              marginLeft: 10,
+                              fontSize: "0.8rem",
+                              color: "#f4c430",
+                            }}
+                          >
+                            VACCINE DOSES
+                            <h6
+                              style={{ fontSize: "12px", color: "#f4c430aa" }}
+                            >
+                              {date.slice(-1)[0].split(" ")[0]}{" "}
+                              {date.slice(-1)[0].split(" ")[1]}
+                              <h5
+                                style={{
+                                  fontSize: "0.8rem",
+                                  color: "#f4c430dd",
+                                }}
+                              >
+                                {commaSeperated(
+                                  formattedVaccinatedData[
+                                    formattedVaccinatedData.length - 1
+                                  ].deltaVaccinated
+                                )}{" "}
+                                <span style={{ fontSize: 8 }}>
+                                  {formattedVaccinatedData[
+                                    formattedVaccinatedData.length - 1
+                                  ].deltaVaccinated !== "-" &&
+                                    `${
+                                      formattedVaccinatedData[
+                                        formattedVaccinatedData.length - 1
+                                      ].deltaVaccinated -
+                                        formattedVaccinatedData[
+                                          formattedVaccinatedData.length - 2
+                                        ].deltaVaccinated >=
+                                      0
+                                        ? "+"
+                                        : "-"
+                                    }${commaSeperated(
+                                      Math.abs(
+                                        formattedVaccinatedData[
+                                          formattedVaccinatedData.length - 1
+                                        ].deltaVaccinated -
+                                          formattedVaccinatedData[
+                                            formattedVaccinatedData.length - 2
+                                          ].deltaVaccinated
+                                      )
+                                    )}`}
+                                </span>
+                              </h5>
+                            </h6>
+                          </h5>
+                          <ResponsiveContainer
+                            width="100%"
+                            height="100%"
+                            aspect={2.2}
+                          >
+                            <BarChart
+                              data={formattedVaccinatedData.slice(
+                                timelineLength,
+                                formattedVaccinatedData.length
+                              )}
+                              margin={{
+                                top: 40,
+                                right: -20,
+                                left: 20,
+                                bottom: -8,
+                              }}
+                              syncId="barchart"
+                            >
+                              <XAxis
+                                dataKey="date"
+                                tick={{
+                                  stroke: "#f4c430dd",
+                                  fill: "#f4c430dd",
+                                  strokeWidth: 0.2,
+                                }}
+                                style={{
+                                  fontSize: "0.62rem",
+                                  fontFamily: "notosans",
+                                }}
+                                interval={"preserveStartEnd"}
+                                tickSize={5}
+                                tickCount={5}
+                                axisLine={{
+                                  stroke: "#f4c430dd",
+                                  strokeWidth: "1.5px",
+                                }}
+                                tickLine={{
+                                  stroke: "#f4c430dd",
+                                  strokeWidth: "1.5px",
+                                }}
+                              />
+                              <YAxis
+                                orientation="right"
+                                tick={{
+                                  stroke: "#f4c430dd",
+                                  fill: "#f4c430dd",
+                                  strokeWidth: 0.2,
+                                }}
+                                tickFormatter={abbreviateNumber}
+                                tickSize={5}
+                                style={{
+                                  fontSize: "0.62rem",
+                                  fontFamily: "notosans",
+                                }}
+                                tickCount={8}
+                                axisLine={{
+                                  stroke: "#f4c430dd",
+                                  strokeWidth: "1.5px",
+                                }}
+                                tickLine={{
+                                  stroke: "#f4c430dd",
+                                  strokeWidth: "1.5px",
+                                }}
+                              />
+                              <Retooltip
+                                contentStyle={contentStyle}
+                                cursor={{ fill: "transparent" }}
+                                position={{ x: 120, y: 15 }}
+                              />
+                              <Bar
+                                dataKey="deltaVaccinated"
+                                name="Vaccinated"
+                                fill="#f4c430"
+                                radius={[3, 3, 0, 0]}
+                                barSize={20}
+                              />
+                            </BarChart>
+                          </ResponsiveContainer>
+                        </section>
+                      </div>
+                    </>
                   )}
                 </div>
                 <div className="row fadeInup">
@@ -2526,10 +2711,10 @@ class StateDetails extends Component {
             </div>
             <Footer />
           </div>
-        </React.Fragment>
+        </>
       );
     } else {
-      if (stateID.includes(this.props.match.params.stateid.toUpperCase())) {
+      if (stateID.includes(currentStateCode)) {
         return (
           <div style={{ textAlign: "center" }}>
             <div

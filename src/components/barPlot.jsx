@@ -9,6 +9,7 @@ import {
 } from "recharts";
 import ReactGa from "react-ga";
 import { format } from "d3";
+import { abbreviateNumber } from "../utils/common-functions";
 
 function commaSeperated(x) {
   if (x !== undefined || x !== 0) {
@@ -66,7 +67,8 @@ const BarPlot = ({
               textTransform: "capitalize",
             }}
           >
-            {Number(date.slice(-1)[0].split(" ")[0])} {date.slice(-1)[0].split(" ")[1]}
+            {Number(date.slice(-1)[0].split(" ")[0])}{" "}
+            {date.slice(-1)[0].split(" ")[1]}
             <h5
               style={{
                 fontSize: "0.8rem",
@@ -117,7 +119,7 @@ const BarPlot = ({
               ]}
               orientation="right"
               tick={{ stroke: stroke, strokeWidth: 0.2, fill: stroke }}
-              tickFormatter={format("~s")}
+              tickFormatter={abbreviateNumber}
               tickSize={5}
               style={{ fontSize: "0.62rem", fontFamily: "notosans" }}
               tickLine={{ stroke: stroke }}

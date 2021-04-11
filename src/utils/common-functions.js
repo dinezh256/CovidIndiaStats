@@ -1,5 +1,6 @@
-import * as Icon from "react-feather";
 import React from "react";
+import * as Icon from "react-feather";
+import { format } from "date-fns";
 
 const months = {
   1: "Jan",
@@ -61,6 +62,24 @@ export const stateNavbarName = {
   "/UT": "COVID INDIA STATS",
   "/WB": "COVID INDIA STATS",
   "/UN": "COVID INDIA STATS",
+};
+
+const numberFormatter = new Intl.NumberFormat("en-IN", {
+  maximumFractionDigits: 1,
+});
+
+export const abbreviateNumber = (number) => {
+  if (Math.abs(number) < 1e3) return numberFormatter.format(number);
+  else if (Math.abs(number) >= 1e3 && Math.abs(number) < 1e5)
+    return numberFormatter.format(number / 1e3) + "K";
+  else if (Math.abs(number) >= 1e5 && Math.abs(number) < 1e7)
+    return numberFormatter.format(number / 1e5) + "L";
+  else if (Math.abs(number) >= 1e7 && Math.abs(number) < 1e10)
+    return numberFormatter.format(number / 1e7) + "Cr";
+  else if (Math.abs(number) >= 1e10 && Math.abs(number) < 1e14)
+    return numberFormatter.format(number / 1e10) + "K Cr";
+  else if (Math.abs(number) >= 1e14)
+    return numberFormatter.format(number / 1e14) + "L Cr";
 };
 
 export const formatDate = (unformattedDate) => {
