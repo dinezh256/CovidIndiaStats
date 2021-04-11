@@ -277,7 +277,7 @@ class StateDetails extends Component {
     if (requiredDistrictData) {
       for (let i = 0; i < requiredDistrictData.length; i++) {
         requiredDistrictData[i].newDate =
-          String(requiredDistrictData[i].date.split(/\-/)[2]) +
+          String(Number(requiredDistrictData[i].date.split(/\-/)[2])) +
           " " +
           String(months[Number(requiredDistrictData[i].date.split(/\-/)[1])]);
       }
@@ -285,7 +285,7 @@ class StateDetails extends Component {
 
     for (let i = 0; i < statesDailyData.length; i++) {
       statesDailyData[i].newdate =
-        statesDailyData[i].date.split(/\-/)[0] +
+        String(Number(statesDailyData[i].date.split(/\-/)[0])) +
         " " +
         statesDailyData[i].date.split(/\-/)[1] +
         " 20" +
