@@ -1439,6 +1439,7 @@ class Graph extends Component {
                         backgroundColor: "rgba(255, 223, 0, 0.1)",
                         borderRadius: "6px",
                         paddingTop: "5px",
+                        marginTop: "10px",
                       }}
                     >
                       <h5
