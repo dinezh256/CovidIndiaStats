@@ -487,7 +487,7 @@ class Table extends Component {
               <div className="vaccinatedPeople">
                 <h6>
                   <img src={shield} className="vaccineShield" />{" "}
-                  {commaSeperated(totalVaccinated)} have been Vaccinated
+                  {commaSeperated(totalVaccinated)} Vaccine doses administered
                 </h6>
               </div>
             )}
