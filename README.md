@@ -3,6 +3,8 @@ A dashboard to visualise the spread of covid19 in India(state and districtwise) 
 Dashboard live on <a href="https://covidindiastats.com" >covidindiastats.com</a>
 
 Created using <a href="https://reactjs.org/" >Create-React-App</a>
+![image](https://github.com/dinezh256/CovidIndiaStats/assets/49403734/c382c8e9-e221-460f-a970-cadd2cc146e6)
+
 
 After forking and cloning, you can run:
 
