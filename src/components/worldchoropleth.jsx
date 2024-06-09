@@ -5,7 +5,7 @@ import ReactTooltip from "react-tooltip";
 import { commaSeperated } from "../utils/common-functions";
 import LinearGradient from "./linearGragient";
 
-const WORLD_TOPO_JSON = require("../world-110m");
+import WORLD_TOPO_JSON from "../world-110m.json";
 
 const PROJECTION_CONFIG = {
   scale: 33,
@@ -66,7 +66,7 @@ const WorldChoropleth = ({ data: statesdata }) => {
   };
 
   return (
-    <React.Fragment>
+    <>
       <div>
         <ReactTooltip>{tooltipContent}</ReactTooltip>
 
@@ -103,7 +103,7 @@ const WorldChoropleth = ({ data: statesdata }) => {
       <div className="worldLinearGradient">
         <LinearGradient data={gradientData} />
       </div>
-    </React.Fragment>
+    </>
   );
 };
 

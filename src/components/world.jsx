@@ -114,7 +114,7 @@ class World extends Component {
 
     if (isLoaded) {
       return (
-        <React.Fragment>
+        <>
           <div className="containerWorld">
             <Helmet>
               <title>Global COVID19 Update</title>
@@ -440,11 +440,11 @@ class World extends Component {
 
             <Footer />
           </div>
-        </React.Fragment>
+        </>
       );
     } else {
       return (
-        <div style={{textAlign: "center"}}>
+        <div style={{ textAlign: "center" }}>
           <div
             className="spinner-grow"
             role="status"

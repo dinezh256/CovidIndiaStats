@@ -113,7 +113,7 @@ const Charts = ({ data: { cases, recovered, deaths }, country }) => {
 
   const lineChart =
     cases && recovered && deaths ? (
-      <React.Fragment>
+      <>
         <Line
           data={{
             labels: [
@@ -149,7 +149,7 @@ const Charts = ({ data: { cases, recovered, deaths }, country }) => {
           }}
           options={chartOptions}
         />
-      </React.Fragment>
+      </>
     ) : null;
 
   return (

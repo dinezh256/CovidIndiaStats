@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useState, createContext, useEffect } from "react";
 
 export const AppContext = createContext();
@@ -7,12 +8,17 @@ export const AppContextProvider = (props) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    fetch("https://api.covid19india.org/v4/timeseries.json").then((res) =>
-      res.json().then((data) => {
-        setAllData(data);
+    axios
+      .get("https://data.covid19india.org/v4/min/timeseries.min.json")
+      .then(function ({ data, status }) {
+        if (status === 200) {
+          setAllData(data);
+        }
         setIsLoading(false);
       })
-    );
+      .catch(function (error) {
+        console.log(error);
+      });
   }, []);
 
   return (

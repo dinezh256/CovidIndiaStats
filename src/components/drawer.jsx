@@ -100,7 +100,7 @@ export default function SwipeableTemporaryDrawer() {
 
         <br />
         <h6
-        className="drawer-share"
+          className="drawer-share"
           style={{
             alignContent: "center",
             justifyContent: "center",
@@ -165,12 +165,10 @@ export default function SwipeableTemporaryDrawer() {
       {["left"].map((anchor) => (
         <React.Fragment key={anchor}>
           <span className="menuIcon" onClick={toggleDrawer(anchor, true)}>
-            {
-              <MenuRoundedIcon
-                style={{ verticalAlign: "-0.65rem" }}
-                fontSize="large"
-              />
-            }
+            <MenuRoundedIcon
+              style={{ verticalAlign: "-0.65rem" }}
+              fontSize="large"
+            />
           </span>
           <SwipeableDrawer
             anchor={anchor}

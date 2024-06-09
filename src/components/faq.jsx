@@ -9,7 +9,7 @@ import { Helmet } from "react-helmet";
 class FAQ extends Component {
   render() {
     return (
-      <React.Fragment>
+      <>
         <div style={{ marginBottom: "20px" }}>
           <Helmet>
             <title>India Covid Stats FAQs</title>
@@ -139,7 +139,7 @@ class FAQ extends Component {
             <Footer />
           </Container>
         </div>
-      </React.Fragment>
+      </>
     );
   }
 }

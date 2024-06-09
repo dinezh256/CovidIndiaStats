@@ -1,4 +1,6 @@
 import React, { useEffect, Suspense, lazy } from "react";
+import { createBrowserHistory } from "history";
+
 import {
   BrowserRouter as Router,
   Route,
@@ -6,13 +8,14 @@ import {
   Redirect,
 } from "react-router-dom";
 import { Helmet } from "react-helmet";
-import useDarkMode from "use-dark-mode";
+// import useDarkMode from "use-dark-mode";
 import { ThemeProvider, createGlobalStyle } from "styled-components";
-import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import ReactGa from "react-ga";
 import Navbar from "./components/navbar";
 import AppContextProvider from "./context";
+
+import "./App.css";
 
 const Home = lazy(() => import("./components/home"));
 const World = lazy(() => import("./components/world"));
@@ -25,8 +28,7 @@ const StateDetails = lazy(() => import("./components/stateDetails"));
 const schemaMarkup = {
   "@context": "http://schema.org/",
   "@type": "NGO",
-  name:
-    "Track the spread of Coronavirus (COVID-19) in India from state level to district level and around the world",
+  name: "Track the spread of Coronavirus (COVID-19) in India from state level to district level and around the world",
   alternateName: "COVID INDIA STATS",
   url: "https://www.covidindiastats.com/",
 };
@@ -39,11 +41,15 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-// const fetcher = (url) => fetch(url).then((response) => response.json());
-
 function App() {
-  const history = require("history").createBrowserHistory;
-  const darkMode = useDarkMode(true);
+  const history = createBrowserHistory();
+  const darkMode = {
+    value: true,
+    toggle: () => {
+      {
+      }
+    },
+  };
 
   useEffect(() => {
     ReactGa.initialize("UA-163288419-1");
@@ -51,7 +57,7 @@ function App() {
   }, []);
 
   return (
-    <React.Fragment>
+    <>
       <Helmet>
         <script type="application/ld+json">
           {JSON.stringify(schemaMarkup)}
@@ -79,7 +85,7 @@ function App() {
           </ThemeProvider>
         </Router>
       </AppContextProvider>
-    </React.Fragment>
+    </>
   );
 }
 

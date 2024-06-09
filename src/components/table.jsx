@@ -48,13 +48,13 @@ class Table extends Component {
   static contextType = AppContext;
 
   componentDidMount() {
-    fetch("https://api.covid19india.org/data.json").then((res) =>
+    fetch("https://data.covid19india.org/v4/min/data.min.json").then((res) =>
       res.json().then((json) => {
-       
+        console.log({ json });
         this.setState({
           isLoaded: true,
-          data: json.cases_time_series,
-          statewise: json.statewise,
+          data: json,
+          statewise: json,
         });
       })
     );
@@ -63,7 +63,9 @@ class Table extends Component {
   componentDidUpdate() {
     const [allData] = this.context.allData;
     const [isLoading] = this.context.isLoading;
-    const { allStatesData, isDataLoading } = this.state;
+    const { isDataLoading } = this.state;
+
+    const allStatesData = [];
 
     if (!isLoading && isDataLoading) {
       for (let key in allData) {
@@ -107,35 +109,17 @@ class Table extends Component {
 
     const totalVaccinated = localStorage.getItem("lastTotalVaccinated");
 
-    const dailyConfirmed = [];
-    data.map((item) => dailyConfirmed.push(Number(item.dailyconfirmed)));
-
-    const dailyActive = [];
-    data.map((item) =>
-      dailyActive.push(
-        Number(item.dailyconfirmed) -
-          Number(item.dailyrecovered) -
-          Number(item.dailydeceased)
-      )
-    );
-
-    const dailyRecovered = [];
-    data.map((item) => dailyRecovered.push(Number(item.dailyrecovered)));
-
-    const dailyDeceased = [];
-    data.map((item) => dailyDeceased.push(Number(item.dailydeceased)));
-
     allStatesData.map((t) => {
       let found = false;
       let stateNotes = "";
-      statewise.map((s) => {
-        if (t.code === s.statecode && !found) {
-          stateNotes = s.statenotes;
-          found = true;
-        }
+      // statewise.map((s) => {
+      //   if (t.code === s.statecode && !found) {
+      //     stateNotes = s.statenotes;
+      //     found = true;
+      //   }
 
-        t["stateNotes"] = stateNotes;
-      });
+      //   t["stateNotes"] = stateNotes;
+      // });
     });
 
     if (sortConfirmed) {
@@ -197,26 +181,26 @@ class Table extends Component {
     const sparklinerecovered = [];
     const sparklinedeceased = [];
 
-    data.slice(data.length - 20, data.length).map((item) => {
-      sparklinedata.push({
-        confirmed: Number(item.dailyconfirmed),
-        active:
-          Number(item.dailyconfirmed) -
-          Number(item.dailyrecovered) -
-          Number(item.dailydeceased),
-        recovered: Number(item.dailyrecovered),
-        deceased: Number(item.dailydeceased),
-        date: item.date,
-      });
-      sparklineconfirmed.push(Number(item.dailyconfirmed));
-      sparklineactive.push(
-        Number(item.dailyconfirmed) -
-          Number(item.dailyrecovered) -
-          Number(item.dailydeceased)
-      );
-      sparklinerecovered.push(Number(item.dailyrecovered));
-      sparklinedeceased.push(Number(item.dailydeceased));
-    });
+    // data.slice(data.length - 20, data.length).map((item) => {
+    //   sparklinedata.push({
+    //     confirmed: Number(item.dailyconfirmed),
+    //     active:
+    //       Number(item.dailyconfirmed) -
+    //       Number(item.dailyrecovered) -
+    //       Number(item.dailydeceased),
+    //     recovered: Number(item.dailyrecovered),
+    //     deceased: Number(item.dailydeceased),
+    //     date: item.date,
+    //   });
+    //   sparklineconfirmed.push(Number(item.dailyconfirmed));
+    //   sparklineactive.push(
+    //     Number(item.dailyconfirmed) -
+    //       Number(item.dailyrecovered) -
+    //       Number(item.dailydeceased)
+    //   );
+    //   sparklinerecovered.push(Number(item.dailyrecovered));
+    //   sparklinedeceased.push(Number(item.dailydeceased));
+    // });
 
     if (isLoaded && !isDataLoading) {
       return (
@@ -315,13 +299,13 @@ class Table extends Component {
                             paddingBottom: "-10px",
                           }}
                         >
-                          <MiniSparkline
+                          {/* <MiniSparkline
                             sparklinedata={sparklinedata}
                             datakey={0}
                             type={sparklineconfirmed}
                             fill="#42b3f4"
                             stroke="rgba(66, 179, 244, 0.7)"
-                          />
+                          /> */}
                         </section>
                       </td>
 
@@ -360,13 +344,13 @@ class Table extends Component {
                             paddingBottom: "-10px",
                           }}
                         >
-                          <MiniSparkline
+                          {/* <MiniSparkline
                             sparklinedata={sparklinedata}
                             datakey={1}
                             type={sparklineactive}
                             fill="#ff446a"
                             stroke="rgba(255, 68, 106, 0.7)"
-                          />
+                          /> */}
                         </section>
                       </td>
 
@@ -415,13 +399,13 @@ class Table extends Component {
                             paddingBottom: "-10px",
                           }}
                         >
-                          <MiniSparkline
+                          {/* <MiniSparkline
                             sparklinedata={sparklinedata}
                             datakey={2}
                             type={sparklinerecovered}
                             fill="#58bd58"
                             stroke="rgba(88, 189, 88, 0.7)"
-                          />
+                          /> */}
                         </section>
                       </td>
 
@@ -470,13 +454,13 @@ class Table extends Component {
                             paddingBottom: "-10px",
                           }}
                         >
-                          <MiniSparkline
+                          {/* <MiniSparkline
                             sparklinedata={sparklinedata}
                             datakey={3}
                             type={sparklinedeceased}
                             fill="#5c5756"
                             stroke="rgba(92, 87, 86, 0.7)"
-                          />
+                          /> */}
                         </section>
                       </td>
                     </tbody>
@@ -748,26 +732,26 @@ class Table extends Component {
                             </Link>
                             <h6>
                               {item.stateNotes ? (
-                                  <OverlayTrigger
-                                    key="right"
-                                    placement="right"
-                                    overlay={
-                                      <Tooltip id="tooltip-right">
-                                        {parse(item.stateNotes)}
-                                      </Tooltip>
-                                    }
-                                  >
-                                    <span>
-                                      <InfoOutlined
-                                        color="inherit"
-                                        fontSize="inherit"
-                                        className="infoIcon"
-                                      />
-                                    </span>
-                                  </OverlayTrigger>
-                                ) : (
-                                  ""
-                                )}
+                                <OverlayTrigger
+                                  key="right"
+                                  placement="right"
+                                  overlay={
+                                    <Tooltip id="tooltip-right">
+                                      {parse(item.stateNotes)}
+                                    </Tooltip>
+                                  }
+                                >
+                                  <span>
+                                    <InfoOutlined
+                                      color="inherit"
+                                      fontSize="inherit"
+                                      className="infoIcon"
+                                    />
+                                  </span>
+                                </OverlayTrigger>
+                              ) : (
+                                ""
+                              )}
                             </h6>
                           </div>
                         </td>
@@ -904,7 +888,7 @@ class Table extends Component {
                       >
                         <td className="align-middle">
                           <div className="td-md-left">
-                            <h6 style={{paddingTop: "7.5px"}}>{item.name}</h6>
+                            <h6 style={{ paddingTop: "7.5px" }}>{item.name}</h6>
                           </div>
                         </td>
                         <td

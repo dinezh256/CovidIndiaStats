@@ -16,7 +16,7 @@ class Updates extends Component {
   }
 
   componentDidMount() {
-    fetch("https://api.covid19india.org/data.json").then((res) =>
+    fetch("https://data.covid19india.org/v4/min/data.min.json").then((res) =>
       res.json().then((json) => {
         this.setState({
           isLoaded: true,

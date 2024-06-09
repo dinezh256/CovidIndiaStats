@@ -1,7 +1,7 @@
 .MuiPaperroot {
   background-color: rgb(32, 32, 66) !important;
   color: white !important;
-  padding-bottom: 8rem;
+  height: 100vh !important;
 }
 
 @media (max-width: 414px) {

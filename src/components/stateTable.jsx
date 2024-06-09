@@ -177,7 +177,7 @@ class StateTable extends Component {
     };
 
     return (
-      <React.Fragment>
+      <>
         <div
           className="row fadeInUp"
           style={{
@@ -431,7 +431,7 @@ class StateTable extends Component {
         ) : (
           ""
         )}
-      </React.Fragment>
+      </>
     );
   }
 }

@@ -10,7 +10,7 @@ import {
 } from "recharts";
 import PropTypes from "prop-types";
 
-let CreateReactClass = require("create-react-class");
+import CreateReactClass from "create-react-class";
 
 const CustomTooltip = CreateReactClass({
   propTypes: {

@@ -5,8 +5,7 @@ import { scaleLog } from "d3-scale";
 import ReactTooltip from "react-tooltip";
 import { commaSeperated } from "../utils/common-functions";
 import LinearGradient from "./linearGragient";
-
-const INDIA_TOPO_JSON = require("../india.topo.json");
+import INDIA_TOPO_JSON from "../india.topo.json";
 
 const PROJECTION_CONFIG = {
   scale: 375,

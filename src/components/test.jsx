@@ -184,7 +184,7 @@ class Test extends Component {
     const { data, data2, country } = this.state;
 
     return (
-      <React.Fragment>
+      <>
         <div className={styles.container}>
           <Helmet>
             <title>Covid India Stats - World Dashboard</title>
@@ -198,7 +198,7 @@ class Test extends Component {
           <Chart data={data2} country={country} />
         </div>
         <Footer />
-      </React.Fragment>
+      </>
     );
   }
 }

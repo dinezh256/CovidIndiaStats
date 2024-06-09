@@ -18,6 +18,7 @@ import BarPlot from "./barPlot";
 import { abbreviateNumber, commaSeperated } from "../utils/common-functions";
 import ReactGa from "react-ga";
 import { AppContext } from "./../context/index";
+import axios from "axios";
 
 const months2 = [
   "January",
@@ -92,15 +93,21 @@ class Graph extends Component {
   static contextType = AppContext;
 
   componentDidMount() {
-    fetch("https://api.covid19india.org/data.json").then((res) =>
-      res.json().then((json) => {
-        this.setState({
-          isLoaded: true,
-          data: json.cases_time_series,
-          data2: json.statewise,
-        });
+    axios
+      .get("https://data.covid19india.org/v4/min/timeseries.min.json")
+      .then(function ({ data, status }) {
+        if (status === 200) {
+          this.setState({
+            isLoaded: true,
+            data: data,
+            data2: json.statewise,
+          });
+        }
       })
-    );
+      .catch(function (error) {
+        // handle error
+        console.log(error);
+      });
   }
 
   componentDidUpdate() {
@@ -856,7 +863,7 @@ class Graph extends Component {
               style={{ animationDelay: "2.65s", marginTop: "-8px" }}
             >
               {!toggleActive && (
-                <React.Fragment>
+                <>
                   <LinePlot
                     type="confirmed"
                     bgColor="rgba(150, 196, 216, 0.1)"
@@ -1226,10 +1233,10 @@ class Graph extends Component {
                     </section>
                   </div>
                   <div className="w-100"></div>
-                </React.Fragment>
+                </>
               )}
               {toggleActive && (
-                <React.Fragment>
+                <>
                   <BarPlot
                     type="confirmed"
                     bgColor="rgba(150, 196, 216, 0.1)"
@@ -1571,7 +1578,7 @@ class Graph extends Component {
                       </ResponsiveContainer>
                     </section>
                   </div>
-                </React.Fragment>
+                </>
               )}
               <div className="w-100"></div>
             </div>

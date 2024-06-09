@@ -131,7 +131,7 @@ class StateDetails extends Component {
     });
     this.setState({ requiredData });
 
-    fetch("https://api.covid19india.org/data.json").then((res) =>
+    fetch("https://data.covid19india.org/v4/min/data.min.json").then((res) =>
       res.json().then((json) => {
         this.setState({
           totalStateData: json.statewise,
@@ -167,12 +167,8 @@ class StateDetails extends Component {
       "Dec",
     ];
 
-    const {
-      isLoaded2,
-      totalTestsData,
-      vaccinatedData,
-      currentStateCode,
-    } = this.state;
+    const { isLoaded2, totalTestsData, vaccinatedData, currentStateCode } =
+      this.state;
 
     if (!isLoading && !isLoaded2) {
       const totalData = allData[currentStateCode]?.dates;
@@ -387,7 +383,11 @@ class StateDetails extends Component {
             stateid: Number(
               item[this.props.match.params.stateid.toLowerCase()]
             ),
-            date: item.newdate.split(" ")[0] + " " + item.newdate.split(" ")[1] + " ",
+            date:
+              item.newdate.split(" ")[0] +
+              " " +
+              item.newdate.split(" ")[1] +
+              " ",
             label: Number(item[this.props.match.params.stateid.toLowerCase()]),
           });
       });
@@ -443,7 +443,11 @@ class StateDetails extends Component {
             stateid: Number(
               item[this.props.match.params.stateid.toLowerCase()]
             ),
-            date: item.newdate.split(" ")[0] + " " + item.newdate.split(" ")[1] + " ",
+            date:
+              item.newdate.split(" ")[0] +
+              " " +
+              item.newdate.split(" ")[1] +
+              " ",
           });
       });
     }
@@ -471,7 +475,11 @@ class StateDetails extends Component {
             stateid: Number(
               item[this.props.match.params.stateid.toLowerCase()]
             ),
-            date: item.newdate.split(" ")[0] + " " + item.newdate.split(" ")[1] + " ",
+            date:
+              item.newdate.split(" ")[0] +
+              " " +
+              item.newdate.split(" ")[1] +
+              " ",
             label: Number(item[this.props.match.params.stateid.toLowerCase()]),
           });
       });
@@ -524,7 +532,11 @@ class StateDetails extends Component {
             stateid: Number(
               item[this.props.match.params.stateid.toLowerCase()]
             ),
-            date: item.newdate.split(" ")[0] + " " + item.newdate.split(" ")[1] + " ",
+            date:
+              item.newdate.split(" ")[0] +
+              " " +
+              item.newdate.split(" ")[1] +
+              " ",
           });
       });
     }
@@ -566,7 +578,11 @@ class StateDetails extends Component {
             stateid: Number(
               item[this.props.match.params.stateid.toLowerCase()]
             ),
-            date: item.newdate.split(" ")[0] + " " + item.newdate.split(" ")[1] + " ",
+            date:
+              item.newdate.split(" ")[0] +
+              " " +
+              item.newdate.split(" ")[1] +
+              " ",
             label: Number(item[this.props.match.params.stateid.toLowerCase()]),
           });
       });
@@ -623,7 +639,11 @@ class StateDetails extends Component {
             stateid: Number(
               item[this.props.match.params.stateid.toLowerCase()]
             ),
-            date: item.newdate.split(" ")[0] + " " + item.newdate.split(" ")[1] + " ",
+            date:
+              item.newdate.split(" ")[0] +
+              " " +
+              item.newdate.split(" ")[1] +
+              " ",
           });
       });
     }
