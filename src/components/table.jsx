@@ -50,7 +50,6 @@ class Table extends Component {
   componentDidMount() {
     fetch("https://data.covid19india.org/v4/min/data.min.json").then((res) =>
       res.json().then((json) => {
-        console.log({ json });
         this.setState({
           isLoaded: true,
           data: json,
@@ -209,7 +208,7 @@ class Table extends Component {
             className="topStats fadeInUp"
             style={{
               marginBottom: "8px",
-              animationDelay: "0.5s",
+              animationDelay: "0.25s",
               borderRadius: "6px",
             }}
           >
@@ -257,212 +256,218 @@ class Table extends Component {
               {allStatesData.map(
                 (item) =>
                   item.code === "TT" && (
-                    <tbody className="tbody">
-                      <td>
-                        <h6
-                          className="delta"
-                          style={{ fontSize: 12, color: "rgb(66, 179, 244)" }}
-                        >
-                          {Number(item?.data?.delta?.confirmed) > 0 ? (
-                            ""
-                          ) : (
-                            <Icon.Meh
-                              size={12}
-                              strokeWidth={3}
-                              fill="rgba(23, 162, 184, 0.2)"
-                              style={{ verticalAlign: "-0.2rem" }}
-                            />
-                          )}
-
-                          {Number(item?.data?.delta?.confirmed) > 0
-                            ? "+" + commaSeperated(item?.data?.delta?.confirmed)
-                            : ""}
-                        </h6>
-                        <h6
-                          style={{
-                            textAlign: "center",
-                            color: "rgb(66, 179, 244)",
-                          }}
-                        >
-                          <CountUp
-                            start={0}
-                            end={Number(item?.data?.total?.confirmed)}
-                            duration={2}
-                            separator=","
-                            formattingFn={(number) => commaSeperated(number)}
-                          />
-                        </h6>
-
-                        <section
-                          style={{
-                            justifyContent: "center",
-                            paddingBottom: "-10px",
-                          }}
-                        >
-                          {/* <MiniSparkline
-                            sparklinedata={sparklinedata}
-                            datakey={0}
-                            type={sparklineconfirmed}
-                            fill="#42b3f4"
-                            stroke="rgba(66, 179, 244, 0.7)"
-                          /> */}
-                        </section>
-                      </td>
-
-                      <td>
-                        <h6
-                          className="delta"
-                          style={{ color: "#ff446a", fontSize: 12 }}
-                        >
-                          <Icon.Heart
-                            size={12}
-                            strokeWidth={3}
-                            fill="#ff446a"
-                            style={{ verticalAlign: "-0.2rem" }}
-                          />
-                        </h6>
-                        <h6 style={{ color: "#ff446a", textAlign: "center" }}>
-                          {!percentageToggleActive ? (
+                    <tbody className="tbody" key="TT">
+                      <tr>
+                        <td>
+                          <h6
+                            className="delta"
+                            style={{ fontSize: 12, color: "rgb(66, 179, 244)" }}
+                          >
+                            {Number(item?.data?.delta?.confirmed) > 0 ? (
+                              ""
+                            ) : (
+                              <Icon.Meh
+                                size={12}
+                                strokeWidth={3}
+                                fill="rgba(23, 162, 184, 0.2)"
+                                style={{ verticalAlign: "-0.2rem" }}
+                              />
+                            )}
+                            {Number(item?.data?.delta?.confirmed) > 0
+                              ? "+" +
+                                commaSeperated(item?.data?.delta?.confirmed)
+                              : ""}
+                          </h6>
+                          <h6
+                            style={{
+                              textAlign: "center",
+                              color: "rgb(66, 179, 244)",
+                            }}
+                          >
                             <CountUp
                               start={0}
-                              end={Number(getActiveNumber(item?.data?.total))}
+                              end={Number(item?.data?.total?.confirmed)}
                               duration={2}
                               separator=","
                               formattingFn={(number) => commaSeperated(number)}
                             />
-                          ) : (
-                            (
-                              (getActiveNumber(item?.data?.total) /
-                                Number(item?.data?.total?.confirmed)) *
-                              100
-                            ).toFixed(1) + "%"
-                          )}
-                        </h6>
-                        <section
-                          style={{
-                            justifyContent: "center",
-                            paddingBottom: "-10px",
-                          }}
-                        >
-                          {/* <MiniSparkline
-                            sparklinedata={sparklinedata}
-                            datakey={1}
-                            type={sparklineactive}
-                            fill="#ff446a"
-                            stroke="rgba(255, 68, 106, 0.7)"
-                          /> */}
-                        </section>
-                      </td>
-
-                      <td>
-                        <h5
-                          className="text-success delta"
-                          style={{ fontSize: 12 }}
-                        >
-                          {Number(item?.data?.delta?.recovered) > 0 ? (
-                            ""
-                          ) : (
-                            <Icon.Smile
+                          </h6>
+                          <section
+                            style={{
+                              justifyContent: "center",
+                              paddingBottom: "-10px",
+                            }}
+                          >
+                            {/* <MiniSparkline
+                              sparklinedata={sparklinedata}
+                              datakey={0}
+                              type={sparklineconfirmed}
+                              fill="#42b3f4"
+                              stroke="rgba(66, 179, 244, 0.7)"
+                            /> */}
+                          </section>
+                        </td>
+                        <td>
+                          <h6
+                            className="delta"
+                            style={{ color: "#ff446a", fontSize: 12 }}
+                          >
+                            <Icon.Heart
                               size={12}
                               strokeWidth={3}
-                              fill="rgba(23, 162, 184, 0.2)"
+                              fill="#ff446a"
                               style={{ verticalAlign: "-0.2rem" }}
                             />
-                          )}
-                          {Number(item?.data?.delta?.recovered) > 0
-                            ? "+" + commaSeperated(item?.data?.delta?.recovered)
-                            : ""}
-                        </h5>
-                        <h6
-                          className="text-success"
-                          style={{ textAlign: "center" }}
-                        >
-                          {!percentageToggleActive ? (
-                            <CountUp
-                              start={0}
-                              end={Number(item?.data?.total?.recovered)}
-                              duration={2}
-                              separator=","
-                              formattingFn={(number) => commaSeperated(number)}
-                            />
-                          ) : (
-                            (
-                              (Number(item?.data?.total?.recovered) /
-                                Number(item?.data?.total?.confirmed)) *
-                              100
-                            ).toFixed(1) + "%"
-                          )}
-                        </h6>
-                        <section
-                          style={{
-                            justifyContent: "center",
-                            paddingBottom: "-10px",
-                          }}
-                        >
-                          {/* <MiniSparkline
-                            sparklinedata={sparklinedata}
-                            datakey={2}
-                            type={sparklinerecovered}
-                            fill="#58bd58"
-                            stroke="rgba(88, 189, 88, 0.7)"
-                          /> */}
-                        </section>
-                      </td>
-
-                      <td>
-                        <h6
-                          className="text-secondary delta"
-                          style={{ fontSize: 12 }}
-                        >
-                          {Number(item?.data?.delta?.deceased) > 0 ? (
-                            ""
-                          ) : (
-                            <Icon.Meh
-                              size={12}
-                              strokeWidth={3}
-                              fill="rgba(40, 167, 69, 0.2)"
-                              style={{ verticalAlign: "-0.2rem" }}
-                            />
-                          )}
-                          {Number(item?.data?.delta?.deceased)
-                            ? "+" + commaSeperated(item?.data?.delta?.deceased)
-                            : ""}
-                        </h6>
-                        <h6
-                          className="colorChange"
-                          style={{ textAlign: "center" }}
-                        >
-                          {!percentageToggleActive ? (
-                            <CountUp
-                              start={0}
-                              end={Number(item?.data?.total?.deceased)}
-                              duration={2}
-                              separator=","
-                              formattingFn={(number) => commaSeperated(number)}
-                            />
-                          ) : (
-                            (
-                              (Number(item?.data?.total?.deceased) /
-                                Number(item?.data?.total?.confirmed)) *
-                              100
-                            ).toFixed(1) + "%"
-                          )}
-                        </h6>
-                        <section
-                          style={{
-                            justifyContent: "center",
-                            paddingBottom: "-10px",
-                          }}
-                        >
-                          {/* <MiniSparkline
-                            sparklinedata={sparklinedata}
-                            datakey={3}
-                            type={sparklinedeceased}
-                            fill="#5c5756"
-                            stroke="rgba(92, 87, 86, 0.7)"
-                          /> */}
-                        </section>
-                      </td>
+                          </h6>
+                          <h6 style={{ color: "#ff446a", textAlign: "center" }}>
+                            {!percentageToggleActive ? (
+                              <CountUp
+                                start={0}
+                                end={Number(getActiveNumber(item?.data?.total))}
+                                duration={2}
+                                separator=","
+                                formattingFn={(number) =>
+                                  commaSeperated(number)
+                                }
+                              />
+                            ) : (
+                              (
+                                (getActiveNumber(item?.data?.total) /
+                                  Number(item?.data?.total?.confirmed)) *
+                                100
+                              ).toFixed(1) + "%"
+                            )}
+                          </h6>
+                          <section
+                            style={{
+                              justifyContent: "center",
+                              paddingBottom: "-10px",
+                            }}
+                          >
+                            {/* <MiniSparkline
+                              sparklinedata={sparklinedata}
+                              datakey={1}
+                              type={sparklineactive}
+                              fill="#ff446a"
+                              stroke="rgba(255, 68, 106, 0.7)"
+                            /> */}
+                          </section>
+                        </td>
+                        <td>
+                          <h5
+                            className="text-success delta"
+                            style={{ fontSize: 12 }}
+                          >
+                            {Number(item?.data?.delta?.recovered) > 0 ? (
+                              ""
+                            ) : (
+                              <Icon.Smile
+                                size={12}
+                                strokeWidth={3}
+                                fill="rgba(23, 162, 184, 0.2)"
+                                style={{ verticalAlign: "-0.2rem" }}
+                              />
+                            )}
+                            {Number(item?.data?.delta?.recovered) > 0
+                              ? "+" +
+                                commaSeperated(item?.data?.delta?.recovered)
+                              : ""}
+                          </h5>
+                          <h6
+                            className="text-success"
+                            style={{ textAlign: "center" }}
+                          >
+                            {!percentageToggleActive ? (
+                              <CountUp
+                                start={0}
+                                end={Number(item?.data?.total?.recovered)}
+                                duration={2}
+                                separator=","
+                                formattingFn={(number) =>
+                                  commaSeperated(number)
+                                }
+                              />
+                            ) : (
+                              (
+                                (Number(item?.data?.total?.recovered) /
+                                  Number(item?.data?.total?.confirmed)) *
+                                100
+                              ).toFixed(1) + "%"
+                            )}
+                          </h6>
+                          <section
+                            style={{
+                              justifyContent: "center",
+                              paddingBottom: "-10px",
+                            }}
+                          >
+                            {/* <MiniSparkline
+                              sparklinedata={sparklinedata}
+                              datakey={2}
+                              type={sparklinerecovered}
+                              fill="#58bd58"
+                              stroke="rgba(88, 189, 88, 0.7)"
+                            /> */}
+                          </section>
+                        </td>
+                        <td>
+                          <h6
+                            className="text-secondary delta"
+                            style={{ fontSize: 12 }}
+                          >
+                            {Number(item?.data?.delta?.deceased) > 0 ? (
+                              ""
+                            ) : (
+                              <Icon.Meh
+                                size={12}
+                                strokeWidth={3}
+                                fill="rgba(40, 167, 69, 0.2)"
+                                style={{ verticalAlign: "-0.2rem" }}
+                              />
+                            )}
+                            {Number(item?.data?.delta?.deceased)
+                              ? "+" +
+                                commaSeperated(item?.data?.delta?.deceased)
+                              : ""}
+                          </h6>
+                          <h6
+                            className="colorChange"
+                            style={{ textAlign: "center" }}
+                          >
+                            {!percentageToggleActive ? (
+                              <CountUp
+                                start={0}
+                                end={Number(item?.data?.total?.deceased)}
+                                duration={2}
+                                separator=","
+                                formattingFn={(number) =>
+                                  commaSeperated(number)
+                                }
+                              />
+                            ) : (
+                              (
+                                (Number(item?.data?.total?.deceased) /
+                                  Number(item?.data?.total?.confirmed)) *
+                                100
+                              ).toFixed(1) + "%"
+                            )}
+                          </h6>
+                          <section
+                            style={{
+                              justifyContent: "center",
+                              paddingBottom: "-10px",
+                            }}
+                          >
+                            {/* <MiniSparkline
+                              sparklinedata={sparklinedata}
+                              datakey={3}
+                              type={sparklinedeceased}
+                              fill="#5c5756"
+                              stroke="rgba(92, 87, 86, 0.7)"
+                            /> */}
+                          </section>
+                        </td>
+                      </tr>
                     </tbody>
                   )
               )}
@@ -486,7 +491,7 @@ class Table extends Component {
             className="indiaStateWiseHead fadeInUp"
             style={{
               textAlign: "center",
-              animationDelay: "1.8s",
+              animationDelay: "0.5s",
               marginTop: "-15px",
             }}
           >
@@ -529,7 +534,7 @@ class Table extends Component {
 
           <div
             className="supportUs fadeInUp"
-            style={{ animationDelay: "1.9s" }}
+            style={{ animationDelay: "0.75s" }}
           >
             <a
               target="_blank"
@@ -552,7 +557,7 @@ class Table extends Component {
           <div className="statewiseTable table-responsive">
             <table
               className="table table-sm fadeInUp table-borderless"
-              style={{ animationDelay: "1.9s", fontFamily: "notosans" }}
+              style={{ animationDelay: "1s", fontFamily: "notosans" }}
             >
               <thead className="thead-dark">
                 <tr>
@@ -768,14 +773,14 @@ class Table extends Component {
                               deltaType={item?.data?.delta?.confirmed}
                               color={"#42b3f4"}
                             />
-                            <h6 className="delta td-md align-middle">
+                            <span className="delta td-md align-middle">
                               {commaSeperated(item?.data?.total?.confirmed)}
-                            </h6>
+                            </span>
                           </h6>
                         </td>
                         <td className="delta td-md align-middle">
                           <h6 className="arrowup">
-                            <h6
+                            <span
                               className="delta td-md align-middle"
                               style={{ textAlign: "right" }}
                             >
@@ -787,7 +792,7 @@ class Table extends Component {
                                 : commaSeperated(
                                     getActiveNumber(item?.data?.total)
                                   )}
-                            </h6>
+                            </span>
                           </h6>
                         </td>
                         <td
@@ -803,14 +808,14 @@ class Table extends Component {
                               deltaType={item?.data?.delta?.recovered}
                               color={"#28a745"}
                             />
-                            <h6 className="delta td-md align-middle">
+                            <span className="delta td-md align-middle">
                               {percentageToggleActive
                                 ? (
                                     (item?.data?.total?.recovered * 100) /
                                     item?.data?.total?.confirmed
                                   ).toFixed(1) + "%"
                                 : commaSeperated(item?.data?.total?.recovered)}
-                            </h6>
+                            </span>
                           </h6>
                         </td>
                         <td
@@ -826,14 +831,14 @@ class Table extends Component {
                               deltaType={item?.data?.delta?.deceased}
                               color={"#6c757d"}
                             />
-                            <h6 className="delta td-md align-middle">
+                            <span className="delta td-md align-middle">
                               {percentageToggleActive
                                 ? (
                                     (item?.data?.total?.deceased * 100) /
                                     item?.data?.total?.confirmed
                                   ).toFixed(1) + "%"
                                 : commaSeperated(item?.data?.total?.deceased)}
-                            </h6>
+                            </span>
                           </h6>
                         </td>
                         <td
@@ -849,9 +854,9 @@ class Table extends Component {
                               deltaType={item?.data?.delta?.tested}
                               color={"#5969c2"}
                             />
-                            <h6 className="delta td-md align-middle">
+                            <span className="delta td-md align-middle">
                               {commaSeperated(item?.data?.total?.tested)}
-                            </h6>
+                            </span>
                           </h6>
                         </td>
                         <td
@@ -867,9 +872,9 @@ class Table extends Component {
                               deltaType={item?.data?.delta?.vaccinated}
                               color={"#f4c32f"}
                             />
-                            <h6 className="delta td-md align-middle">
+                            <span className="delta td-md align-middle">
                               {commaSeperated(item?.data?.total?.vaccinated)}
-                            </h6>
+                            </span>
                           </h6>
                         </td>
                       </tr>
@@ -904,14 +909,14 @@ class Table extends Component {
                               deltaType={item?.data?.delta?.confirmed}
                               color={"#42b3f4"}
                             />
-                            <h6 className="delta td-md align-middle">
+                            <span className="delta td-md align-middle">
                               {commaSeperated(item?.data?.total?.confirmed)}
-                            </h6>
+                            </span>
                           </h6>
                         </td>
                         <td className="delta td-md align-middle">
                           <h6 className="arrowup">
-                            <h6
+                            <span
                               className="delta td-md align-middle"
                               style={{ textAlign: "right" }}
                             >
@@ -923,7 +928,7 @@ class Table extends Component {
                                 : commaSeperated(
                                     getActiveNumber(item?.data?.total)
                                   )}
-                            </h6>
+                            </span>
                           </h6>
                         </td>
                         <td
@@ -939,14 +944,14 @@ class Table extends Component {
                               deltaType={item?.data?.delta?.recovered}
                               color={"#28a745"}
                             />
-                            <h6 className="delta td-md align-middle">
+                            <span className="delta td-md align-middle">
                               {percentageToggleActive
                                 ? (
                                     (item?.data?.total?.recovered * 100) /
                                     item?.data?.total?.confirmed
                                   ).toFixed(1) + "%"
                                 : commaSeperated(item?.data?.total?.recovered)}
-                            </h6>
+                            </span>
                           </h6>
                         </td>
                         <td
@@ -962,14 +967,14 @@ class Table extends Component {
                               deltaType={item?.data?.delta?.deceased}
                               color={"#6c757d"}
                             />
-                            <h6 className="delta td-md align-middle">
+                            <span className="delta td-md align-middle">
                               {percentageToggleActive
                                 ? (
                                     (item?.data?.total?.deceased * 100) /
                                     item?.data?.total?.confirmed
                                   ).toFixed(1) + "%"
                                 : commaSeperated(item?.data?.total?.deceased)}
-                            </h6>
+                            </span>
                           </h6>
                         </td>
                         <td
@@ -985,9 +990,9 @@ class Table extends Component {
                               deltaType={item?.data?.delta?.tested}
                               color={"#5969c2"}
                             />
-                            <h6 className="delta td-md align-middle">
+                            <span className="delta td-md align-middle">
                               {commaSeperated(item?.data?.total?.tested)}
-                            </h6>
+                            </span>
                           </h6>
                         </td>
                         <td
@@ -1003,9 +1008,9 @@ class Table extends Component {
                               deltaType={item?.data?.delta?.vaccinated}
                               color={"#f4c32f"}
                             />
-                            <h6 className="delta td-md align-middle">
+                            <span className="delta td-md align-middle">
                               {commaSeperated(item?.data?.total?.vaccinated)}
-                            </h6>
+                            </span>
                           </h6>
                         </td>
                       </tr>

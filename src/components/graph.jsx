@@ -95,12 +95,13 @@ class Graph extends Component {
   componentDidMount() {
     axios
       .get("https://data.covid19india.org/v4/min/timeseries.min.json")
-      .then(function ({ data, status }) {
+      .then(({ data, status }) => {
         if (status === 200) {
+          console.log(data);
           this.setState({
             isLoaded: true,
-            data: data,
-            data2: json.statewise,
+            data: Object.keys(data),
+            data2: [],
           });
         }
       })
@@ -132,11 +133,11 @@ class Graph extends Component {
               : 0,
         });
 
-        const splittedDate = key.split("-");
+        const splittedDate = key?.split("-");
         if (key === "2020-01-30") {
           vaccinatedData.push({
             date: `${splittedDate[2]} ${months2[Number(splittedDate[1]) - 1]} ${
-              splittedDate[0]
+              splittedDate?.[0]
             }`,
             deltaVaccinated: 0,
             totalVaccinated: 0,
@@ -144,7 +145,7 @@ class Graph extends Component {
         } else {
           vaccinatedData.push({
             date: `${splittedDate[2]} ${months2[Number(splittedDate[1]) - 1]} ${
-              splittedDate[0]
+              splittedDate?.[0]
             }`,
             deltaVaccinated:
               totalData[key]?.delta?.vaccinated || ""
@@ -180,50 +181,38 @@ class Graph extends Component {
       oneMonth,
     } = this.state;
 
-    const dailyConfirmed = [];
+    const dailyConfirmed = data.map((item) => Number(item.dailyconfirmed));
 
-    data.map(
+    // data.map(
+    //   (item) =>
+    //     (item["newDate"] = `${item.date??.split(" ")?.[0]} ${
+    //       item.date??.split(" ")[1]
+    //     } `)
+    // );
+    const dailyActive = data.map(
       (item) =>
-        (item["newDate"] = `${item.date?.split(" ")[0]} ${
-          item.date?.split(" ")[1]
-        } `)
-    );
-
-    data.map((item) => dailyConfirmed.push(Number(item.dailyconfirmed)));
-    const dailyActive = [];
-    data.map((item) =>
-      dailyActive.push(
         Number(item.dailyconfirmed) -
-          Number(item.dailyrecovered) -
-          Number(item.dailydeceased)
-      )
+        Number(item.dailyrecovered) -
+        Number(item.dailydeceased)
     );
 
-    const dailyActiveJson = [];
-    data.map((item) =>
-      dailyActiveJson.push({
-        dailyactive:
-          Number(item.dailyconfirmed) -
-          Number(item.dailyrecovered) -
-          Number(item.dailydeceased),
-        newDate: item.newDate,
-      })
-    );
+    const dailyActiveJson = data.map((item) => ({
+      dailyactive:
+        Number(item.dailyconfirmed) -
+        Number(item.dailyrecovered) -
+        Number(item.dailydeceased),
+      newDate: item.newDate,
+    }));
 
-    const dailyRecovered = [];
-    data.map((item) => dailyRecovered.push(Number(item.dailyrecovered)));
-    const dailyDeceased = [];
-    data.map((item) => dailyDeceased.push(Number(item.dailydeceased)));
+    const dailyRecovered = data.map((item) => Number(item.dailyrecovered));
+    const dailyDeceased = data.map((item) => Number(item.dailydeceased));
 
-    const totalConfirmed = [];
-    data.map((item) => totalConfirmed.push(Number(item.totalconfirmed)));
-    const totalActive = [];
-    data.map((item) =>
-      totalActive.push(
+    const totalConfirmed = data.map((item) => Number(item.totalconfirmed));
+    const totalActive = data.map(
+      (item) =>
         Number(item.totalconfirmed) -
-          Number(item.totalrecovered) -
-          Number(item.totaldeceased)
-      )
+        Number(item.totalrecovered) -
+        Number(item.totaldeceased)
     );
 
     const totalActiveJson = [];
@@ -241,60 +230,39 @@ class Graph extends Component {
     const totalDeceased = [];
     data.map((item) => totalDeceased.push(Number(item.totaldeceased)));
 
-    const date = [];
-    data.map((item) =>
-      date.push(
-        `${item.dateymd.split("-")[2]} ${
-          months2[Number(item.dateymd.split("-")[1]) - 1]
-        } ${item.dateymd.split("-")[0]}`
-      )
+    const date = data.map(
+      (item) =>
+        `${item.dateymd?.split("-")[2]} ${
+          months2[Number(item.dateymd?.split("-")[1]) - 1]
+        } ${item.dateymd?.split("-")?.[0]}`
     );
 
-    const confirmedStatesData = [];
-    data2.map((item) =>
-      confirmedStatesData.push({
-        id: item.statecode,
-        state: item.state,
-        value: Number(item.confirmed),
-      })
-    );
-    const activeStatesData = [];
-    data2.map((item) =>
-      activeStatesData.push({
-        id: item.statecode,
-        state: item.state,
-        value:
-          Number(item.confirmed) - Number(item.recovered) - Number(item.deaths),
-      })
-    );
-    const recoveredStatesData = [];
-    data2.map((item) =>
-      recoveredStatesData.push({
-        id: item.statecode,
-        state: item.state,
-        value: Number(item.recovered),
-      })
-    );
-    const deceasedStatesData = [];
-    data2.map((item) =>
-      deceasedStatesData.push({
-        id: item.statecode,
-        state: item.state,
-        value: Number(item.deaths),
-      })
-    );
+    const confirmedStatesData = data2.map((item) => ({
+      id: item.statecode,
+      state: item.state,
+      value: Number(item.confirmed),
+    }));
+    const activeStatesData = data2.map((item) => ({
+      id: item.statecode,
+      state: item.state,
+      value:
+        Number(item.confirmed) - Number(item.recovered) - Number(item.deaths),
+    }));
+    const recoveredStatesData = data2.map((item) => ({
+      id: item.statecode,
+      state: item.state,
+      value: Number(item.recovered),
+    }));
+    const deceasedStatesData = data2.map((item) => ({
+      id: item.statecode,
+      state: item.state,
+      value: Number(item.deaths),
+    }));
 
-    const grandTotal = [];
+    const grandTotal = data2.find((item) => item.statecode === "TT" && item);
 
-    data2.map((item) => {
-      if (item.statecode === "TT") {
-        grandTotal.push(item);
-      }
-    });
-
-    const totalSamplesTested = [];
-    totalTestsData.map((item) =>
-      totalSamplesTested.push(Number(item.totalsamplestested))
+    const totalSamplesTested = totalTestsData.map((item) =>
+      Number(item.totalsamplestested)
     );
 
     const testedDates = [];
@@ -305,9 +273,9 @@ class Graph extends Component {
       testedData.push(item.totalsamplestested);
       dailyTestedData.push(item.deltaSamplestested);
       testedDates.push(
-        `${item.testedasof.split("-")[2]} ${
-          months2[Number(item.testedasof.split("-")[1]) - 1]
-        } ${item.testedasof.split("-")[0]}`
+        `${item.testedasof?.split("-")[2]} ${
+          months2[Number(item.testedasof?.split("-")[1]) - 1]
+        } ${item.testedasof?.split("-")?.[0]}`
       );
     });
 
@@ -317,7 +285,7 @@ class Graph extends Component {
       const index = testedDates.indexOf(date[i]);
       cumulativeDateFormattedTests.push({
         totaltested: testedData[index],
-        date: `${Number(date[i]?.split(" ")[0])} ${date[i]?.split(" ")[1]} `,
+        date: `${Number(date[i]?.split(" ")?.[0])} ${date[i]?.split(" ")[1]} `,
       });
     }
 
@@ -337,7 +305,7 @@ class Graph extends Component {
     for (let i = 0; i < dateFormattedTests.length; i++) {
       dailyDateFormattedTests.push({
         dailytested: dateFormattedTests[i].deltaSamplestested,
-        date: `${Number(date[i]?.split(" ")[0])} ${date[i]?.split(" ")[1]} `,
+        date: `${Number(date[i]?.split(" ")?.[0])} ${date[i]?.split(" ")[1]} `,
       });
     }
 
@@ -367,13 +335,13 @@ class Graph extends Component {
         });
         if (res.date === d) {
           formattedVaccinatedData.push({
-            date: `${Number(d.split(" ")[0])} ${d.split(" ")[1]} `,
+            date: `${Number(d?.split(" ")?.[0])} ${d?.split(" ")[1]} `,
             deltaVaccinated: res.deltaVaccinated,
             totalVaccinated: res.totalVaccinated,
           });
         } else {
           formattedVaccinatedData.push({
-            date: `${Number(d.split(" ")[0])} ${d.split(" ")[1]} `,
+            date: `${Number(d?.split(" ")?.[0])} ${d?.split(" ")[1]} `,
             deltaVaccinated: "-",
             totalVaccinated: "-",
           });
@@ -490,9 +458,9 @@ class Graph extends Component {
                   <h6 className="pad">
                     CONFIRMED
                     <h6 style={{ fontSize: 13 }}>
-                      {commaSeperated(grandTotal[0].confirmed)}
+                      {commaSeperated(grandTotal?.[0].confirmed)}
                       <h6 style={{ fontSize: 10 }}>
-                        {Number(grandTotal[0].deltaconfirmed) > 0 ? (
+                        {Number(grandTotal?.[0].deltaconfirmed) > 0 ? (
                           <Icon.PlusCircle
                             size={9}
                             strokeWidth={3}
@@ -507,8 +475,8 @@ class Graph extends Component {
                             style={{ verticalAlign: -1 }}
                           />
                         )}
-                        {Number(grandTotal[0].deltaconfirmed) > 0
-                          ? " " + commaSeperated(grandTotal[0].deltaconfirmed)
+                        {Number(grandTotal?.[0].deltaconfirmed) > 0
+                          ? " " + commaSeperated(grandTotal?.[0].deltaconfirmed)
                           : ""}
                       </h6>
                     </h6>
@@ -541,11 +509,11 @@ class Graph extends Component {
                   <h6 className="pad">
                     ACTIVE
                     <h6 style={{ fontSize: 13 }}>
-                      {commaSeperated(grandTotal[0].active)}
+                      {commaSeperated(grandTotal?.[0].active)}
                       <h6 style={{ fontSize: 10 }}>
-                        {Number(grandTotal[0].deltaconfirmed) -
-                          Number(grandTotal[0].deltarecovered) -
-                          Number(grandTotal[0].deltadeaths) >
+                        {Number(grandTotal?.[0].deltaconfirmed) -
+                          Number(grandTotal?.[0].deltarecovered) -
+                          Number(grandTotal?.[0].deltadeaths) >
                         0 ? (
                           <Icon.PlusCircle
                             size={9}
@@ -561,15 +529,15 @@ class Graph extends Component {
                             style={{ verticalAlign: -1 }}
                           />
                         )}{" "}
-                        {Number(grandTotal[0].deltaconfirmed) -
-                          Number(grandTotal[0].deltarecovered) -
-                          Number(grandTotal[0].deltadeaths) >
+                        {Number(grandTotal?.[0].deltaconfirmed) -
+                          Number(grandTotal?.[0].deltarecovered) -
+                          Number(grandTotal?.[0].deltadeaths) >
                         0
                           ? " " +
                             commaSeperated(
-                              Number(grandTotal[0].deltaconfirmed) -
-                                Number(grandTotal[0].deltarecovered) -
-                                Number(grandTotal[0].deltadeaths)
+                              Number(grandTotal?.[0].deltaconfirmed) -
+                                Number(grandTotal?.[0].deltarecovered) -
+                                Number(grandTotal?.[0].deltadeaths)
                             )
                           : ""}
                       </h6>
@@ -602,9 +570,9 @@ class Graph extends Component {
                   <h6 className="text-success pad">
                     RECOVERED
                     <h6 style={{ fontSize: 13 }}>
-                      {commaSeperated(grandTotal[0].recovered)}
+                      {commaSeperated(grandTotal?.[0].recovered)}
                       <h6 style={{ fontSize: 10 }}>
-                        {Number(grandTotal[0].deltarecovered) > 0 ? (
+                        {Number(grandTotal?.[0].deltarecovered) > 0 ? (
                           <Icon.PlusCircle
                             size={9}
                             strokeWidth={3}
@@ -619,8 +587,8 @@ class Graph extends Component {
                             style={{ verticalAlign: -1 }}
                           />
                         )}
-                        {Number(grandTotal[0].deltarecovered) > 0
-                          ? " " + commaSeperated(grandTotal[0].deltarecovered)
+                        {Number(grandTotal?.[0].deltarecovered) > 0
+                          ? " " + commaSeperated(grandTotal?.[0].deltarecovered)
                           : ""}
                       </h6>
                     </h6>
@@ -652,9 +620,9 @@ class Graph extends Component {
                   <h6 className="text-secondary pad">
                     DECEASED
                     <h6 style={{ fontSize: 13 }}>
-                      {commaSeperated(grandTotal[0].deaths)}
+                      {commaSeperated(grandTotal?.[0].deaths)}
                       <h6 style={{ fontSize: 10 }}>
-                        {Number(grandTotal[0].deltadeaths) > 0 ? (
+                        {Number(grandTotal?.[0].deltadeaths) > 0 ? (
                           <Icon.PlusCircle
                             size={9}
                             strokeWidth={3}
@@ -669,8 +637,8 @@ class Graph extends Component {
                             style={{ verticalAlign: -1 }}
                           />
                         )}{" "}
-                        {Number(grandTotal[0].deltadeaths) > 0
-                          ? " " + commaSeperated(grandTotal[0].deltadeaths)
+                        {Number(grandTotal?.[0].deltadeaths) > 0
+                          ? " " + commaSeperated(grandTotal?.[0].deltadeaths)
                           : ""}
                       </h6>
                     </h6>
@@ -1319,8 +1287,8 @@ class Graph extends Component {
                       >
                         TESTED
                         <h6 style={{ fontSize: "12px", color: "#5969c2" }}>
-                          {date.slice(-1)[0].split(" ")[0]}{" "}
-                          {date.slice(-1)[0].split(" ")[1]}
+                          {date.slice(-1)?.[0]?.split(" ")?.[0]}{" "}
+                          {date.slice(-1)?.[0]?.split(" ")[1]}
                           <h5 style={{ fontSize: "0.8rem", color: "#3e4da3" }}>
                             {commaSeperated(
                               dailyDateFormattedTests[
@@ -1461,8 +1429,8 @@ class Graph extends Component {
                       >
                         VACCINE DOSES
                         <h6 style={{ fontSize: "12px", color: "#f4c430aa" }}>
-                          {date.slice(-1)[0].split(" ")[0]}{" "}
-                          {date.slice(-1)[0].split(" ")[1]}
+                          {date.slice(-1)?.[0]?.split(" ")?.[0]}{" "}
+                          {date.slice(-1)?.[0]?.split(" ")[1]}
                           <h5
                             style={{ fontSize: "0.8rem", color: "#f4c430dd" }}
                           >

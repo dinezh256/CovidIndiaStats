@@ -625,6 +625,7 @@ span.MuiBadge-colorSecondary {
   padding: 6.5px 5px 6.5px 10px;
   width: calc(100% - 2px);
   text-align: center;
+  margin-top: 16px;
   margin-left: 2px;
   margin-bottom: -0.85rem;
   border-radius: 5px 5px 0 0;

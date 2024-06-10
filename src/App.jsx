@@ -25,7 +25,7 @@ const StateDetails = lazy(() => import("./components/stateDetails"));
 
 const schemaMarkup = {
   "@context": "http://schema.org/",
-  "@type": "NGO",
+  "@type": "Covid Dashboard",
   name: "Track the spread of Coronavirus (COVID-19) in India from state level to district level and around the world",
   alternateName: "COVID INDIA STATS",
   url: "https://www.covidindiastats.com/",

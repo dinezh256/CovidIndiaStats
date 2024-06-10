@@ -1,6 +1,43 @@
 import React from "react";
 import * as Icon from "react-feather";
 
+import AN from "../maps/andamannicobarislands.json";
+import AP from "../maps/andhrapradesh.json";
+import AR from "../maps/arunachalpradesh.json";
+import AS from "../maps/assam.json";
+import BR from "../maps/bihar.json";
+import CH from "../maps/chandigarh.json";
+import CT from "../maps/chhattisgarh.json";
+import DL from "../maps/delhi.json";
+import DN from "../maps/dnh-and-dd.json";
+import GA from "../maps/goa.json";
+import GJ from "../maps/gujarat.json";
+import HP from "../maps/himachalpradesh.json";
+import HR from "../maps/haryana.json";
+import JH from "../maps/jharkhand.json";
+import JK from "../maps/jammukashmir.json";
+import KA from "../maps/karnataka.json";
+import KL from "../maps/kerala.json";
+import LA from "../maps/ladakh.json";
+import LD from "../maps/lakshadweep.json";
+import MH from "../maps/maharashtra.json";
+import ML from "../maps/meghalaya.json";
+import MN from "../maps/manipur.json";
+import MP from "../maps/madhyapradesh.json";
+import MZ from "../maps/mizoram.json";
+import NL from "../maps/nagaland.json";
+import OR from "../maps/odisha.json";
+import PB from "../maps/punjab.json";
+import PY from "../maps/puducherry.json";
+import RJ from "../maps/rajasthan.json";
+import SK from "../maps/sikkim.json";
+import TG from "../maps/telangana.json";
+import TN from "../maps/tamilnadu.json";
+import TR from "../maps/tripura.json";
+import UP from "../maps/uttarpradesh.json";
+import UT from "../maps/uttarakhand.json";
+import WB from "../maps/westbengal.json";
+
 const months = {
   1: "Jan",
   2: "Feb",
@@ -268,46 +305,44 @@ export const stateFullName = {
   TT: "India",
 };
 
-export const stateMaps = {};
-
-// export const stateMaps = {
-//   AN: require("../maps/andamannicobarislands.json"),
-//   AP: require("../maps/andhrapradesh.json"),
-//   AR: require("../maps/arunachalpradesh.json"),
-//   AS: require("../maps/assam.json"),
-//   BR: require("../maps/bihar.json"),
-//   CH: require("../maps/chandigarh.json"),
-//   CT: require("../maps/chhattisgarh.json"),
-//   DL: require("../maps/delhi.json"),
-//   DN: require("../maps/dnh-and-dd.json"),
-//   GA: require("../maps/goa.json"),
-//   GJ: require("../maps/gujarat.json"),
-//   HP: require("../maps/himachalpradesh.json"),
-//   HR: require("../maps/haryana.json"),
-//   JH: require("../maps/jharkhand.json"),
-//   JK: require("../maps/jammukashmir.json"),
-//   KA: require("../maps/karnataka.json"),
-//   KL: require("../maps/kerala.json"),
-//   LA: require("../maps/ladakh.json"),
-//   LD: require("../maps/lakshadweep.json"),
-//   MH: require("../maps/maharashtra.json"),
-//   ML: require("../maps/meghalaya.json"),
-//   MN: require("../maps/manipur.json"),
-//   MP: require("../maps/madhyapradesh.json"),
-//   MZ: require("../maps/mizoram.json"),
-//   NL: require("../maps/nagaland.json"),
-//   OR: require("../maps/odisha.json"),
-//   PB: require("../maps/punjab.json"),
-//   PY: require("../maps/puducherry.json"),
-//   RJ: require("../maps/rajasthan.json"),
-//   SK: require("../maps/sikkim.json"),
-//   TG: require("../maps/telangana.json"),
-//   TN: require("../maps/tamilnadu.json"),
-//   TR: require("../maps/tripura.json"),
-//   UP: require("../maps/uttarpradesh.json"),
-//   UT: require("../maps/uttarakhand.json"),
-//   WB: require("../maps/westbengal.json"),
-// };
+export const stateMaps = {
+  AN,
+  AP,
+  AR,
+  AS,
+  BR,
+  CH,
+  CT,
+  DL,
+  DN,
+  GA,
+  GJ,
+  HP,
+  HR,
+  JH,
+  JK,
+  KA,
+  KL,
+  LA,
+  LD,
+  MH,
+  ML,
+  MN,
+  MP,
+  MZ,
+  NL,
+  OR,
+  PB,
+  PY,
+  RJ,
+  SK,
+  TG,
+  TN,
+  TR,
+  UP,
+  UT,
+  WB,
+};
 
 export const stateMapScale = {
   AP: 1360,
