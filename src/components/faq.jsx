@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-import * as Icon from "react-feather";
+import { Feather, Clipboard, Server, FileText } from "react-feather";
 import { Container } from "react-bootstrap";
-import Footer from "./footer";
 import { NavLink } from "react-router-dom";
-import Typist from "react-typist";
 import { Helmet } from "react-helmet";
+
+import Footer from "./footer";
 
 class FAQ extends Component {
   render() {
@@ -19,7 +19,7 @@ class FAQ extends Component {
             />
           </Helmet>
           <h2 className="faq-heading" align="center">
-            <Typist cursor={{ element: "" }}>WE ARE NOT OFFICIAL</Typist>
+            WE ARE NOT OFFICIAL
           </h2>
           <br />
           <Container>
@@ -29,7 +29,7 @@ class FAQ extends Component {
                 style={{ animationDelay: "1.8s" }}
               >
                 <span className="faqicon">
-                  <Icon.Feather size={20} />{" "}
+                  <Feather size={20} />{" "}
                 </span>{" "}
                 What are your Sources?
               </h4>
@@ -38,7 +38,7 @@ class FAQ extends Component {
                 style={{ animationDelay: "1.8s" }}
               >
                 <span className="faqicon">
-                  <Icon.Clipboard size={20} />{" "}
+                  <Clipboard size={20} />{" "}
                 </span>{" "}
                 Our sources are World Health Organisation, Centers for Disease
                 Control and Prevention, Ministry of Health and Family Welfare
@@ -50,7 +50,7 @@ class FAQ extends Component {
                 style={{ animationDelay: "1.8s" }}
               >
                 <span className="faqicon">
-                  <Icon.Feather size={20} />{" "}
+                  <Feather size={20} />{" "}
                 </span>{" "}
                 Which APIs have been used to fetch Data?
               </h4>
@@ -59,18 +59,18 @@ class FAQ extends Component {
                 style={{ animationDelay: "1.8s" }}
               >
                 <span className="faqicon">
-                  <Icon.Clipboard size={20} />{" "}
+                  <Clipboard size={20} />{" "}
                 </span>{" "}
                 Two APIs have been called.
                 <br />
                 &emsp;
                 <span className="faqicon">
-                  <Icon.Server size={14} /> api.covid19india.org
+                  <Server size={14} /> api.covid19india.org
                 </span>
                 <br />
                 &emsp;
                 <span className="faqicon">
-                  <Icon.Server size={14} /> corona.lmao.ninja
+                  <Server size={14} /> corona.lmao.ninja
                 </span>
               </h5>
 
@@ -79,7 +79,7 @@ class FAQ extends Component {
                 style={{ animationDelay: "1.8s" }}
               >
                 <span className="faqicon">
-                  <Icon.Feather size={20} />{" "}
+                  <Feather size={20} />{" "}
                 </span>{" "}
                 How can we help fight this pandemic?
               </h4>
@@ -88,7 +88,7 @@ class FAQ extends Component {
                 style={{ animationDelay: "1.8s" }}
               >
                 <span className="faqicon">
-                  <Icon.Clipboard size={20} />{" "}
+                  <Clipboard size={20} />{" "}
                 </span>{" "}
                 In one way or another we are dependent on each other. Enroute
                 outside only during an emergency, else stay inside your home,
@@ -128,7 +128,7 @@ class FAQ extends Component {
                     alignContent: "center",
                   }}
                 >
-                  <Icon.FileText />
+                  <FileText />
                   &ensp; VALUABLE Feedback
                 </button>
               </a>

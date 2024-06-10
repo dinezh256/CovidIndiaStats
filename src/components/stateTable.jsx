@@ -120,7 +120,7 @@ class StateTable extends Component {
       }
     }
 
-    const useStylesBootstrap = makeStyles((theme: Theme) => ({
+    const useStylesBootstrap = makeStyles((theme) => ({
       arrow: {
         color: theme.palette.common.black,
       },
@@ -129,7 +129,7 @@ class StateTable extends Component {
       },
     }));
 
-    function BootstrapTooltip(props: TooltipProps) {
+    function BootstrapTooltip(props) {
       const classes = useStylesBootstrap();
 
       return (

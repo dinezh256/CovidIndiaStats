@@ -1,4 +1,4 @@
-import React, { useEffect, Suspense, lazy } from "react";
+import React, { useEffect, Suspense, lazy, useState } from "react";
 import { createBrowserHistory } from "history";
 
 import {
@@ -8,9 +8,7 @@ import {
   Redirect,
 } from "react-router-dom";
 import { Helmet } from "react-helmet";
-// import useDarkMode from "use-dark-mode";
 import { ThemeProvider, createGlobalStyle } from "styled-components";
-import "bootstrap/dist/css/bootstrap.min.css";
 import ReactGa from "react-ga";
 import Navbar from "./components/navbar";
 import AppContextProvider from "./context";
@@ -42,13 +40,17 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 function App() {
+  const [isDark, setIsDark] = useState(
+    localStorage.getItem("theme") === "dark"
+  );
   const history = createBrowserHistory();
   const darkMode = {
-    value: true,
-    toggle: () => {
-      {
-      }
-    },
+    value: isDark,
+    toggle: () =>
+      setIsDark((prev) => {
+        localStorage.setItem("theme", prev ? "light" : "dark");
+        return !prev;
+      }),
   };
 
   useEffect(() => {

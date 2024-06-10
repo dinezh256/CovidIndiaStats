@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { ResponsiveBar } from "@nivo/bar";
 import Footer from "./footer";
 import {
-  Treemap,
   ResponsiveContainer,
   Tooltip,
   BarChart as ReBarChart,
@@ -13,9 +12,7 @@ import {
   LineChart,
   Legend,
 } from "recharts";
-import LinkTwoToneIcon from "@material-ui/icons/LinkTwoTone";
 import { format } from "d3";
-import BarChart from "chart-race-react/dist/index";
 import { Helmet } from "react-helmet";
 
 class StateGraph extends Component {
@@ -1017,67 +1014,6 @@ class StateGraph extends Component {
                       />
                     </LineChart>
                   </ResponsiveContainer>
-                </div>
-              </div>
-            </div>
-
-            <div className="w-100"></div>
-            <div
-              className="container fadeInUp"
-              style={{ animationDelay: "1.1s" }}
-            >
-              <div
-                className="col"
-                style={{
-                  width: "100%",
-                  borderRadius: "6px",
-                  boxShadow: "0 0 5px rgba(0,0,0,0.3)",
-                  alignContent: "center",
-                  marginTop: "20px",
-                  paddingBottom: "20px",
-                }}
-              >
-                <div style={{ width: "100%" }}>
-                  <h5
-                    style={{
-                      textAlign: "center",
-                      marginTop: "10px",
-                    }}
-                    className="text-danger statewise-head"
-                  >
-                    CONFIRMED CASES TIMELINE IN TOP STATES
-                  </h5>
-                  <BarChart
-                    start={true}
-                    data={timeseriesData}
-                    timeline={timeline}
-                    labels={labels}
-                    colors={colors}
-                    len={len}
-                    timeout={1000}
-                    delay={100}
-                    timelineStyle={{
-                      textAlign: "center",
-                      fontSize: "15px",
-                      color: "rgb(131, 131, 131)",
-                      marginBottom: "10px",
-                      fontWeight: 700,
-                    }}
-                    textBoxStyle={{
-                      textAlign: "left",
-                      color: "rgb(133, 131, 131)",
-                      marginLeft: "20px",
-                      fontSize: "10px",
-                    }}
-                    barStyle={{
-                      height: "18px",
-                      marginTop: "10px",
-                      marginLeft: "15px",
-                      borderRadius: "6px",
-                    }}
-                    width={[25, 60, 10]}
-                    maxItems={18}
-                  />
                 </div>
               </div>
             </div>
