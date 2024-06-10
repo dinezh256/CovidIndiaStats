@@ -21,7 +21,7 @@ class World extends Component {
 
   componentDidMount() {
     fetch(
-      "https://corona.lmao.ninja/v2/countries?yesterday=false&sort=cases"
+      "https://disease.sh/v3/covid-19/countries?yesterday=false&sort=cases"
     ).then((res) =>
       res.json().then((json) => {
         this.setState({
@@ -32,7 +32,7 @@ class World extends Component {
     );
 
     fetch(
-      "https://corona.lmao.ninja/v2/countries?yesterday=true&sort=cases"
+      "https://disease.sh/v3/covid-19/countries?yesterday=true&sort=cases"
     ).then((res) =>
       res.json().then((json) => {
         this.setState({

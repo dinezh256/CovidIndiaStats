@@ -1,11 +1,11 @@
 import axios from "axios";
 
-const url1 = "https://corona.lmao.ninja/v2/countries";
-const url2 = "https://corona.lmao.ninja/v2";
-const url3 = "https://corona.lmao.ninja/v2/historical/all/?lastdays=all";
+const url1 = "https://disease.sh/v3/covid-19/countries";
+const url2 = "https://disease.sh/v3/covid-19/historical";
+const url3 = "https://disease.sh/v3/covid-19/historical/all/?lastdays=all";
 const url4 = "https://api.covid19india.org/v2/state_district_wise.json";
 const url5 = "https://api.covid19india.org/state_test_data.json";
-const url6 = "https://corona.lmao.ninja/v2/all";
+const url6 = "https://disease.sh/v3/covid-19/all";
 const url7 = "https://api.covid19india.org/districts_daily.json";
 
 export const countries = async () => {
