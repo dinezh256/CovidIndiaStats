@@ -106,7 +106,8 @@ class Table extends Component {
       return confirmed - recovered - deceased;
     };
 
-    const totalVaccinated = localStorage.getItem("lastTotalVaccinated");
+    const totalVaccinated = allStatesData?.find((item) => item.code === "TT")
+      ?.data?.total?.vaccinated1;
 
     allStatesData.map((t) => {
       let found = false;
@@ -732,9 +733,9 @@ class Table extends Component {
                       >
                         <td className="align-middle">
                           <div className="td-md-left">
-                            <Link to={`/${item.code}`}>
-                              <h6>{item.name}</h6>
-                            </Link>
+                            {/* <Link to={`/${item.code}`}> */}
+                            <h6>{item.name}</h6>
+                            {/* </Link> */}
                             <h6>
                               {item.stateNotes ? (
                                 <OverlayTrigger
@@ -765,15 +766,17 @@ class Table extends Component {
                           style={{ textAlign: "right" }}
                         >
                           <h6 className="arrowup">
-                            <DeltaArrow
-                              deltaType={item?.data?.delta?.confirmed}
-                              color={"#42b3f4"}
-                            />
-                            <DeltaValue
-                              deltaType={item?.data?.delta?.confirmed}
-                              color={"#42b3f4"}
-                            />
-                            <span className="delta td-md align-middle">
+                            <span>
+                              <DeltaArrow
+                                deltaType={item?.data?.delta?.confirmed}
+                                color={"#42b3f4"}
+                              />
+                              <DeltaValue
+                                deltaType={item?.data?.delta?.confirmed}
+                                color={"#42b3f4"}
+                              />
+                            </span>
+                            <span className="td-md align-middle">
                               {commaSeperated(item?.data?.total?.confirmed)}
                             </span>
                           </h6>
@@ -800,15 +803,17 @@ class Table extends Component {
                           style={{ textAlign: "right" }}
                         >
                           <h6 className="arrowup">
-                            <DeltaArrow
-                              deltaType={item?.data?.delta?.recovered}
-                              color={"#28a745"}
-                            />
-                            <DeltaValue
-                              deltaType={item?.data?.delta?.recovered}
-                              color={"#28a745"}
-                            />
-                            <span className="delta td-md align-middle">
+                            <span>
+                              <DeltaArrow
+                                deltaType={item?.data?.delta?.recovered}
+                                color={"#28a745"}
+                              />
+                              <DeltaValue
+                                deltaType={item?.data?.delta?.recovered}
+                                color={"#28a745"}
+                              />
+                            </span>
+                            <span className="td-md align-middle">
                               {percentageToggleActive
                                 ? (
                                     (item?.data?.total?.recovered * 100) /
@@ -823,15 +828,17 @@ class Table extends Component {
                           style={{ textAlign: "right" }}
                         >
                           <h6 className="arrowup">
-                            <DeltaArrow
-                              deltaType={item?.data?.delta?.deceased}
-                              color={"#6c757d"}
-                            />
-                            <DeltaValue
-                              deltaType={item?.data?.delta?.deceased}
-                              color={"#6c757d"}
-                            />
-                            <span className="delta td-md align-middle">
+                            <span>
+                              <DeltaArrow
+                                deltaType={item?.data?.delta?.deceased}
+                                color={"#6c757d"}
+                              />
+                              <DeltaValue
+                                deltaType={item?.data?.delta?.deceased}
+                                color={"#6c757d"}
+                              />
+                            </span>
+                            <span className="td-md align-middle">
                               {percentageToggleActive
                                 ? (
                                     (item?.data?.total?.deceased * 100) /
@@ -846,15 +853,17 @@ class Table extends Component {
                           style={{ textAlign: "right" }}
                         >
                           <h6 className="arrowup">
-                            <DeltaArrow
-                              deltaType={item?.data?.delta?.tested}
-                              color={"#5969c2"}
-                            />
-                            <DeltaValue
-                              deltaType={item?.data?.delta?.tested}
-                              color={"#5969c2"}
-                            />
-                            <span className="delta td-md align-middle">
+                            <span>
+                              <DeltaArrow
+                                deltaType={item?.data?.delta?.tested}
+                                color={"#5969c2"}
+                              />
+                              <DeltaValue
+                                deltaType={item?.data?.delta?.tested}
+                                color={"#5969c2"}
+                              />
+                            </span>
+                            <span className="td-md align-middle">
                               {commaSeperated(item?.data?.total?.tested)}
                             </span>
                           </h6>
@@ -864,16 +873,18 @@ class Table extends Component {
                           style={{ textAlign: "right" }}
                         >
                           <h6 className="arrowup">
-                            <DeltaArrow
-                              deltaType={item?.data?.delta?.vaccinated}
-                              color={"#f4c32f"}
-                            />
-                            <DeltaValue
-                              deltaType={item?.data?.delta?.vaccinated}
-                              color={"#f4c32f"}
-                            />
-                            <span className="delta td-md align-middle">
-                              {commaSeperated(item?.data?.total?.vaccinated)}
+                            <span>
+                              <DeltaArrow
+                                deltaType={item?.data?.delta?.vaccinated1}
+                                color={"#f4c32f"}
+                              />
+                              <DeltaValue
+                                deltaType={item?.data?.delta?.vaccinated1}
+                                color={"#f4c32f"}
+                              />
+                            </span>
+                            <span className="td-md align-middle">
+                              {commaSeperated(item?.data?.total?.vaccinated1)}
                             </span>
                           </h6>
                         </td>
@@ -901,15 +912,17 @@ class Table extends Component {
                           style={{ textAlign: "right" }}
                         >
                           <h6 className="arrowup">
-                            <DeltaArrow
-                              deltaType={item?.data?.delta?.confirmed}
-                              color={"#42b3f4"}
-                            />
-                            <DeltaValue
-                              deltaType={item?.data?.delta?.confirmed}
-                              color={"#42b3f4"}
-                            />
-                            <span className="delta td-md align-middle">
+                            <span>
+                              <DeltaArrow
+                                deltaType={item?.data?.delta?.confirmed}
+                                color={"#42b3f4"}
+                              />
+                              <DeltaValue
+                                deltaType={item?.data?.delta?.confirmed}
+                                color={"#42b3f4"}
+                              />
+                            </span>
+                            <span className="td-md align-middle">
                               {commaSeperated(item?.data?.total?.confirmed)}
                             </span>
                           </h6>
@@ -917,7 +930,7 @@ class Table extends Component {
                         <td className="delta td-md align-middle">
                           <h6 className="arrowup">
                             <span
-                              className="delta td-md align-middle"
+                              className="td-md align-middle"
                               style={{ textAlign: "right" }}
                             >
                               {percentageToggleActive
@@ -936,15 +949,17 @@ class Table extends Component {
                           style={{ textAlign: "right" }}
                         >
                           <h6 className="arrowup">
-                            <DeltaArrow
-                              deltaType={item?.data?.delta?.recovered}
-                              color={"#28a745"}
-                            />
-                            <DeltaValue
-                              deltaType={item?.data?.delta?.recovered}
-                              color={"#28a745"}
-                            />
-                            <span className="delta td-md align-middle">
+                            <span>
+                              <DeltaArrow
+                                deltaType={item?.data?.delta?.recovered}
+                                color={"#28a745"}
+                              />
+                              <DeltaValue
+                                deltaType={item?.data?.delta?.recovered}
+                                color={"#28a745"}
+                              />
+                            </span>
+                            <span className="td-md align-middle">
                               {percentageToggleActive
                                 ? (
                                     (item?.data?.total?.recovered * 100) /
@@ -959,15 +974,17 @@ class Table extends Component {
                           style={{ textAlign: "right" }}
                         >
                           <h6 className="arrowup">
-                            <DeltaArrow
-                              deltaType={item?.data?.delta?.deceased}
-                              color={"#6c757d"}
-                            />
-                            <DeltaValue
-                              deltaType={item?.data?.delta?.deceased}
-                              color={"#6c757d"}
-                            />
-                            <span className="delta td-md align-middle">
+                            <span>
+                              <DeltaArrow
+                                deltaType={item?.data?.delta?.deceased}
+                                color={"#6c757d"}
+                              />
+                              <DeltaValue
+                                deltaType={item?.data?.delta?.deceased}
+                                color={"#6c757d"}
+                              />
+                            </span>
+                            <span className="td-md align-middle">
                               {percentageToggleActive
                                 ? (
                                     (item?.data?.total?.deceased * 100) /
@@ -982,15 +999,17 @@ class Table extends Component {
                           style={{ textAlign: "right" }}
                         >
                           <h6 className="arrowup">
-                            <DeltaArrow
-                              deltaType={item?.data?.delta?.tested}
-                              color={"#5969c2"}
-                            />
-                            <DeltaValue
-                              deltaType={item?.data?.delta?.tested}
-                              color={"#5969c2"}
-                            />
-                            <span className="delta td-md align-middle">
+                            <delta>
+                              <DeltaArrow
+                                deltaType={item?.data?.delta?.tested}
+                                color={"#5969c2"}
+                              />
+                              <DeltaValue
+                                deltaType={item?.data?.delta?.tested}
+                                color={"#5969c2"}
+                              />
+                            </delta>
+                            <span className="td-md align-middle">
                               {commaSeperated(item?.data?.total?.tested)}
                             </span>
                           </h6>
@@ -1000,16 +1019,18 @@ class Table extends Component {
                           style={{ textAlign: "right" }}
                         >
                           <h6 className="arrowup">
-                            <DeltaArrow
-                              deltaType={item?.data?.delta?.vaccinated}
-                              color={"#f4c32f"}
-                            />
-                            <DeltaValue
-                              deltaType={item?.data?.delta?.vaccinated}
-                              color={"#f4c32f"}
-                            />
-                            <span className="delta td-md align-middle">
-                              {commaSeperated(item?.data?.total?.vaccinated)}
+                            <span>
+                              <DeltaArrow
+                                deltaType={item?.data?.delta?.vaccinated1}
+                                color={"#f4c32f"}
+                              />
+                              <DeltaValue
+                                deltaType={item?.data?.delta?.vaccinated1}
+                                color={"#f4c32f"}
+                              />
+                            </span>
+                            <span className="td-md align-middle">
+                              {commaSeperated(item?.data?.total?.vaccinated1)}
                             </span>
                           </h6>
                         </td>
