@@ -15,7 +15,11 @@ import Choropleth from "./choropleth";
 import WorldHomeCard from "./worldHomeCard";
 import LinePlot from "./linePlot";
 import BarPlot from "./barPlot";
-import { abbreviateNumber, commaSeperated } from "../utils/common-functions";
+import {
+  abbreviateNumber,
+  commaSeperated,
+  stateFullName,
+} from "../utils/common-functions";
 import ReactGa from "react-ga";
 import { AppContext } from "./../context/index";
 import axios from "axios";
@@ -97,7 +101,7 @@ class Graph extends Component {
       .get("https://data.covid19india.org/v4/min/timeseries.min.json")
       .then(({ data, status }) => {
         if (status === 200) {
-          const totalData = data["TT"].dates;
+          const totalData = { ...data["TT"].dates };
           const indiaData = Object.keys(totalData).map((key) => ({
             dateymd: key,
             dailyconfirmed: totalData[key]?.delta?.confirmed || 0,
@@ -109,16 +113,42 @@ class Graph extends Component {
             totaldeceased: totalData[key]?.total?.deceased || 0,
             totalvaccinated: 0,
           }));
+
+          const statesData = Object.keys(data).map((key) => {
+            const stats = Object.keys(data[key].dates).map((keyDate) => ({
+              [keyDate]: {
+                confirmed: data[key].dates[keyDate].total?.confirmed || 0,
+                recovered: data[key].dates[keyDate].total?.recovered || 0,
+                deaths: data[key].dates[keyDate].total?.deceased || 0,
+                deltaconfirmed: data[key].dates[keyDate].delta?.confirmed || 0,
+                deltarecovered: data[key].dates[keyDate].delta?.recovered || 0,
+                deltadeaths: data[key].dates[keyDate].delta?.deceased || 0,
+              },
+            }));
+
+            let result = {};
+            stats.forEach((item) => {
+              let key = Object.keys(item)[0];
+              let value = item[key];
+              result[key] = value;
+            });
+
+            return {
+              statecode: key,
+              state: stateFullName[key],
+              stats: result,
+            };
+          });
+
           this.setState({
             isLoaded: true,
             data: indiaData,
-            data2: [],
+            data2: statesData,
           });
         }
       })
       .catch(function (error) {
         // handle error
-        console.log(error);
       });
   }
 
@@ -192,6 +222,8 @@ class Graph extends Component {
       oneMonth,
     } = this.state;
 
+    const selectedDate = "2021-10-31";
+
     const dailyConfirmed = [];
     const dailyActiveJson = [];
     const dailyRecovered = [];
@@ -202,6 +234,11 @@ class Graph extends Component {
     const totalActiveJson = [];
     const totalRecovered = [];
     const totalDeceased = [];
+    const formattedVaccinatedData = [];
+    const confirmedStatesData = [];
+    const activeStatesData = [];
+    const recoveredStatesData = [];
+    const deceasedStatesData = [];
 
     data.map(
       (item) =>
@@ -250,29 +287,47 @@ class Graph extends Component {
         } ${item.dateymd?.split("-")?.[0]}`
     );
 
-    const confirmedStatesData = data2.map((item) => ({
-      id: item.statecode,
-      state: item.state,
-      value: Number(item.confirmed),
-    }));
-    const activeStatesData = data2.map((item) => ({
-      id: item.statecode,
-      state: item.state,
-      value:
-        Number(item.confirmed) - Number(item.recovered) - Number(item.deaths),
-    }));
-    const recoveredStatesData = data2.map((item) => ({
-      id: item.statecode,
-      state: item.state,
-      value: Number(item.recovered),
-    }));
-    const deceasedStatesData = data2.map((item) => ({
-      id: item.statecode,
-      state: item.state,
-      value: Number(item.deaths),
-    }));
+    data2.map((item) => {
+      confirmedStatesData.push({
+        id: item.statecode,
+        state: item.state,
+        value: Number(item.stats[selectedDate]?.confirmed),
+      });
+      activeStatesData.push({
+        id: item.statecode,
+        state: item.state,
+        value:
+          Number(item.stats[selectedDate]?.confirmed) -
+          Number(item.stats[selectedDate]?.recovered) -
+          Number(item.stats[selectedDate]?.deaths),
+      });
+      recoveredStatesData.push({
+        id: item.statecode,
+        state: item.state,
+        value: Number(item.stats[selectedDate]?.recovered),
+      });
 
-    const grandTotal = data2.find((item) => item.statecode === "TT" && item);
+      deceasedStatesData.push({
+        id: item.statecode,
+        state: item.state,
+        value: Number(item.stats[selectedDate]?.deaths),
+      });
+    });
+
+    const indiaTotalData = data2?.find((item) => item.statecode === "TT")
+      ?.stats[selectedDate];
+
+    const grandTotal = {
+      ...indiaTotalData,
+      active:
+        Number(indiaTotalData?.confirmed) -
+        Number(indiaTotalData?.recovered) -
+        Number(indiaTotalData?.deaths),
+      deltaactive:
+        Number(indiaTotalData?.deltaconfirmed) -
+        Number(indiaTotalData?.deltarecovered) -
+        Number(indiaTotalData?.deltadeaths),
+    };
 
     const totalSamplesTested = totalTestsData.map((item) =>
       Number(item.totalsamplestested)
@@ -335,8 +390,6 @@ class Graph extends Component {
         timelineLength = data.length - 90;
       }
     }
-
-    const formattedVaccinatedData = [];
 
     if (isLoaded && isLoaded2) {
       date.map((d) => {
@@ -471,9 +524,9 @@ class Graph extends Component {
                   <h6 className="pad">
                     CONFIRMED
                     <h6 style={{ fontSize: 13 }}>
-                      {commaSeperated(grandTotal?.[0].confirmed)}
+                      {commaSeperated(grandTotal?.confirmed)}
                       <h6 style={{ fontSize: 10 }}>
-                        {Number(grandTotal?.[0].deltaconfirmed) > 0 ? (
+                        {Number(grandTotal?.deltaconfirmed) > 0 ? (
                           <Icon.PlusCircle
                             size={9}
                             strokeWidth={3}
@@ -488,8 +541,8 @@ class Graph extends Component {
                             style={{ verticalAlign: -1 }}
                           />
                         )}
-                        {Number(grandTotal?.[0].deltaconfirmed) > 0
-                          ? " " + commaSeperated(grandTotal?.[0].deltaconfirmed)
+                        {Number(grandTotal?.deltaconfirmed) > 0
+                          ? " " + commaSeperated(grandTotal?.deltaconfirmed)
                           : ""}
                       </h6>
                     </h6>
@@ -522,12 +575,9 @@ class Graph extends Component {
                   <h6 className="pad">
                     ACTIVE
                     <h6 style={{ fontSize: 13 }}>
-                      {commaSeperated(grandTotal?.[0].active)}
+                      {commaSeperated(grandTotal?.active)}
                       <h6 style={{ fontSize: 10 }}>
-                        {Number(grandTotal?.[0].deltaconfirmed) -
-                          Number(grandTotal?.[0].deltarecovered) -
-                          Number(grandTotal?.[0].deltadeaths) >
-                        0 ? (
+                        {grandTotal.deltaactive > 0 ? (
                           <Icon.PlusCircle
                             size={9}
                             strokeWidth={3}
@@ -542,16 +592,8 @@ class Graph extends Component {
                             style={{ verticalAlign: -1 }}
                           />
                         )}{" "}
-                        {Number(grandTotal?.[0].deltaconfirmed) -
-                          Number(grandTotal?.[0].deltarecovered) -
-                          Number(grandTotal?.[0].deltadeaths) >
-                        0
-                          ? " " +
-                            commaSeperated(
-                              Number(grandTotal?.[0].deltaconfirmed) -
-                                Number(grandTotal?.[0].deltarecovered) -
-                                Number(grandTotal?.[0].deltadeaths)
-                            )
+                        {grandTotal.deltaactive > 0
+                          ? " " + commaSeperated(grandTotal.deltaactive)
                           : ""}
                       </h6>
                     </h6>
@@ -583,9 +625,9 @@ class Graph extends Component {
                   <h6 className="text-success pad">
                     RECOVERED
                     <h6 style={{ fontSize: 13 }}>
-                      {commaSeperated(grandTotal?.[0].recovered)}
+                      {commaSeperated(grandTotal.recovered)}
                       <h6 style={{ fontSize: 10 }}>
-                        {Number(grandTotal?.[0].deltarecovered) > 0 ? (
+                        {Number(grandTotal.deltarecovered) > 0 ? (
                           <Icon.PlusCircle
                             size={9}
                             strokeWidth={3}
@@ -600,8 +642,8 @@ class Graph extends Component {
                             style={{ verticalAlign: -1 }}
                           />
                         )}
-                        {Number(grandTotal?.[0].deltarecovered) > 0
-                          ? " " + commaSeperated(grandTotal?.[0].deltarecovered)
+                        {Number(grandTotal.deltarecovered) > 0
+                          ? " " + commaSeperated(grandTotal.deltarecovered)
                           : ""}
                       </h6>
                     </h6>
@@ -633,9 +675,9 @@ class Graph extends Component {
                   <h6 className="text-secondary pad">
                     DECEASED
                     <h6 style={{ fontSize: 13 }}>
-                      {commaSeperated(grandTotal?.[0].deaths)}
+                      {commaSeperated(grandTotal.deaths)}
                       <h6 style={{ fontSize: 10 }}>
-                        {Number(grandTotal?.[0].deltadeaths) > 0 ? (
+                        {Number(grandTotal.deltadeaths) > 0 ? (
                           <Icon.PlusCircle
                             size={9}
                             strokeWidth={3}
@@ -650,8 +692,8 @@ class Graph extends Component {
                             style={{ verticalAlign: -1 }}
                           />
                         )}{" "}
-                        {Number(grandTotal?.[0].deltadeaths) > 0
-                          ? " " + commaSeperated(grandTotal?.[0].deltadeaths)
+                        {Number(grandTotal.deltadeaths) > 0
+                          ? " " + commaSeperated(grandTotal.deltadeaths)
                           : ""}
                       </h6>
                     </h6>
@@ -666,14 +708,11 @@ class Graph extends Component {
               >
                 {clickConfirmedMap && (
                   <Choropleth
-                    data={confirmedStatesData.slice(
-                      1,
-                      confirmedStatesData.length - 1
-                    )}
-                    colorLow="rgba(66, 179, 200, 0.92)"
+                    data={confirmedStatesData}
+                    colorLow="rgba(66, 179, 200, 0.8)"
                     colorHigh="rgb(66, 179, 200)"
                     type="Infected"
-                    borderColor="rgba(66, 179, 190, 0.9)"
+                    borderColor="rgb(154, 164, 225)"
                     onMouseEnter={ReactGa.event({
                       category: "India map",
                       action: "India map clicked",
@@ -682,13 +721,10 @@ class Graph extends Component {
                 )}
                 {clickActiveMap && (
                   <Choropleth
-                    data={activeStatesData.slice(
-                      1,
-                      activeStatesData.length - 1
-                    )}
-                    colorLow="rgba(221, 50, 85, 0.85)"
+                    data={activeStatesData}
+                    colorLow="rgba(221, 50, 85, 0.8)"
                     colorHigh="rgba(221, 50, 85, 1)"
-                    borderColor="rgb(221, 50, 85, 0.8)"
+                    borderColor="rgb(235, 100, 100)"
                     fill="rgb(228, 116, 138)"
                     type="Active"
                     onMouseEnter={ReactGa.event({
@@ -699,14 +735,11 @@ class Graph extends Component {
                 )}
                 {clickRecoveredMap && (
                   <Choropleth
-                    data={recoveredStatesData.slice(
-                      1,
-                      recoveredStatesData.length - 1
-                    )}
-                    colorLow="rgba(40, 167, 69, 0.92)"
+                    data={recoveredStatesData}
+                    colorLow="rgba(40, 167, 69, 0.8)"
                     colorHigh="rgba(40, 167, 69, 1)"
                     type="Recovered"
-                    borderColor="rgba(40, 167, 69, 0.85)"
+                    borderColor="rgb(40, 227, 69)"
                     onMouseEnter={ReactGa.event({
                       category: "India map",
                       action: "India map clicked",
@@ -715,14 +748,11 @@ class Graph extends Component {
                 )}
                 {clickDeceasedMap && (
                   <Choropleth
-                    data={deceasedStatesData.slice(
-                      1,
-                      deceasedStatesData.length - 1
-                    )}
+                    data={deceasedStatesData}
                     colorLow="rgba(74, 79, 83, 0.8)"
                     colorHigh="rgba(74, 79, 83, 1)"
                     type="Deceased"
-                    borderColor="rgba(128, 128, 128, 0.9)"
+                    borderColor="rgb(128, 128, 128)"
                     onMouseEnter={ReactGa.event({
                       category: "India map",
                       action: "India map clicked",

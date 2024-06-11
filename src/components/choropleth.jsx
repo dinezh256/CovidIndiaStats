@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { ComposableMap, Geographies, Geography } from "react-simple-maps";
 import { Link } from "react-router-dom";
-import { scaleLog } from "d3-scale";
+import { scaleLinear } from "d3-scale";
 import { Tooltip as ReactTooltip } from "react-tooltip";
 import { commaSeperated } from "../utils/common-functions";
 import LinearGradient from "./linearGragient";
@@ -28,7 +28,7 @@ const Choropleth = ({ data, colorLow, colorHigh, type, borderColor }) => {
     },
     hover: {
       transition: "all 250ms",
-      strokeWidth: 1,
+      strokeWidth: 0.5,
       outline: "#b13f2b",
     },
     pressed: {
@@ -44,14 +44,17 @@ const Choropleth = ({ data, colorLow, colorHigh, type, borderColor }) => {
     max:
       String(
         Math.ceil(
-          data.reduce((max, item) => (item.value > max ? item.value : max), 0) /
-            100
+          data.reduce(
+            (max, item) =>
+              item.value > max && item.id !== "TT" ? item.value : max,
+            0
+          ) / 100
         ) / 10
       ) + "K",
   };
 
-  const colorScale = scaleLog()
-    .domain(data.map((d) => d.value))
+  const colorScale = scaleLinear()
+    .domain(data.filter((d) => d.id !== "TT").map((d) => d.value))
     .range(COLOR_RANGE);
 
   const onMouseEnter = (geo, current = { value: "0" }) => {
@@ -70,7 +73,9 @@ const Choropleth = ({ data, colorLow, colorHigh, type, borderColor }) => {
 
   return (
     <div className="choropleth">
-      <ReactTooltip multiline={true}>{tooltipContent}</ReactTooltip>
+      <ReactTooltip multiline={true} anchorSelect=".state-element">
+        {tooltipContent}
+      </ReactTooltip>
       <ComposableMap
         projectionConfig={PROJECTION_CONFIG}
         projection="geoMercator"
@@ -83,20 +88,19 @@ const Choropleth = ({ data, colorLow, colorHigh, type, borderColor }) => {
             geographies.map((geo) => {
               const current = data.find((s) => s.id === geo.id);
               return (
-                <Link to={`/${geo.id}`}>
-                  <Geography
-                    key={geo.rsmKey}
-                    geography={geo}
-                    fill={
-                      current ? colorScale(Number(current.value)) : "#FFFFFF"
-                    }
-                    style={geographyStyle}
-                    onMouseEnter={onMouseEnter(geo, current)}
-                    onMouseLeave={onMouseLeave}
-                    stroke={borderColor}
-                    strokeWidth={0.4}
-                  />
-                </Link>
+                // <Link to={`/${geo.id}`}>
+                <Geography
+                  key={geo.rsmKey}
+                  geography={geo}
+                  fill={current ? colorScale(Number(current.value)) : "#FFFFFF"}
+                  style={geographyStyle}
+                  onMouseEnter={onMouseEnter(geo, current)}
+                  onMouseLeave={onMouseLeave}
+                  stroke={borderColor}
+                  strokeWidth={0.3}
+                  className="state-element"
+                />
+                // </Link>
               );
             })
           }

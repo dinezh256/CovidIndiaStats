@@ -53,13 +53,11 @@ class Test extends Component {
           deaths = item.timeline.deaths;
 
           dataProvince = { cases, recovered, deaths };
-          console.log({ cases, recovered, deaths });
           this.setState({ data2: dataProvince });
         } else if (country === item.country && item.province === null) {
           cases = item.timeline.cases;
           recovered = item.timeline.recovered;
           deaths = item.timeline.deaths;
-          console.log({ cases, recovered, deaths });
           this.setState({ cases, recovered, deaths });
         }
       });

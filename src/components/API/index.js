@@ -14,7 +14,6 @@ export const countries = async () => {
 
     return data;
   } catch (error) {
-    console.log(error);
   }
 };
 

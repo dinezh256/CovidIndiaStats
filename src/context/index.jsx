@@ -16,9 +16,7 @@ export const AppContextProvider = (props) => {
         }
         setIsLoading(false);
       })
-      .catch(function (error) {
-        console.log(error);
-      });
+      .catch(function (error) {});
   }, []);
 
   return (

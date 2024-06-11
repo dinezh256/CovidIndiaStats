@@ -71,7 +71,7 @@ class WorldHomeCard extends Component {
               color="primary"
               style={{ verticalAlign: "-0.25rem" }}
             />
-            &nbsp; GLOBAL COVERAGE
+            &nbsp; GLOBAL STATS
           </NavLink>
           <span
             style={{

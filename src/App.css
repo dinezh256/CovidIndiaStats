@@ -7,13 +7,13 @@ html,
 body {
   scroll-behavior: smooth;
 }
+
 ::-webkit-scrollbar {
   background: rgba(128, 128, 128, 0.3);
   width: 12px;
 }
 
 ::-webkit-scrollbar-thumb:vertical {
-  /* border-radius: 15px; */
   background-color: slategray;
 }
 
@@ -353,6 +353,10 @@ ul {
   align-items: center;
   justify-content: space-between;
   border-radius: 8px;
+
+  > h6 {
+    margin-block: 0;
+  }
 }
 
 .td-md-left > a,
@@ -1316,7 +1320,7 @@ h5,
 h6,
 th {
   font-family: notosans;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 @media only screen and (max-width: 1024px) {
@@ -1354,7 +1358,6 @@ th {
   }
 
   ::-webkit-scrollbar-thumb:vertical {
-    /* border-radius: 15px; */
     background-color: transparent;
   }
 }
