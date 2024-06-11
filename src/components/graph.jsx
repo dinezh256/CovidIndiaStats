@@ -97,10 +97,21 @@ class Graph extends Component {
       .get("https://data.covid19india.org/v4/min/timeseries.min.json")
       .then(({ data, status }) => {
         if (status === 200) {
-          console.log(data);
+          const totalData = data["TT"].dates;
+          const indiaData = Object.keys(totalData).map((key) => ({
+            dateymd: key,
+            dailyconfirmed: totalData[key]?.delta?.confirmed || 0,
+            dailyrecovered: totalData[key]?.delta?.recovered || 0,
+            dailydeceased: totalData[key]?.delta?.deceased || 0,
+            dailyvaccinated: 0,
+            totalconfirmed: totalData[key]?.total?.confirmed || 0,
+            totalrecovered: totalData[key]?.total?.recovered || 0,
+            totaldeceased: totalData[key]?.total?.deceased || 0,
+            totalvaccinated: 0,
+          }));
           this.setState({
             isLoaded: true,
-            data: Object.keys(data),
+            data: indiaData,
             data2: [],
           });
         }
@@ -181,54 +192,56 @@ class Graph extends Component {
       oneMonth,
     } = this.state;
 
-    const dailyConfirmed = data.map((item) => Number(item.dailyconfirmed));
-
-    // data.map(
-    //   (item) =>
-    //     (item["newDate"] = `${item.date??.split(" ")?.[0]} ${
-    //       item.date??.split(" ")[1]
-    //     } `)
-    // );
-    const dailyActive = data.map(
-      (item) =>
-        Number(item.dailyconfirmed) -
-        Number(item.dailyrecovered) -
-        Number(item.dailydeceased)
-    );
-
-    const dailyActiveJson = data.map((item) => ({
-      dailyactive:
-        Number(item.dailyconfirmed) -
-        Number(item.dailyrecovered) -
-        Number(item.dailydeceased),
-      newDate: item.newDate,
-    }));
-
-    const dailyRecovered = data.map((item) => Number(item.dailyrecovered));
-    const dailyDeceased = data.map((item) => Number(item.dailydeceased));
-
-    const totalConfirmed = data.map((item) => Number(item.totalconfirmed));
-    const totalActive = data.map(
-      (item) =>
-        Number(item.totalconfirmed) -
-        Number(item.totalrecovered) -
-        Number(item.totaldeceased)
-    );
-
+    const dailyConfirmed = [];
+    const dailyActiveJson = [];
+    const dailyRecovered = [];
+    const dailyDeceased = [];
+    const dailyActive = [];
+    const totalConfirmed = [];
+    const totalActive = [];
     const totalActiveJson = [];
-    data.map((item) =>
+    const totalRecovered = [];
+    const totalDeceased = [];
+
+    data.map(
+      (item) =>
+        (item["newDate"] = `${item.dateymd?.split("-")[2]} ${
+          months2[Number(item.dateymd?.split("-")[1]) - 1]
+        } ${item.dateymd?.split("-")?.[0]}`)
+    );
+
+    data.map((item) => {
+      dailyConfirmed.push(Number(item.dailyconfirmed));
+      dailyActive.push(
+        Number(item.dailyconfirmed) -
+          Number(item.dailyrecovered) -
+          Number(item.dailydeceased)
+      );
+      dailyActiveJson.push({
+        dailyactive:
+          Number(item.dailyconfirmed) -
+          Number(item.dailyrecovered) -
+          Number(item.dailydeceased),
+        newDate: item.newDate,
+      });
+      dailyRecovered.push(Number(item.dailyrecovered));
+      dailyDeceased.push(Number(item.dailydeceased));
+      totalConfirmed.push(Number(item.totalconfirmed));
+      totalActive.push(
+        Number(item.totalconfirmed) -
+          Number(item.totalrecovered) -
+          Number(item.totaldeceased)
+      );
       totalActiveJson.push({
         totalactive:
           Number(item.totalconfirmed) -
           Number(item.totalrecovered) -
           Number(item.totaldeceased),
         newDate: item.newDate,
-      })
-    );
-    const totalRecovered = [];
-    data.map((item) => totalRecovered.push(Number(item.totalrecovered)));
-    const totalDeceased = [];
-    data.map((item) => totalDeceased.push(Number(item.totaldeceased)));
+      });
+      totalRecovered.push(Number(item.totalrecovered));
+      totalDeceased.push(Number(item.totaldeceased));
+    });
 
     const date = data.map(
       (item) =>
@@ -397,7 +410,7 @@ class Graph extends Component {
                     paddingTop: "15px",
                   }}
                 >
-                  INDIAN MAP
+                  MAP OF INDIA
                 </h3>
                 <div
                   className="fadeInUp testpad"

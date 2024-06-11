@@ -26,14 +26,8 @@ class WorldHomeCard extends Component {
   }
 
   async componentDidMount() {
-    const {
-      cases,
-      todayCases,
-      deaths,
-      todayDeaths,
-      recovered,
-      active,
-    } = await worldTotalData();
+    const { cases, todayCases, deaths, todayDeaths, recovered, active } =
+      await worldTotalData();
     this.setState({
       cases,
       todayCases,
@@ -133,122 +127,126 @@ class WorldHomeCard extends Component {
               </tr>
             </thead>
             <tbody className="tbody">
-              <td>
-                <h6
-                  className="delta"
-                  style={{
-                    fontSize: 12,
-                    color: "rgba(66, 179, 244, 0.7)",
-                  }}
-                >
-                  +
-                  {todayCases !== undefined
-                    ? commaSeperated(Number(todayCases))
-                    : ""}
-                </h6>
-                <h6 style={{ color: "rgb(66, 179, 244)", textAlign: "center" }}>
-                  {cases !== undefined ? (
-                    <CountUp
-                      start={0}
-                      end={Number(cases)}
-                      duration={2}
-                      separator=","
-                      formattingFn={(number) => commaSeperated(number)}
-                    />
-                  ) : (
-                    ""
-                  )}
-                </h6>
-              </td>
-
-              <td>
-                <h6
-                  className="delta"
-                  style={{
-                    color: "rgba(255, 68, 106, 0.7)",
-                    fontSize: 12,
-                  }}
-                >
-                  {cases !== undefined
-                    ? ((Number(active) / Number(cases)) * 100).toFixed(1)
-                    : ""}
-                  %
-                </h6>
-                <h6
-                  style={{
-                    color: "#ff446a",
-                    textAlign: "center",
-                  }}
-                >
-                  {active !== undefined ? (
-                    <CountUp
-                      start={0}
-                      end={Number(active)}
-                      duration={2}
-                      separator=","
-                      formattingFn={(number) => commaSeperated(number)}
-                    />
-                  ) : (
-                    ""
-                  )}
-                </h6>
-              </td>
-
-              <td>
-                <h6
-                  className="delta"
-                  style={{
-                    fontSize: 12,
-                    color: "rgba(40, 167, 69, 0.7)",
-                  }}
-                >
-                  {cases !== undefined
-                    ? ((Number(recovered) / Number(cases)) * 100).toFixed(1)
-                    : ""}
-                  %
-                </h6>
-                <h6 className="text-success" style={{ textAlign: "center" }}>
-                  {recovered !== undefined ? (
-                    <CountUp
-                      start={0}
-                      end={Number(recovered)}
-                      duration={2}
-                      separator=","
-                      formattingFn={(number) => commaSeperated(number)}
-                    />
-                  ) : (
-                    ""
-                  )}
-                </h6>
-              </td>
-
-              <td>
-                <h6
-                  className="delta"
-                  style={{
-                    fontSize: 12,
-                    color: "rgba(108, 117, 125, 0.7)",
-                  }}
-                >
-                  +
-                  {todayDeaths !== undefined
-                    ? commaSeperated(Number(todayDeaths))
-                    : ""}
-                </h6>
-                <h6 className="text-secondary" style={{ textAlign: "center" }}>
-                  {deaths !== undefined ? (
-                    <CountUp
-                      start={0}
-                      end={Number(deaths)}
-                      duration={2}
-                      separator=","
-                      formattingFn={(number) => commaSeperated(number)}
-                    />
-                  ) : (
-                    ""
-                  )}
-                </h6>
-              </td>
+              <tr>
+                <td>
+                  <h6
+                    className="delta"
+                    style={{
+                      fontSize: 12,
+                      color: "rgba(66, 179, 244, 0.7)",
+                    }}
+                  >
+                    +
+                    {todayCases !== undefined
+                      ? commaSeperated(Number(todayCases))
+                      : ""}
+                  </h6>
+                  <h6
+                    style={{ color: "rgb(66, 179, 244)", textAlign: "center" }}
+                  >
+                    {cases !== undefined ? (
+                      <CountUp
+                        start={0}
+                        end={Number(cases)}
+                        duration={2}
+                        separator=","
+                        formattingFn={(number) => commaSeperated(number)}
+                      />
+                    ) : (
+                      ""
+                    )}
+                  </h6>
+                </td>
+                <td>
+                  <h6
+                    className="delta"
+                    style={{
+                      color: "rgba(255, 68, 106, 0.7)",
+                      fontSize: 12,
+                    }}
+                  >
+                    {cases !== undefined
+                      ? ((Number(active) / Number(cases)) * 100).toFixed(1)
+                      : ""}
+                    %
+                  </h6>
+                  <h6
+                    style={{
+                      color: "#ff446a",
+                      textAlign: "center",
+                    }}
+                  >
+                    {active !== undefined ? (
+                      <CountUp
+                        start={0}
+                        end={Number(active)}
+                        duration={2}
+                        separator=","
+                        formattingFn={(number) => commaSeperated(number)}
+                      />
+                    ) : (
+                      ""
+                    )}
+                  </h6>
+                </td>
+                <td>
+                  <h6
+                    className="delta"
+                    style={{
+                      fontSize: 12,
+                      color: "rgba(40, 167, 69, 0.7)",
+                    }}
+                  >
+                    {cases !== undefined
+                      ? ((Number(recovered) / Number(cases)) * 100).toFixed(1)
+                      : ""}
+                    %
+                  </h6>
+                  <h6 className="text-success" style={{ textAlign: "center" }}>
+                    {recovered !== undefined ? (
+                      <CountUp
+                        start={0}
+                        end={Number(recovered)}
+                        duration={2}
+                        separator=","
+                        formattingFn={(number) => commaSeperated(number)}
+                      />
+                    ) : (
+                      ""
+                    )}
+                  </h6>
+                </td>
+                <td>
+                  <h6
+                    className="delta"
+                    style={{
+                      fontSize: 12,
+                      color: "rgba(108, 117, 125, 0.7)",
+                    }}
+                  >
+                    +
+                    {todayDeaths !== undefined
+                      ? commaSeperated(Number(todayDeaths))
+                      : ""}
+                  </h6>
+                  <h6
+                    className="text-secondary"
+                    style={{ textAlign: "center" }}
+                  >
+                    {deaths !== undefined ? (
+                      <CountUp
+                        start={0}
+                        end={Number(deaths)}
+                        duration={2}
+                        separator=","
+                        formattingFn={(number) => commaSeperated(number)}
+                      />
+                    ) : (
+                      ""
+                    )}
+                  </h6>
+                </td>
+              </tr>
             </tbody>
           </table>
         )}

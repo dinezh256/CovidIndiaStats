@@ -999,7 +999,7 @@ class Table extends Component {
                           style={{ textAlign: "right" }}
                         >
                           <h6 className="arrowup">
-                            <delta>
+                            <span>
                               <DeltaArrow
                                 deltaType={item?.data?.delta?.tested}
                                 color={"#5969c2"}
@@ -1008,7 +1008,7 @@ class Table extends Component {
                                 deltaType={item?.data?.delta?.tested}
                                 color={"#5969c2"}
                               />
-                            </delta>
+                            </span>
                             <span className="td-md align-middle">
                               {commaSeperated(item?.data?.total?.tested)}
                             </span>
