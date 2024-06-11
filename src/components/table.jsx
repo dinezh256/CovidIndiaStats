@@ -543,7 +543,7 @@ class Table extends Component {
               className="telegramLink"
               href="https://www.buymeacoffee.com/covidindiastats"
             >
-              Covid India Stats needs your help
+              Support Us
             </a>
             <a
               target="_blank"

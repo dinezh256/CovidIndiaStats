@@ -14,6 +14,7 @@ import Navbar from "./components/navbar";
 import AppContextProvider from "./context";
 
 import "./App.css";
+import { detectColorScheme } from "./utils/common-functions";
 
 const Home = lazy(() => import("./components/home"));
 const World = lazy(() => import("./components/world"));
@@ -40,8 +41,10 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 function App() {
+  const themeLS = localStorage.getItem("theme");
+  const themeSystem = detectColorScheme();
   const [isDark, setIsDark] = useState(
-    localStorage.getItem("theme") === "dark"
+    themeLS ? themeLS === "dark" : themeSystem === "dark"
   );
   const history = createBrowserHistory();
   const darkMode = {

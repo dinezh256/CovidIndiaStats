@@ -499,3 +499,14 @@ export const statePopulation = {
   UT: 11250858,
   WB: 99609303,
 };
+
+export function detectColorScheme() {
+  if (
+    window.matchMedia &&
+    window.matchMedia("(prefers-color-scheme: dark)").matches
+  ) {
+    return "dark";
+  } else {
+    return "light";
+  }
+}

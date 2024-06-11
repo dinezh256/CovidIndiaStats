@@ -68,7 +68,9 @@ const WorldChoropleth = ({ data: statesdata }) => {
   return (
     <>
       <div>
-        <ReactTooltip>{tooltipContent}</ReactTooltip>
+        <ReactTooltip anchorSelect=".country-geo" place="top">
+          {tooltipContent}
+        </ReactTooltip>
 
         <ComposableMap
           projectionConfig={PROJECTION_CONFIG}
@@ -93,6 +95,7 @@ const WorldChoropleth = ({ data: statesdata }) => {
                     onMouseLeave={onMouseLeave}
                     stroke={"rgb(66, 179, 244)"}
                     strokeWidth={0.15}
+                    className="country-geo"
                   />
                 );
               })
