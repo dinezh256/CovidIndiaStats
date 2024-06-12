@@ -6,6 +6,8 @@
 html,
 body {
   scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 ::-webkit-scrollbar {
@@ -529,7 +531,7 @@ span.MuiBadge-colorSecondary {
 .MuiPaperroot {
   background-color: rgb(32, 32, 66) !important;
   color: white !important;
-  height: 100svh !important;
+  height: 100vh !important;
 }
 
 @media (max-width: 414px) {
