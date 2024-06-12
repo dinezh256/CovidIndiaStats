@@ -529,7 +529,7 @@ span.MuiBadge-colorSecondary {
 .MuiPaperroot {
   background-color: rgb(32, 32, 66) !important;
   color: white !important;
-  height: 100vh !important;
+  height: 100svh !important;
 }
 
 @media (max-width: 414px) {
