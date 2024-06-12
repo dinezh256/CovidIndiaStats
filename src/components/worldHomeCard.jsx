@@ -50,10 +50,10 @@ class WorldHomeCard extends Component {
 
     return (
       <div
-        className="fadeInUp worldHomeCard"
+        className="fade-in-up world-home-card"
         style={{
           marginBottom: "-5px",
-          animationDelay: "1.8s",
+          animationDelay: "1.2s",
           borderRadius: "5px",
         }}
       >

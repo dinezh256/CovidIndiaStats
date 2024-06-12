@@ -39,7 +39,7 @@ const BarPlot = ({
   return (
     <div className="col">
       <section
-        className="graphsection"
+        className="graph-wrapper"
         style={{
           alignSelf: "center",
           backgroundColor: `${bgColor}`,

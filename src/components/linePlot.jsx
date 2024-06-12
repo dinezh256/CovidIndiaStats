@@ -47,7 +47,7 @@ const LinePlot = ({
   return (
     <div className="col">
       <section
-        className="graphsection"
+        className="graph-wrapper"
         style={{
           backgroundColor: `${bgColor}`,
           borderRadius: "6px",

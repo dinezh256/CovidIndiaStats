@@ -812,7 +812,7 @@ class StateDetails extends Component {
                 content={`Track the spread of Coronavirus (COVID-19) in ${stateFullName[currentStateCode]}`}
               />
             </Helmet>
-            <div className="row fadeInUp" style={{ animationDelay: "0.4s" }}>
+            <div className="row fade-in-up" style={{ animationDelay: "0.4s" }}>
               <div className="col-7" style={{ marginTop: 12 }}>
                 <h6
                   style={{
@@ -875,7 +875,7 @@ class StateDetails extends Component {
               <div className="w-100"></div>
 
               <div
-                className="col fadeInUp"
+                className="col fade-in-up"
                 style={{ alignContent: "center", animationDelay: "0.6s" }}
               >
                 <div className="row" style={{ marginBottom: -5 }}>
@@ -897,7 +897,7 @@ class StateDetails extends Component {
                 </div>
 
                 <table
-                  className="table-borderless table table-sm fadeInUp"
+                  className="table-borderless table table-sm fade-in-up"
                   style={{ animationDelay: "0.4s" }}
                 >
                   <tr className="tr">
@@ -1227,7 +1227,7 @@ class StateDetails extends Component {
                 <div className="w-100"></div>
                 <div className="row">
                   <div
-                    className="col fadeInUp"
+                    className="col fade-in-up"
                     style={{ animationDelay: "0.7s" }}
                   >
                     {toggleConfirmed && (
@@ -1291,7 +1291,7 @@ class StateDetails extends Component {
                 <div className="w-100"></div>
                 <div className="row">
                   <div
-                    className="col-6 fadeInUp"
+                    className="col-6 fade-in-up"
                     style={{ animationDelay: "0.9s" }}
                   >
                     <div>
@@ -1544,7 +1544,7 @@ class StateDetails extends Component {
                 <div className="w-100"></div>
                 <div className="row">
                   <div
-                    className="col fadeInUp"
+                    className="col fade-in-up"
                     style={{
                       paddingLeft: "3.2%",
                       paddingRight: "3.2%",
@@ -1560,12 +1560,15 @@ class StateDetails extends Component {
                   </div>
                 </div>
                 <div className="w-100"></div>
-                <div className="row fadeInUp" style={{ animationDelay: "1s" }}>
+                <div
+                  className="row fade-in-up"
+                  style={{ animationDelay: "1s" }}
+                >
                   <div className="col">
                     <div className="row" style={{ alignContent: "center" }}>
                       <div
                         align="center"
-                        className="col fadeInUp"
+                        className="col fade-in-up"
                         style={{ animationDelay: "0.1s" }}
                       >
                         <h6 className="feedbackBtn">
@@ -1583,7 +1586,7 @@ class StateDetails extends Component {
                         </h6>
                       </div>
                       <div
-                        className="col fadeInUp"
+                        className="col fade-in-up"
                         style={{ animationDelay: "0.1s" }}
                       >
                         <div className="row shareBtn">
@@ -1646,7 +1649,7 @@ class StateDetails extends Component {
               <div className="col-sm">
                 <div className="row">
                   <div
-                    className="col fadeInUp"
+                    className="col fade-in-up"
                     style={{
                       textAlign: "left",
                       animationDelay: "1.2s",
@@ -1667,7 +1670,7 @@ class StateDetails extends Component {
                   </div>
 
                   <div
-                    className="col fadeInUp"
+                    className="col fade-in-up"
                     style={{ animationDelay: "1.3s", alignItems: "right" }}
                   >
                     <div
@@ -1694,7 +1697,7 @@ class StateDetails extends Component {
                   </div>
                   <div className="w-100"></div>
                   <div
-                    className="col fadeInUp"
+                    className="col fade-in-up"
                     style={{ animationDelay: "1.4s" }}
                   >
                     <h6 style={{ color: "rgb(226, 42, 79)" }}>
@@ -1702,7 +1705,7 @@ class StateDetails extends Component {
                     </h6>
                   </div>
                   <div
-                    className="col fadeInUp"
+                    className="col fade-in-up"
                     style={{ animationDelay: "1.4s" }}
                   >
                     <h6 style={{ textAlign: "right" }}>
@@ -1725,11 +1728,11 @@ class StateDetails extends Component {
                 <div className="w-100"></div>
                 <div className="row">
                   <div
-                    className="col fadeInUp"
+                    className="col fade-in-up"
                     style={{ animationDelay: "1.5s" }}
                   >
                     <h6
-                      className="timelineButton"
+                      className="timeline-button"
                       onClick={() =>
                         this.setState({
                           beginning: true,
@@ -1746,11 +1749,11 @@ class StateDetails extends Component {
                   </div>
 
                   <div
-                    className="col fadeInUp"
+                    className="col fade-in-up"
                     style={{ animationDelay: "1.6s" }}
                   >
                     <h6
-                      className="timelineButton"
+                      className="timeline-button"
                       onClick={() =>
                         this.setState({
                           beginning: false,
@@ -1767,11 +1770,11 @@ class StateDetails extends Component {
                   </div>
 
                   <div
-                    className="col fadeInUp"
+                    className="col fade-in-up"
                     style={{ animationDelay: "1.7s" }}
                   >
                     <h6
-                      className="timelineButton"
+                      className="timeline-button"
                       onClick={() =>
                         this.setState({
                           beginning: false,
@@ -1791,7 +1794,7 @@ class StateDetails extends Component {
                 <div className="w-100"></div>
 
                 <div
-                  className="row fadeInUp"
+                  className="row fade-in-up"
                   style={{ animationDelay: "1.8s", marginTop: "-25px" }}
                 >
                   {!toggleSwitch && (
@@ -1916,7 +1919,7 @@ class StateDetails extends Component {
 
                       <div className="col">
                         <section
-                          className="graphsection"
+                          className="graph-wrapper"
                           style={{
                             backgroundColor: "rgba(106, 68, 200, 0.1)",
                             borderRadius: "6px",
@@ -2069,7 +2072,7 @@ class StateDetails extends Component {
                       <div className="w-100"></div>
                       <div className="col">
                         <section
-                          className="graphsection"
+                          className="graph-wrapper"
                           style={{
                             backgroundColor: "rgba(255, 223, 0, 0.1)",
                             borderRadius: "6px",
@@ -2353,7 +2356,7 @@ class StateDetails extends Component {
 
                       <div className="col">
                         <section
-                          className="graphsection"
+                          className="graph-wrapper"
                           style={{
                             alignSelf: "center",
                             backgroundColor: "rgba(106, 68, 200, 0.1)",
@@ -2539,7 +2542,7 @@ class StateDetails extends Component {
                       <div className="w-100"></div>
                       <div className="col">
                         <section
-                          className="graphsection"
+                          className="graph-wrapper"
                           style={{
                             alignSelf: "center",
                             backgroundColor: "rgba(255, 223, 0, 0.1)",
@@ -2687,7 +2690,7 @@ class StateDetails extends Component {
                 </div>
                 <div className="row fadeInup">
                   <div
-                    className="col-6 fadeInUp"
+                    className="col-6 fade-in-up"
                     style={{ animationDelay: "1.9s" }}
                   >
                     <a
@@ -2707,7 +2710,7 @@ class StateDetails extends Component {
                     </a>
                   </div>
                   <div
-                    className="col-6 fadeInUp"
+                    className="col-6 fade-in-up"
                     style={{ animationDelay: "2s" }}
                   >
                     <a

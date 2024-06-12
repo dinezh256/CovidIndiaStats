@@ -39,7 +39,7 @@ const StateLinePlot = ({
   return (
     <div className="col">
       <section
-        className="graphsection"
+        className="graph-wrapper"
         style={{
           backgroundColor: `${bgColor}`,
           borderRadius: "6px",
@@ -68,7 +68,6 @@ const StateLinePlot = ({
           >
             {Number(date.slice(-1)[0].split(" ")[0])}{" "}
             {date.slice(-1)[0].split(" ")[1]}
-
             <h5
               style={{
                 fontSize: 14,
@@ -150,10 +149,10 @@ const StateLinePlot = ({
               name={type}
               dot={({ cx, cy }) => (
                 <svg
-                x={cx - 2.25}
-                y={cy - 2.25}
-                width={4.5}
-                height={4.5}
+                  x={cx - 2.25}
+                  y={cy - 2.25}
+                  width={4.5}
+                  height={4.5}
                   fill={stroke}
                   viewBox="0 0 1024 1024"
                 >
@@ -161,7 +160,6 @@ const StateLinePlot = ({
                 </svg>
               )}
               activeDot={{ r: 2.5 }}
-
               onClick={() => {
                 ReactGa.event({
                   category: `Graph state ${type} ${stateName}`,

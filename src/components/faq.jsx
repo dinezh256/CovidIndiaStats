@@ -23,21 +23,21 @@ class FAQ extends Component {
           </h2>
           <br />
           <Container>
-            <div className="FAQ">
+            <div className="faq">
               <h4
-                className="question fadeInUp"
+                className="question fade-in-up"
                 style={{ animationDelay: "1.8s" }}
               >
-                <span className="faqicon">
+                <span className="faq-icon">
                   <Feather size={20} />{" "}
                 </span>{" "}
                 What are your Sources?
               </h4>
               <h5
-                className="answer fadeInUp"
+                className="answer fade-in-up"
                 style={{ animationDelay: "1.8s" }}
               >
-                <span className="faqicon">
+                <span className="faq-icon">
                   <Clipboard size={20} />{" "}
                 </span>{" "}
                 Our sources are World Health Organisation, Centers for Disease
@@ -46,48 +46,48 @@ class FAQ extends Component {
               </h5>
 
               <h4
-                className="question fadeInUp"
+                className="question fade-in-up"
                 style={{ animationDelay: "1.8s" }}
               >
-                <span className="faqicon">
+                <span className="faq-icon">
                   <Feather size={20} />{" "}
                 </span>{" "}
                 Which APIs have been used to fetch Data?
               </h4>
               <h5
-                className="answer fadeInUp"
+                className="answer fade-in-up"
                 style={{ animationDelay: "1.8s" }}
               >
-                <span className="faqicon">
+                <span className="faq-icon">
                   <Clipboard size={20} />{" "}
                 </span>{" "}
                 Two APIs have been called.
                 <br />
                 &emsp;
-                <span className="faqicon">
+                <span className="faq-icon">
                   <Server size={14} /> api.covid19india.org
                 </span>
                 <br />
                 &emsp;
-                <span className="faqicon">
+                <span className="faq-icon">
                   <Server size={14} /> corona.lmao.ninja
                 </span>
               </h5>
 
               <h4
-                className="question fadeInUp"
+                className="question fade-in-up"
                 style={{ animationDelay: "1.8s" }}
               >
-                <span className="faqicon">
+                <span className="faq-icon">
                   <Feather size={20} />{" "}
                 </span>{" "}
                 How can we help fight this pandemic?
               </h4>
               <h5
-                className="answer fadeInUp"
+                className="answer fade-in-up"
                 style={{ animationDelay: "1.8s" }}
               >
-                <span className="faqicon">
+                <span className="faq-icon">
                   <Clipboard size={20} />{" "}
                 </span>{" "}
                 In one way or another we are dependent on each other. Enroute
@@ -106,7 +106,7 @@ class FAQ extends Component {
             <br id="line1" />
             <div
               align="center"
-              className="col fadeInUp"
+              className="col fade-in-up"
               style={{ animationDelay: "2.2s" }}
             >
               <a

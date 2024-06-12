@@ -471,7 +471,7 @@ class StateGraph extends Component {
           <div className="row">
             <div className="col-sm">
               <div
-                className="text-center fadeInUp"
+                className="text-center fade-in-up"
                 style={{
                   width: "100%",
                   borderRadius: "6px",
@@ -517,7 +517,7 @@ class StateGraph extends Component {
             </div>
             <div className="col-sm">
               <div
-                className="text-center fadeInUp"
+                className="text-center fade-in-up"
                 style={{
                   width: "100%",
                   borderRadius: "6px",
@@ -563,7 +563,7 @@ class StateGraph extends Component {
             </div>
             <div className="col-sm">
               <div
-                className="text-center fadeInUp"
+                className="text-center fade-in-up"
                 style={{
                   width: "100%",
                   borderRadius: "6px",
@@ -611,7 +611,7 @@ class StateGraph extends Component {
           <div className="row">
             <div className="col-sm" id="line1">
               <div
-                className="text-center fadeInUp"
+                className="text-center fade-in-up"
                 style={{
                   width: "100%",
                   borderRadius: "6px",
@@ -704,7 +704,7 @@ class StateGraph extends Component {
 
             <div className="col-sm" id="line1">
               <div
-                className="text-center fadeInUp"
+                className="text-center fade-in-up"
                 style={{
                   width: "100%",
                   borderRadius: "6px",
@@ -815,7 +815,7 @@ class StateGraph extends Component {
             </div>
             <div className="col-6" id="line2">
               <div
-                className="text-center fadeInUp"
+                className="text-center fade-in-up"
                 style={{
                   width: "100%",
                   borderRadius: "6px",
@@ -909,7 +909,7 @@ class StateGraph extends Component {
 
             <div className="col-6" id="line2">
               <div
-                className="text-center fadeInUp"
+                className="text-center fade-in-up"
                 style={{
                   width: "100%",
                   borderRadius: "6px",

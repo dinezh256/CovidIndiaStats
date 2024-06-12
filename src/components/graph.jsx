@@ -431,20 +431,20 @@ class Graph extends Component {
       return (
         <div>
           <div
-            className="row"
+            className="row no-margin"
             style={{ justifyContent: "center", marginBottom: "25px" }}
           >
             <WorldHomeCard />
           </div>
           <div className="w-100"></div>
 
-          <div className="row">
-            <div className="indiaMapHead">
+          <div className="row no-margin">
+            <div className="india-map-head">
               <h3
-                className="fadeInUp"
+                className="fade-in-up"
                 style={{
                   textAlign: "center",
-                  animationDelay: "2s",
+                  animationDelay: "1.25s",
                   marginBottom: "15px",
                   paddingTop: "15px",
                 }}
@@ -452,8 +452,8 @@ class Graph extends Component {
                 MAP OF INDIA
               </h3>
               <div
-                className="fadeInUp testpad"
-                style={{ animationDelay: "2.1s" }}
+                className="fade-in-up testpad"
+                style={{ animationDelay: "1.35s" }}
               >
                 <h6>
                   TEST SAMPLES
@@ -480,11 +480,11 @@ class Graph extends Component {
 
             <div className="w-100"></div>
             <div
-              className="fadeInUp toggle-map"
-              style={{ animationDelay: "2.05s" }}
+              className="fade-in-up toggle-map"
+              style={{ animationDelay: "1.45s" }}
             >
               <div
-                className="mapTabs"
+                className="map-tabs"
                 onClick={() => {
                   this.setState({
                     clickConfirmedMap: true,
@@ -535,7 +535,7 @@ class Graph extends Component {
                 </h6>
               </div>
               <div
-                className="mapTabs"
+                className="map-tabs"
                 onClick={() => {
                   this.setState({
                     clickConfirmedMap: false,
@@ -586,7 +586,7 @@ class Graph extends Component {
                 </h6>
               </div>
               <div
-                className="mapTabs"
+                className="map-tabs"
                 onClick={() => {
                   this.setState({
                     clickActiveMap: false,
@@ -636,7 +636,7 @@ class Graph extends Component {
                 </h6>
               </div>
               <div
-                className="mapTabs"
+                className="map-tabs"
                 onClick={() => {
                   this.setState({
                     clickActiveMap: false,
@@ -689,8 +689,8 @@ class Graph extends Component {
 
             <div className="w-100"></div>
             <div
-              className="col fadeInUp indiaMapChoropleth"
-              style={{ justifyContent: "left", animationDelay: "2.1s" }}
+              className="col fade-in-up india-map-choropleth"
+              style={{ justifyContent: "left", animationDelay: "1.5s" }}
             >
               {clickConfirmedMap && (
                 <Choropleth
@@ -748,10 +748,10 @@ class Graph extends Component {
             </div>
             <div className="w-100"></div>
             <div
-              className="col fadeInUp"
+              className="col fade-in-up spread-graphs"
               style={{
                 textAlign: "left",
-                animationDelay: "2.3s",
+                animationDelay: "1.5s",
                 marginBottom: "-8px",
               }}
             >
@@ -767,14 +767,14 @@ class Graph extends Component {
               </h6>
             </div>
             <div
-              className="col fadeInUp"
-              style={{ animationDelay: "2.45s", alignItems: "right" }}
+              className="col fade-in-up"
+              style={{ animationDelay: "1.5s", alignItems: "right" }}
             >
               <div
                 className="home-toggle float-right"
                 style={{ marginTop: "10px" }}
               >
-                <h6 className="spreadGraphType">
+                <h6 className="spread-graph-type">
                   <span
                     style={{
                       fontSize: 13,
@@ -807,9 +807,12 @@ class Graph extends Component {
           </div>
           <div className="w-100"></div>
           <div className="row">
-            <div className="col fadeInUp" style={{ animationDelay: "2.5s" }}>
+            <div
+              className="col fade-in-up spread-timeline"
+              style={{ animationDelay: "1.5s" }}
+            >
               <h6
-                className="timelineButton"
+                className="timeline-button"
                 onClick={() =>
                   this.setState({
                     beginning: true,
@@ -823,9 +826,12 @@ class Graph extends Component {
               </h6>
             </div>
 
-            <div className="col fadeInUp" style={{ animationDelay: "2.55s" }}>
+            <div
+              className="col fade-in-up spread-timeline"
+              style={{ animationDelay: "1.55s" }}
+            >
               <h6
-                className="timelineButton"
+                className="timeline-button"
                 onClick={() =>
                   this.setState({
                     beginning: false,
@@ -839,9 +845,12 @@ class Graph extends Component {
               </h6>
             </div>
 
-            <div className="col fadeInUp" style={{ animationDelay: "2.6s" }}>
+            <div
+              className="col fade-in-up spread-timeline"
+              style={{ animationDelay: "1.6s" }}
+            >
               <h6
-                className="timelineButton"
+                className="timeline-button"
                 onClick={() =>
                   this.setState({
                     beginning: false,
@@ -856,8 +865,8 @@ class Graph extends Component {
             </div>
           </div>
           <div
-            className="row fadeInUp"
-            style={{ animationDelay: "2.65s", marginTop: "-8px" }}
+            className="row fade-in-up"
+            style={{ animationDelay: "1.65s", marginTop: "-8px" }}
           >
             {!toggleActive && (
               <>
@@ -926,9 +935,9 @@ class Graph extends Component {
                   dataKey="totaldeceased"
                 />
                 <div className="w-100"></div>
-                <div className="col">
+                <div className="col spread-graph">
                   <section
-                    className="graphsection"
+                    className="graph-wrapper"
                     style={{
                       backgroundColor: "rgba(106, 68, 200, 0.1)",
                       borderRadius: "6px",
@@ -1079,9 +1088,9 @@ class Graph extends Component {
                 </div>
 
                 <div className="w-100"></div>
-                <div className="col">
+                <div className="col spread-graph">
                   <section
-                    className="graphsection"
+                    className="graph-wrapper"
                     style={{
                       backgroundColor: "rgba(255, 223, 0, 0.1)",
                       borderRadius: "6px",
@@ -1292,9 +1301,9 @@ class Graph extends Component {
                   color2="#5e5a5a"
                 />
                 <div className="w-100"></div>
-                <div className="col">
+                <div className="col spread-graph">
                   <section
-                    className="graphsection"
+                    className="graph-wrapper"
                     style={{
                       alignSelf: "center",
                       backgroundColor: "rgba(106, 68, 200, 0.125)",
@@ -1433,9 +1442,9 @@ class Graph extends Component {
                   </section>
                 </div>
                 <div className="w-100"></div>
-                <div className="col">
+                <div className="col spread-graph">
                   <section
-                    className="graphsection"
+                    className="graph-wrapper"
                     style={{
                       alignSelf: "center",
                       backgroundColor: "rgba(255, 223, 0, 0.1)",

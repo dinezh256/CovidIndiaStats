@@ -14,7 +14,7 @@ function Options() {
         </Helmet>
 
         <h4
-          className="question fadeInUp"
+          className="question fade-in-up"
           style={{
             textTransform: "uppercase",
             marginTop: 15,
@@ -30,7 +30,7 @@ function Options() {
           />{" "}
           Important Links
         </h4>
-        <div className="options fadeInUp" style={{ animationDelay: "0.6s" }}>
+        <div className="options fade-in-up" style={{ animationDelay: "0.6s" }}>
           <h5 className="question">
             Ministry of Health and Family Welfare, Govt. of India
           </h5>
@@ -39,7 +39,7 @@ function Options() {
           </a>
         </div>
 
-        <div className="options fadeInUp" style={{ animationDelay: "0.65s" }}>
+        <div className="options fade-in-up" style={{ animationDelay: "0.65s" }}>
           <h5 className="question">WHO : Covid19 Home Page</h5>
           <a
             href="https://www.who.int/emergencies/diseases/novel-coronavirus-2019"
@@ -48,7 +48,7 @@ function Options() {
             bit.ly/whocovid19disease
           </a>
         </div>
-        <div className="options fadeInUp" style={{ animationDelay: "0.7s" }}>
+        <div className="options fade-in-up" style={{ animationDelay: "0.7s" }}>
           <h5 className="question">
             Centers for Disease Control and Prevention
           </h5>
@@ -59,7 +59,7 @@ function Options() {
             bit.ly/cdc-ncov
           </a>
         </div>
-        <div className="options fadeInUp" style={{ animationDelay: "0.75s" }}>
+        <div className="options fade-in-up" style={{ animationDelay: "0.75s" }}>
           <h5 className="question">HELPLINE NUMBERS (by State)</h5>
           <a
             href="https://www.mohfw.gov.in/pdf/coronvavirushelplinenumber.pdf"

@@ -204,9 +204,9 @@ class Table extends Component {
 
     if (isLoaded && !isDataLoading) {
       return (
-        <div className="statsTable">
+        <div className="stats-table">
           <div
-            className="topStats fadeInUp"
+            className="topStats fade-in-up"
             style={{
               marginBottom: "8px",
               animationDelay: "0.25s",
@@ -220,7 +220,7 @@ class Table extends Component {
               <thead>
                 <tr>
                   <th
-                    className="span delta graphWidth"
+                    className="span delta graph-width"
                     style={{
                       color: "rgb(66, 179, 244)",
                       background: "rgba(66, 179, 244, 0.125)",
@@ -229,7 +229,7 @@ class Table extends Component {
                     CONFIRMED
                   </th>
                   <th
-                    className="delta span graphWidth"
+                    className="delta span graph-width"
                     style={{
                       background: "rgba(255, 7, 58, 0.125)",
                       color: "rgb(255, 80, 100)",
@@ -238,13 +238,13 @@ class Table extends Component {
                     ACTIVE
                   </th>
                   <th
-                    className="text-success delta span graphWidth"
+                    className="text-success delta span graph-width"
                     style={{ background: "rgba(88, 189, 88, 0.2)" }}
                   >
                     RECOVERED
                   </th>
                   <th
-                    className="text-secondary delta span graphWidth"
+                    className="text-secondary delta span graph-width"
                     style={{
                       background: "rgba(92, 87, 86, 0.25)",
                       fontWeight: 600,
@@ -474,9 +474,9 @@ class Table extends Component {
               )}
             </table>
             {(totalVaccinated || "") && totalVaccinated !== "-" && (
-              <div className="vaccinatedPeople">
+              <div className="vaccinated-people">
                 <h6>
-                  <img src={shield} className="vaccineShield" />{" "}
+                  <img src={shield} className="vaccine-shield" />{" "}
                   {commaSeperated(totalVaccinated)} Vaccine doses administered
                 </h6>
               </div>
@@ -489,7 +489,7 @@ class Table extends Component {
           </div>
           <div className="w-100"></div>
           <div
-            className="indiaStateWiseHead fadeInUp"
+            className="india-state-wise-head fade-in-up"
             style={{
               textAlign: "center",
               animationDelay: "0.5s",
@@ -534,13 +534,13 @@ class Table extends Component {
           </div>
 
           <div
-            className="supportUs fadeInUp"
+            className="support-us fade-in-up"
             style={{ animationDelay: "0.75s" }}
           >
             <a
               target="_blank"
               rel="noopener noreferrer"
-              className="telegramLink"
+              className="telegram-link"
               href="https://www.buymeacoffee.com/covidindiastats"
             >
               Support Us
@@ -548,16 +548,16 @@ class Table extends Component {
             <a
               target="_blank"
               rel="noopener noreferrer"
-              className="supportBtn"
+              className="support-btn"
               href="https://www.buymeacoffee.com/covidindiastats"
             >
-              <FaHandHoldingHeart className="telegramIcon" />
+              <FaHandHoldingHeart className="telegram-icon" />
             </a>
           </div>
 
-          <div className="statewiseTable table-responsive">
+          <div className="statewise-table table-responsive">
             <table
-              className="table table-sm fadeInUp table-borderless"
+              className="table table-sm fade-in-up table-borderless"
               style={{ animationDelay: "1s", fontFamily: "notosans" }}
             >
               <thead className="thead-dark">

@@ -19,6 +19,12 @@ body {
   background-color: slategray;
 }
 
+.main-wrapper {
+  max-width: 1200px;
+  margin: auto;
+  padding: 0 10px;
+}
+
 .clickable {
   cursor: pointer;
 }
@@ -38,14 +44,14 @@ ul {
   padding: 0;
 }
 
-.myNavbar {
+.nav-bar {
   height: var(--nav-size);
   background-color: var(--bg);
   padding: 0;
   margin-bottom: 1.5rem;
 }
 
-.myNavbar-nav {
+.nav-bar-list {
   max-width: 100%;
   height: 100%;
   display: flex;
@@ -85,11 +91,11 @@ ul {
   }
 }
 
-.myNavbar-nav :hover {
+.nav-bar-nav :hover {
   text-decoration: none;
 }
 
-.SunMoon {
+.sun-moon {
   margin-right: 15px;
   cursor: pointer;
 }
@@ -108,7 +114,7 @@ ul {
   }
 }
 
-.menuIcon {
+.menu-icon {
   cursor: pointer;
   margin-left: 14px;
   border: none;
@@ -126,7 +132,7 @@ ul {
 }
 
 @media (max-width: 460px) {
-  .menuIcon {
+  .menu-icon {
     vertical-align: -0.1rem !important;
   }
   .about {
@@ -142,7 +148,7 @@ ul {
   font-size: 1.3rem !important;
 }
 
-.containerWorld {
+.container-world {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -150,10 +156,15 @@ ul {
 }
 
 @media only screen and (max-width: 576px) {
-  .containerWorld {
-    margin-left: -22px !important;
-    margin-right: -22px !important;
+  .container-world {
+    margin-left: -15px !important;
+    margin-right: -15px !important;
   }
+}
+
+.no-margin {
+  margin-left: 0;
+  margin-right: 0;
 }
 
 .loader {
@@ -231,8 +242,9 @@ ul {
   align-self: center;
   text-transform: capitalize;
   border-spacing: 2px 2px;
+  margin: 0 -2px;
   border-collapse: separate;
-  width: 100%;
+  width: calc(100% + 4px);
 }
 
 .thead-light {
@@ -257,17 +269,6 @@ ul {
   position: sticky;
 }
 
-.thleft {
-  max-width: min-content;
-  font-size: 0.7rem;
-  font-weight: 500;
-  cursor: pointer;
-  border-radius: 5px;
-  padding: 0;
-  vertical-align: middle;
-  font-family: notosans;
-}
-
 .table tbody tr {
   transition: linear 0.5s;
   cursor: default;
@@ -283,19 +284,19 @@ ul {
   transition: linear 0.2s;
 }
 
-.spreadGraphType {
+.spread-graph-type {
   position: absolute;
   right: 4.25rem;
   margin-top: -1.5px;
   margin-bottom: -5px;
 }
 
-.statewiseTable {
+.statewise-table {
   margin-top: 10px;
   /* position: relative; */
 }
 
-.statewiseTable > table > thead > tr > th {
+.statewise-table > table > thead > tr > th {
   padding-bottom: 0.5rem;
   padding-top: 0.5rem;
   font-size: 13px;
@@ -304,14 +305,14 @@ ul {
   top: 0;
 }
 
-.statewiseTable::-webkit-scrollbar {
+.statewise-table::-webkit-scrollbar {
   background: rgba(128, 128, 128, 0.3);
   border-radius: 15px;
   width: 0;
   height: 12px;
 }
 
-.statewiseTable::-webkit-scrollbar-thumb:horizontal {
+.statewise-table::-webkit-scrollbar-thumb:horizontal {
   border-radius: 15px;
   background-color: slategray;
 }
@@ -321,7 +322,7 @@ ul {
   z-index: 10;
 }
 
-.tdleft {
+.td-left {
   font-size: 0.7rem;
   font-weight: 600;
   border-radius: 4px;
@@ -405,7 +406,7 @@ a:hover {
   align-content: flex-end;
 }
 
-.formcontrol {
+.form-control {
   display: block;
   width: calc(100% - 30px);
   margin: auto;
@@ -487,28 +488,11 @@ a:hover {
   text-decoration: none;
 }
 
-.cyclone {
-  color: rgb(128, 42, 190);
-  font-size: 1rem;
-  text-transform: uppercase;
-}
-
-.cycloneLink:hover {
-  text-decoration: none;
-}
-
-.cycloneDetails {
-  text-transform: none;
-  font-size: 0.77rem;
-  color: #5c5858;
-  margin-top: 5px;
-}
-
-.sideBarItem {
+.sidebar-item {
   color: rgb(169, 161, 223) !important;
 }
 
-.sideBarItem:hover {
+.sidebar-item:hover {
   color: rgb(32, 32, 66, 0.9);
   text-decoration: none;
 }
@@ -560,8 +544,8 @@ span.MuiBadge-colorSecondary {
   color: navy;
 }
 
-.worldHomeCard {
-  width: calc(100% - 15px);
+.world-home-card {
+  width: 100%;
   margin: auto;
 }
 
@@ -573,31 +557,27 @@ span.MuiBadge-colorSecondary {
   border-radius: 4px;
 }
 
-.vaccinatedPeople {
+.vaccinated-people {
   border-radius: 5px;
+
+  > h6 {
+    margin-top: 0.5rem;
+    padding: 0.25rem;
+    color: rgb(244, 195, 47);
+    font-family: notosans;
+    font-weight: 500 !important;
+    text-align: center;
+    font-size: 14px;
+  }
 }
 
-.vaccinatedPeople > h6 {
-  margin-top: 0.5rem;
-  padding: 0.25rem;
-  color: rgb(244, 195, 47);
-  font-family: notosans;
-  font-weight: 500 !important;
-  text-align: center;
-  font-size: 14px;
-}
-
-.vaccineShield {
+.vaccine-shield {
   height: 20px;
   vertical-align: -0.25rem;
   margin-right: 10px;
 }
 
-.graphsection {
-  height: max-content;
-}
-
-.graphWidth {
+.graph-width {
   width: 8rem !important;
 }
 
@@ -609,22 +589,26 @@ span.MuiBadge-colorSecondary {
   margin-left: auto;
 }
 
-.statsTable {
+.stats-table {
   width: calc(50% - 55px);
   margin: 1rem 25px;
 }
 
-.graphSection {
+.graph-wrapper {
+  height: max-content;
+}
+
+.graph-section {
   width: calc(50% - 55px);
   margin: auto 25px;
 }
 
-.indiaStateWiseHead {
+.india-state-wise-head {
   display: flex;
   justify-content: space-between;
 }
 
-.supportUs {
+.support-us {
   display: flex;
   justify-content: space-between;
   background-color: rgba(59, 115, 119, 0.75);
@@ -634,21 +618,20 @@ span.MuiBadge-colorSecondary {
     #254d86 74%
   );
   padding: 6.5px 5px 6.5px 10px;
-  width: calc(100% - 2px);
+  width: 100%;
   text-align: center;
   margin-top: 16px;
-  margin-left: 2px;
   margin-bottom: -0.85rem;
   border-radius: 5px 5px 0 0;
 }
 
-.supportUs > a,
+.support-us > a,
 a:hover {
   text-decoration: none;
   color: white !important;
 }
 
-.supportBtn {
+.support-btn {
   border-radius: 5px;
   background-color: #d8932c;
   border: 1px solid #d8932c;
@@ -656,19 +639,19 @@ a:hover {
   text-align: center;
 }
 
-.telegramLink {
+.telegram-link {
   text-align: center;
   color: white !important;
   font-family: notosans;
   position: relative;
 }
 
-.telegramLink:hover {
+.telegram-link:hover {
   text-decoration: none;
   color: white !important;
 }
 
-.telegramIcon {
+.telegram-icon {
   vertical-align: -0.1rem;
 }
 
@@ -684,7 +667,7 @@ a:hover {
   }
 }
 
-.timelineButton {
+.timeline-button {
   background-color: rgba(255, 153, 0, 0.3);
   color: chocolate;
   padding: 5px 3px;
@@ -700,7 +683,7 @@ a:hover {
   -webkit-transition: box-shadow 0.3s linear; /*safari and chrome */
 }
 
-.timelineButton:hover {
+.timeline-button:hover {
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.5) !important;
   animation-delay: 0.3s;
   cursor: pointer;
@@ -720,7 +703,7 @@ a:hover {
   font-weight: 500;
 }
 
-.tableworld {
+.table-world {
   position: relative;
   align-self: center;
   text-transform: uppercase;
@@ -748,7 +731,7 @@ a:hover {
   background-color: rgba(105, 90, 205, 0.356);
 }
 
-.toggleDay {
+.toggle-day {
   background-color: rgba(255, 153, 0, 0.274);
   color: chocolate;
   padding: 3px 8px;
@@ -758,12 +741,12 @@ a:hover {
   transition: all 0.5s linear;
 }
 
-.toggleDay:hover {
+.toggle-day:hover {
   box-shadow: 0 0 10px rgba(117, 113, 113, 1) !important;
   transition: all 0.5s linear;
 }
 
-.FAQ {
+.faq {
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -795,7 +778,7 @@ a:hover {
   font-weight: 500;
 }
 
-.faqicon {
+.faq-icon {
   vertical-align: top;
   font-size: 1.25rem;
 }
@@ -809,28 +792,32 @@ a:hover {
   font-weight: 500;
 }
 
-.indiaMapHead {
+.india-map-head {
   display: flex;
   width: 100%;
   justify-content: space-between;
-  margin: auto 10px;
+  margin: auto 0px;
 }
 
-.indiaMapChoropleth {
-  padding: auto 5px;
+.india-map-choropleth {
+  padding: 0px !important;
 }
 
 .toggle-map {
   display: flex;
   width: 100%;
   justify-content: space-between;
-  margin: auto 10px;
+  margin: auto 0px;
 }
 
-.mapTabs {
+.map-tabs {
   width: 24.5%;
   margin-bottom: 20px;
   border-radius: 5px;
+}
+
+.spread-graphs {
+  padding: 0px !important;
 }
 
 .pad {
@@ -1166,7 +1153,7 @@ a:hover {
   color: indigo;
 }
 
-.fadeInUp {
+.fade-in-up {
   animation-name: fadeInUp;
   animation-duration: 0.5s;
   animation-fill-mode: both;
@@ -1329,22 +1316,22 @@ th {
   #root {
     overflow-x: hidden;
   }
-  .statsTable {
+  .stats-table {
     max-width: 500px;
     width: 100%;
     margin: auto;
   }
-  .graphSection {
+  .graph-section {
     width: 100%;
     max-width: 500px;
     margin: auto;
   }
 
-  .statewiseTable {
+  .statewise-table {
     margin-left: 0px;
   }
 
-  .statewiseTable::-webkit-scrollbar {
+  .statewise-table::-webkit-scrollbar {
     height: 0px;
   }
 

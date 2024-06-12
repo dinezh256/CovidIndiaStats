@@ -153,7 +153,7 @@ const Charts = ({ data: { cases, recovered, deaths }, country }) => {
     ) : null;
 
   return (
-    <div className={`${styles.container} fadeInUp`}>
+    <div className={`${styles.container} fade-in-up`}>
       {lineChart}
       <div className="w-100"></div>
       <h6 style={{ fontSize: 10 }}>

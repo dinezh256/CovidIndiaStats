@@ -31,7 +31,7 @@ const Cards = ({
     return null;
   }
   return (
-    <div className={`${styles.container} fadeInUp ${styles.font}`}>
+    <div className={`${styles.container} fade-in-up ${styles.font}`}>
       <ThemeProvider theme={theme}>
         <Grid container spacing={2} justify="center">
           <Grid

@@ -74,7 +74,7 @@ function App() {
           <ThemeProvider theme={{ mode: darkMode.value }}>
             <GlobalStyle />
             <Suspense fallback={<div />}>
-              <main className="container">
+              <main className="main-wrapper">
                 <Switch>
                   <Route path="/global" component={World} />
                   <Route path="/links" component={Options} />

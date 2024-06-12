@@ -17,7 +17,7 @@ const CountryPicker = ({ handleCountryChange }) => {
   if (fetchedCountries) {
     return (
       <FormControl
-        className={`${styles.formControl} fadeInUp`}
+        className={`${styles.formControl} fade-in-up`}
         style={{ animationDelay: "1s" }}
       >
         <NativeSelect

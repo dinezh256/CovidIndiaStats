@@ -80,7 +80,7 @@ class Updates extends Component {
     if (isLoaded) {
       return (
         <div
-          className="container fadeInUp"
+          className="container fade-in-up"
           style={{ marginTop: "10px", marginBottom: "-7px" }}
         >
           <div
@@ -161,7 +161,7 @@ class Updates extends Component {
                   (item, index) =>
                     Number(item.deltaconfirmed) > 0 && (
                       <div
-                        className="alert hoveralert fadeInUp"
+                        className="alert hoveralert fade-in-up"
                         role="alert"
                         style={{
                           marginBottom: "5px",

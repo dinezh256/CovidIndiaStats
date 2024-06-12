@@ -39,7 +39,7 @@ class Navbar extends Component {
     const SunMoon = ({ darkMode }) => {
       return (
         <div onClick={darkMode.toggle}>
-          <div className="SunMoon">
+          <div className="sun-moon">
             {darkMode.value ? (
               <WbSunnyRoundedIcon
                 style={{ color: "#ffc107", height: "2rem", width: "2rem" }}
@@ -55,8 +55,8 @@ class Navbar extends Component {
     };
 
     return (
-      <nav className="myNavbar">
-        <ul className="myNavbar-nav">
+      <nav className="nav-bar">
+        <ul className="nav-bar-list">
           <SwipeableTemporaryDrawer />
           <ul style={{ flex: 0.56 }} id="line1"></ul>
           <ul style={{ flex: 0.5 }} id="line2"></ul>

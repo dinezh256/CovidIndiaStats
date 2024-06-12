@@ -20,7 +20,7 @@ class Home extends Component {
           <Table />
 
           <div
-            className="graphSection fadeInUp"
+            className="graph-section fade-in-up"
             style={{
               animationDelay: "0.8s",
               marginTop: 15,

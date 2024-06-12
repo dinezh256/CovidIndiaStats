@@ -179,7 +179,7 @@ class StateTable extends Component {
     return (
       <>
         <div
-          className="row fadeInUp"
+          className="row fade-in-up"
           style={{
             alignItems: "center",
             alignContent: "center",
@@ -193,7 +193,10 @@ class StateTable extends Component {
         <div className="w-100"></div>
         {requiredData.length && back ? (
           <div className="row">
-            <div className="col-10 fadeInUp" style={{ animationDelay: "0.3s" }}>
+            <div
+              className="col-10 fade-in-up"
+              style={{ animationDelay: "0.3s" }}
+            >
               <button
                 className="btnMainPage btn"
                 style={{
@@ -220,7 +223,10 @@ class StateTable extends Component {
                 </Link>
               </button>
             </div>
-            <div className="col-2 fadeInUp" style={{ animationDelay: "0.35s" }}>
+            <div
+              className="col-2 fade-in-up"
+              style={{ animationDelay: "0.35s" }}
+            >
               <h6
                 className="backButton"
                 onClick={() => {
@@ -238,7 +244,7 @@ class StateTable extends Component {
         )}
         <div className="w-100"></div>
         {requiredData.length && back ? (
-          <div className="row fadeInUp" style={{ animationDelay: "0.5s" }}>
+          <div className="row fade-in-up" style={{ animationDelay: "0.5s" }}>
             <table
               className="table table-sm table-borderless"
               style={{
@@ -346,7 +352,7 @@ class StateTable extends Component {
                   item.map((district) => (
                     <tr className="tr">
                       <td
-                        className="tdleft align-middle"
+                        className="td-left align-middle"
                         style={{
                           color: "grey",
                           backgroundColor: "rgba(63, 63, 95, 0.2)",

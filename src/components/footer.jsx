@@ -5,7 +5,7 @@ import ReactGa from "react-ga";
 const Footer = () => {
   return (
     <div
-      className="fadeInUp"
+      className="fade-in-up"
       style={{ animationDelay: "3s", marginTop: "50px" }}
     >
       <h6

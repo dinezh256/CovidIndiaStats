@@ -14,7 +14,7 @@ const StatePicker = ({ handleStateChange, back }) => {
   if (fetchedStates) {
     return (
       <select
-        className="formcontrol"
+        className="form-control"
         onChange={(e) => handleStateChange(e.target.value)}
       >
         <option value="" selected={!back} disabled>

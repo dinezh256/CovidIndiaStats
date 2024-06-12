@@ -53,7 +53,7 @@ export default function SwipeableTemporaryDrawer() {
         <br />
         <br />
         <Divider />
-        <NavLink to="/" className="sideBarItem">
+        <NavLink to="/" className="sidebar-item">
           <ListItem button key={"Home"}>
             <ListItemIcon>
               {<HomeRoundedIcon fontSize="large" color="primary" />}
@@ -62,7 +62,7 @@ export default function SwipeableTemporaryDrawer() {
           </ListItem>
         </NavLink>
 
-        <NavLink to="/global" className="sideBarItem">
+        <NavLink to="/global" className="sidebar-item">
           <ListItem button key={"Global"}>
             <ListItemIcon>
               {<FlagRoundedIcon fontSize="large" color="primary" />}
@@ -70,7 +70,7 @@ export default function SwipeableTemporaryDrawer() {
             <ListItemText primary={"Global"} />
           </ListItem>
         </NavLink>
-        <NavLink to="/links" className="sideBarItem">
+        <NavLink to="/links" className="sidebar-item">
           <ListItem button key={"Links"}>
             <ListItemIcon>
               {<LinkRoundedIcon fontSize="large" color="primary" />}
@@ -78,7 +78,7 @@ export default function SwipeableTemporaryDrawer() {
             <ListItemText primary={"Links"} />
           </ListItem>
         </NavLink>
-        <NavLink to="/faq" className="sideBarItem">
+        <NavLink to="/faq" className="sidebar-item">
           <ListItem button key={"FAQ"}>
             <ListItemIcon>
               {<ForumRoundedIcon fontSize="large" color="primary" />}
@@ -164,7 +164,7 @@ export default function SwipeableTemporaryDrawer() {
     <div>
       {["left"].map((anchor) => (
         <React.Fragment key={anchor}>
-          <span className="menuIcon" onClick={toggleDrawer(anchor, true)}>
+          <span className="menu-icon" onClick={toggleDrawer(anchor, true)}>
             <MenuRoundedIcon
               style={{ verticalAlign: "-0.65rem" }}
               fontSize="large"

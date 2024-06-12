@@ -115,12 +115,12 @@ class World extends Component {
     if (isLoaded) {
       return (
         <>
-          <div className="containerWorld">
+          <div className="container-world">
             <Helmet>
               <title>Global COVID19 Update</title>
             </Helmet>
             <div
-              className="col fadeInUp worldchoropleth"
+              className="col fade-in-up worldchoropleth"
               style={{ alignContent: "center" }}
             >
               <WorldChoropleth
@@ -134,7 +134,7 @@ class World extends Component {
             <div className="w-100"></div>
             <div className="col-12" id="line1">
               <table
-                className="tableworld table-sm table-responsive fadeInUp"
+                className="table-world table-sm table-responsive fade-in-up"
                 style={{
                   marginTop: 10,
                   marginBottom: 10,
@@ -201,7 +201,7 @@ class World extends Component {
             </div>
             <div className="col-12" id="line2" style={{ marginTop: "-200px" }}>
               <table
-                className="tableworld table-sm table-responsive fadeInUp"
+                className="table-world table-sm table-responsive fade-in-up"
                 style={{
                   marginTop: -10,
                   marginBottom: 10,
@@ -268,9 +268,12 @@ class World extends Component {
             </div>
             <div className="w-100"></div>
             <div className="row" style={{ marginBottom: 0 }}>
-              <div className="col fadeInUp" style={{ animationDelay: "0.7s" }}>
+              <div
+                className="col fade-in-up"
+                style={{ animationDelay: "0.7s" }}
+              >
                 <h6
-                  className="toggleDay"
+                  className="toggle-day"
                   onClick={() =>
                     this.setState({ toggleToday: true, toggleYesterday: false })
                   }
@@ -284,9 +287,12 @@ class World extends Component {
                   )}
                 </h6>
               </div>
-              <div className="col fadeInUp" style={{ animationDelay: "0.8s" }}>
+              <div
+                className="col fade-in-up"
+                style={{ animationDelay: "0.8s" }}
+              >
                 <h6
-                  className="toggleDay"
+                  className="toggle-day"
                   onClick={() =>
                     this.setState({ toggleToday: false, toggleYesterday: true })
                   }
@@ -305,7 +311,7 @@ class World extends Component {
             <div className="w-100"></div>
             <div className="col">
               <table
-                className="tableworld table-sm fadeInUp table-responsive"
+                className="table-world table-sm fade-in-up table-responsive"
                 align="center"
                 style={{ animationDelay: "0.9s" }}
               >
