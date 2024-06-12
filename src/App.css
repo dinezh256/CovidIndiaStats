@@ -601,8 +601,8 @@ span.MuiBadge-colorSecondary {
 
 .home {
   display: flex;
-  flex-direction: row;
   justify-content: space-between;
+  flex-wrap: wrap;
   margin-right: auto;
   margin-left: auto;
 }
@@ -1327,16 +1327,10 @@ th {
   #root {
     overflow-x: hidden;
   }
-  .home {
-    flex-direction: column;
-    justify-content: center;
-    margin: auto;
-  }
   .statsTable {
-    width: calc(100% + 15px);
     max-width: 500px;
+    width: 100%;
     margin: auto;
-    margin-left: -7.5px;
   }
   .graphSection {
     width: 100%;
