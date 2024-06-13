@@ -116,10 +116,14 @@ class StateDetails extends Component {
   static contextType = AppContext;
 
   async componentDidMount() {
+    const { currentStateCode } = this.state;
+
+    if (!stateID.includes(currentStateCode)) {
+      window.location = "/not-found";
+    }
+
     const fetchedStates = await indianstates();
     this.setState({ stateData: fetchedStates, isLoaded: true });
-
-    const { currentStateCode } = this.state;
 
     const requiredData = [];
     fetchedStates.map((item) => {
@@ -2737,19 +2741,17 @@ class StateDetails extends Component {
         </>
       );
     } else {
-      if (stateID.includes(currentStateCode)) {
-        return (
-          <div style={{ textAlign: "center" }}>
-            <div
-              className="spinner-grow"
-              role="status"
-              style={{ alignContent: "center" }}
-            >
-              <span className="sr-only">Loading...</span>
-            </div>
+      return (
+        <div style={{ textAlign: "center" }}>
+          <div
+            className="spinner-grow"
+            role="status"
+            style={{ alignContent: "center" }}
+          >
+            <span className="sr-only">Loading...</span>
           </div>
-        );
-      } else return <NotFound />;
+        </div>
+      );
     }
   }
 }

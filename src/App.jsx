@@ -13,8 +13,8 @@ import ReactGa from "react-ga";
 import Navbar from "./components/navbar";
 import AppContextProvider from "./context";
 
-import "./App.css";
 import { detectColorScheme } from "./utils/common-functions";
+import "./App.css";
 
 const Home = lazy(() => import("./components/home"));
 const World = lazy(() => import("./components/world"));
