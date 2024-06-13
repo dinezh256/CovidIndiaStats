@@ -294,10 +294,11 @@ ul {
 }
 
 .statewise-table > table > thead > tr > th {
-  padding-bottom: 0.5rem;
-  padding-top: 0.5rem;
-  font-size: 13px;
+  font-size: 14px;
   white-space: nowrap;
+}
+
+.thead-dark {
   position: sticky;
   top: 0;
 }
@@ -537,11 +538,12 @@ span.MuiBadge-colorSecondary {
   color: #3f51b5;
   font-family: notosans;
   transition: all 0.1s;
-}
-
-.coverage:hover {
   text-decoration: none;
-  color: navy;
+
+  &:hover {
+    color: #4e62d7 !important;
+    transition: all 0.1s !important;
+  }
 }
 
 .world-home-card {
@@ -610,6 +612,7 @@ span.MuiBadge-colorSecondary {
 .india-state-wise-head {
   display: flex;
   justify-content: space-between;
+  margin-top: 8px;
 }
 
 .support-us {
@@ -621,12 +624,11 @@ span.MuiBadge-colorSecondary {
     rgba(59, 115, 119, 0.75) 0%,
     #254d86 74%
   );
-  padding: 6.5px 5px 6.5px 10px;
+  padding: 8px 10px;
   width: 100%;
   text-align: center;
   margin-top: 16px;
-  margin-bottom: -0.85rem;
-  border-radius: 5px 5px 0 0;
+  border-radius: 5px;
 }
 
 .support-us > a,
@@ -801,6 +803,7 @@ a:hover {
   width: 100%;
   justify-content: space-between;
   margin: auto 0px;
+  margin-top: 20px;
 }
 
 .india-map-choropleth {
@@ -849,14 +852,15 @@ a:hover {
 .testpad {
   width: 24.5%;
 }
+
 .testpad > h6 {
   background: rgba(106, 68, 200, 0.2);
   color: #5969c2;
   text-align: right;
   cursor: pointer;
-  padding-top: 5%;
+  padding-top: 7.5px;
   padding-right: 5%;
-  padding-bottom: 0.5px;
+  padding-bottom: 7.5px;
   border-radius: 5px;
   font-size: 0.75rem !important;
 }
@@ -1234,6 +1238,7 @@ th {
     max-width: 500px;
     width: 100%;
     margin: auto;
+    margin-bottom: 32px;
   }
   .graph-section {
     width: 100%;

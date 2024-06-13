@@ -556,7 +556,7 @@ class Table extends Component {
 
           <div className="statewise-table table-responsive">
             <table
-              className="table table-sm fade-in-up table-borderless"
+              className="table table-md fade-in-up table-borderless"
               style={{ animationDelay: "1s", fontFamily: "notosans" }}
             >
               <thead className="thead-dark">
