@@ -103,7 +103,7 @@ const WorldChoropleth = ({ data: statesdata }) => {
           </Geographies>
         </ComposableMap>
       </div>
-      <div className="worldLinearGradient">
+      <div className="world-linear-gradient">
         <LinearGradient data={gradientData} />
       </div>
     </>

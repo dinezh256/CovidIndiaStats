@@ -44,6 +44,18 @@ ul {
   padding: 0;
 }
 
+.col,
+.col-12 {
+  padding: 0px !important;
+}
+
+.row {
+  margin: 0px !important;
+  &::after {
+    content: none;
+  }
+}
+
 .nav-bar {
   height: var(--nav-size);
   background-color: var(--bg);
@@ -100,7 +112,7 @@ ul {
   cursor: pointer;
 }
 
-.imgAlign {
+.img-align {
   vertical-align: -0.4rem;
   width: 40px;
   height: 40px;
@@ -109,7 +121,7 @@ ul {
 }
 
 @media (max-width: 460px) {
-  .imgAlign {
+  .img-align {
     vertical-align: -0.9rem !important;
   }
 }
@@ -153,18 +165,6 @@ ul {
   align-items: center;
   justify-content: center;
   flex-direction: column;
-}
-
-@media only screen and (max-width: 576px) {
-  .container-world {
-    margin-left: -15px !important;
-    margin-right: -15px !important;
-  }
-}
-
-.no-margin {
-  margin-left: 0;
-  margin-right: 0;
 }
 
 .loader {
@@ -264,7 +264,7 @@ ul {
 .th {
   font-weight: 500;
   cursor: pointer;
-  border-radius: 5px;
+  border-radius: 0px;
   padding: 0;
   position: sticky;
 }
@@ -275,7 +275,7 @@ ul {
 }
 
 .table tbody tr td {
-  border-radius: 4px;
+  border-radius: 0px;
 }
 
 .table tbody tr:hover {
@@ -285,10 +285,7 @@ ul {
 }
 
 .spread-graph-type {
-  position: absolute;
-  right: 4.25rem;
-  margin-top: -1.5px;
-  margin-bottom: -5px;
+  margin: 0;
 }
 
 .statewise-table {
@@ -317,9 +314,21 @@ ul {
   background-color: slategray;
 }
 
-.thleft {
-  position: fixed;
-  z-index: 10;
+.th-sticky,
+.td-sticky {
+  position: sticky;
+  left: 0;
+  z-index: 3;
+}
+
+.td-sticky {
+  background-color: #d3d3dc !important;
+}
+
+.dark {
+  .td-sticky {
+    background-color: #1f1f26 !important;
+  }
 }
 
 .td-left {
@@ -336,12 +345,13 @@ ul {
   font-size: 0.9rem;
   font-weight: 500;
   border-radius: 4px;
-
+  position: relative;
   word-wrap: break-word;
   color: slategrey !important;
   vertical-align: right !important;
   font-family: notosans;
 }
+
 @media only screen and (max-width: 360px) {
   .td-md {
     font-size: 0.78rem;
@@ -378,21 +388,13 @@ a:hover {
   font-size: 0.9rem;
 }
 
-.infoIcon {
+.info-icon {
   margin-left: 5px;
   vertical-align: -0.7rem;
 }
 
 .trend {
   color: #5c5656;
-}
-
-.Home {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin: auto;
 }
 
 .home-title {
@@ -402,8 +404,6 @@ a:hover {
 }
 
 .home-toggle {
-  display: inline-flexbox;
-  align-content: flex-end;
 }
 
 .form-control {
@@ -601,6 +601,10 @@ span.MuiBadge-colorSecondary {
 .graph-section {
   width: calc(50% - 55px);
   margin: auto 25px;
+}
+
+.spread-timeline {
+  gap: 12px;
 }
 
 .india-state-wise-head {
@@ -817,7 +821,18 @@ a:hover {
 }
 
 .spread-graphs {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   padding: 0px !important;
+  margin: 16px 0;
+  width: 100%;
+}
+
+.graph-toggle {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .pad {
@@ -846,24 +861,6 @@ a:hover {
   font-size: 0.75rem !important;
 }
 
-.mapTitle {
-  padding: 0%;
-}
-
-.lastUpdatedIndiaMap {
-  text-align: right;
-  color: rgb(221, 44, 0);
-  margin-bottom: -40px;
-  font-size: 12px !important;
-}
-
-@media only screen and (min-width: 768px) {
-  .lastUpdatedIndiaMap {
-    font-size: 18px !important;
-    margin-right: 12px;
-  }
-}
-
 .choropleth {
   opacity: 0;
   animation-name: fadeIn;
@@ -882,7 +879,7 @@ a:hover {
   }
 }
 
-.choroplethText {
+.choropleth-text {
   border-radius: 3px;
   padding: 5px;
 }
@@ -902,7 +899,7 @@ a:hover {
   margin-top: 5px;
 }
 
-.worldchoropleth {
+.world-choropleth {
   height: 100%;
   width: 100%;
   margin-bottom: 0rem;
@@ -912,30 +909,30 @@ a:hover {
 }
 
 @media (min-width: 767px) {
-  .worldchoropleth {
+  .world-choropleth {
     margin-bottom: 15rem;
     margin-top: -3rem;
   }
-  .worldLinearGradient {
+  .world-linear-gradient {
     margin-top: -15rem !important;
   }
 }
 
 @media (min-width: 1024px) {
-  .worldchoropleth {
+  .world-choropleth {
     margin-bottom: 15rem;
     margin-top: -3rem;
   }
-  .worldLinearGradient {
+  .world-linear-gradient {
     margin-top: -20rem !important;
   }
 }
 
-.worldLinearGradient {
+.world-linear-gradient {
   margin-top: -7.5rem;
 }
 
-.showUp {
+.show-up {
   animation: rotateDown 0.5s;
 }
 
@@ -984,14 +981,14 @@ a:hover {
   color: inherit;
 }
 
-.stateTable h6 {
+.state-table h6 {
   border-radius: 5px;
   padding-top: 4px;
   padding-bottom: 4px;
   cursor: pointer;
 }
 
-.containerStates {
+.container-states {
   padding-right: 2.5px;
   padding-left: 2.5px;
   margin-right: auto;
@@ -999,34 +996,28 @@ a:hover {
 }
 
 @media (min-width: 1200px) {
-  .containerStates {
+  .container-states {
     padding-right: 30px;
     padding-left: 30px;
   }
 }
 
-.liDistrict li {
-  font-weight: 600;
-  text-transform: "uppercase";
-  font-family: "notosans";
-}
-
-.viewState {
+.view-state {
   color: rgba(255, 153, 0, 1);
   text-decoration: none;
   font-weight: 600;
 }
 
-.viewState:hover {
+.view-state:hover {
   text-decoration: none !important;
   text-underline-position: unset;
 }
 
-.visitState:hover {
+.visit-state:hover {
   text-decoration: none !important;
 }
 
-.backButton {
+.back-button {
   text-align: center;
   margin-right: -10px !important;
   background-color: lightslategrey;
@@ -1039,38 +1030,16 @@ a:hover {
   margin-top: 10px !important;
 }
 
-.btnMainPage {
+.btn-main-page {
   margin-top: 10px !important;
   margin-left: -10px !important;
 }
 
-.btnMainPage:hover {
+.btn-main-page:hover {
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.25) !important;
 }
 
-.btnViewAll {
-  text-align: center;
-  margin-left: 4px !important;
-  width: 11rem;
-  background-color: rgba(255, 153, 0, 0.473);
-  border-radius: 4px;
-  padding-top: 7px;
-  padding-bottom: 7px;
-  cursor: pointer;
-  font-size: 12px;
-  margin-bottom: 0px;
-  margin-top: 5px !important;
-  animation: fadeIn 2s;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5) !important;
-  transition-duration: 0.5s;
-}
-
-.btnViewAll:hover {
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5) !important;
-  transition-duration: 0.5s;
-}
-
-.shareBtn {
+.share-btn {
   text-align: center;
   align-content: center;
   width: 150px;
@@ -1082,20 +1051,13 @@ a:hover {
 }
 
 @media only screen and (max-width: 360px) {
-  .shareBtn {
+  .share-btn {
     margin-left: 0px !important;
     margin-right: -9px !important;
   }
 }
 
-@media only screen and (max-width: 360px) {
-  .smScreen {
-    margin-left: 0px !important;
-    margin-right: -8px !important;
-  }
-}
-
-.likeShare {
+.like-share {
   font-size: 0.75rem;
   text-align: center !important;
   vertical-align: middle;
@@ -1105,7 +1067,7 @@ a:hover {
   width: 140px;
 }
 
-.feedbackBtn {
+.feedback-btn {
   font-size: 0.75rem;
   text-align: center !important;
   margin-top: -2px !important;
@@ -1116,7 +1078,7 @@ a:hover {
   width: 150px;
 }
 
-.hashTag {
+.hash-tag {
   color: navy !important;
   background-color: rgb(156, 156, 202);
   border-radius: 3px;
@@ -1125,12 +1087,12 @@ a:hover {
   padding-right: 2px;
 }
 
-.hashTag:hover {
+.hash-tag:hover {
   text-decoration: none;
   background-color: rgb(156, 156, 202);
 }
 
-.testLabsBtn {
+.test-labs-btn {
   background-color: rgb(218, 192, 243);
   border-radius: 3px;
   padding: 4px 4px;
@@ -1143,12 +1105,12 @@ a:hover {
   transition-duration: 0.5s;
 }
 
-.testLabsBtn:hover {
+.test-labs-btn:hover {
   box-shadow: 0 0 8px rgba(0, 0, 115, 0.5) !important;
   transition-duration: 0.5s;
 }
 
-.linkTestLabsBtn:hover {
+.linktest-labs-btn:hover {
   text-decoration: none;
   color: indigo;
 }
@@ -1171,61 +1133,13 @@ a:hover {
   }
 }
 
-.fadeOutDown {
-  animation-name: fadeOutDown;
-  animation-duration: 1s;
-  animation-fill-mode: both;
-}
-
-@keyframes fadeOutDown {
-  0% {
-    opacity: 0.9;
-    transform: translateY(-25px);
-  }
-
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.rotateRightDown {
-  animation-name: rotateRightDown;
-  animation-duration: 0.25s;
-  animation-fill-mode: both;
-}
-
-@keyframes rotateRightDown {
-  0% {
-    transform: rotate(-90deg);
-  }
-}
-
-.fadeInRight {
-  animation-name: fadeInRight;
-  animation-duration: 0.5s;
-  animation-fill-mode: both;
-}
-
-@keyframes fadeInRight {
-  0% {
-    opacity: 0;
-    transform: translateX(-50px);
-  }
-
-  100% {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-.fadeInLeft {
+.fade-in-left {
   animation-name: fadeInLeft;
   animation-duration: 0.5s;
   animation-fill-mode: both;
 }
 
-.colorChange {
+.color-change {
   animation: colorChange 20s ease-in-out;
   animation-fill-mode: both;
 }

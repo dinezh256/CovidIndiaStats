@@ -26,7 +26,7 @@ const Footer = () => {
               marginTop: 5,
             }}
           >
-            <span className="hashTag">#DistancedButNotAlone</span>
+            <span className="hash-tag">#DistancedButNotAlone</span>
           </h6>
         </a>
       </h6>

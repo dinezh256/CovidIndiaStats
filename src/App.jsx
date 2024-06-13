@@ -1,6 +1,6 @@
 import React, { useEffect, Suspense, lazy, useState } from "react";
 import { createBrowserHistory } from "history";
-
+import cx from "classnames";
 import {
   BrowserRouter as Router,
   Route,
@@ -74,7 +74,9 @@ function App() {
           <ThemeProvider theme={{ mode: darkMode.value }}>
             <GlobalStyle />
             <Suspense fallback={<div />}>
-              <main className="main-wrapper">
+              <main
+                className={cx("main-wrapper", { dark: isDark, light: !isDark })}
+              >
                 <Switch>
                   <Route path="/global" component={World} />
                   <Route path="/links" component={Options} />

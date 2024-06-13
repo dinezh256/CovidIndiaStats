@@ -60,7 +60,7 @@ class Navbar extends Component {
           <SwipeableTemporaryDrawer />
           <ul style={{ flex: 0.56 }} id="line1"></ul>
           <ul style={{ flex: 0.5 }} id="line2"></ul>
-          <NavLink to="/" className="fadeInLeft">
+          <NavLink to="/" className="fade-in-left">
             <div>
               <span className="title">{this.state.title}</span>
             </div>

@@ -120,7 +120,7 @@ class World extends Component {
               <title>Global COVID19 Update</title>
             </Helmet>
             <div
-              className="col fade-in-up worldchoropleth"
+              className="col fade-in-up world-choropleth"
               style={{ alignContent: "center" }}
             >
               <WorldChoropleth
@@ -267,45 +267,39 @@ class World extends Component {
               </table>
             </div>
             <div className="w-100"></div>
-            <div className="row" style={{ marginBottom: 0 }}>
-              <div
-                className="col fade-in-up"
-                style={{ animationDelay: "0.7s" }}
+            <div
+              className="row fade-in-up spread-timeline"
+              style={{ marginBottom: 0, animationDelay: "0.7s" }}
+            >
+              <h6
+                className="toggle-day"
+                onClick={() =>
+                  this.setState({ toggleToday: true, toggleYesterday: false })
+                }
               >
-                <h6
-                  className="toggle-day"
-                  onClick={() =>
-                    this.setState({ toggleToday: true, toggleYesterday: false })
-                  }
-                >
-                  TODAY{" "}
-                  {toggleToday && (
-                    <Icon.CheckCircle
-                      size={14}
-                      style={{ verticalAlign: "-0.1rem" }}
-                    />
-                  )}
-                </h6>
-              </div>
-              <div
-                className="col fade-in-up"
-                style={{ animationDelay: "0.8s" }}
+                TODAY{" "}
+                {toggleToday && (
+                  <Icon.CheckCircle
+                    size={14}
+                    style={{ verticalAlign: "-0.1rem" }}
+                  />
+                )}
+              </h6>
+
+              <h6
+                className="toggle-day"
+                onClick={() =>
+                  this.setState({ toggleToday: false, toggleYesterday: true })
+                }
               >
-                <h6
-                  className="toggle-day"
-                  onClick={() =>
-                    this.setState({ toggleToday: false, toggleYesterday: true })
-                  }
-                >
-                  YESTERDAY{" "}
-                  {toggleYesterday && (
-                    <Icon.CheckCircle
-                      size={14}
-                      style={{ verticalAlign: "-0.1rem" }}
-                    />
-                  )}
-                </h6>
-              </div>
+                YESTERDAY{" "}
+                {toggleYesterday && (
+                  <Icon.CheckCircle
+                    size={14}
+                    style={{ verticalAlign: "-0.1rem" }}
+                  />
+                )}
+              </h6>
             </div>
 
             <div className="w-100"></div>

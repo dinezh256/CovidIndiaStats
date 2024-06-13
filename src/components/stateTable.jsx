@@ -198,7 +198,7 @@ class StateTable extends Component {
               style={{ animationDelay: "0.3s" }}
             >
               <button
-                className="btnMainPage btn"
+                className="btn-main-page btn"
                 style={{
                   textAlign: "center",
                   color: "rgba(255, 100, 0, 1)",
@@ -213,11 +213,11 @@ class StateTable extends Component {
                 }}
               >
                 <Link
-                  className="visitState"
+                  className="visit-state"
                   key={requiredState}
                   to={`/${requiredState}`}
                 >
-                  <span className="viewState">
+                  <span className="view-state">
                     VISIT {stateFullName[requiredState]} MAIN PAGE
                   </span>
                 </Link>
@@ -228,7 +228,7 @@ class StateTable extends Component {
               style={{ animationDelay: "0.35s" }}
             >
               <h6
-                className="backButton"
+                className="back-button"
                 onClick={() => {
                   this.setState({
                     back: false,

@@ -82,7 +82,7 @@ class WorldHomeCard extends Component {
             onClick={() => this.setState({ showData: !showData })}
           >
             {!showData ? (
-              <Icon.ChevronUp className="showUp" color="#3f51b5" />
+              <Icon.ChevronUp className="show-up" color="#3f51b5" />
             ) : (
               <Icon.ChevronDown className="showDown" color="#3f51b5" />
             )}

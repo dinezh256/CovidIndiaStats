@@ -158,7 +158,7 @@ const StateChoropleth = ({
       {!isUpdatedData && (
         <div>
           <h6
-            class="choroplethText"
+            class="choropleth-text"
             style={{
               color: colorHigh,
               fontSize: "0.8rem",
@@ -217,7 +217,7 @@ const StateChoropleth = ({
             marginTop: "-2rem",
           }}
         >
-          <span class="choroplethText" style={{ background: colorLow }}>
+          <span class="choropleth-text" style={{ background: colorLow }}>
             {type}
           </span>
         </h6>

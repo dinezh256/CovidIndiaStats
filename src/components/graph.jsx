@@ -431,14 +431,14 @@ class Graph extends Component {
       return (
         <div>
           <div
-            className="row no-margin"
+            className="row"
             style={{ justifyContent: "center", marginBottom: "25px" }}
           >
             <WorldHomeCard />
           </div>
           <div className="w-100"></div>
 
-          <div className="row no-margin">
+          <div className="row">
             <div className="india-map-head">
               <h3
                 className="fade-in-up"
@@ -748,11 +748,10 @@ class Graph extends Component {
             </div>
             <div className="w-100"></div>
             <div
-              className="col fade-in-up spread-graphs"
+              className="fade-in-up spread-graphs"
               style={{
                 textAlign: "left",
                 animationDelay: "1.5s",
-                marginBottom: "-8px",
               }}
             >
               <h6
@@ -765,15 +764,7 @@ class Graph extends Component {
               >
                 SPREAD TRENDS
               </h6>
-            </div>
-            <div
-              className="col fade-in-up"
-              style={{ animationDelay: "1.5s", alignItems: "right" }}
-            >
-              <div
-                className="home-toggle float-right"
-                style={{ marginTop: "10px" }}
-              >
+              <div className="graph-toggle">
                 <h6 className="spread-graph-type">
                   <span
                     style={{
@@ -806,11 +797,8 @@ class Graph extends Component {
             </div>
           </div>
           <div className="w-100"></div>
-          <div className="row">
-            <div
-              className="col fade-in-up spread-timeline"
-              style={{ animationDelay: "1.5s" }}
-            >
+          <div className="row spread-timeline">
+            <div className="col fade-in-up" style={{ animationDelay: "1.5s" }}>
               <h6
                 className="timeline-button"
                 onClick={() =>
@@ -826,10 +814,7 @@ class Graph extends Component {
               </h6>
             </div>
 
-            <div
-              className="col fade-in-up spread-timeline"
-              style={{ animationDelay: "1.55s" }}
-            >
+            <div className="col fade-in-up" style={{ animationDelay: "1.55s" }}>
               <h6
                 className="timeline-button"
                 onClick={() =>
@@ -845,10 +830,7 @@ class Graph extends Component {
               </h6>
             </div>
 
-            <div
-              className="col fade-in-up spread-timeline"
-              style={{ animationDelay: "1.6s" }}
-            >
+            <div className="col fade-in-up" style={{ animationDelay: "1.6s" }}>
               <h6
                 className="timeline-button"
                 onClick={() =>

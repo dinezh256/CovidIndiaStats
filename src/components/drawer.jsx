@@ -46,7 +46,7 @@ export default function SwipeableTemporaryDrawer() {
         <br />
         <ListItem button key={"covidindiastats"}>
           <ListItemIcon>
-            <img alt="COVID19" src={mainLogo} className="imgAlign" />
+            <img alt="COVID19" src={mainLogo} className="img-align" />
           </ListItemIcon>
           <ListItemText primary={"covidindiastats"} />
         </ListItem>

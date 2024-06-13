@@ -24,9 +24,9 @@ function commaSeperated(x) {
 
 const divisorType = {
   confirmed: 100000,
-  active: 100000,
+  active: 10000,
   recovered: 100000,
-  deceased: 10000,
+  deceased: 1000,
 };
 
 const LinePlot = ({
@@ -111,7 +111,8 @@ const LinePlot = ({
               domain={[
                 0,
                 Math.ceil(Math.max(...total) / divisorType[type]) *
-                  divisorType[type],
+                  divisorType[type] +
+                  divisorType[type] * 50,
               ]}
               orientation="right"
               tick={{ stroke: stroke, strokeWidth: 0.2, fill: stroke }}

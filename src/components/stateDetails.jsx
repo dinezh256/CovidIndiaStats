@@ -804,7 +804,7 @@ class StateDetails extends Component {
     ) {
       return (
         <>
-          <div className="containerStates">
+          <div className="container-states">
             <Helmet>
               <title>{stateFullName[currentStateCode]} Covid Dashboard</title>
               <meta
@@ -902,7 +902,7 @@ class StateDetails extends Component {
                 >
                   <tr className="tr">
                     <td
-                      className="td stateTable"
+                      className="td state-table"
                       style={{
                         textAlign: "center",
                         width: "25%",
@@ -983,7 +983,7 @@ class StateDetails extends Component {
                       />
                     </td>
                     <td
-                      className="td stateTable"
+                      className="td state-table"
                       style={{
                         textAlign: "center",
                         width: "25%",
@@ -1061,7 +1061,7 @@ class StateDetails extends Component {
                       />
                     </td>
                     <td
-                      className="td stateTable"
+                      className="td state-table"
                       style={{
                         textAlign: "center",
                         width: "25%",
@@ -1142,7 +1142,7 @@ class StateDetails extends Component {
                       />
                     </td>
                     <td
-                      className="td stateTable"
+                      className="td state-table"
                       style={{
                         textAlign: "center",
                         width: "25%",
@@ -1308,7 +1308,7 @@ class StateDetails extends Component {
                           >
                             {viewAll ? (
                               <Icon.ChevronUp
-                                className="showUp"
+                                className="show-up"
                                 color="#3f51b5"
                               />
                             ) : (
@@ -1571,7 +1571,7 @@ class StateDetails extends Component {
                         className="col fade-in-up"
                         style={{ animationDelay: "0.1s" }}
                       >
-                        <h6 className="feedbackBtn">
+                        <h6 className="feedback-btn">
                           <a
                             href="https://forms.gle/N6V7VTgcmBtxkU4Q9"
                             target="_blank"
@@ -1581,7 +1581,7 @@ class StateDetails extends Component {
                             <Icon.FileText size={30} />{" "}
                           </a>
                         </h6>
-                        <h6 className="feedbackBtn">
+                        <h6 className="feedback-btn">
                           Please provide your valuable feedback
                         </h6>
                       </div>
@@ -1589,7 +1589,7 @@ class StateDetails extends Component {
                         className="col fade-in-up"
                         style={{ animationDelay: "0.1s" }}
                       >
-                        <div className="row shareBtn">
+                        <div className="row share-btn">
                           <a
                             href={`https://www.facebook.com/sharer/sharer.php?u=covidindiastats.com/${currentStateCode}`}
                             onClick={() => {
@@ -1635,7 +1635,7 @@ class StateDetails extends Component {
                           >
                             <TwitterIcon fontSize="large" />
                           </a>
-                          <h6 className="likeShare">
+                          <h6 className="like-share">
                             Help this information reach your dear ones
                           </h6>
                         </div>
@@ -2697,9 +2697,9 @@ class StateDetails extends Component {
                       href="https://www.icmr.gov.in/pdf/covid/labs/COVID_Testing_Labs_28062020.pdf"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="linkTestLabsBtn"
+                      className="linktest-labs-btn"
                     >
-                      <h6 className="testLabsBtn">
+                      <h6 className="test-labs-btn">
                         <Icon.Download
                           strokeWidth={3}
                           size={9}
@@ -2717,9 +2717,9 @@ class StateDetails extends Component {
                       href="https://covid.icmr.org.in/index.php/testing-facilities"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="linkTestLabsBtn"
+                      className="linktest-labs-btn"
                     >
-                      <h6 className="testLabsBtn">
+                      <h6 className="test-labs-btn">
                         <Icon.MapPin
                           strokeWidth={3}
                           size={9}

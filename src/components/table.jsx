@@ -432,7 +432,7 @@ class Table extends Component {
                               : ""}
                           </h6>
                           <h6
-                            className="colorChange"
+                            className="color-change"
                             style={{ textAlign: "center" }}
                           >
                             {!percentageToggleActive ? (
@@ -493,7 +493,6 @@ class Table extends Component {
             style={{
               textAlign: "center",
               animationDelay: "0.5s",
-              marginTop: "-15px",
             }}
           >
             <h3>INDIA - STATEWISE </h3>
@@ -562,7 +561,7 @@ class Table extends Component {
             >
               <thead className="thead-dark">
                 <tr>
-                  <th className="th">State/UT</th>
+                  <th className="th th-sticky">State/UT</th>
                   <th
                     className="th"
                     onClick={() =>
@@ -731,7 +730,7 @@ class Table extends Component {
                             i % 2 === 0 ? "rgba(63, 63, 95, 0.2)" : "",
                         }}
                       >
-                        <td className="align-middle">
+                        <td className="align-middle td-sticky">
                           <div className="td-md-left">
                             {/* <Link to={`/${item.code}`}> */}
                             <h6>{item.name}</h6>
@@ -751,7 +750,7 @@ class Table extends Component {
                                     <InfoOutlined
                                       color="inherit"
                                       fontSize="inherit"
-                                      className="infoIcon"
+                                      className="info-icon"
                                     />
                                   </span>
                                 </OverlayTrigger>
@@ -902,7 +901,7 @@ class Table extends Component {
                             i % 2 === 0 ? "rgba(63, 63, 95, 0.2)" : "",
                         }}
                       >
-                        <td className="align-middle">
+                        <td className="align-middle td-sticky">
                           <div className="td-md-left">
                             <h6 style={{ paddingTop: "7.5px" }}>{item.name}</h6>
                           </div>
